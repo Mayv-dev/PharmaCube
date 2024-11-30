@@ -12,12 +12,12 @@ const Tab1: React.FC = () => {
       </IonHeader>
       <IonContent fullscreen className='wrapper'>
         <IonCard className='card'>
-        <IonRouterLink routerLink='/Tab2'>
+        <IonRouterLink routerLink='/Tab3'>
         <IonButton expand="block" className='ScheduleButtons' color="light">
               Add Item to Schedule
       </IonButton>
       </IonRouterLink>
-      <IonRouterLink routerLink='/Tab3'>
+      <IonRouterLink routerLink='/Tab2'>
       <IonButton expand="block" className='ScheduleButtons' color="light">
               View Your Schedule
       </IonButton>
