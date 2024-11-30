@@ -43,27 +43,16 @@ const Tab2: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Tab 2</IonTitle>
+          <IonTitle className='center'>Tab 2</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Tab 2</IonTitle>
+            <IonTitle size="large">rahr</IonTitle>
           </IonToolbar>
         </IonHeader>
         <ExploreContainer name="Tab 2 page" />
-        {
-          schedule.map(scheduleItem => {
-            if(scheduleItem.day == 0) return <p key={scheduleItem.id}>Monday   {scheduleItem.time.substring(11,16)}</p>
-            else if(scheduleItem.day == 1) return <p key={scheduleItem.id}>Tuesday   {scheduleItem.time.substring(11,16)}</p>
-            else if(scheduleItem.day == 2) return <p key={scheduleItem.id}>Wednesday   {scheduleItem.time.substring(11,16)}</p>
-            else if(scheduleItem.day == 3) return <p key={scheduleItem.id}>Thursday   {scheduleItem.time.substring(11,16)}</p>
-            else if(scheduleItem.day == 4) return <p key={scheduleItem.id}>Friday   {scheduleItem.time.substring(11,16)}</p>
-            else if(scheduleItem.day == 5) return <p key={scheduleItem.id}>Saturday   {scheduleItem.time.substring(11,16)}</p>
-            else if(scheduleItem.day == 6) return <p key={scheduleItem.id}>Sunday   {scheduleItem.time.substring(11,16)}</p>
-          })
-        }
       </IonContent>
     </IonPage>
   );
