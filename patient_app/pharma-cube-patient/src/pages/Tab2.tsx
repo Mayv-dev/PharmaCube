@@ -53,6 +53,17 @@ const Tab2: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <ExploreContainer name="Tab 2 page" />
+        {
+          schedule.map(scheduleItem => {
+            if(scheduleItem.day == 0) return <p key={scheduleItem.id}>Monday   {scheduleItem.time.substring(11,16)}</p>
+            else if(scheduleItem.day == 1) return <p key={scheduleItem.id}>Tuesday   {scheduleItem.time.substring(11,16)}</p>
+            else if(scheduleItem.day == 2) return <p key={scheduleItem.id}>Wednesday   {scheduleItem.time.substring(11,16)}</p>
+            else if(scheduleItem.day == 3) return <p key={scheduleItem.id}>Thursday   {scheduleItem.time.substring(11,16)}</p>
+            else if(scheduleItem.day == 4) return <p key={scheduleItem.id}>Friday   {scheduleItem.time.substring(11,16)}</p>
+            else if(scheduleItem.day == 5) return <p key={scheduleItem.id}>Saturday   {scheduleItem.time.substring(11,16)}</p>
+            else if(scheduleItem.day == 6) return <p key={scheduleItem.id}>Sunday   {scheduleItem.time.substring(11,16)}</p>
+          })
+        }
       </IonContent>
     </IonPage>
   );
