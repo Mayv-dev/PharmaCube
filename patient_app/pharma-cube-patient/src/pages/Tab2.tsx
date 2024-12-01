@@ -30,7 +30,7 @@ async function getMockData() {
   }
 }
 
-getMockData().then(response => console.log(JSON.stringify(response)))
+
 
 const Tab2: React.FC = () => {
 	const [schedule, setSchedule] = useState<any[]>([]);
