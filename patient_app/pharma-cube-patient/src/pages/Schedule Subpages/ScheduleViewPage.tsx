@@ -1,7 +1,7 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
-import ScheduleItem from '../components/ScheduleItem';
-import './Tab2.css';
+import ExploreContainer from '../../components/ExploreContainer';
+import ScheduleItem from '../../components/ScheduleItem';
+import './ScheduleViewPage.css';
 
 import React, { useEffect,useState } from 'react';
 
@@ -33,7 +33,7 @@ async function getMockData() {
 
 
 
-const Tab2: React.FC = () => {
+const ScheduleViewPage: React.FC = () => {
 	const [schedule, setSchedule] = useState<any[]>([]);
 
   useEffect(() => {
@@ -64,4 +64,4 @@ const Tab2: React.FC = () => {
   );
 };
 
-export default Tab2;
+export default ScheduleViewPage;
