@@ -12,9 +12,14 @@ const SchedulePage: React.FC = () => {
       </IonHeader>
       <IonContent fullscreen className='wrapper'>
         <IonCard className='card'>
-        <IonRouterLink routerLink='/Tab3'>
+        <IonRouterLink routerLink='/ScheduleAddModifyPage/Add'>
         <IonButton expand="block" className='ScheduleButtons' color="light">
               Add Item to Schedule
+      </IonButton>
+      </IonRouterLink>
+      <IonRouterLink routerLink='/ScheduleAddModifyPage/Modify'>
+        <IonButton expand="block" className='ScheduleButtons' color="light">
+              Modify A Scheduled Item
       </IonButton>
       </IonRouterLink>
       <IonRouterLink routerLink='/Tab2'>

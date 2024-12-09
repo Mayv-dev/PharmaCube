@@ -11,9 +11,9 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { ellipse, square, triangle } from 'ionicons/icons';
-import Tab1 from './pages/SchedulePage';
-import Tab2 from './pages/Schedule Subpages/ScheduleViewPage';
-import Tab3 from './pages/Schedule Subpages/ScheduleAddPage';
+import SchedulePage from './pages/SchedulePage';
+import ScheduleViewPage from './pages/Schedule Subpages/ScheduleViewPage';
+import ScheduleAddModifyPage from './pages/Schedule Subpages/ScheduleAddModifyPage';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -47,19 +47,24 @@ import './theme/variables.css';
 
 setupIonicReact();
 
+enum formState {ADD, MODIFY}
+
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
           <Route exact path="/tab1">
-            <Tab1 />
+            <SchedulePage />
           </Route>
           <Route exact path="/tab2">
-            <Tab2 />
+            <ScheduleViewPage />
           </Route>
-          <Route path="/tab3">
-            <Tab3 />
+          <Route path="/ScheduleAddModifyPage/Add">
+            <ScheduleAddModifyPage enteredFormState={formState.ADD}/>
+          </Route>
+          <Route path="/ScheduleAddModifyPage/Modify">
+            <ScheduleAddModifyPage enteredFormState={formState.MODIFY}/>
           </Route>
           <Route exact path="/">
             <Redirect to="/tab1" />
