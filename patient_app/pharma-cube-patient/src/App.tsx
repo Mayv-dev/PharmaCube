@@ -54,10 +54,10 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
-          <Route exact path="/tab1">
+          <Route exact path="/SchedulePage">
             <SchedulePage />
           </Route>
-          <Route exact path="/tab2">
+          <Route exact path="/ScheduleViewPage">
             <ScheduleViewPage />
           </Route>
           <Route path="/ScheduleAddModifyPage/Add">
@@ -67,21 +67,25 @@ const App: React.FC = () => (
             <ScheduleAddModifyPage enteredFormState={formState.MODIFY}/>
           </Route>
           <Route exact path="/">
-            <Redirect to="/tab1" />
+            <Redirect to="/SchedulePage" />
           </Route>
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
+          <IonTabButton tab="SchedulePage" href="/SchedulePage">
             <IonIcon aria-hidden="true" icon={triangle} />
-            <IonLabel>Tab 1</IonLabel>
+            <IonLabel>Schedule</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
+          <IonTabButton tab="ScheduleViewPage" href="/ScheduleViewPage">
             <IonIcon aria-hidden="true" icon={ellipse} />
-            <IonLabel>Tab 2</IonLabel>
+            <IonLabel>View Schedule</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
+          <IonTabButton tab="ScheduleAddModifyPage/Add" href="/ScheduleAddModifyPage/Add">
             <IonIcon aria-hidden="true" icon={square} />
-            <IonLabel>Tab 3</IonLabel>
+            <IonLabel>Add To Schedule</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="ScheduleAddModifyPage/Modify" href="/ScheduleAddModifyPage/Modify">
+            <IonIcon aria-hidden="true" icon={square} />
+            <IonLabel>Modify Schedule</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
