@@ -53,6 +53,7 @@ async function sendToMockable(enteredFormState:formState) {
   }
 }
 
+// Learned how to make enums from: https://www.typescriptlang.org/docs/handbook/enums.html
 enum formState {ADD, MODIFY}
 
 interface AddGameFormProps {
