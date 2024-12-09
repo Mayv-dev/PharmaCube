@@ -1,27 +1,46 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonButton, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import './ScheduleAddModifyPage.css';
 import React, { useEffect,useState } from 'react';
 
 
 import axios from 'axios';
 
-async function postToMockable() {
+async function sendToMockable(enteredFormState:formState) {
   try {
-    const { data, status } = await axios.post(
-      'https://demo3553220.mockable.io/',
-      {
-        id: 12345,
-        day: 0,
-        time: "2024-11-23T17:09:15+00:00"
-      },
-      {
-        headers: {
-          Accept: 'application/json'
+    if(enteredFormState == formState.ADD) {
+      console.log("post request being made...")
+      const { data, status } = await axios.post(
+        'https://demo3553220.mockable.io/',
+        {
+          id: 12345,
+          day: 0,
+          time: "2024-11-23T17:09:15+00:00"
         },
-      },
-    );
-
-    return data;
+        {
+          headers: {
+            Accept: 'application/json'
+          },
+        },
+      );
+      return data;
+    }
+    else {
+      console.log("put request being made...")
+      const { data, status } = await axios.put(
+        'https://demo3553220.mockable.io/',
+        {
+          id: 12345,
+          day: 0,
+          time: "2024-11-23T17:09:15+00:00"
+        },
+        {
+          headers: {
+            Accept: 'application/json'
+          },
+        },
+      );
+      return data;
+    }
 
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -34,8 +53,6 @@ async function postToMockable() {
   }
 }
 
-postToMockable()
-
 enum formState {ADD, MODIFY}
 
 interface AddGameFormProps {
@@ -43,16 +60,16 @@ interface AddGameFormProps {
   }
 
 const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({enteredFormState}) => {
-  const [loggedIn, setLoggedIn] = useState<formState>();
+  const [formState, setFormState] = useState<formState>(0);
 
     useEffect(() => {
-      setLoggedIn(enteredFormState)
+      setFormState(enteredFormState)
       },[]);
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle className='center'>{loggedIn}</IonTitle>
+          <IonTitle className='center'>{enteredFormState}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -61,6 +78,9 @@ const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({enteredFormState}) =
             <IonTitle size="large">Tab 3</IonTitle>
           </IonToolbar>
         </IonHeader>
+        <IonButton onClick={e => sendToMockable(formState)} expand="block" className='ScheduleButtons' color="light">
+              Submit
+      </IonButton>
       </IonContent>
     </IonPage>
   );

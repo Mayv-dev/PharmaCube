@@ -22,7 +22,7 @@ const SchedulePage: React.FC = () => {
               Modify A Scheduled Item
       </IonButton>
       </IonRouterLink>
-      <IonRouterLink routerLink='/Tab2'>
+      <IonRouterLink routerLink='/ScheduleViewPage'>
       <IonButton expand="block" className='ScheduleButtons' color="light">
               View Your Schedule
       </IonButton>
