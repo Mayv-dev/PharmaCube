@@ -1,5 +1,7 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import './ScheduleAddPage.css';
+import './ScheduleAddModifyPage.css';
+import React, { useEffect,useState } from 'react';
+
 
 import axios from 'axios';
 
@@ -34,12 +36,23 @@ async function postToMockable() {
 
 postToMockable()
 
-const ScheduleAddPage: React.FC = () => {
+enum formState {ADD, MODIFY}
+
+interface AddGameFormProps {
+	enteredFormState: formState;
+  }
+
+const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({enteredFormState}) => {
+  const [loggedIn, setLoggedIn] = useState<formState>();
+
+    useEffect(() => {
+      setLoggedIn(enteredFormState)
+      },[]);
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle className='center'>Tab 3</IonTitle>
+          <IonTitle className='center'>{loggedIn}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -53,4 +66,4 @@ const ScheduleAddPage: React.FC = () => {
   );
 };
 
-export default ScheduleAddPage;
+export default ScheduleAddModifyPage;
