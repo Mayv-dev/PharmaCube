@@ -1,7 +1,0 @@
-{
-  "name": "PharmaCube Patient",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react-vite"
-}
