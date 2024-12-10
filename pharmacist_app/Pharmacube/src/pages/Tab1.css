@@ -1,0 +1,44 @@
+.icon-menu {
+  font-size: 24px;
+  padding: 8px;
+}
+
+.center-title {
+  text-align: center;
+}
+
+.icon-notifications {
+  font-size: 24px;
+  padding: 8px;
+}
+
+.notification-badge {
+  font-size: 12px;
+  margin-left: -10px;
+}
+
+.data-display {
+  border: 1px solid #ccc;
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f4f4f4;
+}
+
+.submit-button {
+  margin-top: 20px;
+}
+
+.confirmation-table {
+  width: 100%;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+.confirmation-checkbox {
+  margin-top: 20px;
+}
+
+.cancel-button {
+  margin-top: 10px;
+}
