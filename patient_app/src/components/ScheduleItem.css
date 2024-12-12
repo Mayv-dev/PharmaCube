@@ -1,0 +1,23 @@
+.scheduleItemContainer {
+	background-color: #f0ecec;
+	color: hsl(0, 0%, 11%);
+	border-radius: 3px;
+	border: 1px solid #8a8a8a;
+	width: 30%;
+	font-size: 24px;
+	text-align: center;
+	margin: 5px auto auto auto;
+	display: flex;
+	min-width: 300px;
+}
+
+.timeContainer {
+	width: 20%;
+	min-width: 80px;
+	border-right: 1px solid black;
+}
+
+.infoContainer {
+	width: 80%;
+	min-width: 200px;
+}
