@@ -226,20 +226,6 @@ const Tab1 = () => {
 
   return (
     <IonPage>
-      <IonTabBar slot="top">
-        <IonTabButton tab="tab1" href="/tab1">
-          <IonIcon icon={medkit} />
-          <IonLabel>Medications</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="users" href="/users">
-          <IonIcon icon={people} />
-          <IonLabel>Users</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="settings" href="/settings">
-          <IonIcon icon={settings} />
-          <IonLabel>Settings</IonLabel>
-        </IonTabButton>
-      </IonTabBar>
 
       <IonHeader>
         <IonToolbar>
