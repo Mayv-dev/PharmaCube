@@ -1,24 +1,11 @@
-.hamburger-icon {
-	position: absolute;
-	left: 16px;
-	top: 50%;
-	transform: translateY(-50%);
+.notification-icon, .hamburger-icon {
 	font-size: 24px;
 	cursor: pointer;
-}
-
-.notification-icon {
-	position: absolute;
-	right: 16px;
-	top: 50%;
-	transform: translateY(-50%);
-	font-size: 24px;
-	cursor: pointer;
+	margin: 1%;
 }
 
 .notification-badge {
 	font-size: 12px;
-	margin-left: -10px;
   }
 
 .centerTitle {

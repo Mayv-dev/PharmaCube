@@ -12,10 +12,10 @@ import {
   IonModal,
   IonCheckbox,
 } from '@ionic/react';
-import '../styles/Tab1.css';
+import '../styles/Medications.css';
 import LowerToolbar from '../components/LowerToolbar';
 
-const Tab1 = () => {
+const Medications = () => {
   const [user, setUser] = useState('');
   const [medication, setMedication] = useState('');
   const [amount, setAmount] = useState('');
@@ -125,5 +125,5 @@ const Tab1 = () => {
   );
 };
 
-export default Tab1;
+export default Medications;
 
