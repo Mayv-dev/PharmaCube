@@ -1,4 +1,5 @@
 import './ExploreContainer.css';
+import './ScheduleItem.css';
 
 function dayConvert(day:number):string {
 	let stringDay = "";
@@ -44,6 +45,13 @@ interface ScheduleItemProps {
 }
 
 const ScheduleItem: React.FC<ScheduleItemProps> = ({ id, day, time }) => 
-	<p key={id}>{dayConvert(day)}   {time.substring(11,16)}</p>;
+{
+	return(
+		<div key={id} className='scheduleItemContainer'>
+			<p className='timeContainer'>{time.substring(11,16)}</p>
+			<p className='infoContainer'>Example Info</p>
+		</div>
+	)
+}
 
 export default ScheduleItem;

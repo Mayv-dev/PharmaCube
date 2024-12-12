@@ -53,7 +53,6 @@ const ScheduleViewPage: React.FC = () => {
             <IonTitle size="large">rahr</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ExploreContainer name="Tab 2 page" />
         {
           schedule.map(scheduleItem => 
             <ScheduleItem id={scheduleItem.id} day={scheduleItem.day} time={scheduleItem.time} ></ScheduleItem>
