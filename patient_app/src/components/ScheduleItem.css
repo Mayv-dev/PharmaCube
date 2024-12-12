@@ -9,15 +9,21 @@
 	margin: 5px auto auto auto;
 	display: flex;
 	min-width: 300px;
+	align-items: center;
+	height: 8%;
+	min-height: 70px;
 }
 
 .timeContainer {
 	width: 20%;
 	min-width: 80px;
 	border-right: 1px solid black;
+	margin: 0;
 }
 
 .infoContainer {
 	width: 80%;
 	min-width: 200px;
+	margin: 0 0 0 2%;
+	text-align: left;
 }
