@@ -12,7 +12,7 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { medkit, people, settings } from 'ionicons/icons'; // Icons for the tabs
 
-import Medications from './pages/Medications'; // Medications Tab
+import Regimes from './pages/Regimes'; // Medications Tab
 import Users from './pages/Users'; // Users Tab
 import Settings from './pages/Settings'; // Settings Tab
 
@@ -42,8 +42,8 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
-          <Route exact path="/medications">
-            <Medications />
+          <Route exact path="/regimes">
+            <Regimes />
           </Route>
           <Route exact path="/users">
             <Users />
@@ -52,15 +52,15 @@ const App: React.FC = () => (
             <Settings />
           </Route>
           <Route exact path="/">
-            <Redirect to="/tab1" />
+            <Redirect to="/regimes" />
           </Route>
         </IonRouterOutlet>
 
         {/* Tab Bar */}
         <IonTabBar slot="top">
-          <IonTabButton tab="medications" href="/medications">
+          <IonTabButton tab="regimes" href="/regimes">
             <IonIcon icon={medkit} />
-            <IonLabel>Medications</IonLabel>
+            <IonLabel>Regimes</IonLabel>
           </IonTabButton>
           <IonTabButton tab="users" href="/users">
             <IonIcon icon={people} />
