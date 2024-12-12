@@ -1,0 +1,8 @@
+.search-bar {
+  margin: 20px auto;
+  width: 60%;
+  max-width: 400px;
+  box-shadow: none;
+  background: transparent;
+  border-radius: 8px;
+}

@@ -1,15 +1,13 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonPage} from '@ionic/react';
+import LowerToolbar from '../components/LowerToolbar';
 
 const Settings: React.FC = () => (
   <IonPage>
-    <IonHeader>
-      <IonToolbar>
-        <IonTitle>Settings</IonTitle>
-      </IonToolbar>
-    </IonHeader>
-    <IonContent>
-      
-    </IonContent>
+    
+    <LowerToolbar title='Settings'/>
+
+    <IonContent></IonContent>
+
   </IonPage>
 );
 
