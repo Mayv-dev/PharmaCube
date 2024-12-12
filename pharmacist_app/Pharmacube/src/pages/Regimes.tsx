@@ -12,10 +12,10 @@ import {
   IonModal,
   IonCheckbox,
 } from '@ionic/react';
-import '../styles/Medications.css';
+import '../styles/Regimes.css';
 import LowerToolbar from '../components/LowerToolbar';
 
-const Medications = () => {
+const Regimes = () => {
   const [user, setUser] = useState('');
   const [medication, setMedication] = useState('');
   const [amount, setAmount] = useState('');
@@ -125,5 +125,5 @@ const Medications = () => {
   );
 };
 
-export default Medications;
+export default Regimes;
 
