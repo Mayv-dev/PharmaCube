@@ -82,8 +82,7 @@ const ScheduleViewPage: React.FC = () => {
           await db?.query(`INSERT INTO schedule (id,day,time) values (?,?,?);`, [
             Date.now(),
             5,
-            "2024-12-16T17:36:38Z",
-
+            Date.now().toString(),
           ]);
 
           // update ui
