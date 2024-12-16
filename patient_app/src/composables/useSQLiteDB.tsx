@@ -1,3 +1,5 @@
+// This modified file was originally taken from the video used to implement sqlite in our project https://www.youtube.com/watch?v=tixvx5nsJO8&t=1130s
+
 import { useEffect, useRef, useState } from "react";
 import {
   SQLiteDBConnection,
