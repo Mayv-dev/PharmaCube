@@ -1,7 +1,16 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import ExploreContainer from '../../components/ExploreContainer';
 import ScheduleItem from '../../components/ScheduleItem';
 import './ScheduleViewPage.css';
+import { SQLiteDBConnection } from "@capacitor-community/sqlite";
+import useSQLiteDB from "../../composables/useSQLiteDB";
+import useConfirmationAlert from "../../composables/useConfirmationAlert";
+
+type SQLItem = {
+  id: number;
+  day: number;
+  time: string;
+};
 
 import React, { useEffect,useState } from 'react';
 
@@ -34,11 +43,57 @@ async function getMockData() {
 
 
 const ScheduleViewPage: React.FC = () => {
-	const [schedule, setSchedule] = useState<any[]>([]);
+	const [schedule, setSchedule] = useState<Array<SQLItem>>();
+
+
+  // hook for sqlite db
+  const { performSQLAction, initialized } = useSQLiteDB();
+
+  // hook for confirmation dialog
+  const { showConfirmationAlert, ConfirmationAlert } = useConfirmationAlert();
 
   useEffect(() => {
-		getMockData().then(setSchedule);
-  },[]);
+    loadData();
+  }, [initialized]);
+
+  /**
+   * do a select of the database
+   */
+  const loadData = async () => {
+    try {
+      // query db
+      performSQLAction(async (db: SQLiteDBConnection | undefined) => {
+        const respSelect = await db?.query(`SELECT * FROM schedule`);
+        setSchedule(respSelect?.values);
+      });
+    } catch (error) {
+      alert((error as Error).message);
+      setSchedule([]);
+    }
+  };
+
+
+  const addItem = async () => {
+    try {
+      // add test record to db
+      performSQLAction(
+        async (db: SQLiteDBConnection | undefined) => {
+          await db?.query(`INSERT INTO schedule (id,day,time) values (?,?,?);`, [
+            Date.now(),
+            5,
+            "2024-12-16T17:36:38Z",
+
+          ]);
+
+          // update ui
+          const respSelect = await db?.query(`SELECT * FROM schedule;`);
+          setSchedule(respSelect?.values);
+        }
+      );
+    } catch (error) {
+      alert((error as Error).message);
+    }
+  };
 
   return (
     <IonPage>
@@ -53,11 +108,19 @@ const ScheduleViewPage: React.FC = () => {
             <IonTitle size="large">rahr</IonTitle>
           </IonToolbar>
         </IonHeader>
+        
         {
-          schedule.map(scheduleItem => 
-            <ScheduleItem id={scheduleItem.id} day={scheduleItem.day} time={scheduleItem.time} ></ScheduleItem>
+          schedule?.map(scheduleItem => 
+            <ScheduleItem 
+              id={scheduleItem.id} 
+              day={scheduleItem.day} 
+              time={scheduleItem.time} 
+            />
           )
         }
+        <IonButton onClick={addItem}>
+              ffasfasfasfsa
+            </IonButton>
       </IonContent>
     </IonPage>
   );
