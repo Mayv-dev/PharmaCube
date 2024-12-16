@@ -20,7 +20,7 @@ interface AddGameFormProps {
 const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({enteredFormState}) => {
   const [formState, setFormState] = useState<formState>(0);
   const { performSQLAction, initialized } = useSQLiteDB();
-  
+
     useEffect(() => {
       setFormState(enteredFormState)
       },[]);
@@ -76,23 +76,23 @@ const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({enteredFormState}) =
         }
       };
 
-    const addItem = async (enteredFormState:formState) => {
-        try {
-          // add test record to db
-          performSQLAction(
-            async (db: SQLiteDBConnection | undefined) => {
-              await db?.query(`INSERT INTO schedule (id,day,time) values (?,?,?);`, [
-                Date.now(),
-                5,
-                Date.now().toString(),
-              ]);
-            }
-          );
-        } catch (error) {
-          alert((error as Error).message);
+    const addItem = async () => {
+    try {
+      // add test record to db
+      performSQLAction(
+        async (db: SQLiteDBConnection | undefined) => {
+          await db?.query(`INSERT INTO schedule (id,day,time) values (?,?,?);`, [
+            Date.now(),
+            5,
+            new Date().toISOString()
+          ]);
+          console.log(Date.now().toString())
         }
-      };
-
+      );
+    } catch (error) {
+      alert((error as Error).message);
+    }
+  };
 
   return (
     <IonPage>
