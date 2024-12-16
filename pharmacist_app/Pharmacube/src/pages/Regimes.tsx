@@ -42,7 +42,7 @@ const Regimes = () => {
   return (
     <IonPage>
 
-      <LowerToolbar title="Medications"/>
+      <LowerToolbar title="Regimes"/>
 
       <IonContent className="ion-padding">
         <IonItem>

@@ -10,7 +10,7 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { medkit, people, settings } from 'ionicons/icons'; // Icons for the tabs
+import { medkit, people, settings, triangle } from 'ionicons/icons'; // Icons for the tabs
 
 import Regimes from './pages/Regimes'; // Medications Tab
 import Users from './pages/Users'; // Users Tab
@@ -34,6 +34,9 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import Medications from './pages/Medications';
+import MedicationAddPage from './pages/Medications Subpages/MedicationAddPage';
+import MedicationViewPage from './pages/Medications Subpages/MedicationViewPage';
 
 setupIonicReact();
 
@@ -42,6 +45,15 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
+          <Route exact path="/medications">
+            <Medications />
+          </Route>
+          <Route exact path="/medicationAddPage">
+            <MedicationAddPage />
+          </Route>
+          <Route exact path="/medicationViewPage">
+            <MedicationViewPage />
+          </Route>
           <Route exact path="/regimes">
             <Regimes />
           </Route>
@@ -58,6 +70,10 @@ const App: React.FC = () => (
 
         {/* Tab Bar */}
         <IonTabBar slot="top">
+          <IonTabButton tab="medications" href="/medications">
+            <IonIcon icon={triangle} />
+            <IonLabel>Medications</IonLabel>
+          </IonTabButton>
           <IonTabButton tab="regimes" href="/regimes">
             <IonIcon icon={medkit} />
             <IonLabel>Regimes</IonLabel>
