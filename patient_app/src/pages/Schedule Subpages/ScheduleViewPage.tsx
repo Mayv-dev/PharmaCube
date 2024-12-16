@@ -73,28 +73,6 @@ const ScheduleViewPage: React.FC = () => {
     }
   };
 
-
-  const addItem = async () => {
-    try {
-      // add test record to db
-      performSQLAction(
-        async (db: SQLiteDBConnection | undefined) => {
-          await db?.query(`INSERT INTO schedule (id,day,time) values (?,?,?);`, [
-            Date.now(),
-            5,
-            Date.now().toString(),
-          ]);
-
-          // update ui
-          const respSelect = await db?.query(`SELECT * FROM schedule;`);
-          setSchedule(respSelect?.values);
-        }
-      );
-    } catch (error) {
-      alert((error as Error).message);
-    }
-  };
-
   return (
     <IonPage>
       <IonHeader>
