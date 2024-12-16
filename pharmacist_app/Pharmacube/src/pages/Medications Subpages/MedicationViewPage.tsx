@@ -4,6 +4,18 @@ import '../../styles/Medication Subpages/MedicationViewPage.css';
 import React, { useEffect,useState } from 'react';
 import axios from 'axios';
 
+import { SQLiteDBConnection } from "@capacitor-community/sqlite";
+import useSQLiteDB from "../../composables/useSQLiteDB";
+import useConfirmationAlert from "../../composables/useConfirmationAlert";
+
+// This file's original sqlite content was taken from the video used to implement sqlite in our project https://www.youtube.com/watch?v=tixvx5nsJO8&t=1130s
+type SQLItem = {
+  id: number;
+  name: string;
+  dose_amount: string;
+  details: string;
+};
+
 async function getMockData() {
   try {
     const { data, status } = await axios.get(
@@ -31,8 +43,31 @@ async function getMockData() {
 const MedicationViewPage: React.FC = () => {
   const [user, setUser] = useState('Unselected');
   const [userMedications, setUserMedications] = useState<any[]>()
+  const [localUserMedications, setLocalUserMedications] = useState<Array<SQLItem>>()
   
+  // hook for sqlite db
+  const { performSQLAction, initialized } = useSQLiteDB();
+
+  // hook for confirmation dialog
+  const { showConfirmationAlert, ConfirmationAlert } = useConfirmationAlert();
+
+  useEffect(() => {
+    loadData();
+  }, [initialized]);
 	
+  const loadData = async () => {
+    try {
+      // query db
+      performSQLAction(async (db: SQLiteDBConnection | undefined) => {
+        const respSelect = await db?.query(`SELECT * FROM medication`);
+        setLocalUserMedications(respSelect?.values);
+      });
+    } catch (error) {
+      alert((error as Error).message);
+      setLocalUserMedications([]);
+    }
+  };
+
   const handleUserSelect = (user:string) => {
     console.log("This should display the medications assigned to: " + user);
     setUser(user);
@@ -55,9 +90,14 @@ const MedicationViewPage: React.FC = () => {
 
         {user == "Unselected" ? null :
         <>
-          <p>Medications</p>
+          <p>Medications from API</p>
           <ul>
           {userMedications?.map(medication => <li>{medication.name} - {medication["dose amount"]} - {medication.details}</li>)}
+          </ul>
+
+          <p>Medications from local storage</p>
+          <ul>
+          {localUserMedications?.map(medication => <li>{medication.name}</li>)}
           </ul>
         </>
         }
