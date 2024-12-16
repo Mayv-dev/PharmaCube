@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IonButton, IonContent, IonPage, IonSelect, IonSelectOption} from '@ionic/react';
 import LowerToolbar from '../../components/LowerToolbar';
 import '../../styles/Medication Subpages/MedicationAddPage.css';
 import axios from 'axios';
 
-
+import { SQLiteDBConnection } from "@capacitor-community/sqlite";
+import useSQLiteDB from "../../composables/useSQLiteDB";
+import useConfirmationAlert from "../../composables/useConfirmationAlert";
 
 
 const MedicationAddPage: React.FC = () => {
@@ -12,9 +14,11 @@ const MedicationAddPage: React.FC = () => {
   const [medication, setMedication] = useState('Medication');
   const [dosage, setDosage] = useState('');
 
+  const { performSQLAction } = useSQLiteDB();
+
   async function sendToMockable(userInput:string, medicationInput:string, dosageInput:string) {
    
-    if (userInput != "" && medicationInput != "" && dosageInput != "") {
+    if (user != "User" && medication != "Medication" && dosage != "") {
       try{
         console.log("post request being made...")
         const { data, status } = await axios.post(
@@ -48,6 +52,26 @@ const MedicationAddPage: React.FC = () => {
     }
   };
 
+  const addItem = async () => {
+    if (user != "User" && medication != "Medication" && dosage != "") {
+    try {
+      // add test record to db
+      performSQLAction(
+        async (db: SQLiteDBConnection | undefined) => {
+          await db?.query(`INSERT INTO medication (id,name,dose_amount,details) values (?,?,?,?);`, [
+            Date.now(),
+            "stored medication",
+            "400mg",
+            "details are listed here"
+          ]);
+        }
+      );
+      
+    } catch (error) {
+      alert((error as Error).message);
+    }
+  }
+  };
 
 
   return(
@@ -71,7 +95,7 @@ const MedicationAddPage: React.FC = () => {
           <IonSelectOption>TEST 100mg</IonSelectOption>
           <IonSelectOption>TEST 200mg</IonSelectOption>
         </IonSelect>
-        <IonButton onClick={e => sendToMockable(user, medication, dosage)}>
+        <IonButton onClick={e => sendToMockable(user, medication, dosage).then(e => addItem())}>
           Give {user} {medication}
         </IonButton>
       </IonContent>
