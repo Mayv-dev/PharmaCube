@@ -42,6 +42,7 @@ async function getMockData() {
 }
 
 const MedicationViewPage: React.FC = () => {
+  const [userId, setUserId] = useState<number>(123456);
   const [userName, setUserName] = useState('Unselected');
   const [medId, setMedId] = useState<number>();
   const [medName, setMedName] = useState('Unselected');
@@ -64,7 +65,7 @@ const MedicationViewPage: React.FC = () => {
   }, [initialized]);
 	
 
-  const deleteConfirmed = () => {
+  const deleteConfirmed = async () => {
     // SQL code to delete an item by id here
       try {
         // add test record to db
@@ -76,7 +77,29 @@ const MedicationViewPage: React.FC = () => {
             const respSelect = await db?.query(`SELECT * FROM medication;`);
             setLocalUserMedications(respSelect?.values);
           }
-        );
+        ).then(async e => {
+          try {
+            const { data, status } = await axios.delete(
+              `http://demo3553220.mockable.io/user/${userId}/medication/${medId}`,
+              {
+                headers: {
+                  Accept: 'application/json'
+                },
+              },
+            );
+        
+            return data;
+        
+          } catch (error) {
+            if (axios.isAxiosError(error)) {
+              console.log('error message: ', error.message);
+              return error.message;
+            } else {
+              console.log('unexpected error: ', error);
+              return 'An unexpected error occurred';
+            }
+          }
+        });
       } catch (error) {
         alert((error as Error).message);
       }
