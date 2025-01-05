@@ -42,10 +42,18 @@ async function getMockData() {
 }
 
 const MedicationViewPage: React.FC = () => {
-  const [user, setUser] = useState('Unselected');
+  const [userId, setUserId] = useState(null);
+  const [userName, setUserName] = useState('Unselected');
+  const [medId, setMedId] = useState(null);
+  const [medName, setMedName] = useState('Unselected');
+
   const [userMedications, setUserMedications] = useState<any[]>()
   const [localUserMedications, setLocalUserMedications] = useState<Array<SQLItem>>()
   
+  
+  const [userMedToDelete, setUserMedToDelete] = useState<any[]>()
+  const [popupState, setPopupState] = useState<boolean>(false)
+
   // hook for sqlite db
   const { performSQLAction, initialized } = useSQLiteDB();
 
@@ -56,6 +64,26 @@ const MedicationViewPage: React.FC = () => {
     loadData();
   }, [initialized]);
 	
+
+  const deleteConfirmed = () => {
+    // SQL code to delete an item by id here
+    // set popup states to nothing
+
+    // Make popup disappear
+    setPopupState(false);
+  }
+  
+  const deleteDenied = () => {
+    // Make popup disappear
+    setPopupState(false);
+  }
+
+  const deleteClicked = (medId:number, medName:string) => {
+    // Make popup appear
+    setPopupState(true);
+  }
+
+
   const loadData = async () => {
     try {
       // query db
@@ -71,7 +99,7 @@ const MedicationViewPage: React.FC = () => {
 
   const handleUserSelect = (user:string) => {
     console.log("This should display the medications assigned to: " + user);
-    setUser(user);
+    setUserName(user);
     getMockData().then(setUserMedications);
   }
 
@@ -79,7 +107,15 @@ const MedicationViewPage: React.FC = () => {
   return (
     <IonPage>
       
-      <DeleteConfirmationPopup med_name={"hardcoded medname"} user_name={user}/>
+      {popupState ? 
+      <DeleteConfirmationPopup 
+        med_name={"hardcoded medname"} 
+        user_name={userName} 
+        delete_denied={deleteDenied} 
+        delete_confirmed={deleteConfirmed}
+      />
+      :
+      null}
       <LowerToolbar title='View Medications'/>
 
       <IonContent>
@@ -90,7 +126,7 @@ const MedicationViewPage: React.FC = () => {
           <IonSelectOption>TEST McMahon</IonSelectOption>
         </IonSelect>
 
-        {user == "Unselected" ? null :
+        {userId == "Unselected" ? null :
         <>
           <p>Medications from API</p>
           <ul>
@@ -99,7 +135,7 @@ const MedicationViewPage: React.FC = () => {
 
           <p>Medications from local storage</p>
           <ul>
-          {localUserMedications?.map(medication => <li>{medication.name} <span className="deletionButton" onClick={e => console.log("delete" + medication.name)}>Delete</span></li>)}
+          {localUserMedications?.map(medication => <li>{medication.name} <span className="deletionButton" onClick={e => deleteClicked(medication.id, medication.name)}>Delete</span></li>)}
           </ul>
         </>
         }
