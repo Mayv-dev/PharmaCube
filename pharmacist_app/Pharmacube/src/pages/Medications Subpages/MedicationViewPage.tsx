@@ -1,5 +1,6 @@
 import { IonContent, IonPage, IonSelect, IonSelectOption} from '@ionic/react';
 import LowerToolbar from '../../components/LowerToolbar';
+import DeleteConfirmationPopup from '../../components/Medications Components/DeleteConfirmationPopup';
 import '../../styles/Medication Subpages/MedicationViewPage.css';
 import React, { useEffect,useState } from 'react';
 import axios from 'axios';
@@ -78,6 +79,7 @@ const MedicationViewPage: React.FC = () => {
   return (
     <IonPage>
       
+      <DeleteConfirmationPopup med_name={"hardcoded medname"} user_name={user}/>
       <LowerToolbar title='View Medications'/>
 
       <IonContent>
@@ -97,7 +99,7 @@ const MedicationViewPage: React.FC = () => {
 
           <p>Medications from local storage</p>
           <ul>
-          {localUserMedications?.map(medication => <li>{medication.name}</li>)}
+          {localUserMedications?.map(medication => <li>{medication.name} <span className="deletionButton" onClick={e => console.log("delete" + medication.name)}>Delete</span></li>)}
           </ul>
         </>
         }
