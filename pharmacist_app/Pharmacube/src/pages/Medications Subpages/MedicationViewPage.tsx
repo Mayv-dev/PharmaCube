@@ -42,9 +42,8 @@ async function getMockData() {
 }
 
 const MedicationViewPage: React.FC = () => {
-  const [userId, setUserId] = useState(null);
   const [userName, setUserName] = useState('Unselected');
-  const [medId, setMedId] = useState(null);
+  const [medId, setMedId] = useState<number>();
   const [medName, setMedName] = useState('Unselected');
 
   const [userMedications, setUserMedications] = useState<any[]>()
@@ -67,9 +66,20 @@ const MedicationViewPage: React.FC = () => {
 
   const deleteConfirmed = () => {
     // SQL code to delete an item by id here
-    // set popup states to nothing
-
-    // Make popup disappear
+      try {
+        // add test record to db
+        performSQLAction(
+          async (db: SQLiteDBConnection | undefined) => {
+            await db?.query(`DELETE FROM medication WHERE id=?;`, [medId]);
+  
+            // update ui
+            const respSelect = await db?.query(`SELECT * FROM medication;`);
+            setLocalUserMedications(respSelect?.values);
+          }
+        );
+      } catch (error) {
+        alert((error as Error).message);
+      }
     setPopupState(false);
   }
   
@@ -80,6 +90,8 @@ const MedicationViewPage: React.FC = () => {
 
   const deleteClicked = (medId:number, medName:string) => {
     // Make popup appear
+    setMedId(medId);
+    setMedName(medName);
     setPopupState(true);
   }
 
@@ -109,7 +121,7 @@ const MedicationViewPage: React.FC = () => {
       
       {popupState ? 
       <DeleteConfirmationPopup 
-        med_name={"hardcoded medname"} 
+        med_name={medName} 
         user_name={userName} 
         delete_denied={deleteDenied} 
         delete_confirmed={deleteConfirmed}
@@ -126,7 +138,7 @@ const MedicationViewPage: React.FC = () => {
           <IonSelectOption>TEST McMahon</IonSelectOption>
         </IonSelect>
 
-        {userId == "Unselected" ? null :
+        {userName == "Unselected" ? null :
         <>
           <p>Medications from API</p>
           <ul>
