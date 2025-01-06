@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 //import ExploreContainer from '../components/ExploreContainer';
 import './NotificationPage.css';
+import NotificationItem from '../components/NotificationItem';
 
 enum urgency {
 	LOW, MEDIUM, HIGH
@@ -53,7 +54,7 @@ const NotificationPage: React.FC = () => {
 		</IonToolbar>
 	  </IonHeader>
 	  <IonContent fullscreen className='wrapper'>
-		{notifications?.map(notification => <p>{notification.id} {notification.timestamp} {notification.urgency}</p>)}
+		{notifications?.map(notification => <NotificationItem id={notification.id} content={notification.content} timestamp={notification.timestamp} urgencyPassed={notification.urgency}/>)}
 	  </IonContent>
 	</IonPage>
   );
