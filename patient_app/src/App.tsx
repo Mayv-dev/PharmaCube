@@ -44,6 +44,7 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import NotificationPage from './pages/NotificationPage';
 
 setupIonicReact();
 
@@ -66,11 +67,14 @@ const App: React.FC = () => (
           <Route path="/ScheduleAddModifyPage/Modify">
             <ScheduleAddModifyPage enteredFormState={formState.MODIFY}/>
           </Route>
+          <Route path="/NotificationsPage">
+            <NotificationPage />
+          </Route>
           <Route exact path="/">
             <Redirect to="/SchedulePage" />
           </Route>
         </IonRouterOutlet>
-        <IonTabBar slot="bottom">
+        <IonTabBar slot="top">
           <IonTabButton tab="SchedulePage" href="/SchedulePage">
             <IonIcon aria-hidden="true" icon={triangle} />
             <IonLabel>Schedule</IonLabel>
@@ -86,6 +90,10 @@ const App: React.FC = () => (
           <IonTabButton tab="ScheduleAddModifyPage/Modify" href="/ScheduleAddModifyPage/Modify">
             <IonIcon aria-hidden="true" icon={square} />
             <IonLabel>Modify Schedule</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="NotificationsPage" href="/NotificationsPage">
+            <IonIcon aria-hidden="true" icon={square} />
+            <IonLabel>Notifications</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
