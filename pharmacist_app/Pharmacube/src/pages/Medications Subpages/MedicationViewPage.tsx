@@ -165,7 +165,7 @@ const MedicationViewPage: React.FC = () => {
         <>
           <p>Medications from API</p>
           <ul>
-          {userMedications?.map(medication => <li>{medication.name} - {medication["dose amount"]} - {medication.details}</li>)}
+          {userMedications?.map(medication => <li>eee</li>)}
           </ul>
 
           <p>Medications from local storage</p>
