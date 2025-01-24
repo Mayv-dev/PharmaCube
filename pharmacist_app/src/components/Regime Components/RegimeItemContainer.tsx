@@ -88,7 +88,7 @@ const RegimeItemContainer = (regime:RegimeItem) =>
 			</div>
 			<div className='regimeItemContainerButtons'>
 				<IonButton color="danger">
-					<span className='ggg'>🗑</span>
+					<span className='deleteIcon'>🗑</span>
 				</IonButton>
 			</div>
 			
