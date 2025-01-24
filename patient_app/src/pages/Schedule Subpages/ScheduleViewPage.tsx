@@ -1,71 +1,48 @@
-import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../../components/ExploreContainer';
-import ScheduleItem from '../../components/ScheduleItem';
-import './ScheduleViewPage.css';
+import {
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonList,
+  IonItem,
+  IonLabel,
+} from "@ionic/react";
+import "./ScheduleViewPage.css";
+import React, { useEffect, useState } from "react";
 import { SQLiteDBConnection } from "@capacitor-community/sqlite";
 import useSQLiteDB from "../../composables/useSQLiteDB";
-import useConfirmationAlert from "../../composables/useConfirmationAlert";
 
-// This file's original sqlite content was taken from the video used to implement sqlite in our project https://www.youtube.com/watch?v=tixvx5nsJO8&t=1130s
+// Type definition for a schedule entry
 type SQLItem = {
   id: number;
-  day: number;
+  day: string;
   time: string;
 };
 
-import React, { useEffect,useState } from 'react';
-
-import axios from 'axios';
-
-async function getMockData() {
-  try {
-    const { data, status } = await axios.get(
-      'https://demo3553220.mockable.io/',
-      {
-        headers: {
-          Accept: 'application/json'
-        },
-      },
-    );
-
-    return data;
-
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.log('error message: ', error.message);
-      return error.message;
-    } else {
-      console.log('unexpected error: ', error);
-      return 'An unexpected error occurred';
-    }
-  }
-}
-
-
+const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
 const ScheduleViewPage: React.FC = () => {
-	const [schedule, setSchedule] = useState<Array<SQLItem>>();
+  const [selectedDay, setSelectedDay] = useState<string>("Monday"); // Default to Monday
+  const [schedule, setSchedule] = useState<SQLItem[]>([]);
 
-
-  // hook for sqlite db
   const { performSQLAction, initialized } = useSQLiteDB();
 
-  // hook for confirmation dialog
-  const { showConfirmationAlert, ConfirmationAlert } = useConfirmationAlert();
-
   useEffect(() => {
-    loadData();
-  }, [initialized]);
+    if (initialized) {
+      loadData(selectedDay);
+    }
+  }, [initialized, selectedDay]);
 
-  /**
-   * do a select of the database
-   */
-  const loadData = async () => {
+  const loadData = async (day: string) => {
     try {
-      // query db
       performSQLAction(async (db: SQLiteDBConnection | undefined) => {
-        const respSelect = await db?.query(`SELECT * FROM schedule`);
-        setSchedule(respSelect?.values);
+        const respSelect = await db?.query("SELECT * FROM schedule WHERE day = ?", [day]);
+        setSchedule(respSelect?.values || []);
       });
     } catch (error) {
       alert((error as Error).message);
@@ -77,25 +54,39 @@ const ScheduleViewPage: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle className='center'>Tab 2</IonTitle>
+          <IonTitle>Your Schedule</IonTitle>
         </IonToolbar>
       </IonHeader>
+
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">rahr</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        
-        {
-          schedule?.map(scheduleItem => 
-            <ScheduleItem 
-              id={scheduleItem.id} 
-              day={scheduleItem.day} 
-              time={scheduleItem.time} 
-            />
-          )
-        }
+        {/* Day Selector */}
+        <IonGrid>
+          <IonRow>
+            {daysOfWeek.map((day) => (
+              <IonCol key={day} size="1" className={selectedDay === day ? "selected-day" : "day-col"}>
+                <IonButton fill="clear" onClick={() => setSelectedDay(day)}>
+                  {day.charAt(0)}
+                </IonButton>
+              </IonCol>
+            ))}
+          </IonRow>
+        </IonGrid>
+
+        {/* Schedule List */}
+        <IonList>
+          {schedule.map((item) => (
+            <IonItem key={item.id}>
+              <IonLabel>{item.time}</IonLabel>
+            </IonItem>
+          ))}
+        </IonList>
+
+        {/* No Entries Message */}
+        {schedule.length === 0 && (
+          <IonItem>
+            <IonLabel>No entries for {selectedDay}</IonLabel>
+          </IonItem>
+        )}
       </IonContent>
     </IonPage>
   );
