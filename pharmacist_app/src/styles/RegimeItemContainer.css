@@ -1,0 +1,8 @@
+.regimeItemContainer {
+	background-color: rgb(219, 219, 219);
+	padding: 5px;
+	margin: auto auto 10px auto;
+	border: 1px solid black;
+	border-radius: 6px;
+	width: 30%;
+}
