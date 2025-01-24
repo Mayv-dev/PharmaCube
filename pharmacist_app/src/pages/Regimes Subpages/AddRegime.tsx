@@ -11,19 +11,33 @@ import {
   IonInput,
   IonModal,
   IonCheckbox,
+  IonSelect,
+  IonSelectOption,
 } from '@ionic/react';
 import '../../styles/Regime Subpages/AddRegime.css';
 import LowerToolbar from '../../components/LowerToolbar';
+import React from 'react';
 
 const AddRegime = () => {
-  const [user, setUser] = useState('');
-  const [medication, setMedication] = useState('');
-  const [amount, setAmount] = useState('');
+  const [userId, setUserId] = useState<number>(123456);
+  const [userName, setUserName] = useState('');
+
+  const [medicationName, setMedicationName] = useState("");
+  const [medicationDosage, setMedicationDosage] = useState("");
+  const [medicationList, setMedicationList] = useState<any[]>([]);
+
+  const [compartment, setCompartment] = useState<number>();
+
+  const [day, setDay] = useState('');
+  const [timeOfDay, setTimeOfDay] = useState('');
+  const [timeOffset, setTimeOffset] = useState<number>();
+
+  const [instructions, setInstructions] = useState('');
+
   const [showModal, setShowModal] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
 
   const handleSubmit = () => {
-    if (!user || !medication || !amount) {
+    if (!userName || medicationList.length == 0 || !compartment || !day || !timeOfDay || !timeOffset || !instructions) {
       alert('Please fill in all fields before submitting.');
       return;
     }
@@ -31,10 +45,6 @@ const AddRegime = () => {
   };
 
   const handleConfirm = () => {
-    if (!isChecked) {
-      alert('Please confirm the details by checking the box.');
-      return;
-    }
     setShowModal(false);
     alert('Details confirmed and submitted!');
   };
@@ -46,37 +56,85 @@ const AddRegime = () => {
 
       <IonContent className="ion-padding">
         <IonItem>
-          <IonLabel position="stacked">User:</IonLabel>
-          <IonInput
-            placeholder="Enter user name"
-            value={user}
-            onIonChange={(e) => setUser(e.detail.value!)}
-          />
-        </IonItem>
-        <IonItem>
-          <IonLabel position="stacked">Medication:</IonLabel>
-          <IonInput
-            placeholder="Enter medication"
-            value={medication}
-            onIonChange={(e) => setMedication(e.detail.value!)}
-          />
-        </IonItem>
-        <IonItem>
-          <IonLabel position="stacked">Amount:</IonLabel>
-          <IonInput
-            type="number"
-            placeholder="Enter amount"
-            value={amount}
-            onIonChange={(e) => setAmount(e.detail.value!)}
-          />
+          <IonLabel position="stacked">Patient:</IonLabel>
+          <IonSelect placeholder='Enter user name' onIonChange={e => setUserName(e.target.value)}>
+            <IonSelectOption>TEST Duffy</IonSelectOption>
+            <IonSelectOption>TEST Murphy</IonSelectOption>
+            <IonSelectOption>TEST McMahon</IonSelectOption>
+          </IonSelect>
         </IonItem>
 
-        <div className="data-display">
-          <h3>Entered Data:</h3>
-          <p><strong>User:</strong> {user || 'N/A'}</p>
-          <p><strong>Medication:</strong> {medication || 'N/A'}</p>
-          <p><strong>Amount:</strong> {amount || 'N/A'}</p>
-        </div>
+        <p>What should {userName == "" ? "the patient" : userName} take?</p>
+        <IonItem>
+          <IonInput placeholder='Medication Name' value={medicationName} onIonChange={e => setMedicationName(e.target.value)}></IonInput>
+          <IonInput placeholder='Medication Dosage' value={medicationDosage} onIonChange={e => setMedicationDosage(e.target.value)}></IonInput>
+          <IonButton onClick={e => {
+            if(medicationName == "" || medicationDosage == "") return
+            let medlist = medicationList
+            medlist.push(medicationName + " " + medicationDosage)
+            console.log(medlist)
+            setMedicationList(medlist)
+            setMedicationName("")
+            setMedicationDosage("")
+            }
+            }>Add to Medication List</IonButton>
+          <div>
+            {medicationList.map(medication => <p>{medication}</p>)}
+          </div>
+          {/* Create a component with two input boxes, a button, and a list to display medications passed as props*/}
+        </IonItem>
+        <IonItem>
+          <IonLabel position="stacked">Compartment:</IonLabel>
+          <IonSelect onIonChange={e => setCompartment(e.target.value)}>
+            <IonSelectOption>Not in a compartment (MAKE ME THE DEFAULT)</IonSelectOption>
+            <IonSelectOption>Compartment 1</IonSelectOption>
+            <IonSelectOption>Compartment 2</IonSelectOption>
+            <IonSelectOption>Compartment 3</IonSelectOption>
+            <IonSelectOption>Compartment 4</IonSelectOption>
+            <IonSelectOption>Compartment 5</IonSelectOption>
+          </IonSelect>
+        </IonItem>
+
+        <p>When should {userName == "" ? "the patient" : userName} take it?</p>
+
+        <IonItem>
+          <IonLabel position="stacked">Day (this could be a multiple select):</IonLabel>
+          <IonSelect onIonChange={e => setDay(e.target.value)}>
+            <IonSelectOption>Monday</IonSelectOption>
+            <IonSelectOption>Tuesday</IonSelectOption>
+            <IonSelectOption>Wednesday</IonSelectOption>
+            <IonSelectOption>Thursday</IonSelectOption>
+            <IonSelectOption>Friday</IonSelectOption>
+            <IonSelectOption>Saturday</IonSelectOption>
+            <IonSelectOption>Sunday</IonSelectOption>
+          </IonSelect>
+        </IonItem>
+        
+        <IonItem>
+          <IonLabel position="stacked">Time of Day:</IonLabel>
+          <IonSelect onIonChange={e => setTimeOfDay(e.target.value)}>
+            <IonSelectOption>Late Night</IonSelectOption>
+            <IonSelectOption>Early Morning</IonSelectOption>
+            <IonSelectOption>Morning</IonSelectOption>
+            <IonSelectOption>Afternoon</IonSelectOption>
+            <IonSelectOption>Evening</IonSelectOption>
+            <IonSelectOption>Night</IonSelectOption>
+          </IonSelect>
+        </IonItem>
+        
+        <IonItem>
+          <IonLabel position="stacked">Time Offset:</IonLabel>
+          <IonInput type='number' onIonChange={e => setTimeOffset(e.target.value)}></IonInput>
+        </IonItem>
+
+        <p>Please provide any additional information that {userName == "" ? "the patient" : userName} should know below.</p>
+
+        <IonItem>
+          <IonLabel position="stacked">Information:</IonLabel>
+          <IonInput onIonChange={e => setInstructions(e.target.value)}></IonInput>
+        </IonItem>
+
+        
 
         <IonButton expand="full" color="danger" className="submit-button" onClick={handleSubmit}>
           Submit
@@ -89,34 +147,22 @@ const AddRegime = () => {
             </IonToolbar>
           </IonHeader>
           <IonContent className="ion-padding">
-            <table className="confirmation-table">
-              <tbody>
-                <tr>
-                  <th>User:</th>
-                  <td>{user}</td>
-                </tr>
-                <tr>
-                  <th>Medication:</th>
-                  <td>{medication}</td>
-                </tr>
-                <tr>
-                  <th>Amount:</th>
-                  <td>{amount}</td>
-                </tr>
-              </tbody>
-            </table>
-            <div className="confirmation-checkbox">
-              <IonCheckbox
-                checked={isChecked}
-                onIonChange={(e) => setIsChecked(e.detail.checked)}
-              />
-              <label>I confirm the above details</label>
+            <p>Are you sure you wish to create this regime?</p>
+            <div className="data-display">
+              <h3>Entered Data:</h3>
+              <p><strong>User:</strong> {userName}</p>
+              <p><strong>Medication:</strong> {medicationList.map(bla => bla + ", ")}</p>
+              <p><strong>Compartment:</strong> {compartment}</p>
+              <p><strong>Day:</strong> {day}</p>
+              <p><strong>Time of Day:</strong> {timeOfDay}</p>
+              <p><strong>Time Offset:</strong> {timeOffset}</p>
+              <p><strong>Instructions:</strong> {instructions}</p>
             </div>
             <IonButton expand="full" color="primary" onClick={handleConfirm}>
-              Confirm
+              Yes
             </IonButton>
             <IonButton expand="full" color="medium" className="cancel-button" onClick={() => setShowModal(false)}>
-              Cancel
+              No
             </IonButton>
           </IonContent>
         </IonModal>
