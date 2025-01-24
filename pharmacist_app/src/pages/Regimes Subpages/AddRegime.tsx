@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
   IonPage,
   IonContent,
@@ -19,6 +20,8 @@ import LowerToolbar from '../../components/LowerToolbar';
 import React from 'react';
 
 const AddRegime = () => {
+  const [patientList, setPatientList] = useState<any[]>([]);
+
   const [userId, setUserId] = useState<number>(123456);
   const [userName, setUserName] = useState('');
 
@@ -36,6 +39,34 @@ const AddRegime = () => {
 
   const [showModal, setShowModal] = useState(false);
 
+  useEffect(() => {
+    getMockPatientList().then(setPatientList)
+    },[]);
+
+    const getMockPatientList = async () => {
+      try {
+        const { data, status } = await axios.get(
+          `http://demo3553220.mockable.io/patients`,
+          {
+            headers: {
+              Accept: 'application/json'
+            },
+          },
+        );
+    
+        return data;
+    
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log('error message: ', error.message);
+          return error.message;
+        } else {
+          console.log('unexpected error: ', error);
+          return 'An unexpected error occurred';
+        }
+      }
+    };
+
   const handleSubmit = () => {
     if (!userName || medicationList.length == 0 || !compartment || !day || !timeOfDay || !timeOffset || !instructions) {
       alert('Please fill in all fields before submitting.');
@@ -46,6 +77,7 @@ const AddRegime = () => {
 
   const handleConfirm = () => {
     setShowModal(false);
+    console.log(userId)
     alert('Details confirmed and submitted!');
   };
 
@@ -55,91 +87,96 @@ const AddRegime = () => {
       <LowerToolbar title="Regimes"/>
 
       <IonContent className="ion-padding">
-        <IonItem>
-          <IonLabel position="stacked">Patient:</IonLabel>
-          <IonSelect placeholder='Enter user name' onIonChange={e => setUserName(e.target.value)}>
-            <IonSelectOption>TEST Duffy</IonSelectOption>
-            <IonSelectOption>TEST Murphy</IonSelectOption>
-            <IonSelectOption>TEST McMahon</IonSelectOption>
-          </IonSelect>
-        </IonItem>
+        <div className='formBody'>
+          <IonItem>
+            <IonLabel position="fixed">Patient:</IonLabel>
+            <IonSelect placeholder='Choose patient to create a regime for' onIonChange={e => {
+                setUserId(e.target.value.id)
+                setUserName(e.target.value.name)
+              }}> 
+              {patientList.map(patient => <IonSelectOption value={patient}>{patient.name}</IonSelectOption>)}
+            </IonSelect>
+          </IonItem>
 
-        <p>What should {userName == "" ? "the patient" : userName} take?</p>
-        <IonItem>
-          <IonInput placeholder='Medication Name' value={medicationName} onIonChange={e => setMedicationName(e.target.value)}></IonInput>
-          <IonInput placeholder='Medication Dosage' value={medicationDosage} onIonChange={e => setMedicationDosage(e.target.value)}></IonInput>
-          <IonButton onClick={e => {
-            if(medicationName == "" || medicationDosage == "") return
-            let medlist = medicationList
-            medlist.push(medicationName + " " + medicationDosage)
-            console.log(medlist)
-            setMedicationList(medlist)
-            setMedicationName("")
-            setMedicationDosage("")
-            }
-            }>Add to Medication List</IonButton>
-          <div>
-            {medicationList.map(medication => <p>{medication}</p>)}
+          <p className="sectionHeading">What should {userName == "" ? "the patient" : userName} take?</p>
+          <div className='formGroup'>
+          <IonItem>
+              <IonInput placeholder='Medication Name' value={medicationName} onIonChange={e => setMedicationName(e.target.value)}></IonInput>
+              <IonInput placeholder='Medication Dosage' value={medicationDosage} onIonChange={e => setMedicationDosage(e.target.value)}></IonInput>
+              <IonButton onClick={e => {
+                  if(medicationName == "" || medicationDosage == "") return
+                  let medlist = medicationList
+                  medlist.push(medicationName + " " + medicationDosage)
+                  console.log(medlist)
+                  setMedicationList(medlist)
+                  setMedicationName("")
+                  setMedicationDosage("")
+                  }
+                }>Add to Medication List</IonButton>
+              </IonItem>
+              <div className="medicationList">
+                {medicationList.length == 0? "Add medications to this list by specifying name and dosages of each medication above":medicationList.map(medication => <p>{medication}</p>)}
+              </div>
+            {/* Create a component with two input boxes, a button, and a list to display medications passed as props*/}
+          <IonItem>
+            <IonLabel position="fixed">Compartment: </IonLabel>
+            <IonSelect onIonChange={e => setCompartment(e.target.value)}>
+              <IonSelectOption>Not in a compartment (MAKE ME THE DEFAULT)</IonSelectOption>
+              <IonSelectOption>Compartment 1</IonSelectOption>
+              <IonSelectOption>Compartment 2</IonSelectOption>
+              <IonSelectOption>Compartment 3</IonSelectOption>
+              <IonSelectOption>Compartment 4</IonSelectOption>
+              <IonSelectOption>Compartment 5</IonSelectOption>
+            </IonSelect>
+          </IonItem>
           </div>
-          {/* Create a component with two input boxes, a button, and a list to display medications passed as props*/}
-        </IonItem>
-        <IonItem>
-          <IonLabel position="stacked">Compartment:</IonLabel>
-          <IonSelect onIonChange={e => setCompartment(e.target.value)}>
-            <IonSelectOption>Not in a compartment (MAKE ME THE DEFAULT)</IonSelectOption>
-            <IonSelectOption>Compartment 1</IonSelectOption>
-            <IonSelectOption>Compartment 2</IonSelectOption>
-            <IonSelectOption>Compartment 3</IonSelectOption>
-            <IonSelectOption>Compartment 4</IonSelectOption>
-            <IonSelectOption>Compartment 5</IonSelectOption>
-          </IonSelect>
-        </IonItem>
 
-        <p>When should {userName == "" ? "the patient" : userName} take it?</p>
+          <p className="sectionHeading">When should {userName == "" ? "the patient" : userName} take it?</p>
+          <div className='formGroup'>
+          <IonItem>
+            <IonLabel position="fixed">Day (this could be a multiple select):</IonLabel>
+            <IonSelect onIonChange={e => setDay(e.target.value)}>
+              <IonSelectOption>Monday</IonSelectOption>
+              <IonSelectOption>Tuesday</IonSelectOption>
+              <IonSelectOption>Wednesday</IonSelectOption>
+              <IonSelectOption>Thursday</IonSelectOption>
+              <IonSelectOption>Friday</IonSelectOption>
+              <IonSelectOption>Saturday</IonSelectOption>
+              <IonSelectOption>Sunday</IonSelectOption>
+            </IonSelect>
+          </IonItem>
+          
+          <IonItem>
+            <IonLabel position="fixed">Time of Day:</IonLabel>
+            <IonSelect onIonChange={e => setTimeOfDay(e.target.value)}>
+              <IonSelectOption>Late Night</IonSelectOption>
+              <IonSelectOption>Early Morning</IonSelectOption>
+              <IonSelectOption>Morning</IonSelectOption>
+              <IonSelectOption>Afternoon</IonSelectOption>
+              <IonSelectOption>Evening</IonSelectOption>
+              <IonSelectOption>Night</IonSelectOption>
+            </IonSelect>
+          </IonItem>
+          
+          <IonItem>
+            <IonLabel position="fixed">Time Offset:</IonLabel>
+            <IonInput type='number' onIonChange={e => setTimeOffset(e.target.value)}></IonInput>
+          </IonItem>
+</div>
+          <p className="sectionHeading">Please provide any additional information that {userName == "" ? "the patient" : userName} should know below.</p>
+          <div className='formGroup'>
 
-        <IonItem>
-          <IonLabel position="stacked">Day (this could be a multiple select):</IonLabel>
-          <IonSelect onIonChange={e => setDay(e.target.value)}>
-            <IonSelectOption>Monday</IonSelectOption>
-            <IonSelectOption>Tuesday</IonSelectOption>
-            <IonSelectOption>Wednesday</IonSelectOption>
-            <IonSelectOption>Thursday</IonSelectOption>
-            <IonSelectOption>Friday</IonSelectOption>
-            <IonSelectOption>Saturday</IonSelectOption>
-            <IonSelectOption>Sunday</IonSelectOption>
-          </IonSelect>
-        </IonItem>
-        
-        <IonItem>
-          <IonLabel position="stacked">Time of Day:</IonLabel>
-          <IonSelect onIonChange={e => setTimeOfDay(e.target.value)}>
-            <IonSelectOption>Late Night</IonSelectOption>
-            <IonSelectOption>Early Morning</IonSelectOption>
-            <IonSelectOption>Morning</IonSelectOption>
-            <IonSelectOption>Afternoon</IonSelectOption>
-            <IonSelectOption>Evening</IonSelectOption>
-            <IonSelectOption>Night</IonSelectOption>
-          </IonSelect>
-        </IonItem>
-        
-        <IonItem>
-          <IonLabel position="stacked">Time Offset:</IonLabel>
-          <IonInput type='number' onIonChange={e => setTimeOffset(e.target.value)}></IonInput>
-        </IonItem>
+          <IonItem>
+            <IonLabel position="fixed">Information:</IonLabel>
+            <IonInput onIonChange={e => setInstructions(e.target.value)}></IonInput>
+          </IonItem>
+</div>
+          
 
-        <p>Please provide any additional information that {userName == "" ? "the patient" : userName} should know below.</p>
-
-        <IonItem>
-          <IonLabel position="stacked">Information:</IonLabel>
-          <IonInput onIonChange={e => setInstructions(e.target.value)}></IonInput>
-        </IonItem>
-
-        
-
-        <IonButton expand="full" color="danger" className="submit-button" onClick={handleSubmit}>
-          Submit
-        </IonButton>
-
+          <IonButton expand="full" color="danger" className="submit-button" onClick={handleSubmit}>
+            Submit
+          </IonButton>
+        </div>
         <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
           <IonHeader>
             <IonToolbar>
