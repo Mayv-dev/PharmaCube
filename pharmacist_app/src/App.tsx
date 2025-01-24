@@ -37,6 +37,8 @@ import './theme/variables.css';
 import Medications from './pages/Medications';
 import MedicationAddPage from './pages/Medications Subpages/MedicationAddPage';
 import MedicationViewPage from './pages/Medications Subpages/MedicationViewPage';
+import AddRegime from './pages/Regimes Subpages/AddRegime';
+import ViewRegime from './pages/Regimes Subpages/ViewRegime';
 
 setupIonicReact();
 
@@ -54,9 +56,17 @@ const App: React.FC = () => (
           <Route exact path="/medicationViewPage">
             <MedicationViewPage />
           </Route>
+
           <Route exact path="/regimes">
             <Regimes />
           </Route>
+          <Route exact path="/regimes/create">
+            <AddRegime />
+          </Route>
+          <Route exact path="/regimes/view">
+            <ViewRegime />
+          </Route>
+
           <Route exact path="/users">
             <Users />
           </Route>
