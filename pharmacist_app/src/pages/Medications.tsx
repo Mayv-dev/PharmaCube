@@ -1,5 +1,4 @@
-import { IonButton, IonCard, IonContent, IonHeader, IonPage, IonRouterLink, IonTitle, IonToolbar } from '@ionic/react';
-//import ExploreContainer from '../components/ExploreContainer';
+import { IonButton, IonContent, IonPage, IonRouterLink } from '@ionic/react';
 import LowerToolbar from '../components/LowerToolbar';
 import '../styles/Medications.css';
 
@@ -8,7 +7,7 @@ const Medications: React.FC = () => {
     <IonPage>
       <LowerToolbar title='Medications'/>
   
-  		<IonContent>
+  		<IonContent className="ion-padding">
 		  <IonRouterLink routerLink='/medicationAddPage'>
 			<IonButton expand="block" className='ScheduleButtons' color="light">
 				Add Medication To User
