@@ -42,7 +42,7 @@ const ViewRegime = () => {
   }
 
   const handleUserSelect = (user:string) => {
-    console.log("This should display the medications assigned to: " + user);
+    console.log("This should display the regimes assigned to: " + user);
     setUserName(user);
     getMockData().then(setUserRegimes);
   }
@@ -60,7 +60,6 @@ const ViewRegime = () => {
 			{
 				userName == "Unselected" ? null :
 				<>
-					<p>Medications from API</p>
 					<ul>
 						{/*declaring an object that is passed entirely to the component with ...regime was a solution recieved from the answer of CPHPython 
 						at https://stackoverflow.com/questions/48240449/type-is-not-assignable-to-type-intrinsicattributes-intrinsicclassattribu*/}
