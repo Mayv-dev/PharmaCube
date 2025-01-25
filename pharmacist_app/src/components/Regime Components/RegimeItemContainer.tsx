@@ -73,7 +73,12 @@ function timeOfDayConvert(day:number):string {
 	return stringDay;
 }
 
-const RegimeItemContainer = (regime:RegimeItem) => 
+type ContainerProps = {
+	regime:RegimeItem,
+	deleteItem:any
+}
+
+const RegimeItemContainer: React.FC<ContainerProps> = ({regime, deleteItem}) => 
 {
 	return(
 		<div key={regime.id} className='regimeItemContainer'>
@@ -87,7 +92,7 @@ const RegimeItemContainer = (regime:RegimeItem) =>
 				<p>Medications: TO BE ADDED TO API DEFINITION</p>
 			</div>
 			<div className='regimeItemContainerButtons'>
-				<IonButton color="danger">
+				<IonButton onClick={() => deleteItem(regime.id)} color="danger">
 					<span className='deleteIcon'>🗑</span>
 				</IonButton>
 			</div>
