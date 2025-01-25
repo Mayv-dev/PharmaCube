@@ -36,12 +36,12 @@ const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({ enteredFormState })
   const [selectedDay, setSelectedDay] = useState<string>("Monday");
   const [newTime, setNewTime] = useState<string>("");
   const [schedule, setSchedule] = useState<{ time: string }[]>([]);
-  const { performSQLAction } = useSQLiteDB();
+  const { performSQLAction, initialized } = useSQLiteDB();
 
   useEffect(() => {
     setFormState(enteredFormState);
     loadSchedule(selectedDay);
-  }, [enteredFormState, selectedDay]);
+  }, [initialized, selectedDay]);
 
   async function loadSchedule(day: string) {
     performSQLAction(async (db: SQLiteDBConnection | undefined) => {
