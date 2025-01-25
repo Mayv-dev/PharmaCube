@@ -41,9 +41,42 @@ const ViewRegime = () => {
 	}
   }
 
+  async function deleteMockData() {
+	
+  }
+
   const handleUserSelect = (user:string) => {
     console.log("This should display the regimes assigned to: " + user);
     setUserName(user);
+    getMockData().then(setUserRegimes);
+  }
+
+  const deleteRegimeItem = async (regimeId:number) => {
+	console.log("deleting regime... ", regimeId)
+	try {
+		const { data, status } = await axios.delete(
+		  'https://demo3553220.mockable.io/user/id/regime',
+		  {
+			headers: {
+			  Accept: 'application/json'
+			},
+			data: {
+				"id":regimeId
+			}
+		  }
+		);
+	
+		return data;
+	
+	  } catch (error) {
+		if (axios.isAxiosError(error)) {
+		  console.log('error message: ', error.message);
+		  return error.message;
+		} else {
+		  console.log('unexpected error: ', error);
+		  return 'An unexpected error occurred';
+		}
+	  }
     getMockData().then(setUserRegimes);
   }
 
@@ -63,7 +96,7 @@ const ViewRegime = () => {
 					<ul>
 						{/*declaring an object that is passed entirely to the component with ...regime was a solution recieved from the answer of CPHPython 
 						at https://stackoverflow.com/questions/48240449/type-is-not-assignable-to-type-intrinsicattributes-intrinsicclassattribu*/}
-						{userRegimes?.map(regime => <RegimeItemContainer {...regime}/>)}
+						{userRegimes?.map(regime => <RegimeItemContainer regime={regime} deleteItem={deleteRegimeItem}/>)}
 					</ul>
 				</>
 			}
