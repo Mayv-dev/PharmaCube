@@ -1,6 +1,6 @@
 export type RegimeItem = {
 	id: number;
-	copartment_id: number; 
+	compartment_id: number; 
 	information: string;
 	period_scheduled: {
 		day:number;

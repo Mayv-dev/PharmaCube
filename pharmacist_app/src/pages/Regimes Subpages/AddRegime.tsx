@@ -153,7 +153,7 @@ const AddRegime = () => {
     setShowModal(false);
     let addedRegime:RegimeItem = {
       id: 0,
-      copartment_id: compartment == undefined ? 0 : compartment, //TODO: fix this somehow. Maybe set all these values to numbers, and have 0 be the default, displaying "no compartment" in the list and when displayed in the form view
+      compartment_id: compartment == undefined ? 0 : compartment, //TODO: fix this somehow. Maybe set all these values to numbers, and have 0 be the default, displaying "no compartment" in the list and when displayed in the form view
       information: "Note: Must figure out difference between information and instruction fields. Filling this in with the same field on front end... Also need to figure out what happens with patient id and the medication list here API-wise" + instructions,
       period_scheduled: {
         day:dayConvert(day),
