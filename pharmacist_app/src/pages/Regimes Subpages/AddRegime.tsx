@@ -18,7 +18,6 @@ import {
 } from '@ionic/react';
 import '../../styles/Regime Subpages/AddRegime.css';
 import LowerToolbar from '../../components/LowerToolbar';
-import React from 'react';
 import { RegimeItem } from 'api types/types';
 
 const AddRegime = () => {
@@ -27,9 +26,7 @@ const AddRegime = () => {
   const [patientId, setPatientId] = useState<number>(123456);
   const [patientName, setPatientName] = useState('');
 
-  const [medicationName, setMedicationName] = useState("");
-  const [medicationDosage, setMedicationDosage] = useState("");
-  const [medicationList, setMedicationList] = useState<any[]>([]);
+  const [information, setInformation] = useState('');
 
   const [compartment, setCompartment] = useState<number>(0);
 
@@ -109,7 +106,7 @@ const AddRegime = () => {
 
   const handleSubmit = () => {
     console.log(timeOffset)
-    if (!patientName || medicationList.length == 0 || !day || !timeOfDay || timeOfDay == -1 || !instructions) {
+    if (!patientName || !day || !timeOfDay || timeOfDay == -1 || !information || !instructions) {
       alert('Please fill in all fields before submitting.');
       return;
     }
@@ -128,7 +125,7 @@ const AddRegime = () => {
     try {
       console.log("post request being made...")
       const { data, status } = await axios.post(
-        'https://demo3553220.mockable.io/pharmacist/id/user/id/regime',
+        'https://demo3553220.mockable.io/pharmacist/id/patient/id/regime',
         addedRegime,
         {
           headers: {
@@ -154,19 +151,16 @@ const AddRegime = () => {
     let addedRegime:RegimeItem = {
       id: 0,
       compartment_id: compartment == undefined ? 0 : compartment, //TODO: fix this somehow. Maybe set all these values to numbers, and have 0 be the default, displaying "no compartment" in the list and when displayed in the form view
-      information: "Note: Must figure out difference between information and instruction fields. Filling this in with the same field on front end... Also need to figure out what happens with patient id and the medication list here API-wise" + instructions,
-      period_scheduled: {
-        day:dayConvert(day),
-        time_period:timeOfDay,
-        time_adjustment:timeOffset, 
-        instruction:"Note: Must figure out difference between information and instruction fields. Filling this in with the same field on front end... Also need to figure out what happens with patient id and the medication list here API-wise" + instructions
-	    }
+      information: information,
+      day:dayConvert(day),
+      time_period:timeOfDay,
+      time_adjustment:timeOffset, 
+      instruction: instructions
     }
 
     sendToMockable(addedRegime)
     console.log("patientId: " , patientId)
     console.log("Patient Name:", patientName)
-    console.log("Medication:", medicationList.map(medication => medication))
     console.log("Compartment: ", compartment == undefined ? 0 : compartment)
     console.log("Day: " , day)
     console.log("Time of Day: " , timeOfDay)
@@ -192,32 +186,12 @@ const AddRegime = () => {
             </IonSelect>
           </IonItem>
 
-          <p className="sectionHeading">What should {patientName == "" ? "the patient" : patientName} take?</p>
+          <p className="sectionHeading">What is {patientName == "" ? "the patient" : patientName} taking?</p>
           <div className='formGroup'>
-            <div className='medicationInputs'>
-            <IonItem>
-              <IonLabel position="fixed">Medication:</IonLabel>
-              <IonInput placeholder='Enter Name' value={medicationName} onIonChange={e => setMedicationName(e.target.value)}></IonInput>
-            </IonItem>
-            <IonItem>
-              <IonLabel position="fixed">Dosage:</IonLabel>
-              <IonInput placeholder='Enter Dosage' value={medicationDosage} onIonChange={e => setMedicationDosage(e.target.value)}></IonInput>
-            </IonItem>
-              <IonButton onClick={e => {
-                  if(medicationName == "" || medicationDosage == "") return
-                  let medlist = medicationList
-                  medlist.push(medicationName + " " + medicationDosage)
-                  console.log(medlist)
-                  setMedicationList(medlist)
-                  setMedicationName("")
-                  setMedicationDosage("")
-                  }
-                }>Add to Medication List</IonButton>
-                </div>
-              <div className="medicationList">
-                {medicationList.length == 0? "Add medications to this list by specifying name and dosages of each medication above":medicationList.map(medication => <p>{medication}</p>)}
-              </div>
-            {/* Create a component with two input boxes, a button, and a list to display medications passed as props*/}
+          <IonItem>
+            <IonLabel position="fixed">Information:</IonLabel>
+            <IonTextarea onIonChange={e => setInformation(e.target.value)}></IonTextarea>
+          </IonItem>
           <IonItem>
             <IonLabel position="fixed">Compartment: </IonLabel>
             <IonSelect value={compartment} onIonChange={e => setCompartment(e.target.value)}>
@@ -263,11 +237,11 @@ const AddRegime = () => {
             <IonInput type='number' value={timeOffset}  onIonChange={e => setTimeOffset(e.target.value)}></IonInput>
           </IonItem>
 </div>
-          <p className="sectionHeading">Please provide any additional information that {patientName == "" ? "the patient" : patientName} should know below.</p>
+          <p className="sectionHeading">Please provide instructions that {patientName == "" ? "the patient" : patientName} must follow.</p>
           <div className='formGroup'>
 
           <IonItem>
-            <IonLabel position="fixed">Information:</IonLabel>
+            <IonLabel position="fixed">Instructions:</IonLabel>
             <IonTextarea onIonChange={e => setInstructions(e.target.value)}></IonTextarea>
           </IonItem>
 </div>
@@ -288,7 +262,7 @@ const AddRegime = () => {
             <div className="data-display">
               <h3>Entered Data:</h3>
               <p><strong>Patient:</strong> {patientName}</p>
-              <p><strong>Medication:</strong> | {medicationList.map(medication => medication + " | ")}</p>
+              <p><strong>Information:</strong> {information}</p>
               <p><strong>Compartment:</strong> {compartment == undefined ? "Medication not stored in compartment" : compartment}</p>
               <p><strong>Day:</strong> {day}</p>
               <p><strong>Time of Day:</strong> {timeOfDay}</p>
