@@ -1,7 +1,8 @@
 import { RegimeItem } from 'api types/types';
 import '../../styles/RegimeItemContainer.css';
-import { IonButton } from '@ionic/react';
+import { IonButton, IonIcon } from '@ionic/react';
 import { warning } from 'ionicons/icons';
+import { trashOutline } from "ionicons/icons";
 
 function dayConvert(day:number):string {
 	let stringDay = "";
@@ -93,7 +94,7 @@ const RegimeItemContainer: React.FC<ContainerProps> = ({regime, deleteItem}) =>
 			</div>
 			<div className='regimeItemContainerButtons'>
 				<IonButton onClick={() => deleteItem(regime.id)} color="danger">
-					<span className='deleteIcon'>🗑</span>
+				<IonIcon icon={trashOutline} />
 				</IonButton>
 			</div>
 			
