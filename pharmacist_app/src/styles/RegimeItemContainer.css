@@ -1,6 +1,5 @@
 .regimeItemContainer {
 	background-color: rgb(219, 219, 219);
-	padding: 5px;
 	margin: auto auto 10px auto;
 	border: 1px solid black;
 	border-radius: 6px;
@@ -10,14 +9,32 @@
 }
 
 .regimeItemContainerText {
-	width: 90%;
+	width: 80%;
+	margin: 5px;
 }
 
 .regimeItemContainerButtons {
-	width: 10%;
+	padding: 5px;
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	width: 20%;
+	border-left: 1px solid black;
+}
+.button {
+	width: 100%;
 }
 
 .deleteIcon {
 	color: black;
 	font-size: 200%;
 }
+
+@media only screen and (max-width: 600px) {
+	.regimeItemContainer {
+		width: 100%;
+	}
+	ul {
+		padding: 0px;
+	}
+  }

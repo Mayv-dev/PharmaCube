@@ -14,6 +14,7 @@ import {
   IonCheckbox,
   IonSelect,
   IonSelectOption,
+  IonTextarea,
 } from '@ionic/react';
 import '../../styles/Regime Subpages/AddRegime.css';
 import LowerToolbar from '../../components/LowerToolbar';
@@ -85,7 +86,7 @@ const AddRegime = () => {
     const getMockPatientList = async () => {
       try {
         const { data, status } = await axios.get(
-          `http://demo3553220.mockable.io/patients`,
+          `https://demo3553220.mockable.io/patients`,
           {
             headers: {
               Accept: 'application/json'
@@ -183,7 +184,7 @@ const AddRegime = () => {
         <div className='formBody'>
           <IonItem>
             <IonLabel position="fixed">Patient:</IonLabel>
-            <IonSelect placeholder='Choose patient to create a regime for' onIonChange={e => {
+            <IonSelect placeholder='Choose a patient' onIonChange={e => {
                 setPatientId(e.target.value.id)
                 setPatientName(e.target.value.name)
               }}> 
@@ -193,9 +194,15 @@ const AddRegime = () => {
 
           <p className="sectionHeading">What should {patientName == "" ? "the patient" : patientName} take?</p>
           <div className='formGroup'>
-          <IonItem>
-              <IonInput placeholder='Medication Name' value={medicationName} onIonChange={e => setMedicationName(e.target.value)}></IonInput>
-              <IonInput placeholder='Medication Dosage' value={medicationDosage} onIonChange={e => setMedicationDosage(e.target.value)}></IonInput>
+            <div className='medicationInputs'>
+            <IonItem>
+              <IonLabel position="fixed">Medication:</IonLabel>
+              <IonInput placeholder='Enter Name' value={medicationName} onIonChange={e => setMedicationName(e.target.value)}></IonInput>
+            </IonItem>
+            <IonItem>
+              <IonLabel position="fixed">Dosage:</IonLabel>
+              <IonInput placeholder='Enter Dosage' value={medicationDosage} onIonChange={e => setMedicationDosage(e.target.value)}></IonInput>
+            </IonItem>
               <IonButton onClick={e => {
                   if(medicationName == "" || medicationDosage == "") return
                   let medlist = medicationList
@@ -206,7 +213,7 @@ const AddRegime = () => {
                   setMedicationDosage("")
                   }
                 }>Add to Medication List</IonButton>
-              </IonItem>
+                </div>
               <div className="medicationList">
                 {medicationList.length == 0? "Add medications to this list by specifying name and dosages of each medication above":medicationList.map(medication => <p>{medication}</p>)}
               </div>
@@ -227,7 +234,7 @@ const AddRegime = () => {
           <p className="sectionHeading">When should {patientName == "" ? "the patient" : patientName} take it?</p>
           <div className='formGroup'>
           <IonItem>
-            <IonLabel position="fixed">Day (this could be a multiple select):</IonLabel>
+            <IonLabel position="fixed">Day:</IonLabel>
             <IonSelect onIonChange={e => setDay(e.target.value)}>
               <IonSelectOption>Monday</IonSelectOption>
               <IonSelectOption>Tuesday</IonSelectOption>
@@ -261,7 +268,7 @@ const AddRegime = () => {
 
           <IonItem>
             <IonLabel position="fixed">Information:</IonLabel>
-            <IonInput onIonChange={e => setInstructions(e.target.value)}></IonInput>
+            <IonTextarea onIonChange={e => setInstructions(e.target.value)}></IonTextarea>
           </IonItem>
 </div>
           

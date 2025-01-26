@@ -20,7 +20,7 @@ type SQLItem = {
 async function getMockData() {
   try {
     const { data, status } = await axios.get(
-      'http://demo3553220.mockable.io/',
+      'https://demo3553220.mockable.io/',
       {
         headers: {
           Accept: 'application/json'
@@ -80,7 +80,7 @@ const MedicationViewPage: React.FC = () => {
         ).then(async e => {
           try {
             const { data, status } = await axios.delete(
-              `http://demo3553220.mockable.io/user/${userId}/medication/${medId}`,
+              `https://demo3553220.mockable.io/user/${userId}/medication/${medId}`,
               {
                 headers: {
                   Accept: 'application/json'
