@@ -19,6 +19,9 @@ import React, { useEffect, useState } from "react";
 import { SQLiteDBConnection } from "@capacitor-community/sqlite";
 import useSQLiteDB from "../../composables/useSQLiteDB";
 import "./ScheduleAddModifyPage.css";
+import "./ScheduleAddTime.css";
+
+
 
 enum formState {
   ADD,
@@ -37,6 +40,8 @@ const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({ enteredFormState })
   const [newTime, setNewTime] = useState<string>("");
   const [schedule, setSchedule] = useState<{ time: string }[]>([]);
   const { performSQLAction, initialized } = useSQLiteDB();
+  const [hours, setHours] = useState<string>("");
+  const [minutes, setMinutes] = useState<string>("");
 
   useEffect(() => {
     setFormState(enteredFormState);
@@ -51,16 +56,31 @@ const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({ enteredFormState })
   }
 
   async function addTime() {
-    if (!newTime) {
-      alert("Please enter a time");
+    const hoursNum = parseInt(hours, 10);
+    const minutesNum = parseInt(minutes, 10);
+
+    if (isNaN(hoursNum) || isNaN(minutesNum)) {
+      alert("Please enter valid numbers for hours and minutes.");
+      return;
+    }
+    if (hoursNum < 0 || hoursNum > 23) {
+      alert("Hours must be between 0 and 23.");
+      return;
+    }
+    if (minutesNum < 0 || minutesNum > 59) {
+      alert("Minutes must be between 0 and 59.");
       return;
     }
 
+    const formattedTime = `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}`;
+    setNewTime(formattedTime);
+
     try {
       performSQLAction(async (db: SQLiteDBConnection | undefined) => {
-        await db?.query("INSERT INTO schedule (day, time) VALUES (?, ?);", [selectedDay, newTime]);
-        setSchedule((prev) => [...prev, { time: newTime }]);
-        setNewTime("");
+        await db?.query("INSERT INTO schedule (day, time) VALUES (?, ?);", [selectedDay, formattedTime]);
+        setSchedule((prev) => [...prev, { time: formattedTime }]);
+        setHours("");
+        setMinutes("");
       });
     } catch (error) {
       alert((error as Error).message);
@@ -99,33 +119,41 @@ const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({ enteredFormState })
           </IonRow>
         </IonGrid>
 
-        <IonList>
-          {schedule.map((item, index) => (
-            <IonItem key={index}>
-              <IonLabel>{item.time}</IonLabel>
-              <IonButton
-                slot="end"
-                color="danger"
-                onClick={() => deleteTime(item.time)}
-              >
-                <IonIcon icon={trashOutline} />
-              </IonButton>
-            </IonItem>
-          ))}
-        </IonList>
-
         <IonItem>
           <IonLabel position="stacked">Add New Time:</IonLabel>
-          <IonInput
-            value={newTime}
-            onIonChange={(e) => setNewTime(e.detail.value || "")}
-            placeholder="Enter time (e.g., 13:00)"
-          />
+          <div className="time-input-container">
+            <IonInput
+              type="number"
+              value={hours}
+              onIonChange={(e) => setHours(e.detail.value || "")}
+              placeholder="HH"
+              className="time-input"
+            />
+            :
+            <IonInput
+              type="number"
+              value={minutes}
+              onIonChange={(e) => setMinutes(e.detail.value || "")}
+              placeholder="MM"
+              className="time-input"
+            />
+          </div>
         </IonItem>
 
         <IonButton onClick={addTime} expand="block" color="primary">
           Add Time
         </IonButton>
+
+        <IonList>
+          {schedule.map((item, index) => (
+            <IonItem key={index}>
+              <IonLabel>{item.time}</IonLabel>
+              <IonButton slot="end" color="danger" onClick={() => deleteTime(item.time)}>
+                <IonIcon icon={trashOutline} />
+              </IonButton>
+            </IonItem>
+          ))}
+        </IonList>
       </IonContent>
     </IonPage>
   );
