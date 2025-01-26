@@ -14,14 +14,12 @@ import {
   IonRow,
   IonCol,
 } from "@ionic/react";
-import { trashOutline } from "ionicons/icons";
+import { trashOutline, createOutline, checkmarkOutline, closeOutline } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import { SQLiteDBConnection } from "@capacitor-community/sqlite";
 import useSQLiteDB from "../../composables/useSQLiteDB";
 import "./ScheduleAddModifyPage.css";
 import "./ScheduleAddTime.css";
-
-
 
 enum formState {
   ADD,
@@ -42,6 +40,9 @@ const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({ enteredFormState })
   const { performSQLAction, initialized } = useSQLiteDB();
   const [hours, setHours] = useState<string>("");
   const [minutes, setMinutes] = useState<string>("");
+  const [editingTime, setEditingTime] = useState<string | null>(null);
+  const [editHours, setEditHours] = useState<string>("");
+  const [editMinutes, setEditMinutes] = useState<string>("");
 
   useEffect(() => {
     setFormState(enteredFormState);
@@ -56,24 +57,8 @@ const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({ enteredFormState })
   }
 
   async function addTime() {
-    const hoursNum = parseInt(hours, 10);
-    const minutesNum = parseInt(minutes, 10);
-
-    if (isNaN(hoursNum) || isNaN(minutesNum)) {
-      alert("Please enter valid numbers for hours and minutes.");
-      return;
-    }
-    if (hoursNum < 0 || hoursNum > 23) {
-      alert("Hours must be between 0 and 23.");
-      return;
-    }
-    if (minutesNum < 0 || minutesNum > 59) {
-      alert("Minutes must be between 0 and 59.");
-      return;
-    }
-
-    const formattedTime = `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}`;
-    setNewTime(formattedTime);
+    const formattedTime = formatTime(hours, minutes);
+    if (!formattedTime) return;
 
     try {
       performSQLAction(async (db: SQLiteDBConnection | undefined) => {
@@ -96,6 +81,45 @@ const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({ enteredFormState })
     } catch (error) {
       alert((error as Error).message);
     }
+  }
+
+  async function editTimeConfirm(originalTime: string) {
+    const formattedTime = formatTime(editHours, editMinutes);
+    if (!formattedTime) return;
+
+    try {
+      performSQLAction(async (db: SQLiteDBConnection | undefined) => {
+        await db?.query("UPDATE schedule SET time = ? WHERE day = ? AND time = ?", [formattedTime, selectedDay, originalTime]);
+        setSchedule((prev) =>
+          prev.map((item) => (item.time === originalTime ? { time: formattedTime } : item))
+        );
+        setEditingTime(null);
+        setEditHours("");
+        setEditMinutes("");
+      });
+    } catch (error) {
+      alert((error as Error).message);
+    }
+  }
+
+  function formatTime(hours: string, minutes: string): string | null {
+    const hoursNum = parseInt(hours, 10);
+    const minutesNum = parseInt(minutes, 10);
+
+    if (isNaN(hoursNum) || isNaN(minutesNum)) {
+      alert("Please enter valid numbers for hours and minutes.");
+      return null;
+    }
+    if (hoursNum < 0 || hoursNum > 23) {
+      alert("Hours must be between 0 and 23.");
+      return null;
+    }
+    if (minutesNum < 0 || minutesNum > 59) {
+      alert("Minutes must be between 0 and 59.");
+      return null;
+    }
+
+    return `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}`;
   }
 
   return (
@@ -147,10 +171,46 @@ const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({ enteredFormState })
         <IonList>
           {schedule.map((item, index) => (
             <IonItem key={index}>
-              <IonLabel>{item.time}</IonLabel>
-              <IonButton slot="end" color="danger" onClick={() => deleteTime(item.time)}>
-                <IonIcon icon={trashOutline} />
-              </IonButton>
+              {editingTime === item.time ? (
+                <>
+                  <IonInput
+                    type="number"
+                    value={editHours}
+                    onIonChange={(e) => setEditHours(e.detail.value || "")}
+                    placeholder="HH"
+                    className="time-input"
+                  />
+                  :
+                  <IonInput
+                    type="number"
+                    value={editMinutes}
+                    onIonChange={(e) => setEditMinutes(e.detail.value || "")}
+                    placeholder="MM"
+                    className="time-input"
+                  />
+                  <IonButton slot="end" color="success" onClick={() => editTimeConfirm(item.time)}>
+                    <IonIcon icon={checkmarkOutline} />
+                  </IonButton>
+                  <IonButton slot="end" color="medium" onClick={() => setEditingTime(null)}>
+                    <IonIcon icon={closeOutline} />
+                  </IonButton>
+                </>
+              ) : (
+                <>
+                  <IonLabel>{item.time}</IonLabel>
+                  <IonButton slot="end" color="primary" onClick={() => {
+                    setEditingTime(item.time);
+                    const [hh, mm] = item.time.split(":");
+                    setEditHours(hh);
+                    setEditMinutes(mm);
+                  }}>
+                    <IonIcon icon={createOutline} />
+                  </IonButton>
+                  <IonButton slot="end" color="danger" onClick={() => deleteTime(item.time)}>
+                    <IonIcon icon={trashOutline} />
+                  </IonButton>
+                </>
+              )}
             </IonItem>
           ))}
         </IonList>
