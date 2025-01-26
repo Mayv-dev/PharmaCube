@@ -99,18 +99,3 @@ ion-item {
   }
   
   
-  ion-button {
-    margin-top: 20px; 
-    padding: 12px 0; 
-    font-size: 1.1rem; 
-    border-radius: 8px;
-    background-color: #707070; 
-    color: white; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-  }
-  
-  ion-button:hover {
-    background-color: #6a11cb;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
-  }
-  
