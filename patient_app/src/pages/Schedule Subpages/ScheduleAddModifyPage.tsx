@@ -13,6 +13,7 @@ import {
   IonGrid,
   IonRow,
   IonCol,
+  IonModal
 } from "@ionic/react";
 import { trashOutline, createOutline, checkmarkOutline, closeOutline } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
@@ -22,33 +23,32 @@ import axios from 'axios';
 import { SQLiteDBConnection } from "@capacitor-community/sqlite";
 import useSQLiteDB from "../../composables/useSQLiteDB";
 import "./ScheduleAddModifyPage.css";
-import "./ScheduleAddTime.css";
-
-enum formState {
-  ADD,
-  MODIFY,
-}
-
-interface AddGameFormProps {
-  enteredFormState: formState;
-}
 
 const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
-const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({ enteredFormState }) => {
-  const [formState, setFormState] = useState<formState>(0);
+const ScheduleAddModifyPage: React.FC = () => {
+
+  const [deleteScheduleId, setDeleteScheduleId] = useState<number>(-1);
+
   const [selectedDay, setSelectedDay] = useState<string>("Monday");
+
   const [newTime, setNewTime] = useState<string>("");
+
   const [schedule, setSchedule] = useState<{ id:number, day:string, time: string }[]>([]);
+
   const { performSQLAction, initialized } = useSQLiteDB();
+
   const [hours, setHours] = useState<string>("");
   const [minutes, setMinutes] = useState<string>("");
+
   const [editingTime, setEditingTime] = useState<string | null>(null);
   const [editHours, setEditHours] = useState<string>("");
   const [editMinutes, setEditMinutes] = useState<string>("");
 
+  const [showModal, setShowModal] = useState(false);
+
+
   useEffect(() => {
-    setFormState(enteredFormState);
     loadSchedule(selectedDay);
   }, [initialized, selectedDay]);
 
@@ -129,6 +129,12 @@ const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({ enteredFormState })
       alert((error as Error).message);
     }
   }
+
+
+  const confirmDeletion = (id:number) => {
+    setDeleteScheduleId(id)
+    setShowModal(true)
+    }
 
   async function deleteTime(id:number) {
     try {
@@ -226,7 +232,7 @@ const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({ enteredFormState })
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen>
+      <IonContent fullscreen className="ion-padding">
         <IonGrid>
           <IonRow>
             {daysOfWeek.map((day) => (
@@ -302,7 +308,7 @@ const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({ enteredFormState })
                   }}>
                     <IonIcon icon={createOutline} />
                   </IonButton>
-                  <IonButton slot="end" color="danger" onClick={() => deleteTime(item.id)}>
+                  <IonButton slot="end" color="danger" onClick={() => confirmDeletion(item.id)}>
                     <IonIcon icon={trashOutline} />
                   </IonButton>
                 </>
@@ -310,6 +316,28 @@ const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({ enteredFormState })
             </IonItem>
           ))}
         </IonList>
+
+
+        <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle>Confirm Submission</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent className="ion-padding">
+            <p>Are you sure you wish to delete this regime?</p>
+            <IonButton expand="full" color="primary" onClick={() => {
+              deleteTime(deleteScheduleId)
+              setShowModal(false)}}>
+              Yes
+            </IonButton>
+            <IonButton expand="full" color="medium" className="cancel-button" onClick={() => setShowModal(false)}>
+              No
+            </IonButton>
+          </IonContent>
+        </IonModal>
+
+
       </IonContent>
     </IonPage>
   );
