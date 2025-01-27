@@ -1,12 +1,10 @@
 package models
 
-import "gorm.io/gorm"
-
 type Patient struct {
-	gorm.Model
-	Name             string
-	ScheduleTimes    []PatientSchedule
-	ScheduledRegimes []PatientScheduledRegime
-	AdherenceRecord  []PatientAdherenceRecord
-	PharmacistID     uint
+	Common
+	Name             string                   `json:"name"`
+	ScheduleTimes    []PatientSchedule        `json:"schedule_times"`
+	ScheduledRegimes []PatientScheduledRegime `json:"scheduled_regimes"`
+	AdherenceRecord  []PatientAdherenceRecord `json:"adherence_record"`
+	PharmacistID     uint                     `json:"pharmacist_id"`
 }

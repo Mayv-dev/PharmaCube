@@ -1,12 +1,10 @@
 package models
 
-import "gorm.io/gorm"
-
 type PatientSchedule struct {
-	gorm.Model
-	PatientID  uint
-	Day        string
-	Hour       uint
-	Minute     uint
-	TimePeriod uint
+	Common
+	PatientID  uint   `json:"patient_id"`
+	Day        string `json:"day"`
+	Hour       uint   `json:"hour"`
+	Minute     uint   `json:"minute"`
+	TimePeriod uint   `json:"time_period"`
 }
