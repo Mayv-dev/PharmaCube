@@ -65,7 +65,7 @@ const useSQLiteDB = () => {
     performSQLAction(async (db: SQLiteDBConnection | undefined) => {
       const queryCreateTable = `
       CREATE TABLE IF NOT EXISTS schedule (
-      id INTEGER PRIMARY KEY NOT NULL,
+      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
       day INTEGER NOT NULL,
       time TEXT NOT NULL
       );
