@@ -1,9 +1,6 @@
 package models
 
-import "gorm.io/gorm"
-
 type Pharmacist struct {
-	gorm.Model
-	Name     string
-	Patients []Patient
+	Name     string    `json:"name"`
+	Patients []Patient `json:"patients"`
 }

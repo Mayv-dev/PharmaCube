@@ -2,14 +2,12 @@ package models
 
 import (
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type PatientAdherenceRecord struct {
-	gorm.Model
-	PatientID         uint
-	DateTimeScheduled time.Time
-	DateTimeTaken     time.Time
-	WasTaken          bool
+	Common
+	PatientID         uint      `json:"patient_id"`
+	DateTimeScheduled time.Time `json:"date_time_scheduled"`
+	DateTimeTaken     time.Time `json:"date_time_taken"`
+	WasTaken          bool      `json:"was_taken"`
 }
