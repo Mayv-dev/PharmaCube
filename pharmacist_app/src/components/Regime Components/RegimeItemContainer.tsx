@@ -86,11 +86,9 @@ const RegimeItemContainer: React.FC<ContainerProps> = ({regime, deleteItem}) =>
 			<div className='regimeItemContainerText'>
 				<p>Compartment: {regime.compartment_id == 0 ? "No compartment, indicated by 0" : regime.compartment_id}</p>
 				<p>Information: {regime.information}</p>
-				<p>Day: {dayConvert(regime.period_scheduled.day)}</p>
-				<p>Instructions: {regime.period_scheduled.instruction}</p>
-				<p>Time of Day: {timeOfDayConvert(regime.period_scheduled.time_period)}</p>
-				<p>Time Offset: {regime.period_scheduled.time_adjustment}</p>
-				<p>Medications: TO BE ADDED TO API DEFINITION</p>
+				<p>Instructions: {regime.instruction}</p>
+				<p>When to take: {dayConvert(regime.day)}, {timeOfDayConvert(regime.time_period)}</p>
+				<p>Time Offset: {regime.time_adjustment}</p>
 			</div>
 			<div className='regimeItemContainerButtons'>
 				<IonButton onClick={() => deleteItem(regime.id)} color="danger">

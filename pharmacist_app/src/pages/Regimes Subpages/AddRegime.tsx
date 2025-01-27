@@ -25,7 +25,7 @@ const AddRegime = () => {
   const [pharmacistId, setPharmacistId] = useState<number>(1);
 
 
-  const [patientId, setPatientId] = useState<number>(78910);
+  const [patientId, setPatientId] = useState<number>(1);
   const [patientName, setPatientName] = useState('');
 
   const [information, setInformation] = useState('');
