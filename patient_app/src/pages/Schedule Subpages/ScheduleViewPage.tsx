@@ -58,7 +58,7 @@ const ScheduleViewPage: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen>
+      <IonContent fullscreen className="ion-padding">
         {/* Day Selector */}
         <IonGrid>
           <IonRow>
