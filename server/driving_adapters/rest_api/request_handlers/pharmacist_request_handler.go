@@ -149,6 +149,14 @@ func ViewPatientRegime(context *gin.Context) {
 		return
 	}
 
+	regimeId, err := strconv.Atoi(context.Param("regime_id"))
+	if err != nil {
+		//Invalid ID
+		log.Println(err.Error())
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalide Regime ID"})
+		return
+	}
+
 	//Get Patient
 	patient, err := databaseadapters.GetPatient(uint(patientId))
 	if err != nil {
@@ -165,7 +173,7 @@ func ViewPatientRegime(context *gin.Context) {
 		return
 	}
 
-	regime, err := databaseadapters.GetPatientRegime(patient.ID)
+	regime, err := databaseadapters.GetPatientRegimeItem(patient.ID, uint(regimeId))
 	if err != nil {
 		log.Println(err.Error())
 		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Patient Regime not Found"})
