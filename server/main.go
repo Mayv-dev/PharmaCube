@@ -36,6 +36,7 @@ func main() {
 	server.Use(cors.New(corsConfig))
 
 	routes.AddPharmacistRoutes(server)
+	routes.PatientRoutes(server)
 
 	server.Run()
 }
