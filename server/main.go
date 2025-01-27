@@ -6,6 +6,7 @@ import (
 	databaseadapters "pharmacube/server/driven_adapters/database_adapters"
 	"pharmacube/server/driving_adapters/rest_api/routes"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -29,6 +30,10 @@ func main() {
 	server := gin.Default()
 
 	log.SetOutput(gin.DefaultWriter)
+
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowAllOrigins = true
+	server.Use(cors.New(corsConfig))
 
 	routes.AddPharmacistRoutes(server)
 
