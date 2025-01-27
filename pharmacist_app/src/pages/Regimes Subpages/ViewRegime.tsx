@@ -17,8 +17,10 @@ import { RegimeItem } from 'api types/types';
 import RegimeItemContainer from '../../components/Regime Components/RegimeItemContainer';
 
 const ViewRegime = () => {
-	const [userId, setUserId] = useState<number>(123456);
-	const [userName, setUserName] = useState('Unselected');
+	const [pharmacistId, setPharmacistId] = useState<number>(1);
+
+	const [patientId, setPatientId] = useState<number>(1);
+	const [patientName, setPatientName] = useState('Unselected');
 	
 	const [userRegimes, setUserRegimes] = useState<RegimeItem[]>()
 	const [deleteRegimeId, setDeleteRegimeId] = useState<number>(-1);
@@ -28,7 +30,7 @@ const ViewRegime = () => {
   async function getMockData() {
 	try {
 	  const { data, status } = await axios.get(
-		'https://demo3553220.mockable.io/user/id/regime',
+		`http://localhost:8080/pharmacist/${pharmacistId}/patient/${patientId}/regime`,
 		{
 		  headers: {
 			Accept: 'application/json'
@@ -56,7 +58,7 @@ const ViewRegime = () => {
 
   const handleUserSelect = (user:string) => {
     console.log("This should display the regimes assigned to: " + user);
-    setUserName(user);
+    setPatientName(user);
     getMockData().then(setUserRegimes);
   }
 
@@ -64,13 +66,10 @@ const ViewRegime = () => {
 	console.log("deleting regime... ", deleteRegimeId)
 	try {
 		const { data, status } = await axios.delete(
-		  'https://demo3553220.mockable.io/user/id/regime',
+		  `http://localhost:8080/pharmacist/${pharmacistId}/patient/${patientId}/regime/${deleteRegimeId}`,
 		  {
 			headers: {
 			  Accept: 'application/json'
-			},
-			data: {
-				"id":deleteRegimeId
 			}
 		  }
 		);
@@ -100,7 +99,7 @@ const ViewRegime = () => {
 					<IonSelectOption>TEST McMahon</IonSelectOption>
 				</IonSelect>
 			{
-				userName == "Unselected" ? null :
+				patientName == "Unselected" ? null :
 				<>
 					<ul>
 						{/*declaring an object that is passed entirely to the component with ...regime was a solution recieved from the answer of CPHPython 
