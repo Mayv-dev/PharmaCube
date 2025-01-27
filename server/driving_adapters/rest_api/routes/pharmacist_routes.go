@@ -8,4 +8,5 @@ import (
 
 func AddPharmacistRoutes(router *gin.Engine) {
 	router.POST("pharmacist/:pharmacist_id/patient/:patient_id/regime", requesthandlers.AddRegimeItem)
+	router.GET("pharmacist/:pharmacist_id/patient/:patient_id/regime", requesthandlers.ViewAllPatientRegime)
 }

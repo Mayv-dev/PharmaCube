@@ -67,6 +67,8 @@ func AddRegimeItem(context *gin.Context) {
 
 	//Add to DB
 	regime := models.PatientRegime{
+		PharmacistID:          patient.PharmacistID,
+		PatientID:             patient.ID,
 		MedicationInformation: apiRegime.Information,
 		Day:                   int(apiRegime.Day),
 		TimePeriod:            int(apiRegime.TimePeriod),
@@ -84,5 +86,48 @@ func AddRegimeItem(context *gin.Context) {
 	}
 
 	//Return
+	context.JSON(http.StatusOK, regime)
+}
+
+func ViewAllPatientRegime(context *gin.Context) {
+	pharmacistId, err := strconv.Atoi(context.Param("pharmacist_id"))
+	if err != nil {
+		//Invalid ID
+		log.Println(err.Error())
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalide Pharmacist ID"})
+		return
+	}
+
+	patientId, err := strconv.Atoi(context.Param("patient_id"))
+	if err != nil {
+		//Invalid ID
+		log.Println(err.Error())
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalide Patient ID"})
+		return
+	}
+
+	//Get Patient
+	patient, err := databaseadapters.GetPatient(uint(patientId))
+	if err != nil {
+		//Not found
+		log.Println(err.Error())
+		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Patient not Found"})
+		return
+	}
+
+	//Check is Pharmacists patient
+	if patient.PharmacistID != uint(pharmacistId) {
+		//Not patient of pharmacist
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Pharmacist does not have Patient"})
+		return
+	}
+
+	regime, err := databaseadapters.GetPatientRegime(patient.ID)
+	if err != nil {
+		log.Println(err.Error())
+		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Patient Regime not Found"})
+		return
+	}
+
 	context.JSON(http.StatusOK, regime)
 }
