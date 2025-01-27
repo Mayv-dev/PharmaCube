@@ -182,3 +182,136 @@ func ViewPatientRegime(context *gin.Context) {
 
 	context.JSON(http.StatusOK, regime)
 }
+
+func UpdatePatientRegime(context *gin.Context) {
+	pharmacistId, err := strconv.Atoi(context.Param("pharmacist_id"))
+	if err != nil {
+		//Invalid ID
+		log.Println(err.Error())
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalide Pharmacist ID"})
+		return
+	}
+
+	patientId, err := strconv.Atoi(context.Param("patient_id"))
+	if err != nil {
+		//Invalid ID
+		log.Println(err.Error())
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalide Patient ID"})
+		return
+	}
+
+	regimeId, err := strconv.Atoi(context.Param("regime_id"))
+	if err != nil {
+		//Invalid ID
+		log.Println(err.Error())
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalide Regime ID"})
+		return
+	}
+
+	//Get Patient
+	patient, err := databaseadapters.GetPatient(uint(patientId))
+	if err != nil {
+		//Not found
+		log.Println(err.Error())
+		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Patient not Found"})
+		return
+	}
+
+	//Check is Pharmacists patient
+	if patient.PharmacistID != uint(pharmacistId) {
+		//Not patient of pharmacist
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Pharmacist does not have Patient"})
+		return
+	}
+
+	//Create Regime Item
+	var apiRegime apimodels.Regime
+	err = context.BindJSON(&apiRegime)
+	if err != nil {
+		//Invalid json
+		log.Println(err.Error())
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalide Regime"})
+		return
+	}
+
+	validator := validator.New()
+	err = validator.Struct(apiRegime)
+	if err != nil {
+		//Invalid
+		log.Println(err.Error())
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalide Regime"})
+		return
+	}
+
+	//Add to DB
+	regime := models.PatientRegime{
+		PharmacistID:          patient.PharmacistID,
+		PatientID:             patient.ID,
+		MedicationInformation: apiRegime.Information,
+		Day:                   int(apiRegime.Day),
+		TimePeriod:            int(apiRegime.TimePeriod),
+		TimeOffset:            apiRegime.TimeOffset,
+		Instructions:          apiRegime.Instruction,
+		CompartmentID:         uint(apiRegime.CompartmentID),
+	}
+
+	regime, err = databaseadapters.UpdatePatientRegimeItem(patient.ID, uint(regimeId), regime)
+	if err != nil {
+		log.Println(err.Error())
+		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Patient Regime not Updated"})
+		return
+	}
+
+	context.JSON(http.StatusOK, regime)
+}
+
+func DeletePatientRegime(context *gin.Context) {
+	pharmacistId, err := strconv.Atoi(context.Param("pharmacist_id"))
+	if err != nil {
+		//Invalid ID
+		log.Println(err.Error())
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalide Pharmacist ID"})
+		return
+	}
+
+	patientId, err := strconv.Atoi(context.Param("patient_id"))
+	if err != nil {
+		//Invalid ID
+		log.Println(err.Error())
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalide Patient ID"})
+		return
+	}
+
+	regimeId, err := strconv.Atoi(context.Param("regime_id"))
+	if err != nil {
+		//Invalid ID
+		log.Println(err.Error())
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalide Regime ID"})
+		return
+	}
+
+	//Get Patient
+	patient, err := databaseadapters.GetPatient(uint(patientId))
+	if err != nil {
+		//Not found
+		log.Println(err.Error())
+		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Patient not Found"})
+		return
+	}
+
+	//Check is Pharmacists patient
+	if patient.PharmacistID != uint(pharmacistId) {
+		//Not patient of pharmacist
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Pharmacist does not have Patient"})
+		return
+	}
+
+	err = databaseadapters.DeletePatientRegimeItem(patient.ID, uint(regimeId))
+	if err != nil {
+		log.Println(err.Error())
+		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Patient Regime not Updated"})
+		return
+	}
+
+	context.JSON(http.StatusOK, responses.ApiResponse{Data: "Deleted regime item"})
+}
