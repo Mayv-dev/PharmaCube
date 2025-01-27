@@ -157,7 +157,7 @@ const AddRegime = () => {
       day:dayConvert(day),
       time_period:timeOfDay,
       time_adjustment:timeOffset, 
-      instruction: instructions
+      instructions: instructions
     }
 
     sendToMockable(addedRegime)

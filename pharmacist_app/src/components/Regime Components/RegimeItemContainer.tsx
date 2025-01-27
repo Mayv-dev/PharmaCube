@@ -86,7 +86,7 @@ const RegimeItemContainer: React.FC<ContainerProps> = ({regime, deleteItem}) =>
 			<div className='regimeItemContainerText'>
 				<p>Compartment: {regime.compartment_id == 0 ? "No compartment, indicated by 0" : regime.compartment_id}</p>
 				<p>Information: {regime.information}</p>
-				<p>Instructions: {regime.instruction}</p>
+				<p>Instructions: {regime.instructions}</p>
 				<p>When to take: {dayConvert(regime.day)}, {timeOfDayConvert(regime.time_period)}</p>
 				<p>Time Offset: {regime.time_adjustment}</p>
 			</div>
