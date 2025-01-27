@@ -22,8 +22,10 @@ import { RegimeItem } from 'api types/types';
 
 const AddRegime = () => {
   const [patientList, setPatientList] = useState<any[]>([]);
+  const [pharmacistId, setPharmacistId] = useState<number>(1);
 
-  const [patientId, setPatientId] = useState<number>(123456);
+
+  const [patientId, setPatientId] = useState<number>(78910);
   const [patientName, setPatientName] = useState('');
 
   const [information, setInformation] = useState('');
@@ -125,7 +127,7 @@ const AddRegime = () => {
     try {
       console.log("post request being made...")
       const { data, status } = await axios.post(
-        'https://demo3553220.mockable.io/pharmacist/id/patient/id/regime',
+        `http://localhost:8080/pharmacist/${pharmacistId}/patient/${patientId}/regime`,
         addedRegime,
         {
           headers: {
