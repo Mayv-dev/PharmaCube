@@ -143,6 +143,30 @@ const ScheduleAddModifyPage: React.FC = () => {
         setSchedule((prev) => prev.filter((item) => item.id !== id));
       });
 
+      try {
+        const { data, status } = await axios.delete(
+          `https://demo3553220.mockable.io/pharmacist/user/user_id/schedule`,
+          {
+          headers: {
+            Accept: 'application/json'
+          },
+          data: {
+            "id":id
+          }
+          }
+        );
+
+        return data;
+      
+        } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log('error message: ', error.message);
+          return error.message;
+        } else {
+          console.log('unexpected error: ', error);
+          return 'An unexpected error occurred';
+        }
+        }
 
 
 
