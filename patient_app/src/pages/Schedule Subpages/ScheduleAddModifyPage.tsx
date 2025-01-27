@@ -16,6 +16,9 @@ import {
 } from "@ionic/react";
 import { trashOutline, createOutline, checkmarkOutline, closeOutline } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
+import axios from 'axios';
+
+
 import { SQLiteDBConnection } from "@capacitor-community/sqlite";
 import useSQLiteDB from "../../composables/useSQLiteDB";
 import "./ScheduleAddModifyPage.css";
@@ -36,7 +39,7 @@ const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({ enteredFormState })
   const [formState, setFormState] = useState<formState>(0);
   const [selectedDay, setSelectedDay] = useState<string>("Monday");
   const [newTime, setNewTime] = useState<string>("");
-  const [schedule, setSchedule] = useState<{ time: string }[]>([]);
+  const [schedule, setSchedule] = useState<{ id:number, day:string, time: string }[]>([]);
   const { performSQLAction, initialized } = useSQLiteDB();
   const [hours, setHours] = useState<string>("");
   const [minutes, setMinutes] = useState<string>("");
@@ -51,8 +54,31 @@ const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({ enteredFormState })
 
   async function loadSchedule(day: string) {
     performSQLAction(async (db: SQLiteDBConnection | undefined) => {
-      const result = await db?.query("SELECT time FROM schedule WHERE day = ?", [day]);
+      const result = await db?.query("SELECT id, day, time FROM schedule WHERE day = ?", [day]);
+      console.log(result)
       setSchedule(result?.values || []);
+
+      try {
+        const { data, status } = await axios.get(
+          'https://demo3553220.mockable.io/',
+          {
+          headers: {
+            Accept: 'application/json'
+          },
+          },
+        );
+      
+        return data;
+      
+        } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log('error message: ', error.message);
+          return error.message;
+        } else {
+          console.log('unexpected error: ', error);
+          return 'An unexpected error occurred';
+        }
+        }
     });
   }
 
@@ -63,40 +89,110 @@ const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({ enteredFormState })
     try {
       performSQLAction(async (db: SQLiteDBConnection | undefined) => {
         await db?.query("INSERT INTO schedule (day, time) VALUES (?, ?);", [selectedDay, formattedTime]);
-        setSchedule((prev) => [...prev, { time: formattedTime }]);
+        const generatedId = await db?.query("SELECT id FROM schedule WHERE day = ? AND time = ?", [selectedDay, formattedTime]);
+        const newId:number = typeof generatedId?.values?.at(0).id == "number" ? generatedId?.values?.at(0).id : 0
+        console.log("Inserting ", { id: newId, day:selectedDay, time: formattedTime })
+        setSchedule((prev) => [...prev, { id: newId, day:selectedDay, time: formattedTime }]);
+
         setHours("");
         setMinutes("");
+        try {
+          console.log("post request being made...")
+          const { data, status } = await axios.post(
+            'https://demo3553220.mockable.io/',
+            {
+              id: newId,
+              day: selectedDay,
+              time: formattedTime
+            },
+            {
+              headers: {
+                Accept: 'application/json'
+              },
+            },
+          );
+          return data;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log('error message: ', error.message);
+          return error.message;
+        } else {
+          console.log('unexpected error: ', error);
+          return 'An unexpected error occurred';
+        }
+      }
       });
+
+
+
     } catch (error) {
       alert((error as Error).message);
     }
   }
 
-  async function deleteTime(time: string) {
+  async function deleteTime(id:number) {
     try {
       performSQLAction(async (db: SQLiteDBConnection | undefined) => {
-        await db?.query("DELETE FROM schedule WHERE day = ? AND time = ?", [selectedDay, time]);
-        setSchedule((prev) => prev.filter((item) => item.time !== time));
+        await db?.query("DELETE FROM schedule WHERE id = ?", [id]);
+        setSchedule((prev) => prev.filter((item) => item.id !== id));
       });
+
+
+
+
     } catch (error) {
       alert((error as Error).message);
     }
   }
 
-  async function editTimeConfirm(originalTime: string) {
+  async function editTimeConfirm(originalTime: string, id:number) {
     const formattedTime = formatTime(editHours, editMinutes);
     if (!formattedTime) return;
 
     try {
       performSQLAction(async (db: SQLiteDBConnection | undefined) => {
         await db?.query("UPDATE schedule SET time = ? WHERE day = ? AND time = ?", [formattedTime, selectedDay, originalTime]);
+        const generatedId = await db?.query("SELECT id FROM schedule WHERE day = ? AND time = ?", [selectedDay, formattedTime]);
+        const newId:number = typeof generatedId?.values?.at(0).id == "number" ? generatedId?.values?.at(0).id : 0
+        console.log("Updating ", { id: newId, day:selectedDay, time: formattedTime })
         setSchedule((prev) =>
-          prev.map((item) => (item.time === originalTime ? { time: formattedTime } : item))
+          prev.map((item) => (item.time === originalTime ? { id:newId, day: selectedDay, time: formattedTime } : item))
         );
         setEditingTime(null);
         setEditHours("");
         setEditMinutes("");
+
+        try {
+          console.log("put request being made...")
+          const { data, status } = await axios.put(
+            'https://demo3553220.mockable.io/',
+            {
+              id: newId,
+              day: selectedDay,
+              time: formattedTime
+            },
+            {
+              headers: {
+                Accept: 'application/json'
+              },
+            },
+          );
+          return data;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log('error message: ', error.message);
+          return error.message;
+        } else {
+          console.log('unexpected error: ', error);
+          return 'An unexpected error occurred';
+        }
+      }
       });
+
+      
+
+
+
     } catch (error) {
       alert((error as Error).message);
     }
@@ -188,7 +284,7 @@ const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({ enteredFormState })
                     placeholder="MM"
                     className="time-input"
                   />
-                  <IonButton slot="end" color="success" onClick={() => editTimeConfirm(item.time)}>
+                  <IonButton slot="end" color="success" onClick={() => editTimeConfirm(item.time, item.id)}>
                     <IonIcon icon={checkmarkOutline} />
                   </IonButton>
                   <IonButton slot="end" color="medium" onClick={() => setEditingTime(null)}>
@@ -206,7 +302,7 @@ const ScheduleAddModifyPage: React.FC<AddGameFormProps> = ({ enteredFormState })
                   }}>
                     <IonIcon icon={createOutline} />
                   </IonButton>
-                  <IonButton slot="end" color="danger" onClick={() => deleteTime(item.time)}>
+                  <IonButton slot="end" color="danger" onClick={() => deleteTime(item.id)}>
                     <IonIcon icon={trashOutline} />
                   </IonButton>
                 </>
