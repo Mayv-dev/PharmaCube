@@ -17,3 +17,15 @@ func GetPatient(id uint) (models.Patient, error) {
 
 	return patient, nil
 }
+
+func GetPatientRegime(id uint) ([]models.PatientRegime, error) {
+	var regimes []models.PatientRegime
+
+	DbAtapter := GromDbAdapter()
+	result := DbAtapter.Where("patient_id = ?", id).Find(&regimes)
+	if result.Error != nil {
+		return []models.PatientRegime{}, fmt.Errorf("Regimes not found for patient %v", id)
+	}
+
+	return regimes, nil
+}
