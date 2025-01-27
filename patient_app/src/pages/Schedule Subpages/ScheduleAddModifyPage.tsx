@@ -99,7 +99,7 @@ const ScheduleAddModifyPage: React.FC = () => {
         try {
           console.log("post request being made...")
           const { data, status } = await axios.post(
-            'https://demo3553220.mockable.io/',
+            'https://demo3553220.mockable.io/patient/id/schedule',
             {
               id: newId,
               day: selectedDay,
@@ -145,7 +145,7 @@ const ScheduleAddModifyPage: React.FC = () => {
 
       try {
         const { data, status } = await axios.delete(
-          `https://demo3553220.mockable.io/pharmacist/user/user_id/schedule`,
+          `https://demo3553220.mockable.io/patient/id/schedule`,
           {
           headers: {
             Accept: 'application/json'
@@ -195,7 +195,7 @@ const ScheduleAddModifyPage: React.FC = () => {
         try {
           console.log("put request being made...")
           const { data, status } = await axios.put(
-            'https://demo3553220.mockable.io/',
+            'https://demo3553220.mockable.io/patient/id/schedule',
             {
               id: newId,
               day: selectedDay,
