@@ -53,7 +53,7 @@ const NotificationPage: React.FC = () => {
 		  <IonTitle className='center'>Notifications</IonTitle>
 		</IonToolbar>
 	  </IonHeader>
-	  <IonContent fullscreen className='wrapper'>
+	  <IonContent fullscreen className='wrapper ion-padding'>
 		{notifications?.map(notification => <NotificationItem id={notification.id} content={notification.content} timestamp={notification.timestamp} urgencyPassed={notification.urgency}/>)}
 	  </IonContent>
 	</IonPage>

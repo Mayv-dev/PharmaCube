@@ -28,4 +28,5 @@
     justify-content: center; 
     flex-direction: column;
     gap: 10px; 
+    margin:auto auto auto auto;
   }
