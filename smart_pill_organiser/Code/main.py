@@ -9,8 +9,7 @@ def main():
         motorcontroller.move_to_compartment(i)
         i+= 2
         if(i >= 9):
-            i = 0
-        time.sleep(10)
+            i = 1
             
 if __name__ == "__main__":
     main()
