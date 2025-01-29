@@ -364,7 +364,7 @@ const ScheduleAddModifyPage: React.FC = () => {
             </IonToolbar>
           </IonHeader>
           <IonContent className="ion-padding">
-            <p>Are you sure you wish to delete this regime?</p>
+            <p>Are you sure you wish to delete this time?</p>
             <IonButton expand="full" color="primary" onClick={() => {
               deleteTime(deleteScheduleId)
               setShowModal(false)}}>
