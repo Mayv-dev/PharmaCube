@@ -13,7 +13,9 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  IonModal
+  IonModal,
+  IonSelectOption,
+  IonSelect
 } from "@ionic/react";
 import { trashOutline, createOutline, checkmarkOutline, closeOutline } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
@@ -46,6 +48,8 @@ const ScheduleAddModifyPage: React.FC = () => {
   const [editMinutes, setEditMinutes] = useState<string>("");
 
   const [showModal, setShowModal] = useState(false);
+  const [timeOfDay, setTimeOfDay] = useState<number | null>(null);
+
 
 
   useEffect(() => {
@@ -270,25 +274,36 @@ const ScheduleAddModifyPage: React.FC = () => {
         </IonGrid>
 
         <IonItem>
-          <IonLabel position="stacked">Add New Time:</IonLabel>
-          <div className="time-input-container">
-            <IonInput
-              type="number"
-              value={hours}
-              onIonChange={(e) => setHours(e.detail.value || "")}
-              placeholder="HH"
-              className="time-input"
-            />
-            :
-            <IonInput
-              type="number"
-              value={minutes}
-              onIonChange={(e) => setMinutes(e.detail.value || "")}
-              placeholder="MM"
-              className="time-input"
-            />
-          </div>
-        </IonItem>
+  <IonLabel position="stacked">Add New Time:</IonLabel>
+  <div className="time-input-container">
+    <IonInput
+      type="number"
+      value={hours}
+      onIonChange={(e) => setHours(e.detail.value || "")}
+      placeholder="HH"
+      className="time-input"
+    />
+    :
+    <IonInput
+      type="number"
+      value={minutes}
+      onIonChange={(e) => setMinutes(e.detail.value || "")}
+      placeholder="MM"
+      className="time-input"
+    />
+    <IonItem>
+      <IonLabel position="fixed">Time of Day:</IonLabel>
+      <IonSelect onIonChange={(e) => setTimeOfDay(e.detail.value)}>
+        <IonSelectOption value={0}>Late Night</IonSelectOption>
+        <IonSelectOption value={1}>Early Morning</IonSelectOption>
+        <IonSelectOption value={2}>Morning</IonSelectOption>
+        <IonSelectOption value={3}>Afternoon</IonSelectOption>
+        <IonSelectOption value={4}>Evening</IonSelectOption>
+        <IonSelectOption value={5}>Night</IonSelectOption>
+      </IonSelect>
+    </IonItem>
+  </div>
+</IonItem>
 
         <IonButton onClick={addTime} expand="block" color="primary">
           Add Time
