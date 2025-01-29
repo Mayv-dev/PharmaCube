@@ -1,0 +1,14 @@
+.notification-icon, .hamburger-icon {
+	font-size: 24px;
+	cursor: pointer;
+	margin: 1%;
+}
+
+.notification-badge {
+	font-size: 12px;
+  }
+
+.centerTitle {
+	text-align: center;
+	font-weight: bold;
+}

@@ -1,0 +1,25 @@
+.data-display {
+  border: 1px solid #ccc;
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f4f4f4;
+}
+
+.submit-button {
+  margin-top: 20px;
+}
+
+.confirmation-table {
+  width: 100%;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+.confirmation-checkbox {
+  margin-top: 20px;
+}
+
+.cancel-button {
+  margin-top: 10px;
+}

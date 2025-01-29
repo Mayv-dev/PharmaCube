@@ -1,0 +1,49 @@
+.medicationList {
+	background-color: rgb(207, 207, 207);
+	border: 1px solid black;
+	padding:10px;
+	width: 70%;
+	margin: 6px auto 6px auto;
+	text-align: center;
+}
+
+.sectionHeading {
+	color: rgb(0, 0, 0);
+	text-align: center;
+	font-size: 36px;
+	margin: 50px auto 5px auto;
+}
+
+.formBody {
+	width: 50%;
+	margin: auto;
+}
+
+.label-fixed.sc-ion-label-md-h {
+	min-width: 110px;
+}
+
+.formGroup {
+	width: 80%;
+	margin: auto;
+	border: 1px solid black;
+	padding: 8px;
+}
+
+
+.medicationInputs {
+	display: flex;
+	width: 90%;
+	margin: auto;
+	flex-direction: column;
+}
+
+@media only screen and (max-width: 600px) {
+	.formBody {
+		width: 100%;
+		margin: auto;
+	}
+	.sectionHeading {
+		font-size: 25px;
+	}
+  }

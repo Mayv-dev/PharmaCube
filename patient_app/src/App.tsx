@@ -48,6 +48,7 @@ import NotificationPage from './pages/NotificationPage';
 
 setupIonicReact();
 
+
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
@@ -61,6 +62,7 @@ const App: React.FC = () => (
           </Route>
           <Route path="/ScheduleAddModifyPage">
             <ScheduleAddModifyPage />
+
           </Route>
           <Route path="/NotificationsPage">
             <NotificationPage />
@@ -74,6 +76,7 @@ const App: React.FC = () => (
             <IonIcon aria-hidden="true" icon={triangle} />
             <IonLabel>Schedule</IonLabel>
           </IonTabButton>
+
           <IonTabButton tab="NotificationsPage" href="/NotificationsPage">
             <IonIcon aria-hidden="true" icon={square} />
             <IonLabel>Notifications</IonLabel>
