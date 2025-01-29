@@ -1,0 +1,8 @@
+If the motor stops spinning (as well as 3 lights on the driver), a known solution is:
+ - switch off the power
+ - unplug the motor from the driver board (it's the white plug)
+ - reconnect the power and run main.py
+ - ensure the lights are either all lit up or only lit up in 2s.
+ - reconnect the motor
+
+
