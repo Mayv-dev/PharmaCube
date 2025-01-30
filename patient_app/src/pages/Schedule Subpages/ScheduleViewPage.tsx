@@ -20,7 +20,8 @@ import useSQLiteDB from "../../composables/useSQLiteDB";
 // Type definition for a schedule entry
 type SQLItem = {
   id: number;
-  day: string;
+  day: number;
+  timeofday: number;
   time: string;
 };
 
@@ -76,7 +77,7 @@ const ScheduleViewPage: React.FC = () => {
         <IonList>
           {schedule.map((item) => (
             <IonItem key={item.id}>
-              <IonLabel>{item.time}</IonLabel>
+              <IonLabel>{item.time} | Part Of Day: {item.timeofday}</IonLabel>
             </IonItem>
           ))}
         </IonList>

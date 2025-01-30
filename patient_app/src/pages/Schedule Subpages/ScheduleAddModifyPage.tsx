@@ -48,7 +48,7 @@ const ScheduleAddModifyPage: React.FC = () => {
   const [editMinutes, setEditMinutes] = useState<string>("");
 
   const [showModal, setShowModal] = useState(false);
-  const [timeOfDay, setTimeOfDay] = useState<number | null>(null);
+  const [selectedTimeOfDay, setSelectedTimeOfDay] = useState<number | null>(null);
 
 
 
@@ -58,7 +58,7 @@ const ScheduleAddModifyPage: React.FC = () => {
 
   async function loadSchedule(day: string) {
     performSQLAction(async (db: SQLiteDBConnection | undefined) => {
-      const result = await db?.query("SELECT id, day, time FROM schedule WHERE day = ?", [day]);
+      const result = await db?.query("SELECT id, day, time, timeofday FROM schedule WHERE day = ?", [day]);
       console.log(result)
       setSchedule(result?.values || []);
 
@@ -92,8 +92,9 @@ const ScheduleAddModifyPage: React.FC = () => {
 
     try {
       performSQLAction(async (db: SQLiteDBConnection | undefined) => {
-        await db?.query("INSERT INTO schedule (day, time) VALUES (?, ?);", [selectedDay, formattedTime]);
-        const generatedId = await db?.query("SELECT id FROM schedule WHERE day = ? AND time = ?", [selectedDay, formattedTime]);
+        await db?.query("SELECT COUNT(*) FROM schedule WHERE timeofday = ?;", [selectedTimeOfDay]);
+        await db?.query("INSERT INTO schedule (day, time, timeofday) VALUES (?, ?, ?);", [selectedDay, formattedTime, selectedTimeOfDay]);
+        const generatedId = await db?.query("SELECT id FROM schedule WHERE day = ? AND time = ? AND timeOfDay = ?", [selectedDay, formattedTime, selectedTimeOfDay]);
         const newId:number = typeof generatedId?.values?.at(0).id == "number" ? generatedId?.values?.at(0).id : 0
         console.log("Inserting ", { id: newId, day:selectedDay, time: formattedTime })
         setSchedule((prev) => [...prev, { id: newId, day:selectedDay, time: formattedTime }]);
@@ -107,7 +108,8 @@ const ScheduleAddModifyPage: React.FC = () => {
             {
               id: newId,
               day: selectedDay,
-              time: formattedTime
+              time: formattedTime,
+              timeOfDay:selectedTimeOfDay
             },
             {
               headers: {
@@ -293,7 +295,7 @@ const ScheduleAddModifyPage: React.FC = () => {
     />
     <IonItem>
       <IonLabel position="fixed">Time of Day:</IonLabel>
-      <IonSelect onIonChange={(e) => setTimeOfDay(e.detail.value)}>
+      <IonSelect onIonChange={(e) => setSelectedTimeOfDay(e.detail.value)}>
         <IonSelectOption value={0}>Late Night</IonSelectOption>
         <IonSelectOption value={1}>Early Morning</IonSelectOption>
         <IonSelectOption value={2}>Morning</IonSelectOption>
