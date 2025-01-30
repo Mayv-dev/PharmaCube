@@ -26,17 +26,24 @@ import { SQLiteDBConnection } from "@capacitor-community/sqlite";
 import useSQLiteDB from "../../composables/useSQLiteDB";
 import "./ScheduleAddModifyPage.css";
 
-const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const daysOfWeek = [0,1,2,3,4,5,6];
+
+function getWeekdayName(dayNumber: number): string | null {
+  const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  
+  return dayNumber >= 0 && dayNumber <= 6 ? weekdays[dayNumber] : null;
+}
+
 
 const ScheduleAddModifyPage: React.FC = () => {
 
   const [deleteScheduleId, setDeleteScheduleId] = useState<number>(-1);
 
-  const [selectedDay, setSelectedDay] = useState<string>("Monday");
+  const [selectedDay, setSelectedDay] = useState<number | null>(0);
 
   const [newTime, setNewTime] = useState<string>("");
 
-  const [schedule, setSchedule] = useState<{ id:number, day:string, time: string }[]>([]);
+  const [schedule, setSchedule] = useState<{ id:number, day:number, timeofday:number, time: string }[]>([]);
 
   const { performSQLAction, initialized } = useSQLiteDB();
 
@@ -56,7 +63,7 @@ const ScheduleAddModifyPage: React.FC = () => {
     loadSchedule(selectedDay);
   }, [initialized, selectedDay]);
 
-  async function loadSchedule(day: string) {
+  async function loadSchedule(day: number | null) {
     performSQLAction(async (db: SQLiteDBConnection | undefined) => {
       const result = await db?.query("SELECT id, day, time, timeofday FROM schedule WHERE day = ?", [day]);
       console.log(result)
@@ -92,39 +99,48 @@ const ScheduleAddModifyPage: React.FC = () => {
 
     try {
       performSQLAction(async (db: SQLiteDBConnection | undefined) => {
-        await db?.query("SELECT COUNT(*) FROM schedule WHERE timeofday = ?;", [selectedTimeOfDay]);
-        await db?.query("INSERT INTO schedule (day, time, timeofday) VALUES (?, ?, ?);", [selectedDay, formattedTime, selectedTimeOfDay]);
-        const generatedId = await db?.query("SELECT id FROM schedule WHERE day = ? AND time = ? AND timeOfDay = ?", [selectedDay, formattedTime, selectedTimeOfDay]);
-        const newId:number = typeof generatedId?.values?.at(0).id == "number" ? generatedId?.values?.at(0).id : 0
-        console.log("Inserting ", { id: newId, day:selectedDay, time: formattedTime })
-        setSchedule((prev) => [...prev, { id: newId, day:selectedDay, time: formattedTime }]);
+        const repeatingTime = await db?.query("SELECT COUNT(*) FROM schedule WHERE timeofday = ? AND day = ?;", [selectedTimeOfDay, selectedDay]);
+        console.log(repeatingTime?.values?.at(0)["COUNT(*)"])
+        if(repeatingTime?.values?.at(0)["COUNT(*)"] > 0) {
+          alert("This time of day already exists");
+          return;
+        }
+        else {
+          await db?.query("INSERT INTO schedule (day, time, timeofday) VALUES (?, ?, ?);", [selectedDay, formattedTime, selectedTimeOfDay]);
+          const generatedId = await db?.query("SELECT id FROM schedule WHERE day = ? AND time = ? AND timeOfDay = ?", [selectedDay, formattedTime, selectedTimeOfDay]);
+          const newId:number = typeof generatedId?.values?.at(0).id == "number" ? generatedId?.values?.at(0).id : 0
+          console.log("Inserting ", { id: newId, day:selectedDay, time: formattedTime })
+          if(typeof selectedDay == "number" && typeof selectedTimeOfDay == "number") {
+            setSchedule((prev) => [...prev, { id: newId, day:selectedDay, time: formattedTime, timeofday:selectedTimeOfDay }]);
+          }
 
-        setHours("");
-        setMinutes("");
-        try {
-          console.log("post request being made...")
-          const { data, status } = await axios.post(
-            'https://demo3553220.mockable.io/patient/id/schedule',
-            {
-              id: newId,
-              day: selectedDay,
-              time: formattedTime,
-              timeOfDay:selectedTimeOfDay
-            },
-            {
-              headers: {
-                Accept: 'application/json'
+          setHours("");
+          setMinutes("");
+          try {
+            console.log("post request being made...")
+            const { data, status } = await axios.post(
+              'https://demo3553220.mockable.io/patient/id/schedule',
+              {
+                id: newId,
+                day: selectedDay,
+                time: formattedTime,
+                timeOfDay:selectedTimeOfDay
               },
-            },
-          );
-          return data;
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log('error message: ', error.message);
-          return error.message;
-        } else {
-          console.log('unexpected error: ', error);
-          return 'An unexpected error occurred';
+              {
+                headers: {
+                  Accept: 'application/json'
+                },
+              },
+            );
+            return data;
+        } catch (error) {
+          if (axios.isAxiosError(error)) {
+            console.log('error message: ', error.message);
+            return error.message;
+          } else {
+            console.log('unexpected error: ', error);
+            return 'An unexpected error occurred';
+          }
         }
       }
       });
@@ -191,9 +207,11 @@ const ScheduleAddModifyPage: React.FC = () => {
         const generatedId = await db?.query("SELECT id FROM schedule WHERE day = ? AND time = ?", [selectedDay, formattedTime]);
         const newId:number = typeof generatedId?.values?.at(0).id == "number" ? generatedId?.values?.at(0).id : 0
         console.log("Updating ", { id: newId, day:selectedDay, time: formattedTime })
-        setSchedule((prev) =>
-          prev.map((item) => (item.time === originalTime ? { id:newId, day: selectedDay, time: formattedTime } : item))
-        );
+        if(typeof selectedDay == "number") {
+          setSchedule((prev) =>
+            prev.map((item) => (item.time === originalTime ? { id:newId, day: selectedDay, time: formattedTime , timeofday:item.timeofday} : item))
+          );
+      }
         setEditingTime(null);
         setEditHours("");
         setEditMinutes("");
@@ -268,7 +286,7 @@ const ScheduleAddModifyPage: React.FC = () => {
             {daysOfWeek.map((day) => (
               <IonCol key={day} size="1" className={selectedDay === day ? "selected-day" : "day-col"}>
                 <IonButton fill="clear" onClick={() => setSelectedDay(day)}>
-                  {day.charAt(0)}
+                  {getWeekdayName(day)?.substring(0,2)}
                 </IonButton>
               </IonCol>
             ))}
@@ -340,7 +358,7 @@ const ScheduleAddModifyPage: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <IonLabel>{item.time}</IonLabel>
+                  <IonLabel>{item.time} | Part Of Day:{item.timeofday}</IonLabel>
                   <IonButton slot="end" color="primary" onClick={() => {
                     setEditingTime(item.time);
                     const [hh, mm] = item.time.split(":");
