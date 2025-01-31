@@ -75,10 +75,11 @@ function timeOfDayConvert(day:number):string {
 
 type ContainerProps = {
 	regime:RegimeItem,
-	deleteItem:any
+	deleteItem:any,
+	modifyItem:any
 }
 
-const RegimeItemContainer: React.FC<ContainerProps> = ({regime, deleteItem}) => 
+const RegimeItemContainer: React.FC<ContainerProps> = ({regime, deleteItem, modifyItem}) => 
 {
 	return(
 		<div key={regime.id} className='regimeItemContainer'>
@@ -108,7 +109,7 @@ const RegimeItemContainer: React.FC<ContainerProps> = ({regime, deleteItem}) =>
 				<IonButton onClick={() => deleteItem(regime.id)} color="danger">
 				<IonIcon icon={trashOutline} />
 				</IonButton>
-				<IonButton onClick={() => console.log("Modify with the included regime, also ", regime)} color="primary">
+				<IonButton onClick={() => modifyItem(regime)} color="primary">
 				<IonIcon icon={createOutline} />
 				</IonButton>
 			</div>

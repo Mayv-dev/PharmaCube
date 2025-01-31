@@ -42,6 +42,8 @@ import ViewRegime from './pages/Regimes Subpages/ViewRegime';
 
 setupIonicReact();
 
+const testRootMessage = (regime:any) => console.log(`The regime of the patient with ID: ${regime.patient_id} has been passed up as `, regime)
+
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
@@ -64,7 +66,7 @@ const App: React.FC = () => (
             <AddRegime />
           </Route>
           <Route exact path="/regimes/view">
-            <ViewRegime />
+            <ViewRegime passModifyDataToApp={testRootMessage}/>
           </Route>
 
           <Route exact path="/users">

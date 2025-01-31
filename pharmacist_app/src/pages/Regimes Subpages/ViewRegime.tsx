@@ -16,7 +16,11 @@ import LowerToolbar from '../../components/LowerToolbar';
 import { RegimeItem } from 'api types/types';
 import RegimeItemContainer from '../../components/Regime Components/RegimeItemContainer';
 
-const ViewRegime = () => {
+type ContainerProps = {
+	passModifyDataToApp:any
+}
+
+const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
 	const [pharmacistId, setPharmacistId] = useState<number>(1);
 
 	const [patientId, setPatientId] = useState<number>(1);
@@ -49,6 +53,10 @@ const ViewRegime = () => {
 		return 'An unexpected error occurred';
 	  }
 	}
+  }
+
+  const modifyFromApp = (regime:any) =>{
+	passModifyDataToApp(regime)
   }
 
   const confirmDeletion = (regimeId:number) => {
@@ -104,7 +112,7 @@ const ViewRegime = () => {
 					<ul>
 						{/*declaring an object that is passed entirely to the component with ...regime was a solution recieved from the answer of CPHPython 
 						at https://stackoverflow.com/questions/48240449/type-is-not-assignable-to-type-intrinsicattributes-intrinsicclassattribu*/}
-						{userRegimes?.map(regime => <RegimeItemContainer regime={regime} deleteItem={confirmDeletion}/>)}
+						{userRegimes?.map(regime => <RegimeItemContainer regime={regime} deleteItem={confirmDeletion} modifyItem={modifyFromApp} />)}
 					</ul>
 				</>
 			}
