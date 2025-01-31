@@ -58,12 +58,10 @@ const ScheduleAddModifyPage: React.FC = () => {
   const [selectedTimeOfDay, setSelectedTimeOfDay] = useState<number | null>(null);
 
   const timeOfDayMap: { [key: number]: string } = {
-    0: "Late Night",
-    1: "Early Morning",
-    2: "Morning",
-    3: "Afternoon",
-    4: "Evening",
-    5: "Night",
+    1: "Morning",
+    2: "Afternoon",
+    3: "Evening",
+    4: "Night",
   };
 
 
@@ -322,12 +320,10 @@ const ScheduleAddModifyPage: React.FC = () => {
     <IonItem>
       <IonLabel position="fixed">Time of Day:</IonLabel>
       <IonSelect onIonChange={(e) => setSelectedTimeOfDay(e.detail.value)}>
-        <IonSelectOption value={0}>Late Night</IonSelectOption>
-        <IonSelectOption value={1}>Early Morning</IonSelectOption>
-        <IonSelectOption value={2}>Morning</IonSelectOption>
-        <IonSelectOption value={3}>Afternoon</IonSelectOption>
-        <IonSelectOption value={4}>Evening</IonSelectOption>
-        <IonSelectOption value={5}>Night</IonSelectOption>
+        <IonSelectOption value={1}>Morning</IonSelectOption>
+        <IonSelectOption value={2}>Afternoon</IonSelectOption>
+        <IonSelectOption value={3}>Evening</IonSelectOption>
+        <IonSelectOption value={4}>Night</IonSelectOption>
       </IonSelect>
     </IonItem>
   </div>
