@@ -102,9 +102,9 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
 			<IonContent className="ion-padding">
 				<p>Select a user (currently hardcoded)</p>
 				<IonSelect placeholder='Users' onIonChange={e => handleUserSelect(e.target.value)}>
-					<IonSelectOption>TEST Duffy</IonSelectOption>
-					<IonSelectOption>TEST Murphy</IonSelectOption>
-					<IonSelectOption>TEST McMahon</IonSelectOption>
+					<IonSelectOption>Nina Muller</IonSelectOption>
+					<IonSelectOption>Aaron Murphy</IonSelectOption>
+					<IonSelectOption>Dillon McMahon</IonSelectOption>
 				</IonSelect>
 			{
 				patientName == "Unselected" ? null :

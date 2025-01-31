@@ -20,7 +20,11 @@ import '../../styles/Regime Subpages/AddRegime.css';
 import LowerToolbar from '../../components/LowerToolbar';
 import { RegimeItem } from 'api types/types';
 
-const AddRegime = () => {
+type AddRegimeProps = {
+  passedInfo:any
+}
+
+const AddRegime: React.FC<AddRegimeProps> = ({passedInfo}) => {
   const [patientList, setPatientList] = useState<any[]>([]);
   const [pharmacistId, setPharmacistId] = useState<number>(1);
 
@@ -32,7 +36,7 @@ const AddRegime = () => {
 
   const [compartment, setCompartment] = useState<number>(0);
 
-  const [day, setDay] = useState('');
+  const [day, setDay] = useState<number>(0);
   const [timeOfDay, setTimeOfDay] = useState<number>(-1);
   const [timeOffset, setTimeOffset] = useState<number>(0);
 
@@ -42,44 +46,55 @@ const AddRegime = () => {
 
 
   function dayConvert(day:string):number {
-    let stringDay = -1;
+    let intDay = -1;
   
     switch (day) {
       case "Monday": {
-        stringDay = 0;
+        intDay = 1;
         break;
       }
       case "Tuesday": {
-        stringDay = 1;
+        intDay = 2;
         break;
       }
       case "Wednesday": {
-        stringDay = 2;
+        intDay = 3;
         break;
       }
       case "Thursday": {
-        stringDay = 3;
+        intDay = 4;
         break;
       }
       case "Friday": {
-        stringDay = 4;
+        intDay = 5;
         break;
       }
       case "Saturday": {
-        stringDay = 5;
+        intDay = 6;
         break;
       }
       case "Sunday": {
-        stringDay = 6;
+        intDay = 7;
         break;
       }
     }
   
-    return stringDay;
+    return intDay;
   }
 
   useEffect(() => {
-    getMockPatientList().then(setPatientList)
+    if(passedInfo != null) {
+      console.log(passedInfo)
+      setPatientId(passedInfo.patient_id)
+      setPatientName("Aaron Murphy")
+      setInformation(passedInfo.information)
+      setCompartment(passedInfo.compartment_id)
+      setDay(passedInfo.day)
+      setTimeOfDay(passedInfo.time_period)
+      setTimeOffset(passedInfo.time_adjustment)
+      setInstructions(passedInfo.instructions)
+    }
+    else getMockPatientList().then(setPatientList)
     },[]);
 
     const getMockPatientList = async () => {
@@ -125,6 +140,7 @@ const AddRegime = () => {
 
   async function sendToMockable(addedRegime:RegimeItem) {
     try {
+      if(passedInfo == null) {
       console.log("post request being made...")
       const { data, status } = await axios.post(
         `http://localhost:8080/pharmacist/${pharmacistId}/patient/${patientId}/regime`,
@@ -136,6 +152,20 @@ const AddRegime = () => {
         },
       );
       return data;
+      }
+      else {
+        console.log("put request being made...")
+      const { data, status } = await axios.put(
+        `http://localhost:8080/pharmacist/${pharmacistId}/patient/${patientId}/regime/${passedInfo.id}`,
+        addedRegime,
+        {
+          headers: {
+            Accept: 'application/json'
+          },
+        },
+      );
+      return data;
+      }
     }
     catch (error) {
       if (axios.isAxiosError(error)) {
@@ -150,13 +180,18 @@ const AddRegime = () => {
 
   const handleConfirm = () => {
     setShowModal(false);
+
+    // Solution to the timeoffset appearing as a string was retrieved from Ryan Cavanaugh's answer at:
+    // https://stackoverflow.com/questions/14667713/how-to-convert-a-string-to-number-in-typescript
+    let offset:number = +timeOffset
+
     let addedRegime:RegimeItem = {
       id: 0,
       compartment_id: compartment == undefined ? 0 : compartment,
       information: information,
-      day:dayConvert(day),
+      day:day,
       time_period:timeOfDay,
-      time_adjustment:timeOffset, 
+      time_adjustment:offset, 
       instructions: instructions
     }
 
@@ -178,21 +213,25 @@ const AddRegime = () => {
 
       <IonContent className="ion-padding">
         <div className='formBody'>
+        {passedInfo == null? 
           <IonItem>
             <IonLabel position="fixed">Patient:</IonLabel>
-            <IonSelect placeholder='Choose a patient' onIonChange={e => {
+            
+            <IonSelect  placeholder='Choose a patient' onIonChange={e => {
                 setPatientId(e.target.value.id)
                 setPatientName(e.target.value.name)
               }}> 
               {patientList.map(patient => <IonSelectOption value={patient}>{patient.name}</IonSelectOption>)}
             </IonSelect>
+          
           </IonItem>
+          :null}
 
           <p className="sectionHeading">What is {patientName == "" ? "the patient" : patientName} taking?</p>
           <div className='formGroup'>
           <IonItem>
             <IonLabel position="fixed">Information:</IonLabel>
-            <IonTextarea onIonChange={e => setInformation(e.target.value)}></IonTextarea>
+            <IonTextarea value={information} onIonChange={e => setInformation(e.target.value)}></IonTextarea>
           </IonItem>
           <IonItem>
             <IonLabel position="fixed">Compartment: </IonLabel>
@@ -211,26 +250,24 @@ const AddRegime = () => {
           <div className='formGroup'>
           <IonItem>
             <IonLabel position="fixed">Day:</IonLabel>
-            <IonSelect onIonChange={e => setDay(e.target.value)}>
-              <IonSelectOption>Monday</IonSelectOption>
-              <IonSelectOption>Tuesday</IonSelectOption>
-              <IonSelectOption>Wednesday</IonSelectOption>
-              <IonSelectOption>Thursday</IonSelectOption>
-              <IonSelectOption>Friday</IonSelectOption>
-              <IonSelectOption>Saturday</IonSelectOption>
-              <IonSelectOption>Sunday</IonSelectOption>
+            <IonSelect value={day} onIonChange={e => setDay(e.target.value)}>
+              <IonSelectOption value={1}>Monday</IonSelectOption>
+              <IonSelectOption value={2}>Tuesday</IonSelectOption>
+              <IonSelectOption value={3}>Wednesday</IonSelectOption>
+              <IonSelectOption value={4}>Thursday</IonSelectOption>
+              <IonSelectOption value={5}>Friday</IonSelectOption>
+              <IonSelectOption value={6}>Saturday</IonSelectOption>
+              <IonSelectOption value={7}>Sunday</IonSelectOption>
             </IonSelect>
           </IonItem>
           
           <IonItem>
             <IonLabel position="fixed">Time of Day:</IonLabel>
-            <IonSelect onIonChange={e => setTimeOfDay(e.target.value)}>
-              <IonSelectOption value={0}>Late Night</IonSelectOption>
-              <IonSelectOption value={1}>Early Morning</IonSelectOption>
-              <IonSelectOption value={2}>Morning</IonSelectOption>
-              <IonSelectOption value={3}>Afternoon</IonSelectOption>
-              <IonSelectOption value={4}>Evening</IonSelectOption>
-              <IonSelectOption value={5}>Night</IonSelectOption>
+            <IonSelect value={timeOfDay} onIonChange={e => setTimeOfDay(e.target.value)}>
+              <IonSelectOption value={1}>Morning</IonSelectOption>
+              <IonSelectOption value={2}>Afternoon</IonSelectOption>
+              <IonSelectOption value={3}>Evening</IonSelectOption>
+              <IonSelectOption value={4}>Night</IonSelectOption>
             </IonSelect>
           </IonItem>
           
@@ -244,7 +281,7 @@ const AddRegime = () => {
 
           <IonItem>
             <IonLabel position="fixed">Instructions:</IonLabel>
-            <IonTextarea onIonChange={e => setInstructions(e.target.value)}></IonTextarea>
+            <IonTextarea value={instructions} onIonChange={e => setInstructions(e.target.value)}></IonTextarea>
           </IonItem>
 </div>
           

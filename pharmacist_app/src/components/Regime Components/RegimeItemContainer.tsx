@@ -8,30 +8,34 @@ function dayConvert(day:number):string {
 
 	switch (day) {
 		case 0: {
-			stringDay = "Monday";
+			alert("A 0 was passed into a regime item container as a day of the week, this is a sign of a server side error. Call in the Méabh..")
 			break;
 		}
 		case 1: {
-			stringDay = "Tuesday";
+			stringDay = "Monday";
 			break;
 		}
 		case 2: {
-			stringDay = "Wednesday";
+			stringDay = "Tuesday";
 			break;
 		}
 		case 3: {
-			stringDay = "Thursday";
+			stringDay = "Wednesday";
 			break;
 		}
 		case 4: {
-			stringDay = "Friday";
+			stringDay = "Thursday";
 			break;
 		}
 		case 5: {
-			stringDay = "Saturday";
+			stringDay = "Friday";
 			break;
 		}
 		case 6: {
+			stringDay = "Saturday";
+			break;
+		}
+		case 7: {
 			stringDay = "Sunday";
 			break;
 		}
@@ -45,26 +49,22 @@ function timeOfDayConvert(day:number):string {
 
 	switch (day) {
 		case 0: {
-			stringDay = "Late Night";
+			alert("A 0 was passed into a regime item container as a time of day, this is a sign of a server side error. Call in the Méabh..")
 			break;
 		}
 		case 1: {
-			stringDay = "Early Morning";
-			break;
-		}
-		case 2: {
 			stringDay = "Morning";
 			break;
 		}
-		case 3: {
+		case 2: {
 			stringDay = "Afternoon";
 			break;
 		}
-		case 4: {
+		case 3: {
 			stringDay = "Evening";
 			break;
 		}
-		case 5: {
+		case 4: {
 			stringDay = "Night";
 			break;
 		}
@@ -109,7 +109,7 @@ const RegimeItemContainer: React.FC<ContainerProps> = ({regime, deleteItem, modi
 				<IonButton onClick={() => deleteItem(regime.id)} color="danger">
 				<IonIcon icon={trashOutline} />
 				</IonButton>
-				<IonButton onClick={() => modifyItem(regime)} color="primary">
+				<IonButton routerLink="/regimes/modify" onClick={() => modifyItem(regime)} color="primary">
 				<IonIcon icon={createOutline} />
 				</IonButton>
 			</div>
