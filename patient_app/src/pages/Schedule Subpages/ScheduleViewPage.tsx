@@ -27,6 +27,14 @@ type SQLItem = {
 
 const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
+const timeOfDayMap: { [key: number]: string } = {
+  1: "Early Morning",
+  2: "Morning",
+  3: "Afternoon",
+  4: "Evening",
+  5: "Night",
+};
+
 const ScheduleViewPage: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<string>("Monday"); // Default to Monday
   const [schedule, setSchedule] = useState<SQLItem[]>([]);
@@ -75,12 +83,14 @@ const ScheduleViewPage: React.FC = () => {
 
         {/* Schedule List */}
         <IonList>
-          {schedule.map((item) => (
-            <IonItem key={item.id}>
-              <IonLabel>{item.time} | Part Of Day: {item.timeofday}</IonLabel>
-            </IonItem>
-          ))}
-        </IonList>
+  {schedule.map((item) => (
+    <IonItem key={item.id}>
+      <IonLabel>
+        {item.time} | {timeOfDayMap[item.timeofday] || "Unknown Time"}
+      </IonLabel>
+    </IonItem>
+  ))}
+</IonList>
 
         {/* No Entries Message */}
         {schedule.length === 0 && (

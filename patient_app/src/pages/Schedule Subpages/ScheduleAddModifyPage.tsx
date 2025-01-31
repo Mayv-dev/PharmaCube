@@ -57,6 +57,14 @@ const ScheduleAddModifyPage: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedTimeOfDay, setSelectedTimeOfDay] = useState<number | null>(null);
 
+  const timeOfDayMap: { [key: number]: string } = {
+    0: "Late Night",
+    1: "Early Morning",
+    2: "Morning",
+    3: "Afternoon",
+    4: "Evening",
+    5: "Night",
+  };
 
 
   useEffect(() => {
@@ -330,51 +338,51 @@ const ScheduleAddModifyPage: React.FC = () => {
         </IonButton>
 
         <IonList>
-          {schedule.map((item, index) => (
-            <IonItem key={index}>
-              {editingTime === item.time ? (
-                <>
-                  <IonInput
-                    type="number"
-                    value={editHours}
-                    onIonChange={(e) => setEditHours(e.detail.value || "")}
-                    placeholder="HH"
-                    className="time-input"
-                  />
-                  :
-                  <IonInput
-                    type="number"
-                    value={editMinutes}
-                    onIonChange={(e) => setEditMinutes(e.detail.value || "")}
-                    placeholder="MM"
-                    className="time-input"
-                  />
-                  <IonButton slot="end" color="success" onClick={() => editTimeConfirm(item.time, item.id)}>
-                    <IonIcon icon={checkmarkOutline} />
-                  </IonButton>
-                  <IonButton slot="end" color="medium" onClick={() => setEditingTime(null)}>
-                    <IonIcon icon={closeOutline} />
-                  </IonButton>
-                </>
-              ) : (
-                <>
-                  <IonLabel>{item.time} | Part Of Day:{item.timeofday}</IonLabel>
-                  <IonButton slot="end" color="primary" onClick={() => {
-                    setEditingTime(item.time);
-                    const [hh, mm] = item.time.split(":");
-                    setEditHours(hh);
-                    setEditMinutes(mm);
-                  }}>
-                    <IonIcon icon={createOutline} />
-                  </IonButton>
-                  <IonButton slot="end" color="danger" onClick={() => confirmDeletion(item.id)}>
-                    <IonIcon icon={trashOutline} />
-                  </IonButton>
-                </>
-              )}
-            </IonItem>
-          ))}
-        </IonList>
+  {schedule.map((item, index) => (
+    <IonItem key={index}>
+      {editingTime === item.time ? (
+        <>
+          <IonInput
+            type="number"
+            value={editHours}
+            onIonChange={(e) => setEditHours(e.detail.value || "")}
+            placeholder="HH"
+            className="time-input"
+          />
+          :
+          <IonInput
+            type="number"
+            value={editMinutes}
+            onIonChange={(e) => setEditMinutes(e.detail.value || "")}
+            placeholder="MM"
+            className="time-input"
+          />
+          <IonButton slot="end" color="success" onClick={() => editTimeConfirm(item.time, item.id)}>
+            <IonIcon icon={checkmarkOutline} />
+          </IonButton>
+          <IonButton slot="end" color="medium" onClick={() => setEditingTime(null)}>
+            <IonIcon icon={closeOutline} />
+          </IonButton>
+        </>
+      ) : (
+        <>
+          <IonLabel>{item.time} | {timeOfDayMap[item.timeofday] || "Unknown Time"}</IonLabel>
+          <IonButton slot="end" color="primary" onClick={() => {
+            setEditingTime(item.time);
+            const [hh, mm] = item.time.split(":");
+            setEditHours(hh);
+            setEditMinutes(mm);
+          }}>
+            <IonIcon icon={createOutline} />
+          </IonButton>
+          <IonButton slot="end" color="danger" onClick={() => confirmDeletion(item.id)}>
+            <IonIcon icon={trashOutline} />
+          </IonButton>
+        </>
+      )}
+    </IonItem>
+  ))}
+</IonList>
 
 
         <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
