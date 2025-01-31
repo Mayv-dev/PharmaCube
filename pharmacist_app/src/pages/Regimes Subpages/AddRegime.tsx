@@ -152,7 +152,7 @@ const AddRegime = () => {
     setShowModal(false);
     let addedRegime:RegimeItem = {
       id: 0,
-      compartment_id: compartment == undefined ? 0 : compartment, //TODO: fix this somehow. Maybe set all these values to numbers, and have 0 be the default, displaying "no compartment" in the list and when displayed in the form view
+      compartment_id: compartment == undefined ? 0 : compartment,
       information: information,
       day:dayConvert(day),
       time_period:timeOfDay,
