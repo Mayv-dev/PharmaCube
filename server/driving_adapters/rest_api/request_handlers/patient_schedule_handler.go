@@ -104,10 +104,11 @@ func CreatePatientScheduleItem(context *gin.Context) {
 	}
 
 	schedule := models.PatientSchedule{
-		Day:        uint(newSchedule.Day),
+		PatientID:  uint(patientId),
+		Day:        newSchedule.Day,
 		Hour:       newSchedule.Hour,
 		Minute:     newSchedule.Minute,
-		TimePeriod: uint(newSchedule.TimePeriod),
+		TimePeriod: newSchedule.TimePeriod,
 	}
 
 	//Get Patient
