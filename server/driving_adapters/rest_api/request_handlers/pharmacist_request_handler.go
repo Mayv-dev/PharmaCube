@@ -73,7 +73,7 @@ func AddRegimeItem(context *gin.Context) {
 		Day:                   int(apiRegime.Day),
 		TimePeriod:            int(apiRegime.TimePeriod),
 		TimeOffset:            apiRegime.TimeOffset,
-		Instructions:          apiRegime.Instruction,
+		Instructions:          apiRegime.Instructions,
 		CompartmentID:         uint(apiRegime.CompartmentID),
 	}
 
@@ -251,7 +251,7 @@ func UpdatePatientRegime(context *gin.Context) {
 		Day:                   int(apiRegime.Day),
 		TimePeriod:            int(apiRegime.TimePeriod),
 		TimeOffset:            apiRegime.TimeOffset,
-		Instructions:          apiRegime.Instruction,
+		Instructions:          apiRegime.Instructions,
 		CompartmentID:         uint(apiRegime.CompartmentID),
 	}
 

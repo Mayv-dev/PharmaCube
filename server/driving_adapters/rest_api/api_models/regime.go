@@ -6,5 +6,5 @@ type Regime struct {
 	Day           uint   `json:"day"`
 	TimePeriod    uint   `json:"time_period"`
 	TimeOffset    int    `json:"time_adjustment"`
-	Instruction   string `json:"instruction"`
+	Instructions  string `json:"instructions"`
 }
