@@ -76,6 +76,67 @@ func GetPatientScheduleItem(context *gin.Context) {
 	context.JSON(http.StatusOK, schedule)
 }
 
+func CreatePatientScheduleItem(context *gin.Context) {
+	patientId, err := strconv.Atoi(context.Param("patient_id"))
+	if err != nil {
+		//Invalid ID
+		log.Println(err.Error())
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid Patient ID"})
+		return
+	}
+
+	scheduleId, err := strconv.Atoi(context.Param("schedule_id"))
+	if err != nil {
+		//Invalid ID
+		log.Println(err.Error())
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid Schedule ID"})
+		return
+	}
+
+	var newSchedule apimodels.PatientSchedule
+	err = context.BindJSON(&newSchedule)
+	if err != nil {
+		//Invalid json
+		log.Println(err.Error())
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid schedule"})
+		return
+	}
+
+	validator := validator.New()
+	err = validator.Struct(newSchedule)
+	if err != nil {
+		//Invalid
+		log.Println(err.Error())
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid Schedule"})
+		return
+	}
+
+	schedule := models.PatientSchedule{
+		Day:        newSchedule.Day,
+		Hour:       newSchedule.Hour,
+		Minute:     newSchedule.Minute,
+		TimePeriod: newSchedule.TimePeriod,
+	}
+
+	//Get Patient
+	_, err = databaseadapters.GetPatient(uint(patientId))
+	if err != nil {
+		//Not found
+		log.Println(err.Error())
+		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Patient not Found"})
+		return
+	}
+
+	schedule, err = databaseadapters.AddPatientSchedule(schedule)
+	if err != nil {
+		log.Println(err.Error())
+		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Patient Schedule not Created"})
+		return
+	}
+
+	context.JSON(http.StatusOK, schedule)
+}
+
 func ModifyPatientScheduleItem(context *gin.Context) {
 	patientId, err := strconv.Atoi(context.Param("patient_id"))
 	if err != nil {
@@ -107,7 +168,7 @@ func ModifyPatientScheduleItem(context *gin.Context) {
 	if err != nil {
 		//Invalid
 		log.Println(err.Error())
-		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalide Regime"})
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid Schedule1"})
 		return
 	}
 
