@@ -1,4 +1,5 @@
-import { Redirect, Route } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
   IonIcon,
@@ -11,7 +12,6 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { medkit, people, settings, triangle } from 'ionicons/icons'; // Icons for the tabs
-
 import Regimes from './pages/Regimes'; // Medications Tab
 import Users from './pages/Users'; // Users Tab
 import Settings from './pages/Settings'; // Settings Tab
@@ -42,8 +42,12 @@ import ViewRegime from './pages/Regimes Subpages/ViewRegime';
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
+
+const App: React.FC = () => {
+    const [modifyRegimeInfo, setModifyRegimeInfo] = useState(null);
+    const testRootMessage = (regime:any) => setModifyRegimeInfo(regime)
+
+  return(<IonApp>
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
@@ -61,10 +65,14 @@ const App: React.FC = () => (
             <Regimes />
           </Route>
           <Route exact path="/regimes/create">
-            <AddRegime />
+            <AddRegime passedInfo={null}/>
           </Route>
+          <Route exact path="/regimes/modify">
+            <AddRegime passedInfo={modifyRegimeInfo}/>
+          </Route>
+
           <Route exact path="/regimes/view">
-            <ViewRegime />
+            <ViewRegime passModifyDataToApp={testRootMessage}/>
           </Route>
 
           <Route exact path="/users">
@@ -101,5 +109,6 @@ const App: React.FC = () => (
     </IonReactRouter>
   </IonApp>
 );
+}
 
 export default App;
