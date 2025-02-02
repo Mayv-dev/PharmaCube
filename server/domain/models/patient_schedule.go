@@ -1,12 +1,10 @@
 package models
 
-import "pharmacube/server/domain"
-
 type PatientSchedule struct {
 	Common
-	PatientID  uint              `json:"patient_id"`
-	Day        domain.Day        `json:"day"`
-	Hour       uint              `json:"hour"`
-	Minute     uint              `json:"minute"`
-	TimePeriod domain.TimePeriod `json:"time_period"`
+	PatientID  uint `json:"patient_id"`
+	Day        uint `json:"day"`
+	Hour       uint `json:"hour"`
+	Minute     uint `json:"minute"`
+	TimePeriod uint `json:"time_period"`
 }

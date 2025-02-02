@@ -85,14 +85,6 @@ func CreatePatientScheduleItem(context *gin.Context) {
 		return
 	}
 
-	scheduleId, err := strconv.Atoi(context.Param("schedule_id"))
-	if err != nil {
-		//Invalid ID
-		log.Println(err.Error())
-		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid Schedule ID"})
-		return
-	}
-
 	var newSchedule apimodels.PatientSchedule
 	err = context.BindJSON(&newSchedule)
 	if err != nil {
@@ -112,10 +104,10 @@ func CreatePatientScheduleItem(context *gin.Context) {
 	}
 
 	schedule := models.PatientSchedule{
-		Day:        newSchedule.Day,
+		Day:        uint(newSchedule.Day),
 		Hour:       newSchedule.Hour,
 		Minute:     newSchedule.Minute,
-		TimePeriod: newSchedule.TimePeriod,
+		TimePeriod: uint(newSchedule.TimePeriod),
 	}
 
 	//Get Patient
