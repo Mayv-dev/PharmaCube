@@ -59,6 +59,10 @@ func AutoScheduleRegime(patientId uint) error {
 			}
 		}
 
+		if correspondingSchedule.Day == 0 {
+			continue
+		}
+
 		scheduledRegimeItem := models.PatientScheduledRegime{
 			DateTimeToTake: time.Date(
 				regimeItem.Year,
