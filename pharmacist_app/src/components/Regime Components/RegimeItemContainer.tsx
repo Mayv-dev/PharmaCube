@@ -3,43 +3,13 @@ import '../../styles/RegimeItemContainer.css';
 import { IonButton, IonIcon, IonList, IonItem, IonLabel } from '@ionic/react';
 import { createOutline, trashOutline } from "ionicons/icons";
 
-function dayConvert(day:number):string {
+function handleDate(date:number):string {
 	let stringDay = "";
 
-	switch (day) {
-		case 0: {
-			alert("A 0 was passed into a regime item container as a day of the week, this is a sign of a server side error. Call in the Méabh..")
-			break;
-		}
-		case 1: {
-			stringDay = "Monday";
-			break;
-		}
-		case 2: {
-			stringDay = "Tuesday";
-			break;
-		}
-		case 3: {
-			stringDay = "Wednesday";
-			break;
-		}
-		case 4: {
-			stringDay = "Thursday";
-			break;
-		}
-		case 5: {
-			stringDay = "Friday";
-			break;
-		}
-		case 6: {
-			stringDay = "Saturday";
-			break;
-		}
-		case 7: {
-			stringDay = "Sunday";
-			break;
-		}
-	}
+	if(date % 10 == 1 && date != 11) stringDay = date + "st"
+	else if(date % 10 == 2 && date != 12) stringDay = date + "nd"
+	else if(date % 10 == 3 && date != 13) stringDay = date + "rd"
+	else stringDay = date + "th"
 
 	return stringDay;
 }
@@ -96,7 +66,7 @@ const RegimeItemContainer: React.FC<ContainerProps> = ({regime, deleteItem, modi
         <IonLabel><span className='regimeInfoField'>Instructions:</span> {regime.instructions}</IonLabel>
       </IonItem>
       <IonItem>
-        <IonLabel><span className='regimeInfoField'>When to take:</span> {dayConvert(regime.day)}, {timeOfDayConvert(regime.time_period)}</IonLabel>
+        <IonLabel><span className='regimeInfoField'>When to take:</span> {handleDate(regime.date)}, {timeOfDayConvert(regime.time_period)}</IonLabel>
       </IonItem>
       <IonItem>
         <IonLabel><span className='regimeInfoField'>Time Offset:</span> {regime.time_adjustment}</IonLabel>
@@ -109,7 +79,10 @@ const RegimeItemContainer: React.FC<ContainerProps> = ({regime, deleteItem, modi
 				<IonButton onClick={() => deleteItem(regime.id)} color="danger">
 				<IonIcon icon={trashOutline} />
 				</IonButton>
-				<IonButton routerLink="/regimes/modify" onClick={() => modifyItem(regime)} color="primary">
+				<IonButton routerLink="/regimes/modify" onClick={() => {
+					modifyItem(regime)
+					console.log("From regimeitemcontainer. Look for dateinfo: ",regime)
+				}} color="primary">
 				<IonIcon icon={createOutline} />
 				</IonButton>
 			</div>
