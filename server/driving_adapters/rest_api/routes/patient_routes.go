@@ -16,6 +16,6 @@ func PatientRoutes(router *gin.Engine) {
 	router.PUT("/patient/:patient_id/schedule/:schedule_id", requesthandlers.ModifyPatientScheduleItem)
 	router.DELETE("patient/:patient_id/schedule/:schedule_id", requesthandlers.DeletePatientScheduleItem)
 
-	router.GET("/patient/:patient_id/scheduledregime")
-	router.GET("/patient/:patient_id/scheduledregime/:scheduled_regime_id")
+	router.GET("/patient/:patient_id/scheduledregime", requesthandlers.GetPatientScheduledRegime)
+	router.GET("/patient/:patient_id/scheduledregime/:scheduled_regime_id", requesthandlers.GetPatientScheduledRegimeItem)
 }
