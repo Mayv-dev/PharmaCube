@@ -15,6 +15,7 @@ import {
   IonSelect,
   IonSelectOption,
   IonTextarea,
+  IonDatetime,
 } from '@ionic/react';
 import '../../styles/Regime Subpages/AddRegime.css';
 import LowerToolbar from '../../components/LowerToolbar';
@@ -36,7 +37,8 @@ const AddRegime: React.FC<AddRegimeProps> = ({passedInfo}) => {
 
   const [compartment, setCompartment] = useState<number>(0);
 
-  const [day, setDay] = useState<number>(0);
+  const [dateInfo, setDateInfo] = useState<Date>(new Date());
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [timeOfDay, setTimeOfDay] = useState<number>(-1);
   const [timeOffset, setTimeOffset] = useState<number>(0);
 
@@ -89,7 +91,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({passedInfo}) => {
       setPatientName("Aaron Murphy")
       setInformation(passedInfo.information)
       setCompartment(passedInfo.compartment_id)
-      setDay(passedInfo.day)
+      setDateInfo(new Date(passedInfo.year + "-" + passedInfo.month + "-" + passedInfo.date))
       setTimeOfDay(passedInfo.time_period)
       setTimeOffset(passedInfo.time_adjustment)
       setInstructions(passedInfo.instructions)
@@ -123,7 +125,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({passedInfo}) => {
 
   const handleSubmit = () => {
     console.log(timeOffset)
-    if (!patientName || !day || !timeOfDay || timeOfDay == -1 || !information || !instructions) {
+    if (!patientName || dateInfo.valueOf() == currentDate.valueOf() || !timeOfDay || timeOfDay == -1 || !information || !instructions) {
       alert('Please fill in all fields before submitting.');
       return;
     }
@@ -189,20 +191,16 @@ const AddRegime: React.FC<AddRegimeProps> = ({passedInfo}) => {
       id: 0,
       compartment_id: compartment == undefined ? 0 : compartment,
       information: information,
-      day:day,
+      date:dateInfo.getDate(),
+      month:dateInfo.getMonth()+1,
+      year:dateInfo.getFullYear(),
       time_period:timeOfDay,
       time_adjustment:offset, 
       instructions: instructions
     }
 
     sendToMockable(addedRegime)
-    console.log("patientId: " , patientId)
-    console.log("Patient Name:", patientName)
-    console.log("Compartment: ", compartment == undefined ? 0 : compartment)
-    console.log("Day: " , day)
-    console.log("Time of Day: " , timeOfDay)
-    console.log("Time Offset: " , timeOffset)
-    console.log("Instructions: " , instructions)
+    
     alert('Details confirmed and submitted!');
   };
 
@@ -249,8 +247,18 @@ const AddRegime: React.FC<AddRegimeProps> = ({passedInfo}) => {
           <p className="sectionHeading">When should {patientName == "" ? "the patient" : patientName} take it?</p>
           <div className='formGroup'>
           <IonItem>
-            <IonLabel position="fixed">Day:</IonLabel>
-            <IonSelect value={day} onIonChange={e => setDay(e.target.value)}>
+            <IonLabel position="fixed">Date:</IonLabel>
+            <IonDatetime onIonChange={e => {
+              const dateData:Date = typeof e.target.value == "string" ?  new Date(e.target.value): new Date(-1);
+              const currDate:Date = new Date();
+              if (currDate > dateData) {
+                alert("please choose a date in the future")
+              }
+              else {
+                setDateInfo(dateData)
+              }
+            }} presentation="date"></IonDatetime>;            
+            {/* <IonSelect value={day} onIonChange={e => setDay(e.target.value)}>
               <IonSelectOption value={1}>Monday</IonSelectOption>
               <IonSelectOption value={2}>Tuesday</IonSelectOption>
               <IonSelectOption value={3}>Wednesday</IonSelectOption>
@@ -258,7 +266,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({passedInfo}) => {
               <IonSelectOption value={5}>Friday</IonSelectOption>
               <IonSelectOption value={6}>Saturday</IonSelectOption>
               <IonSelectOption value={7}>Sunday</IonSelectOption>
-            </IonSelect>
+            </IonSelect> */}
           </IonItem>
           
           <IonItem>
@@ -303,7 +311,9 @@ const AddRegime: React.FC<AddRegimeProps> = ({passedInfo}) => {
               <p><strong>Patient:</strong> {patientName}</p>
               <p><strong>Information:</strong> {information}</p>
               <p><strong>Compartment:</strong> {compartment == undefined ? "Medication not stored in compartment" : compartment}</p>
-              <p><strong>Day:</strong> {day}</p>
+              <p><strong>Day:</strong> {dateInfo.getDay()}</p>
+              <p><strong>Month:</strong> {dateInfo.getMonth()+1}</p>
+              <p><strong>Year:</strong> {dateInfo.getFullYear()}</p>
               <p><strong>Time of Day:</strong> {timeOfDay}</p>
               <p><strong>Time Offset:</strong> {timeOffset}</p>
               <p><strong>Instructions:</strong> {instructions}</p>
