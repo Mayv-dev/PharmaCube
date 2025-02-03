@@ -1,137 +1,124 @@
-import {
-  IonContent,
-  IonButton,
-  IonHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-  IonItem,
-  IonLabel,
-  IonInput,
-  IonList,
-  IonIcon,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonModal,
-  IonSelectOption,
-  IonSelect
-} from "@ionic/react";
-import { trashOutline, createOutline, checkmarkOutline, closeOutline } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
+
+import { IonContent, IonButton, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, 
+  IonList, IonIcon, IonGrid, IonRow, IonCol, IonModal, IonSelectOption, IonSelect } from "@ionic/react";
+
+import { trashOutline, createOutline, checkmarkOutline, closeOutline } from "ionicons/icons";
+
 import axios from 'axios';
+import { ScheduleData } from "../../api types/types";
 
-
-import { SQLiteDBConnection } from "@capacitor-community/sqlite";
 import useSQLiteDB from "../../composables/useSQLiteDB";
-import "./ScheduleAddModifyPage.css";
 
-const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+import "./ScheduleAddModifyPage.css";
+import { getWeekdayName } from "../../helper functions/getWeekdayName";
+
+const daysOfWeek = [0,1,2,3,4,5,6];
+
 
 const ScheduleAddModifyPage: React.FC = () => {
 
   const [deleteScheduleId, setDeleteScheduleId] = useState<number>(-1);
 
-  const [selectedDay, setSelectedDay] = useState<string>("Monday");
+  const [selectedDay, setSelectedDay] = useState<number | null>(0);
 
-  const [newTime, setNewTime] = useState<string>("");
 
-  const [schedule, setSchedule] = useState<{ id:number, day:string, time: string }[]>([]);
+  const [schedule, setSchedule] = useState<ScheduleData[]>([]);
 
   const { performSQLAction, initialized } = useSQLiteDB();
 
   const [hours, setHours] = useState<string>("");
   const [minutes, setMinutes] = useState<string>("");
 
-  const [editingTime, setEditingTime] = useState<string | null>(null);
-  const [editHours, setEditHours] = useState<string>("");
-  const [editMinutes, setEditMinutes] = useState<string>("");
+  const [editedId, setEditedId] = useState<number>()
+  const [editHours, setEditHours] = useState<number>();
+  const [editMinutes, setEditMinutes] = useState<number>();
 
   const [showModal, setShowModal] = useState(false);
-  const [timeOfDay, setTimeOfDay] = useState<number | null>(null);
+  const [selectedTimeOfDay, setSelectedTimeOfDay] = useState<number | null>(null);
 
-
+  const timeOfDayMap: { [key: number]: string } = {
+    1: "Morning",
+    2: "Afternoon",
+    3: "Evening",
+    4: "Night",
+  };
 
   useEffect(() => {
     loadSchedule(selectedDay);
   }, [initialized, selectedDay]);
 
-  async function loadSchedule(day: string) {
-    performSQLAction(async (db: SQLiteDBConnection | undefined) => {
-      const result = await db?.query("SELECT id, day, time FROM schedule WHERE day = ?", [day]);
-      console.log(result)
-      setSchedule(result?.values || []);
+  async function loadSchedule(day: number | null) {
 
-      try {
-        const { data, status } = await axios.get(
-          'https://demo3553220.mockable.io/',
-          {
-          headers: {
-            Accept: 'application/json'
-          },
-          },
-        );
-      
+    try {
+      const { data, status } = await axios.get(
+        'http://localhost:8080/patient/1/schedule',
+        {
+        headers: {
+          Accept: 'application/json'
+        },
+        },
+      );
+      console.log("schedule data from GET:", data)
+      const scheduleitemsbyday = data.filter((item:ScheduleData) => item.day == selectedDay ? true:false)
+      setSchedule(scheduleitemsbyday.map((sItem:ScheduleData) => {
+        return {id:sItem.id, day:sItem.day, hour:sItem.hour, minute:sItem.minute, time_period:sItem.time_period}
+        }) || []);
         return data;
-      
-        } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log('error message: ', error.message);
-          return error.message;
-        } else {
-          console.log('unexpected error: ', error);
-          return 'An unexpected error occurred';
-        }
-        }
-    });
+    
+      } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log('error message: ', error.message);
+        return error.message;
+      } else {
+        console.log('unexpected error: ', error);
+        return 'An unexpected error occurred';
+      }
+    }
   }
 
   async function addTime() {
     const formattedTime = formatTime(hours, minutes);
     if (!formattedTime) return;
-
-    try {
-      performSQLAction(async (db: SQLiteDBConnection | undefined) => {
-        await db?.query("INSERT INTO schedule (day, time) VALUES (?, ?);", [selectedDay, formattedTime]);
-        const generatedId = await db?.query("SELECT id FROM schedule WHERE day = ? AND time = ?", [selectedDay, formattedTime]);
-        const newId:number = typeof generatedId?.values?.at(0).id == "number" ? generatedId?.values?.at(0).id : 0
-        console.log("Inserting ", { id: newId, day:selectedDay, time: formattedTime })
-        setSchedule((prev) => [...prev, { id: newId, day:selectedDay, time: formattedTime }]);
-
-        setHours("");
-        setMinutes("");
-        try {
-          console.log("post request being made...")
-          const { data, status } = await axios.post(
-            'https://demo3553220.mockable.io/patient/id/schedule',
-            {
-              id: newId,
-              day: selectedDay,
-              time: formattedTime
-            },
-            {
-              headers: {
-                Accept: 'application/json'
-              },
-            },
-          );
-          return data;
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log('error message: ', error.message);
-          return error.message;
-        } else {
-          console.log('unexpected error: ', error);
-          return 'An unexpected error occurred';
-        }
-      }
-      });
-
-
-
-    } catch (error) {
-      alert((error as Error).message);
+    if (typeof selectedDay != "number" || typeof selectedTimeOfDay != "number" ) return;
+    if (schedule.find(sItem => sItem.time_period == selectedTimeOfDay && sItem.day == selectedDay) != undefined) {
+      alert("This time of day has already been set for today");
+      return;
     }
+    try {
+      let scheduleData:ScheduleData = {
+        id: 0,
+        day: selectedDay,
+        hour: parseInt(hours, 10),
+        minute: parseInt(minutes, 10),
+        time_period:selectedTimeOfDay
+      }
+      console.log("post request being made...")
+      const { data, status } = await axios.post(
+        'http://localhost:8080/patient/1/schedule',
+        scheduleData,
+        {
+          headers: {
+            Accept: 'application/json'
+          },
+        },
+      );
+      loadSchedule(selectedDay)
+
+      setHours("");
+      setMinutes("");
+
+      return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error message: ', error.message);
+      return error.message;
+    } else {
+      console.log('unexpected error: ', error);
+      return 'An unexpected error occurred';
+    }
+  }
+    
   }
 
 
@@ -141,95 +128,74 @@ const ScheduleAddModifyPage: React.FC = () => {
     }
 
   async function deleteTime(id:number) {
-    try {
-      performSQLAction(async (db: SQLiteDBConnection | undefined) => {
-        await db?.query("DELETE FROM schedule WHERE id = ?", [id]);
-        setSchedule((prev) => prev.filter((item) => item.id !== id));
-      });
 
-      try {
-        const { data, status } = await axios.delete(
-          `https://demo3553220.mockable.io/patient/id/schedule`,
-          {
+    try {
+      const { data, status } = await axios.delete(
+        `http://localhost:8080/patient/1/schedule/${id}`,
+        {
+        headers: {
+          Accept: 'application/json'
+        }
+        }
+      );
+      loadSchedule(selectedDay)
+      return data;
+    
+      } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log('error message: ', error.message);
+        return error.message;
+      } else {
+        console.log('unexpected error: ', error);
+        return 'An unexpected error occurred';
+      }
+    }
+
+    
+  }
+
+  const timePadding = (hourOrMinute:number) => hourOrMinute < 10 ? "0"+hourOrMinute:hourOrMinute;
+
+  async function editTimeConfirm(timeOfDay:number) {
+    console.log(editHours, editMinutes, editedId, selectedDay)
+    if(editHours == undefined || editMinutes == undefined || editedId == undefined || selectedDay == undefined) return;
+    if (editHours > 23 || editHours < 0) return;
+    if (editMinutes > 59 || editMinutes < 0) return;
+
+    try {
+      console.log("put request being made...")
+      const modifiedScheduleItem:ScheduleData = {
+        id:editedId,
+        day:selectedDay,
+        hour:editHours,
+        minute:editMinutes,
+        time_period:timeOfDay
+      } 
+      const { data, status } = await axios.put(
+        `http://localhost:8080/patient/1/schedule/${editedId}`,
+        modifiedScheduleItem,
+        {
           headers: {
             Accept: 'application/json'
           },
-          data: {
-            "id":id
-          }
-          }
-        );
-
-        return data;
+        },
+      );
       
-        } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log('error message: ', error.message);
-          return error.message;
-        } else {
-          console.log('unexpected error: ', error);
-          return 'An unexpected error occurred';
-        }
-        }
+      setEditedId(-1)
+      setEditHours(-1);
+      setEditMinutes(-1);
+      loadSchedule(selectedDay);
 
-
-
-    } catch (error) {
-      alert((error as Error).message);
+      return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error message: ', error.message);
+      return error.message;
+    } else {
+      console.log('unexpected error: ', error);
+      return 'An unexpected error occurred';
     }
   }
-
-  async function editTimeConfirm(originalTime: string, id:number) {
-    const formattedTime = formatTime(editHours, editMinutes);
-    if (!formattedTime) return;
-
-    try {
-      performSQLAction(async (db: SQLiteDBConnection | undefined) => {
-        await db?.query("UPDATE schedule SET time = ? WHERE day = ? AND time = ?", [formattedTime, selectedDay, originalTime]);
-        const generatedId = await db?.query("SELECT id FROM schedule WHERE day = ? AND time = ?", [selectedDay, formattedTime]);
-        const newId:number = typeof generatedId?.values?.at(0).id == "number" ? generatedId?.values?.at(0).id : 0
-        console.log("Updating ", { id: newId, day:selectedDay, time: formattedTime })
-        setSchedule((prev) =>
-          prev.map((item) => (item.time === originalTime ? { id:newId, day: selectedDay, time: formattedTime } : item))
-        );
-        setEditingTime(null);
-        setEditHours("");
-        setEditMinutes("");
-
-        try {
-          console.log("put request being made...")
-          const { data, status } = await axios.put(
-            'https://demo3553220.mockable.io/patient/id/schedule',
-            {
-              id: newId,
-              day: selectedDay,
-              time: formattedTime
-            },
-            {
-              headers: {
-                Accept: 'application/json'
-              },
-            },
-          );
-          return data;
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log('error message: ', error.message);
-          return error.message;
-        } else {
-          console.log('unexpected error: ', error);
-          return 'An unexpected error occurred';
-        }
-      }
-      });
-
-      
-
-
-
-    } catch (error) {
-      alert((error as Error).message);
-    }
   }
 
   function formatTime(hours: string, minutes: string): string | null {
@@ -266,7 +232,7 @@ const ScheduleAddModifyPage: React.FC = () => {
             {daysOfWeek.map((day) => (
               <IonCol key={day} size="1" className={selectedDay === day ? "selected-day" : "day-col"}>
                 <IonButton fill="clear" onClick={() => setSelectedDay(day)}>
-                  {day.charAt(0)}
+                  {getWeekdayName(day)?.substring(0,2)}
                 </IonButton>
               </IonCol>
             ))}
@@ -293,13 +259,11 @@ const ScheduleAddModifyPage: React.FC = () => {
     />
     <IonItem>
       <IonLabel position="fixed">Time of Day:</IonLabel>
-      <IonSelect onIonChange={(e) => setTimeOfDay(e.detail.value)}>
-        <IonSelectOption value={0}>Late Night</IonSelectOption>
-        <IonSelectOption value={1}>Early Morning</IonSelectOption>
-        <IonSelectOption value={2}>Morning</IonSelectOption>
-        <IonSelectOption value={3}>Afternoon</IonSelectOption>
-        <IonSelectOption value={4}>Evening</IonSelectOption>
-        <IonSelectOption value={5}>Night</IonSelectOption>
+      <IonSelect onIonChange={(e) => setSelectedTimeOfDay(e.detail.value)}>
+        <IonSelectOption value={1}>Morning</IonSelectOption>
+        <IonSelectOption value={2}>Afternoon</IonSelectOption>
+        <IonSelectOption value={3}>Evening</IonSelectOption>
+        <IonSelectOption value={4}>Night</IonSelectOption>
       </IonSelect>
     </IonItem>
   </div>
@@ -310,51 +274,55 @@ const ScheduleAddModifyPage: React.FC = () => {
         </IonButton>
 
         <IonList>
-          {schedule.map((item, index) => (
-            <IonItem key={index}>
-              {editingTime === item.time ? (
-                <>
-                  <IonInput
-                    type="number"
-                    value={editHours}
-                    onIonChange={(e) => setEditHours(e.detail.value || "")}
-                    placeholder="HH"
-                    className="time-input"
-                  />
-                  :
-                  <IonInput
-                    type="number"
-                    value={editMinutes}
-                    onIonChange={(e) => setEditMinutes(e.detail.value || "")}
-                    placeholder="MM"
-                    className="time-input"
-                  />
-                  <IonButton slot="end" color="success" onClick={() => editTimeConfirm(item.time, item.id)}>
-                    <IonIcon icon={checkmarkOutline} />
-                  </IonButton>
-                  <IonButton slot="end" color="medium" onClick={() => setEditingTime(null)}>
-                    <IonIcon icon={closeOutline} />
-                  </IonButton>
-                </>
-              ) : (
-                <>
-                  <IonLabel>{item.time}</IonLabel>
-                  <IonButton slot="end" color="primary" onClick={() => {
-                    setEditingTime(item.time);
-                    const [hh, mm] = item.time.split(":");
-                    setEditHours(hh);
-                    setEditMinutes(mm);
-                  }}>
-                    <IonIcon icon={createOutline} />
-                  </IonButton>
-                  <IonButton slot="end" color="danger" onClick={() => confirmDeletion(item.id)}>
-                    <IonIcon icon={trashOutline} />
-                  </IonButton>
-                </>
-              )}
-            </IonItem>
-          ))}
-        </IonList>
+  {schedule.map((item, index) => (
+    <IonItem key={index}>
+        {item.id == editedId ? (
+        <>
+          <IonInput
+            type="number"
+            value={editHours}
+            onIonChange={(e) => setEditHours(parseInt(e.detail.value,10))}
+            placeholder="HH"
+            className="time-input"
+          />
+          :
+          <IonInput
+            type="number"
+            value={editMinutes}
+            onIonChange={(e) => setEditMinutes(parseInt(e.detail.value,10))}
+            placeholder="MM"
+            className="time-input"
+          />
+          <IonButton slot="end" color="success" onClick={() => editTimeConfirm(item.time_period)}>
+            <IonIcon icon={checkmarkOutline} />
+          </IonButton>
+          <IonButton slot="end" color="medium" onClick={() => {
+            setEditedId(-1)
+            setEditHours(-1)
+            setEditMinutes(-1)
+          }
+            }>
+            <IonIcon icon={closeOutline} />
+          </IonButton>
+        </>
+      ) : (
+        <>
+          <IonLabel>{timePadding(item.hour)}:{timePadding(item.minute)} | {timeOfDayMap[item.time_period] || "Unknown Time"}</IonLabel>
+          <IonButton slot="end" color="primary" onClick={() => {
+            setEditedId(item.id)
+            setEditHours(item.hour)
+            setEditMinutes(item.minute)
+          }}>
+            <IonIcon icon={createOutline} />
+          </IonButton>
+          <IonButton slot="end" color="danger" onClick={() => confirmDeletion(item.id)}>
+            <IonIcon icon={trashOutline} />
+          </IonButton>
+        </>
+  )}
+    </IonItem>
+  ))}
+</IonList>
 
 
         <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>

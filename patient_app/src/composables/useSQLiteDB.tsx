@@ -67,6 +67,7 @@ const useSQLiteDB = () => {
       CREATE TABLE IF NOT EXISTS schedule (
       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
       day INTEGER NOT NULL,
+      timeofday INTEGER NOT NULL,
       time TEXT NOT NULL
       );
     `;
