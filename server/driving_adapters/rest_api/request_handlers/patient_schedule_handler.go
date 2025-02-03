@@ -3,6 +3,7 @@ package requesthandlers
 import (
 	"log"
 	"net/http"
+	autoscheduler "pharmacube/server/domain/auto_scheduler"
 	"pharmacube/server/domain/models"
 	databaseadapters "pharmacube/server/driven_adapters/database_adapters"
 	apimodels "pharmacube/server/driving_adapters/rest_api/api_models"
@@ -127,6 +128,8 @@ func CreatePatientScheduleItem(context *gin.Context) {
 		return
 	}
 
+	autoscheduler.AutoScheduleRegime(uint(patientId))
+
 	context.JSON(http.StatusOK, schedule)
 }
 
@@ -188,6 +191,8 @@ func ModifyPatientScheduleItem(context *gin.Context) {
 		return
 	}
 
+	autoscheduler.AutoScheduleRegime(uint(patientId))
+
 	context.JSON(http.StatusOK, schedule)
 }
 
@@ -223,6 +228,8 @@ func DeletePatientScheduleItem(context *gin.Context) {
 		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Patient Schedule not Updated"})
 		return
 	}
+
+	autoscheduler.AutoScheduleRegime(uint(patientId))
 
 	context.JSON(http.StatusOK, responses.ApiResponse{Data: "Patient Schedule Item Deleted"})
 
