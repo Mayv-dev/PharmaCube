@@ -25,7 +25,7 @@ type SQLItem = {
   time: string;
 };
 
-const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const daysOfWeek = [,"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
 const timeOfDayMap: { [key: number]: string } = {
   1: "Early Morning",

@@ -13,14 +13,14 @@ import useSQLiteDB from "../../composables/useSQLiteDB";
 import "./ScheduleAddModifyPage.css";
 import { getWeekdayName } from "../../helper functions/getWeekdayName";
 
-const daysOfWeek = [0,1,2,3,4,5,6];
+const daysOfWeek = [1,2,3,4,5,6,7];
 
 
 const ScheduleAddModifyPage: React.FC = () => {
 
   const [deleteScheduleId, setDeleteScheduleId] = useState<number>(-1);
 
-  const [selectedDay, setSelectedDay] = useState<number | null>(0);
+  const [selectedDay, setSelectedDay] = useState<number | null>(1);
 
 
   const [schedule, setSchedule] = useState<ScheduleData[]>([]);

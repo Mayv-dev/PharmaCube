@@ -25,7 +25,7 @@ func main() {
 		&models.PatientAdherenceRecord{},
 	)
 
-	//mockdata()
+	mockdata()
 
 	server := gin.Default()
 
