@@ -5,7 +5,9 @@ type PatientRegime struct {
 	PatientID             uint   `json:"patient_id"`
 	PharmacistID          uint   `json:"pharmacist_id"`
 	MedicationInformation string `json:"information"`
-	Day                   int    `json:"day"`
+	Date                  int    `json:"date"`
+	Month                 int    `json:"month"`
+	Year                  int    `json:"year"`
 	TimePeriod            int    `json:"time_period"`
 	TimeOffset            int    `json:"time_adjustment"`
 	Instructions          string `json:"instructions"`

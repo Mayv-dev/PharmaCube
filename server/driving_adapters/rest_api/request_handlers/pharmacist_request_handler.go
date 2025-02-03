@@ -3,6 +3,7 @@ package requesthandlers
 import (
 	"log"
 	"net/http"
+	autoscheduler "pharmacube/server/domain/auto_scheduler"
 	"pharmacube/server/domain/models"
 	databaseadapters "pharmacube/server/driven_adapters/database_adapters"
 	apimodels "pharmacube/server/driving_adapters/rest_api/api_models"
@@ -70,7 +71,9 @@ func AddRegimeItem(context *gin.Context) {
 		PharmacistID:          patient.PharmacistID,
 		PatientID:             patient.ID,
 		MedicationInformation: apiRegime.Information,
-		Day:                   int(apiRegime.Day),
+		Date:                  int(apiRegime.Date),
+		Month:                 int(apiRegime.Month),
+		Year:                  int(apiRegime.Year),
 		TimePeriod:            int(apiRegime.TimePeriod),
 		TimeOffset:            apiRegime.TimeOffset,
 		Instructions:          apiRegime.Instructions,
@@ -85,6 +88,7 @@ func AddRegimeItem(context *gin.Context) {
 		return
 	}
 
+	autoscheduler.AutoScheduleRegime(uint(patientId))
 	//Return
 	context.JSON(http.StatusOK, regime)
 }
@@ -248,7 +252,9 @@ func UpdatePatientRegime(context *gin.Context) {
 		PharmacistID:          patient.PharmacistID,
 		PatientID:             patient.ID,
 		MedicationInformation: apiRegime.Information,
-		Day:                   int(apiRegime.Day),
+		Date:                  int(apiRegime.Date),
+		Month:                 int(apiRegime.Month),
+		Year:                  int(apiRegime.Year),
 		TimePeriod:            int(apiRegime.TimePeriod),
 		TimeOffset:            apiRegime.TimeOffset,
 		Instructions:          apiRegime.Instructions,
@@ -261,6 +267,8 @@ func UpdatePatientRegime(context *gin.Context) {
 		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Patient Regime not Updated"})
 		return
 	}
+
+	autoscheduler.AutoScheduleRegime(uint(patientId))
 
 	context.JSON(http.StatusOK, regime)
 }
@@ -312,6 +320,8 @@ func DeletePatientRegime(context *gin.Context) {
 		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Patient Regime not Updated"})
 		return
 	}
+
+	autoscheduler.AutoScheduleRegime(uint(patientId))
 
 	context.JSON(http.StatusOK, responses.ApiResponse{Data: "Deleted regime item"})
 }
