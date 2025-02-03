@@ -63,7 +63,9 @@ func UpdatePatientRegimeItem(patientId uint, regimeId uint, newRegime models.Pat
 	regime.Instructions = newRegime.Instructions
 	regime.MedicationInformation = newRegime.MedicationInformation
 	regime.CompartmentID = newRegime.CompartmentID
-	regime.Day = newRegime.Day
+	regime.Date = newRegime.Date
+	regime.Month = newRegime.Month
+	regime.Year = newRegime.Year
 	regime.TimePeriod = newRegime.TimePeriod
 	regime.TimeOffset = newRegime.TimeOffset
 
