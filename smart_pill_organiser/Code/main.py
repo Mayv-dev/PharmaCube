@@ -1,7 +1,7 @@
-from Motor import MotorController
+from Motor import motor_controller
 import time
 
-motorcontroller = MotorController.MotorController()
+motorcontroller = motor_controller.MotorController()
 
 def main():
     i = 1
