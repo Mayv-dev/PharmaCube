@@ -1,4 +1,5 @@
-import MotorController, time
+from Motor import MotorController
+import time
 
 motorcontroller = MotorController.MotorController()
 
