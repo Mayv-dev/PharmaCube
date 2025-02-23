@@ -25,7 +25,7 @@ type SQLItem = {
   time: string;
 };
 
-const daysOfWeek = [,"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
 const timeOfDayMap: { [key: number]: string } = {
   1: "Early Morning",
@@ -62,18 +62,22 @@ const ScheduleViewPage: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
-          <IonTitle>Your Schedule</IonTitle>
+        <IonToolbar color="primary">
+          <IonTitle className="ion-text-center title">Your Schedule</IonTitle>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen className="ion-padding">
+      <IonContent fullscreen className="ion-padding content" color="secondary">
         {/* Day Selector */}
         <IonGrid>
           <IonRow>
             {daysOfWeek.map((day) => (
               <IonCol key={day} size="1" className={selectedDay === day ? "selected-day" : "day-col"}>
-                <IonButton fill="clear" onClick={() => setSelectedDay(day)}>
+                <IonButton
+                  fill="clear"
+                  onClick={() => setSelectedDay(day)}
+                  className={selectedDay === day ? "selected-day-button" : "day-button"}
+                >
                   {day.charAt(0)}
                 </IonButton>
               </IonCol>
@@ -82,20 +86,20 @@ const ScheduleViewPage: React.FC = () => {
         </IonGrid>
 
         {/* Schedule List */}
-        <IonList>
-  {schedule.map((item) => (
-    <IonItem key={item.id}>
-      <IonLabel>
-        {item.time} | {timeOfDayMap[item.timeofday] || "Unknown Time"}
-      </IonLabel>
-    </IonItem>
-  ))}
-</IonList>
+        <IonList className="schedule-list">
+          {schedule.map((item) => (
+            <IonItem key={item.id} className="schedule-item">
+              <IonLabel className="schedule-label">
+                {item.time} | {timeOfDayMap[item.timeofday] || "Unknown Time"}
+              </IonLabel>
+            </IonItem>
+          ))}
+        </IonList>
 
         {/* No Entries Message */}
         {schedule.length === 0 && (
-          <IonItem>
-            <IonLabel>No entries for {selectedDay}</IonLabel>
+          <IonItem className="no-entries-item">
+            <IonLabel className="no-entries-label">No entries for {selectedDay}</IonLabel>
           </IonItem>
         )}
       </IonContent>
