@@ -18,4 +18,6 @@ func PatientRoutes(router *gin.Engine) {
 
 	router.GET("/patient/:patient_id/scheduledregime", requesthandlers.GetPatientScheduledRegime)
 	router.GET("/patient/:patient_id/scheduledregime/:scheduled_regime_id", requesthandlers.GetPatientScheduledRegimeItem)
+
+	router.GET("/patient/:patient_id/history")
 }
