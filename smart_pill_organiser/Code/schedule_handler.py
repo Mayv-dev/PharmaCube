@@ -1,9 +1,11 @@
 import web_connection as wc
 import urequests as requests
 import config
+import schedule
 
 class Schedule_Handler:
     ip = None
+    schedules = []
     
     def __init__(self):
         if self.ip is None:
@@ -15,3 +17,11 @@ class Schedule_Handler:
         response = requests.get(url)
         print(response.status_code)
         return response
+    
+    def get_due_schedule(self, time, limit):
+        to_return = []
+        for schedule in self.schedules:
+            if schedule.is_due(time, limit):
+                to_return.append(schedule)
+        
+        return to_return
