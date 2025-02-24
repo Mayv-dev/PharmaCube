@@ -15,8 +15,10 @@ class Schedule_Handler:
         url = "http://" + config.URL + ":8080/patient/" + str(id) + "/schedule"
         print("Connecting to " + url)
         response = requests.get(url)
-        print(response.status_code)
-        return response
+        if response.status_code == 200:
+            raise NotImplementedError("Not implemented")
+        else:
+            return response
     
     def get_due_schedule(self, time, limit):
         to_return = []
