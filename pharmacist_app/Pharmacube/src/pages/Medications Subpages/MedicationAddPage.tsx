@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
-import { IonButton, IonContent, IonPage, IonSelect, IonSelectOption} from '@ionic/react';
+// src/pages/Medications Subpages/MedicationAddPage.tsx
+import { useState } from 'react';
+import { IonButton, IonContent, IonPage, IonSelect, IonSelectOption } from '@ionic/react';
 import LowerToolbar from '../../components/LowerToolbar';
 import '../../styles/Medication Subpages/MedicationAddPage.css';
 import axios from 'axios';
 
 import { SQLiteDBConnection } from "@capacitor-community/sqlite";
 import useSQLiteDB from "../../composables/useSQLiteDB";
-import useConfirmationAlert from "../../composables/useConfirmationAlert";
-
 
 const MedicationAddPage: React.FC = () => {
   const [user, setUser] = useState('User');
@@ -16,19 +15,18 @@ const MedicationAddPage: React.FC = () => {
 
   const { performSQLAction } = useSQLiteDB();
 
-  async function sendToMockable(userInput:string, medicationInput:string, dosageInput:string) {
-   
-    if (user != "User" && medication != "Medication" && dosage != "") {
-      try{
+  async function sendToMockable(userInput: string, medicationInput: string, dosageInput: string) {
+    if (user !== "User" && medication !== "Medication" && dosage !== "") {
+      try {
         console.log("post request being made...")
         const { data, status } = await axios.post(
           'https://demo3553220.mockable.io/',
           {
             "id": 12345,
-            "user": userInput,  
+            "user": userInput,
             "medication": medicationInput,
             "dosage amount": dosageInput,
-            "details":"test run"
+            "details": "test run"
           },
           {
             headers: {
@@ -46,60 +44,56 @@ const MedicationAddPage: React.FC = () => {
           return 'An unexpected error occurred';
         }
       }
-    }
-    else {
-      console.log("blank input. Try again")
+    } else {
+      console.log("blank input. Try again");
     }
   };
 
   const addItem = async () => {
-    if (user != "User" && medication != "Medication" && dosage != "") {
-    try {
-      // add test record to db
-      performSQLAction(
-        async (db: SQLiteDBConnection | undefined) => {
-          await db?.query(`INSERT INTO medication (id,name,dose_amount,details) values (?,?,?,?);`, [
-            Date.now(),
-            "stored medication",
-            "400mg",
-            "details are listed here"
-          ]);
-        }
-      );
-      
-    } catch (error) {
-      alert((error as Error).message);
+    if (user !== "User" && medication !== "Medication" && dosage !== "") {
+      try {
+        performSQLAction(
+          async (db: SQLiteDBConnection | undefined) => {
+            await db?.query(`INSERT INTO medication (id, name, dose_amount, details) values (?,?,?,?);`, [
+              Date.now(),
+              medication,   // Save the selected medication name
+              dosage,       // Save the selected dosage
+              `Given to ${user}`  // Store the user the medication is assigned to
+            ]);
+          }
+        );
+      } catch (error) {
+        alert((error as Error).message);
+      }
     }
-  }
   };
+  
 
-
-  return(
+  return (
     <IonPage>
-      
-      <LowerToolbar title='Add a Medication'/>
+      <LowerToolbar title='Add a Medication' />
 
-      <IonContent>
-        <IonSelect placeholder='Users' onIonChange={e => setUser(e.target.value)}>
-          <IonSelectOption>TEST Duffy</IonSelectOption>
-          <IonSelectOption>TEST Murphy</IonSelectOption>
-          <IonSelectOption>TEST McMahon</IonSelectOption>
+      <IonContent className="medication-add-content">
+        <h2 className="title">Add a Medication</h2>
+        <IonSelect className="custom-select" placeholder='Users' onIonChange={e => setUser(e.detail.value)}>
+          <IonSelectOption value="Irene Duffy">Irene Duffy</IonSelectOption>
+          <IonSelectOption value="Ann Murphy">Ann Murphy</IonSelectOption>
+          <IonSelectOption value="John Wayne">John Wayne</IonSelectOption>
         </IonSelect>
-        <IonSelect placeholder='Medications' onIonChange={e => setMedication(e.target.value)}>
-          <IonSelectOption>TEST Ibuprofen</IonSelectOption>
-          <IonSelectOption>TEST Sertraline</IonSelectOption>
-          <IonSelectOption>TEST Multivitamin</IonSelectOption>
+        <IonSelect className="custom-select" placeholder='Medications' onIonChange={e => setMedication(e.detail.value)}>
+          <IonSelectOption value="Ibuprofen">Ibuprofen</IonSelectOption>
+          <IonSelectOption value="Ibandronate">Ibandronate</IonSelectOption>
+          <IonSelectOption value="Ibrance">Ibrance</IonSelectOption>
         </IonSelect>
-        <IonSelect placeholder='Dosage' onIonChange={e => setDosage(e.target.value)}>
-          <IonSelectOption>TEST 50mg</IonSelectOption>
-          <IonSelectOption>TEST 100mg</IonSelectOption>
-          <IonSelectOption>TEST 200mg</IonSelectOption>
+        <IonSelect className="custom-select" placeholder='Dosage' onIonChange={e => setDosage(e.detail.value)}>
+          <IonSelectOption>50mg</IonSelectOption>
+          <IonSelectOption>100mg</IonSelectOption>
+          <IonSelectOption>200mg</IonSelectOption>
         </IonSelect>
-        <IonButton onClick={e => sendToMockable(user, medication, dosage).then(e => addItem())}>
+        <IonButton className="custom-button" onClick={e => sendToMockable(user, medication, dosage).then(e => addItem())}>
           Give {user} {medication}
         </IonButton>
       </IonContent>
-
     </IonPage>
   );
 }

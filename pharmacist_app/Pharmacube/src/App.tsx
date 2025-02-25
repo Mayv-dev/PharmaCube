@@ -10,11 +10,16 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { medkit, people, settings, triangle } from 'ionicons/icons'; // Icons for the tabs
+import { medkit, people, settings, triangle } from 'ionicons/icons';
 
-import Regimes from './pages/Regimes'; // Medications Tab
-import Users from './pages/Users'; // Users Tab
-import Settings from './pages/Settings'; // Settings Tab
+import Regimes from './pages/Regimes';
+import Users from './pages/Users';
+import Settings from './pages/Settings';
+import Welcome from './pages/Welcome';
+import Login from './pages/Login';
+import SignUp from './pages/Signup';
+import AddPatientRegime from './pages/Regimes Subpages/AddPatientRegime';
+import ViewPatientRegimes from './pages/Regimes Subpages/ViewPatientRegimes';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -45,6 +50,15 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
+          <Route exact path="/welcome">
+            <Welcome />
+          </Route>
+          <Route exact path="/login">
+            <Login />
+          </Route>
+          <Route exact path="/signup">
+            <SignUp />
+          </Route>
           <Route exact path="/medications">
             <Medications />
           </Route>
@@ -57,6 +71,15 @@ const App: React.FC = () => (
           <Route exact path="/regimes">
             <Regimes />
           </Route>
+          <Route exact path="/add-patient-regime">
+            <AddPatientRegime />
+          </Route>
+
+          {/* New Route for ViewPatientRegimes */}
+          <Route exact path="/view-patient-regimes">
+            <ViewPatientRegimes />
+          </Route>
+
           <Route exact path="/users">
             <Users />
           </Route>
@@ -64,7 +87,7 @@ const App: React.FC = () => (
             <Settings />
           </Route>
           <Route exact path="/">
-            <Redirect to="/regimes" />
+            <Redirect to="/welcome" />
           </Route>
         </IonRouterOutlet>
 

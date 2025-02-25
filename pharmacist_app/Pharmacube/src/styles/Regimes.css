@@ -1,25 +1,37 @@
-.data-display {
-  border: 1px solid #ccc;
-  margin-top: 20px;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #f4f4f4;
+.regimes-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: #ffffff;
+  text-align: center;
+  padding: 20px;
 }
 
-.submit-button {
-  margin-top: 20px;
+.title {
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  color: #333;
+  font-weight: bold;
 }
 
-.confirmation-table {
-  width: 100%;
-  border: 1px solid #ccc;
-  text-align: left;
+.custom-button {
+  width: 80%;
+  border-radius: 25px;
+  margin: 10px 0;
+  padding: 12px;
+  --background: #D3D3D3;
+  --background-activated: #C0C0C0;
+  --background-focused: #C0C0C0;
+  --border-radius: 25px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  color: #333;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
-.confirmation-checkbox {
-  margin-top: 20px;
-}
-
-.cancel-button {
-  margin-top: 10px;
+.custom-button:hover {
+  filter: brightness(1.1);
+  transition: 0.3s;
 }

@@ -1,38 +1,40 @@
-.medication-add-content {
+.signup-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100%;
-    background-color: #ffffff;
+    background-color: #f4f4f9;
     text-align: center;
     padding: 20px;
   }
   
-  .title {
-    font-size: 1.8em;
-    margin-bottom: 20px;
-    color: #333;
-    font-weight: bold;
+  .logo {
+    width: 150px;
+    margin: 0 auto 20px auto;
+    display: block;
   }
   
-  .custom-select {
+  ion-item {
     width: 80%;
-    margin: 10px 0;
-    --background: #f4f4f9;
+    margin-bottom: 15px;
+    --background: #fff;
     --border-radius: 8px;
-    --padding-start: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  ion-input {
+    padding: 10px;
   }
   
   .custom-button {
     width: 80%;
     border-radius: 25px;
-    margin: 20px 0;
+    margin: 10px 0;
     padding: 12px;
-    --background: #6C757D;
-    --background-activated: #5a6268;
-    --background-focused: #5a6268;
+    --background: #01BD81;
+    --background-activated: #01BD81;
+    --background-focused: #01BD81;
     --border-radius: 25px;
     --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     color: white;
@@ -43,11 +45,5 @@
   .custom-button:hover {
     filter: brightness(1.1);
     transition: 0.3s;
-  }
-  
-  .warning-text {
-    color: #e74c3c;
-    font-weight: bold;
-    margin-top: 20px;
   }
   

@@ -1,0 +1,39 @@
+.view-regime-content {
+    padding: 20px;
+    text-align: center;
+}
+
+.title {
+    color: #2ecc71;
+    font-size: 1.4em;
+    margin: 20px 0;
+    font-weight: bold;
+}
+
+.custom-select {
+    width: 85%;
+    margin: 10px auto;
+    --background: #f9f9f9;
+    --border-radius: 25px;
+    --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.regime-list {
+    list-style: none;
+    padding: 0;
+}
+
+.regime-list li {
+    background: #f5f5f5;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.deletionButton {
+    color: red;
+    float: right;
+    cursor: pointer;
+}

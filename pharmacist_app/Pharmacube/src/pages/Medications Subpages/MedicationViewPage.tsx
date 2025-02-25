@@ -1,15 +1,12 @@
-import { IonContent, IonPage, IonSelect, IonSelectOption} from '@ionic/react';
+// src/pages/Medications Subpages/MedicationViewPage.tsx
+import { IonContent, IonPage, IonSelect, IonSelectOption } from '@ionic/react';
 import LowerToolbar from '../../components/LowerToolbar';
-import DeleteConfirmationPopup from '../../components/Medications Components/DeleteConfirmationPopup';
 import '../../styles/Medication Subpages/MedicationViewPage.css';
-import React, { useEffect,useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 import { SQLiteDBConnection } from "@capacitor-community/sqlite";
 import useSQLiteDB from "../../composables/useSQLiteDB";
-import useConfirmationAlert from "../../composables/useConfirmationAlert";
 
-// This file's original sqlite content was taken from the video used to implement sqlite in our project https://www.youtube.com/watch?v=tixvx5nsJO8&t=1130s
 type SQLItem = {
   id: number;
   name: string;
@@ -17,114 +14,25 @@ type SQLItem = {
   details: string;
 };
 
-async function getMockData() {
-  try {
-    const { data, status } = await axios.get(
-      'http://demo3553220.mockable.io/',
-      {
-        headers: {
-          Accept: 'application/json'
-        },
-      },
-    );
-
-    return data;
-
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.log('error message: ', error.message);
-      return error.message;
-    } else {
-      console.log('unexpected error: ', error);
-      return 'An unexpected error occurred';
-    }
-  }
-}
-
 const MedicationViewPage: React.FC = () => {
-  const [userId, setUserId] = useState<number>(123456);
   const [userName, setUserName] = useState('Unselected');
+  const [localUserMedications, setLocalUserMedications] = useState<Array<SQLItem>>([]);
+
+  const [popupState, setPopupState] = useState<boolean>(false);
   const [medId, setMedId] = useState<number>();
   const [medName, setMedName] = useState('Unselected');
 
-  const [userMedications, setUserMedications] = useState<any[]>()
-  const [localUserMedications, setLocalUserMedications] = useState<Array<SQLItem>>()
-  
-  
-  const [userMedToDelete, setUserMedToDelete] = useState<any[]>()
-  const [popupState, setPopupState] = useState<boolean>(false)
-
-  // hook for sqlite db
   const { performSQLAction, initialized } = useSQLiteDB();
-
-  // hook for confirmation dialog
-  const { showConfirmationAlert, ConfirmationAlert } = useConfirmationAlert();
 
   useEffect(() => {
     loadData();
   }, [initialized]);
-	
-
-  const deleteConfirmed = async () => {
-    // SQL code to delete an item by id here
-      try {
-        // add test record to db
-        performSQLAction(
-          async (db: SQLiteDBConnection | undefined) => {
-            await db?.query(`DELETE FROM medication WHERE id=?;`, [medId]);
-  
-            // update ui
-            const respSelect = await db?.query(`SELECT * FROM medication;`);
-            setLocalUserMedications(respSelect?.values);
-          }
-        ).then(async e => {
-          try {
-            const { data, status } = await axios.delete(
-              `http://demo3553220.mockable.io/user/${userId}/medication/${medId}`,
-              {
-                headers: {
-                  Accept: 'application/json'
-                },
-              },
-            );
-        
-            return data;
-        
-          } catch (error) {
-            if (axios.isAxiosError(error)) {
-              console.log('error message: ', error.message);
-              return error.message;
-            } else {
-              console.log('unexpected error: ', error);
-              return 'An unexpected error occurred';
-            }
-          }
-        });
-      } catch (error) {
-        alert((error as Error).message);
-      }
-    setPopupState(false);
-  }
-  
-  const deleteDenied = () => {
-    // Make popup disappear
-    setPopupState(false);
-  }
-
-  const deleteClicked = (medId:number, medName:string) => {
-    // Make popup appear
-    setMedId(medId);
-    setMedName(medName);
-    setPopupState(true);
-  }
-
 
   const loadData = async () => {
     try {
-      // query db
       performSQLAction(async (db: SQLiteDBConnection | undefined) => {
         const respSelect = await db?.query(`SELECT * FROM medication`);
-        setLocalUserMedications(respSelect?.values);
+        setLocalUserMedications(respSelect?.values || []);
       });
     } catch (error) {
       alert((error as Error).message);
@@ -132,50 +40,83 @@ const MedicationViewPage: React.FC = () => {
     }
   };
 
-  const handleUserSelect = (user:string) => {
-    console.log("This should display the medications assigned to: " + user);
+  const handleUserSelect = (user: string) => {
     setUserName(user);
-    getMockData().then(setUserMedications);
+
+    // Load data for the selected user
+    performSQLAction(async (db: SQLiteDBConnection | undefined) => {
+      const respSelect = await db?.query(
+        `SELECT * FROM medication WHERE details LIKE ?`, 
+        [`%${user}%`]
+      );
+      setLocalUserMedications(respSelect?.values || []);
+    });
   }
 
+  const deleteConfirmed = async () => {
+    try {
+      performSQLAction(
+        async (db: SQLiteDBConnection | undefined) => {
+          await db?.query(`DELETE FROM medication WHERE id=?;`, [medId]);
+          // Reload the list after deletion
+          const respSelect = await db?.query(`SELECT * FROM medication`);
+          setLocalUserMedications(respSelect?.values || []);
+        }
+      );
+    } catch (error) {
+      alert((error as Error).message);
+    }
+    setPopupState(false);
+  }
+
+  const deleteDenied = () => {
+    setPopupState(false);
+  }
+
+  const deleteClicked = (medId: number, medName: string) => {
+    setMedId(medId);
+    setMedName(medName);
+    setPopupState(true);
+  }
 
   return (
     <IonPage>
-      
       {popupState ? 
-      <DeleteConfirmationPopup 
-        med_name={medName} 
-        user_name={userName} 
-        delete_denied={deleteDenied} 
-        delete_confirmed={deleteConfirmed}
-      />
-      :
-      null}
-      <LowerToolbar title='View Medications'/>
+        <div className="confirmation-popup-overlay">
+          <div className="confirmation-popup">
+            <h3>
+              Are you sure you want to delete <span className="med-name">{medName}</span> from <span className="user-name">{userName}</span>'s medication list?
+            </h3>
+            <button className="no" onClick={deleteDenied}>No</button>
+            <button className="yes" onClick={deleteConfirmed}>Yes</button>
+          </div>
+        </div>
+      : null}
 
-      <IonContent>
-        <p>Select a user</p>
-        <IonSelect placeholder='Users' onIonChange={e => handleUserSelect(e.target.value)}>
-          <IonSelectOption>TEST Duffy</IonSelectOption>
-          <IonSelectOption>TEST Murphy</IonSelectOption>
-          <IonSelectOption>TEST McMahon</IonSelectOption>
+      <LowerToolbar title='View Medications' />
+
+      <IonContent className="medication-view-content">
+        <h2 className="title">Select a User</h2>
+        <IonSelect className="custom-select" placeholder='Users' onIonChange={e => handleUserSelect(e.detail.value)}>
+          <IonSelectOption value="Ann Murphy">Ann Murphy</IonSelectOption>
+          <IonSelectOption value="John Wayne">John Wayne</IonSelectOption>
+          <IonSelectOption value="Irene Duffy">Irene Duffy</IonSelectOption>
         </IonSelect>
 
-        {userName == "Unselected" ? null :
+        {userName === "Unselected" ? null :
         <>
-          <p>Medications from API</p>
-          <ul>
-          {userMedications?.map(medication => <li>eee</li>)}
-          </ul>
-
-          <p>Medications from local storage</p>
-          <ul>
-          {localUserMedications?.map(medication => <li>{medication.name} <span className="deletionButton" onClick={e => deleteClicked(medication.id, medication.name)}>Delete</span></li>)}
+          <h3>Medications</h3>
+          <ul className="medication-list">
+            {localUserMedications.map(medication => (
+              <li key={medication.id}>
+                {medication.name} - {medication.dose_amount} 
+                <span className="deletionButton" onClick={() => deleteClicked(medication.id, medication.name)}>🗑️</span>
+              </li>
+            ))}
           </ul>
         </>
         }
       </IonContent>
-
     </IonPage>
   );
 };
