@@ -1,94 +1,140 @@
-/* SchedulePage.css */
-
 /* Header Title */
 .title {
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   font-weight: bold;
+  color: var(--ion-color-primary-contrast);
 }
 
 /* Content Background */
 .content {
-  background: linear-gradient(135deg, #f5f5f5, #e0e0e0); 
+  background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
   padding: 16px;
 }
 
-/* Card Styling */
-.card {
-  border-radius: 15px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); 
-  background: white; 
-  padding: 20px;
-  margin: 0 auto;
-  max-width: 400px; 
-}
-
-/* Buttons */
-.ScheduleButtons {
-  margin-bottom: 1.5rem;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  height: 60px; 
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border: 2px solid transparent; 
-}
-
-.ScheduleButtons:hover {
-  transform: scale(1.03);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
-}
-
-/* Add Button */
-.add-button {
-  background-color: #66BB6A; 
-  color: white;
-  border-color: #4CAF50; 
-}
-
-.add-button:hover {
-  background-color: #4CAF50; 
-}
-
-/* Modify Button */
-.modify-button {
-  background-color: #9CCC65; 
-  color: white;
-  border-color: #7CB342; 
-}
-.modify-button:hover {
-  background-color: #7CB342; 
-}
-
-/* View Button */
-.view-button {
-  background-color: #AED581; 
-  color: white;
-  border-color: #8BC34A; 
-}
-
-.view-button:hover {
-  background-color: #8BC34A; 
-}
-
-/* Button Text and Icon Alignment */
-.button-text {
+/* Center Grid */
+.center-grid {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px; /* Space between icon and text */
+  justify-content: flex-start; /* Align items to the top */
+  height: auto; /* Prevent full height */
+  gap: 16px; /* Reduce spacing between elements */
+}
+
+/* Center Icon */
+.center-icon {
+  font-size: 8rem; /* Slightly smaller icon */
+  color: var(--ion-color-primary);
+  margin-bottom: 16px; /* Reduce spacing below icon */
+}
+
+/* Label Row */
+.label-row {
+  width: 100%;
+  max-width: 600px;
+  margin-top: 16px; /* Add spacing above the labels */
+}
+
+/* Card Item */
+.card-item {
+  --background: transparent;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  text-align: center;
+}
+
+/* Card Label */
+.card-label {
+  font-size: 2rem; /* Slightly smaller font size */
+  font-weight: 500;
+  color: var(--ion-color-primary);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.card-label:hover {
+  color: var(--ion-color-primary-shade);
+}
+
+/* Filter Selector */
+.filter-selector {
+  margin: 16px auto;
+  max-width: 300px;
+  background: white;
+  border-radius: 8px;
+  padding: 8px;
 }
 
 /* Responsive Design */
 @media (max-width: 480px) {
-  .card {
-    padding: 16px;
+  .center-icon {
+    font-size: 6rem; /* Smaller icon for mobile */
+    margin-bottom: 12px; /* Reduce spacing below icon */
   }
 
-  .ScheduleButtons {
-    height: 50px;
-    font-size: 0.9rem;
+  .card-label {
+    font-size: 1.75rem; /* Smaller font size for mobile */
   }
+}
+
+/* Colorblind Filters */
+.protanopia-filter {
+  filter: url('#protanopia');
+}
+
+.deuteranopia-filter {
+  filter: url('#deuteranopia');
+}
+
+.tritanopia-filter {
+  filter: url('#tritanopia');
+}
+
+.achromatopsia-filter {
+  filter: grayscale(100%);
+}
+
+/* Remove full-height container */
+.center-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+/* Center the Colorblind Button */
+.filter-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px auto; 
+  max-width: 300px;
+  background: var(--ion-color-primary); 
+  color: white; 
+  border-radius: 8px;
+  padding: 12px 16px; 
+  font-size: 1.2rem; 
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+/* Add hover effect for better visibility */
+.filter-selector:hover {
+  background: var(--ion-color-primary-shade);
+}
+
+/* Style the dropdown arrow */
+.filter-selector::part(icon) {
+  color: white; 
+}
+
+/* Style the dropdown options */
+.filter-selector::part(text) {
+  color: white; 
+}
+
+/* Style the dropdown popover */
+.filter-selector::part(popover) {
+  background: white; 
+  color: var(--ion-color-primary); 
 }
