@@ -51,7 +51,7 @@ func UpdateWasTaken(context *gin.Context) {
 	scheduledRegime, err := databaseadapters.GetPatientScheduledRegimeItem(uint(patientId), uint(scheduledRegimeId))
 	if err != nil {
 		log.Println(err.Error())
-		context.JSON(http.NotFound, responses.ApiResponse{Data: "Scheduled Regime Item not found"})
+		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Scheduled Regime Item not found"})
 	}
 
 	wasTaken := models.PatientAdherenceRecord{
