@@ -45,42 +45,46 @@ import '@ionic/react/css/palettes/dark.system.css';
 /* Theme variables */
 import './theme/variables.css';
 import NotificationPage from './pages/NotificationPage';
+import { ColorblindProvider } from './colorBlindContext'; // Import the ColorblindProvider
 
 setupIonicReact();
 
+
 const App: React.FC = () => (
   <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/SchedulePage">
-            <SchedulePage />
-          </Route>
-          <Route exact path="/ScheduleViewPage">
-            <ScheduleViewPage />
-          </Route>
-          <Route path="/ScheduleAddModifyPage">
-            <ScheduleAddModifyPage />
-          </Route>
-          <Route path="/NotificationsPage">
-            <NotificationPage />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/SchedulePage" />
-          </Route>
-        </IonRouterOutlet>
-        <IonTabBar slot="top">
-          <IonTabButton tab="SchedulePage" href="/SchedulePage">
-            <IonIcon aria-hidden="true" icon={triangle} />
-            <IonLabel>Schedule</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="NotificationsPage" href="/NotificationsPage">
-            <IonIcon aria-hidden="true" icon={square} />
-            <IonLabel>Notifications</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
+    <ColorblindProvider> {/* Wrap the entire app with ColorblindProvider */}
+      <IonReactRouter>
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route exact path="/SchedulePage">
+              <SchedulePage />
+            </Route>
+            <Route exact path="/ScheduleViewPage">
+              <ScheduleViewPage />
+            </Route>
+            <Route path="/ScheduleAddModifyPage">
+              <ScheduleAddModifyPage />
+            </Route>
+            <Route path="/NotificationsPage">
+              <NotificationPage />
+            </Route>
+            <Route exact path="/">
+              <Redirect to="/SchedulePage" />
+            </Route>
+          </IonRouterOutlet>
+          <IonTabBar slot="top">
+            <IonTabButton tab="SchedulePage" href="/SchedulePage">
+              <IonIcon aria-hidden="true" icon={triangle} />
+              <IonLabel>Schedule</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="NotificationsPage" href="/NotificationsPage">
+              <IonIcon aria-hidden="true" icon={square} />
+              <IonLabel>Notifications</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      </IonReactRouter>
+    </ColorblindProvider>
   </IonApp>
 );
 
