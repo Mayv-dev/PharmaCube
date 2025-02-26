@@ -25,6 +25,7 @@ import useSQLiteDB from "../../composables/useSQLiteDB";
 import "./ScheduleAddModifyPage.css";
 import { getWeekdayName } from "../../helper functions/getWeekdayName";
 
+
 const daysOfWeek = [1, 2, 3, 4, 5, 6, 7];
 
 const ScheduleAddModifyPage: React.FC = () => {
