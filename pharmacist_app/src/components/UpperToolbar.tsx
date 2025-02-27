@@ -94,7 +94,7 @@ import NotificationItem from './NotificationItem';
 		</IonContent>
       </IonMenu>
 
-      <IonMenu side="end" menuId="notifications" contentId="main-content">
+      <IonMenu side="end" className="notificationMenu" menuId="notifications" contentId="main-content">
         <IonContent className="ion-padding">
 		<div className='rowOfSelects'>
 			<IonItem>
