@@ -36,3 +36,8 @@
 	width: 100%;
 	padding:3%
 }
+
+.rowOfSelects{
+	display: flex;
+	flex-direction: row;
+}
