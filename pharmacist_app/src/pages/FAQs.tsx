@@ -1,12 +1,12 @@
-import { IonContent, IonPage} from '@ionic/react';
+import { IonContent, IonPage } from '@ionic/react';
 import '../styles/Settings.css';
 
 const FAQs: React.FC = () => (
-  <IonPage>
-    <IonContent>
+	<IonPage>
+		<IonContent>
 
-    </IonContent>
-  </IonPage>
+		</IonContent>
+	</IonPage>
 );
 
 export default FAQs;

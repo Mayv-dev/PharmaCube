@@ -1,4 +1,4 @@
-import { IonButton, IonContent, IonItem, IonLabel, IonPage, IonSelect, IonSelectOption, IonText} from '@ionic/react';
+import { IonButton, IonContent, IonItem, IonLabel, IonPage, IonSelect, IonSelectOption, IonText } from '@ionic/react';
 import '../styles/Settings.css';
 
 const Settings: React.FC = () => (
@@ -19,7 +19,7 @@ const Settings: React.FC = () => (
         <IonItem>
           <IonSelect label="Navbar position:">
             <IonSelectOption>Top</IonSelectOption>
-            </IonSelect>
+          </IonSelect>
         </IonItem>
       </div>
     </IonContent>
