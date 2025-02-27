@@ -207,8 +207,6 @@ const AddRegime: React.FC<AddRegimeProps> = ({passedInfo}) => {
   return (
     <IonPage>
 
-      <LowerToolbar title="Regimes"/>
-
       <IonContent className="ion-padding">
         <div className='formBody'>
         {passedInfo == null? 
