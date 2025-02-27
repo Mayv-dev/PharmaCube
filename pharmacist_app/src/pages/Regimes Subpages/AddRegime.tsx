@@ -102,7 +102,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({passedInfo}) => {
     const getMockPatientList = async () => {
       try {
         const { data, status } = await axios.get(
-          `https://demo3553220.mockable.io/patients`,
+          `http://demo3553220.mockable.io/patients`,
           {
             headers: {
               Accept: 'application/json'
