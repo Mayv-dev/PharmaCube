@@ -47,7 +47,6 @@
 }
 
 .hamburger-menu {
-<<<<<<< HEAD
 	background-color: #7da371;
 	height: 100%;
 	width: 100%;
@@ -75,10 +74,3 @@
 		--min-width:300px;
 	}
   }
-=======
-	background-color: #A3C898;
-	height: 100%;
-	width: 100%;
-	padding:3%
-}
->>>>>>> 78d54d1 (Add hamburger menu items and linked subpages)
