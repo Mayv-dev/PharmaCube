@@ -98,7 +98,6 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
 
   return (
     <IonPage>
-        <LowerToolbar title="Regimes"/>
 			<IonContent className="ion-padding">
 				<p>Select a user (currently hardcoded)</p>
 				<IonSelect placeholder='Users' onIonChange={e => handleUserSelect(e.target.value)}>

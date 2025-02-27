@@ -4,8 +4,6 @@ import '../styles/Settings.css';
 
 const Settings: React.FC = () => (
   <IonPage>
-    
-    <LowerToolbar title='Settings'/>
 
     <IonContent></IonContent>
 

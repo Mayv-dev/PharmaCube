@@ -13,7 +13,6 @@ const Regimes = () => {
 
   return (
     <IonPage>
-		<LowerToolbar title="Regimes"/>
 			<IonContent className="ion-padding">
 				<IonRouterLink routerLink='/regimes/create'>
 					<IonButton expand="block" className='ScheduleButtons' color="light">
