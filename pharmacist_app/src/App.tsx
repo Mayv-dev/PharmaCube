@@ -34,9 +34,6 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import Medications from './pages/Medications';
-import MedicationAddPage from './pages/Medications Subpages/MedicationAddPage';
-import MedicationViewPage from './pages/Medications Subpages/MedicationViewPage';
 import AddRegime from './pages/Regimes Subpages/AddRegime';
 import ViewRegime from './pages/Regimes Subpages/ViewRegime';
 
@@ -51,15 +48,6 @@ const App: React.FC = () => {
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
-          <Route exact path="/medications">
-            <Medications />
-          </Route>
-          <Route exact path="/medications/add">
-            <MedicationAddPage />
-          </Route>
-          <Route exact path="/medications/view">
-            <MedicationViewPage />
-          </Route>
 
           <Route exact path="/regimes">
             <Regimes />
@@ -75,7 +63,7 @@ const App: React.FC = () => {
             <ViewRegime passModifyDataToApp={testRootMessage}/>
           </Route>
 
-          <Route exact path="/users">
+          <Route exact path="/chat">
             <Users />
           </Route>
           <Route exact path="/settings">
@@ -88,21 +76,13 @@ const App: React.FC = () => {
 
         {/* Tab Bar */}
         <IonTabBar slot="top">
-          <IonTabButton tab="medications" href="/medications">
-            <IonIcon icon={triangle} />
-            <IonLabel>Medications</IonLabel>
-          </IonTabButton>
           <IonTabButton tab="regimes" href="/regimes">
             <IonIcon icon={medkit} />
             <IonLabel>Regimes</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="users" href="/users">
+          <IonTabButton tab="chat" href="/chat">
             <IonIcon icon={people} />
-            <IonLabel>Users</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="settings" href="/settings">
-            <IonIcon icon={settings} />
-            <IonLabel>Settings</IonLabel>
+            <IonLabel>Chat</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
