@@ -50,27 +50,27 @@ const Users: React.FC = () => {
     <IonPage>
 
       <IonContent>
-        <IonSearchbar
-          className="search-bar"
-          value={searchQuery}
-          onIonInput={(e: any) => handleSearch(e.target.value)}
-          placeholder="Search for a user..."
-        />
-        {loading ? (
-          <IonLoading isOpen={loading} message={'Loading users...'} />
-        ) : (
-          <IonList>
-            {filteredUsers.map((user: any) => (
-              <IonItem key={user.id}>
-                <IonLabel>
-                  <h2>{user.username}</h2>
-                  <p>Medication: {user.medication}</p>
-                  <p>Amount: {user.amount}</p>
-                </IonLabel>
-              </IonItem>
-            ))}
-          </IonList>
-        )}
+        <div className='formBody'>
+          <IonSearchbar
+            className="search-bar"
+            value={searchQuery}
+            onIonInput={(e: any) => handleSearch(e.target.value)}
+            placeholder="Search for a user..."
+          />
+          {loading ? (
+            <IonLoading isOpen={loading} message={'Loading users...'} />
+          ) : (
+            <IonList>
+              {filteredUsers.map((user: any) => (
+                <IonItem key={user.id}>
+                  <IonLabel>
+                    <h2>{user.username}</h2>
+                  </IonLabel>
+                </IonItem>
+              ))}
+            </IonList>
+          )}
+        </div>
       </IonContent>
     </IonPage>
   );
