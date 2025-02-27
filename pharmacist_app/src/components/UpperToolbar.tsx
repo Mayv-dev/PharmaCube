@@ -4,7 +4,8 @@ import {
 	IonLabel,
 	IonTabBar,
 	IonTabButton,
-	IonMenu
+	IonMenu,
+	IonButton
   } from '@ionic/react';
   import { menu,notifications } from 'ionicons/icons';
   import '../styles/LowerToolbar.css';
@@ -33,7 +34,18 @@ import {
 	</IonTabBar>
 
 	  <IonMenu menuId="hamburger-menu" contentId="main-content">
-        <IonContent className="ion-padding">Account and other hamburger menu items will go here.</IonContent>
+        <IonContent>
+			<div className="hamburger-menu">
+				<div>
+					<img></img>
+					<p>Hello, PharmacistName</p>
+				</div>
+				<IonButton href='/account'>My Account</IonButton> {/* Link to a new account page */}
+				<IonButton href='/faqs'>FAQs</IonButton> {/* Link to a new blank page */}
+				<IonButton href='/settings'>Settings</IonButton> {/* Link to settings page */}
+				<IonButton color={"danger"}>Log Out</IonButton>
+			</div>
+		</IonContent>
       </IonMenu>
 
       <IonMenu side="end" menuId="notifications" contentId="main-content">
