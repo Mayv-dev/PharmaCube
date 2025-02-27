@@ -40,4 +40,21 @@
 .rowOfSelects{
 	display: flex;
 	flex-direction: row;
+	justify-content: space-between;
 }
+
+.rowOfSelects ion-item{
+	width: 50%;
+}
+
+.notificationMenu {
+	--max-width:80%;
+	--min-width:500px;
+}
+
+@media screen and (max-width: 680px) {
+	.notificationMenu {
+		--max-width:80%;
+		--min-width:300px;
+	}
+  }
