@@ -1,4 +1,5 @@
-import { IonContent, IonModal, IonInput, IonSelect, IonSelectOption, IonPage, IonItem, IonButton} from '@ionic/react';
+<<<<<<< HEAD
+import { IonContent, IonModal, IonInput, IonSelect, IonSelectOption, IonPage, IonItem, IonButton } from '@ionic/react';
 import '../styles/Accounts.css';
 import { useState } from 'react';
 import LinkedPatientDeleteConfirmation from '../components/Delete Confirmation Component/LinkedPatientDeleteConfirmation';
@@ -30,7 +31,7 @@ const Account: React.FC = () => {
 		try {
 			await emailValidation.validate(email).then(result => console.log(result))
 
-			if(
+			if (
 				email == "" ||
 				password == "" ||
 				pharmacyName == "" ||
@@ -38,7 +39,7 @@ const Account: React.FC = () => {
 				addressLine2 == "" ||
 				addressLine3 == "" ||
 				postcode == ""
-			){
+			) {
 				console.log("The modification is unacceptable, the incorrect inputs should be highlighted")
 			}
 			else {
@@ -51,15 +52,15 @@ const Account: React.FC = () => {
 		}
 	}
 
-	return(
+	return (
 		<IonPage>
 			<IonContent className='ion-padding'>
 				<div className='formBody'>
-				<p>Your Details</p>
+					<p>Your Details</p>
 					<IonItem>
 						<IonInput onIonChange={e => setEmail(e.target.value)} type="email" label='Email'></IonInput>
 					</IonItem>
-					
+
 					<IonItem>
 						<IonInput onIonChange={e => setPassword(e.target.value)} type="password" label='Password'></IonInput>
 					</IonItem>
@@ -72,15 +73,15 @@ const Account: React.FC = () => {
 					<IonItem>
 						<IonInput onIonChange={e => setAddressLine1(e.target.value)} label='Address Line 1'></IonInput>
 					</IonItem>
-					
+
 					<IonItem>
 						<IonInput onIonChange={e => setAddressLine2(e.target.value)} label='Address Line 2'></IonInput>
 					</IonItem>
-					
+
 					<IonItem>
 						<IonInput onIonChange={e => setAddressLine3(e.target.value)} label='Address Line 3'></IonInput>
 					</IonItem>
-					
+
 					<IonItem>
 						<IonInput onIonChange={e => setPostcode(e.target.value)} label='Postal Code'></IonInput>
 					</IonItem>
@@ -88,15 +89,15 @@ const Account: React.FC = () => {
 					<IonButton onClick={e => handleModification()}>Modify Details</IonButton>
 
 					<p className='headingText'>Patient list</p>
-					{isInEditMode ? 
+					{isInEditMode ?
 						<IonButton color="danger" onClick={e => setIsInEditMode(false)}>Stop Editing List</IonButton>
 						:
 						<IonButton onClick={e => setIsInEditMode(true)}>Edit List</IonButton>
 					}
-					{patientList.map((patient,index) =>
+					{patientList.map((patient, index) =>
 						<div className='patientContainer'>
-						<p className="patientContainerName">{patient}</p>
-						{isInEditMode ? <IonButton className="deletePatientButton" onClick={e => {setShowModal(true); setPatientId(index); setPatientName(patient)}}>X</IonButton>:null}
+							<p className="patientContainerName">{patient}</p>
+							{isInEditMode ? <IonButton className="deletePatientButton" onClick={e => { setShowModal(true); setPatientId(index); setPatientName(patient) }}>X</IonButton> : null}
 						</div>
 					)}
 
@@ -109,9 +110,9 @@ const Account: React.FC = () => {
 			</IonContent>
 
 
-		<IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
-			<LinkedPatientDeleteConfirmation patient_id={patientId} patient_name={patientName} setShowModal={setShowModal} deletePatient={() => setPatientList(patientList.filter(patient => patient != patientName))}></LinkedPatientDeleteConfirmation>
-		</IonModal>
+			<IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
+				<LinkedPatientDeleteConfirmation patient_id={patientId} patient_name={patientName} setShowModal={setShowModal} deletePatient={() => setPatientList(patientList.filter(patient => patient != patientName))}></LinkedPatientDeleteConfirmation>
+			</IonModal>
 		</IonPage>
 	);
 };
