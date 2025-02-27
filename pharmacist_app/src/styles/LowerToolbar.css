@@ -29,3 +29,10 @@
 .tabs-inner {
 	display: none;
 }
+
+.hamburger-menu {
+	background-color: #A3C898;
+	height: 100%;
+	width: 100%;
+	padding:3%
+}
