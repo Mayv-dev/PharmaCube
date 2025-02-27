@@ -8,7 +8,7 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Regimes from './pages/Regimes'; // Medications Tab
-import Users from './pages/Users'; // Users Tab
+import Chat from './pages/Chat'; // Chat Tab
 import Settings from './pages/Settings'; // Settings Tab
 
 /* Core CSS required for Ionic components to work properly */
@@ -77,7 +77,7 @@ const App: React.FC = () => {
           </Route>
 
           <Route exact path="/chat">
-            <Users />
+            <Chat />
           </Route>
           
           <Route exact path="/account">
