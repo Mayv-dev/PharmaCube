@@ -1,2 +1,57 @@
 /* For information on how to create your own theme, please see:
 http://ionicframework.com/docs/theming/ */
+
+:root {
+	--ion-toolbar-background:#084632;
+	--ion-tab-bar-background:#084632;
+	--ion-tab-bar-border-color:#084632;
+
+	/* themes below generated from https://ionicframework.com/docs/theming/themes */
+	--ion-background-color: #594770;
+	--ion-background-color-rgb: 89,71,112;
+
+	--ion-text-color: #aaaaaa;
+	--ion-text-color-rgb: 170,170,170;
+
+	--ion-text-color-step-50: #a6a5a7;
+	--ion-text-color-step-100: #a2a0a4;
+	--ion-text-color-step-150: #9e9ba1;
+	--ion-text-color-step-200: #9a969e;
+	--ion-text-color-step-250: #96919c;
+	--ion-text-color-step-300: #928c99;
+	--ion-text-color-step-350: #8e8796;
+	--ion-text-color-step-400: #8a8293;
+	--ion-text-color-step-450: #867d90;
+	--ion-text-color-step-500: #82798d;
+	--ion-text-color-step-550: #7d748a;
+	--ion-text-color-step-600: #796f87;
+	--ion-text-color-step-650: #756a84;
+	--ion-text-color-step-700: #716581;
+	--ion-text-color-step-750: #6d607f;
+	--ion-text-color-step-800: #695b7c;
+	--ion-text-color-step-850: #655679;
+	--ion-text-color-step-900: #615176;
+	--ion-text-color-step-950: #5d4c73;
+
+	--ion-background-color-step-50: #5d4c73;
+	--ion-background-color-step-100: #615176;
+	--ion-background-color-step-150: #655679;
+	--ion-background-color-step-200: #695b7c;
+	--ion-background-color-step-250: #6d607f;
+	--ion-background-color-step-300: #716581;
+	--ion-background-color-step-350: #756a84;
+	--ion-background-color-step-400: #796f87;
+	--ion-background-color-step-450: #7d748a;
+	--ion-background-color-step-500: #82798d;
+	--ion-background-color-step-550: #867d90;
+	--ion-background-color-step-600: #8a8293;
+	--ion-background-color-step-650: #8e8796;
+	--ion-background-color-step-700: #928c99;
+	--ion-background-color-step-750: #96919c;
+	--ion-background-color-step-800: #9a969e;
+	--ion-background-color-step-850: #9e9ba1;
+	--ion-background-color-step-900: #a2a0a4;
+	--ion-background-color-step-950: #a6a5a7;
+}
+
+ion-tab-bar{ --color-selected: yellow }
