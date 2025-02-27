@@ -7,10 +7,6 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-<<<<<<< HEAD
-=======
-import { medkit, people, settings, triangle, chatbubbleOutline} from 'ionicons/icons'; // Icons for the tabs
->>>>>>> 210d53a (Update dual toolbar code to allow all nav items)
 import Regimes from './pages/Regimes'; // Medications Tab
 import Chat from './pages/Chat'; // Chat Tab
 import Settings from './pages/Settings'; // Settings Tab
@@ -39,14 +35,11 @@ import Notifications from './pages/Notifications';
 import Menu from './pages/Menu';
 import LowerToolbar from './components/LowerToolbar';
 import UpperToolbar from './components/UpperToolbar';
-<<<<<<< HEAD
 import Account from './pages/Account';
 import FAQs from './pages/FAQs';
 import PatientChat from './pages/Chat Subpage/PatientChat';
 import Login from './pages/Authentication Pages/Login';
 import Register from './pages/Authentication Pages/Register';
-=======
->>>>>>> 210d53a (Update dual toolbar code to allow all nav items)
 
 setupIonicReact();
 
