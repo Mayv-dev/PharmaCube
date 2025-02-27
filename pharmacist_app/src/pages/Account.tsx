@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { IonContent, IonModal, IonInput, IonSelect, IonSelectOption, IonPage, IonItem, IonButton } from '@ionic/react';
 import '../styles/Accounts.css';
 import { useState } from 'react';
