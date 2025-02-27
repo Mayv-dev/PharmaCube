@@ -12,3 +12,20 @@
 	text-align: center;
 	font-weight: bold;
 }
+
+.tabBarPrimary, .tabBarSecondary {
+	border:1px solid black
+}
+
+.tabBarPrimary {
+	display: flex;
+	justify-content: space-between;
+}
+
+.hiddenOutlet{
+	display: none;
+}
+
+.tabs-inner {
+	display: none;
+}
