@@ -1,17 +1,12 @@
 import { useState } from 'react';
-import { Link, Redirect, Route } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
-  IonIcon,
-  IonLabel,
   IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
   IonTabs,
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { medkit, people, settings, triangle, chatbubbleOutline} from 'ionicons/icons'; // Icons for the tabs
 import Regimes from './pages/Regimes'; // Medications Tab
 import Users from './pages/Users'; // Users Tab
 import Settings from './pages/Settings'; // Settings Tab
@@ -48,10 +43,13 @@ const App: React.FC = () => {
     const [modifyRegimeInfo, setModifyRegimeInfo] = useState(null);
     const testRootMessage = (regime:any) => setModifyRegimeInfo(regime)
 
-  return(<IonApp>
+  return(
+  <IonApp>
     <IonReactRouter>
       <IonTabs>
-        <IonRouterOutlet>
+        {/* The necessity of an id for the menus to link to was pointed out by deanwilliammills in his answer to the following question
+        https://stackoverflow.com/questions/53003274/ionic4-component-menu-must-have-a-content-element-to-listen-for-drag-events */}
+        <IonRouterOutlet id="main-content">
 
           <Route exact path="/regimes">
             <Regimes />
@@ -85,12 +83,10 @@ const App: React.FC = () => {
           <Route exact path="/">
             <Redirect to="/regimes" />
           </Route>
-
         </IonRouterOutlet>
 
         <UpperToolbar/>
         <LowerToolbar/>
-        {/* Tab Bar */}
         
       </IonTabs>
     </IonReactRouter>
