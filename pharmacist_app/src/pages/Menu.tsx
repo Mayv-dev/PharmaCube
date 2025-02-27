@@ -1,6 +1,6 @@
 import {
-  IonPage,
-  IonContent
+	IonPage,
+	IonContent
 } from '@ionic/react';
 import '../styles/Menu.css';
 
