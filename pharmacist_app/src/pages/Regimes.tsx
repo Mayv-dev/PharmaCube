@@ -1,13 +1,10 @@
-import { useState } from 'react';
 import {
   IonPage,
   IonContent,
   IonButton,
-  IonCard,
   IonRouterLink
 } from '@ionic/react';
 import '../styles/Regimes.css';
-import LowerToolbar from '../components/LowerToolbar';
 
 const Regimes = () => {
 
