@@ -45,78 +45,78 @@ setupIonicReact();
 
 
 const App: React.FC = () => {
-    const [modifyRegimeInfo, setModifyRegimeInfo] = useState(null);
-    const testRootMessage = (regime:any) => setModifyRegimeInfo(regime)
+  const [modifyRegimeInfo, setModifyRegimeInfo] = useState(null);
+  const testRootMessage = (regime: any) => setModifyRegimeInfo(regime)
 
-  return(
-  <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        {/* The necessity of an id for the menus to link to was pointed out by deanwilliammills in his answer to the following question
+  return (
+    <IonApp>
+      <IonReactRouter>
+        <IonTabs>
+          {/* The necessity of an id for the menus to link to was pointed out by deanwilliammills in his answer to the following question
         https://stackoverflow.com/questions/53003274/ionic4-component-menu-must-have-a-content-element-to-listen-for-drag-events */}
-        <IonRouterOutlet id="main-content">
+          <IonRouterOutlet id="main-content">
 
-        <Route exact path="/login">
-            <Login />
-        </Route>
-        <Route exact path="/register">
-          <Register />
-        </Route>
+            <Route exact path="/login">
+              <Login />
+            </Route>
+            <Route exact path="/register">
+              <Register />
+            </Route>
 
-          <Route exact path="/regimes">
-            <Regimes />
-          </Route>
-          <Route exact path="/regimes/create">
-            <AddRegime passedInfo={null}/>
-          </Route>
-          <Route exact path="/regimes/modify">
-            <AddRegime passedInfo={modifyRegimeInfo}/>
-          </Route>
+            <Route exact path="/regimes">
+              <Regimes />
+            </Route>
+            <Route exact path="/regimes/create">
+              <AddRegime passedInfo={null} />
+            </Route>
+            <Route exact path="/regimes/modify">
+              <AddRegime passedInfo={modifyRegimeInfo} />
+            </Route>
 
-          <Route exact path="/regimes/view">
-            <ViewRegime passModifyDataToApp={testRootMessage}/>
-          </Route>
+            <Route exact path="/regimes/view">
+              <ViewRegime passModifyDataToApp={testRootMessage} />
+            </Route>
 
-          
-          <Route exact path="/notifications">
-            <Notifications />
-          </Route>
 
-          <Route exact path="/menu">
-            <Menu />
-          </Route>
+            <Route exact path="/notifications">
+              <Notifications />
+            </Route>
 
-          <Route exact path="/chat">
-            <Chat />
-          </Route>
-          <Route exact path="/chat/patient">
-            <PatientChat />
-          </Route>
-          
-          <Route exact path="/account">
-            <Account />
-          </Route>
+            <Route exact path="/menu">
+              <Menu />
+            </Route>
 
-          <Route exact path="/settings">
-            <Settings />
-          </Route>
+            <Route exact path="/chat">
+              <Chat />
+            </Route>
+            <Route exact path="/chat/patient">
+              <PatientChat />
+            </Route>
 
-          <Route exact path="/faqs">
-            <FAQs />
-          </Route>
+            <Route exact path="/account">
+              <Account />
+            </Route>
 
-          <Route exact path="/">
-            <Redirect to="/login" />
-          </Route>
-        </IonRouterOutlet>
+            <Route exact path="/settings">
+              <Settings />
+            </Route>
 
-        <UpperToolbar/>
-        <LowerToolbar/>
-        
-      </IonTabs>
-    </IonReactRouter>
-  </IonApp>
-);
+            <Route exact path="/faqs">
+              <FAQs />
+            </Route>
+
+            <Route exact path="/">
+              <Redirect to="/login" />
+            </Route>
+          </IonRouterOutlet>
+
+          <UpperToolbar />
+          <LowerToolbar />
+
+        </IonTabs>
+      </IonReactRouter>
+    </IonApp>
+  );
 }
 
 export default App;
