@@ -6,4 +6,12 @@
 .patientContainer {
 	display: flex;
 	flex-direction: row;
+	justify-content: center;
+}
+
+.patientContainerName {
+	width: 20%;
+}
+.deletePatientButton {
+	width: 10%;
 }
