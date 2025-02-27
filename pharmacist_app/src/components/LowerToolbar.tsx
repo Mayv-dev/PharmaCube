@@ -1,25 +1,40 @@
 import {
-  IonToolbar,
-  IonTitle,
-  IonIcon,
-  IonBadge,
-  IonHeader
-} from '@ionic/react';
-import { menu, notifications } from 'ionicons/icons';
-import '../styles/LowerToolbar.css';
-
-const LowerToolbar: React.FC<{title:string}> = ({title}) => {
-  return (
-	<IonHeader>
-		<IonToolbar>
-			<IonIcon className="hamburger-icon" slot="start" icon={menu} />
-			<IonTitle className="centerTitle">{title}</IonTitle>
-			<IonIcon className="notification-icon" slot="end" icon={notifications}>
-				<IonBadge className="notification-badge">3</IonBadge>
-			</IonIcon>
-		</IonToolbar>
-	</IonHeader>
-  );
-};
-
-export default LowerToolbar;
+	IonToolbar,
+	IonTitle,
+	IonIcon,
+	IonBadge,
+	IonButton,
+	IonHeader,
+	IonRouterLink,
+	IonContent,
+	IonTabs,
+	IonTab,
+	IonLabel,
+	IonTabBar,
+	IonTabButton,
+	IonRouterOutlet,
+	IonText
+  } from '@ionic/react';
+  import { menu, medkit, notifications, calendar, personCircle, map, informationCircle } from 'ionicons/icons';
+  import '../styles/LowerToolbar.css';
+  import Notifications from '../pages/Notifications';
+  import { Route } from 'react-router';
+  import { IonReactRouter } from '@ionic/react-router';
+  
+  const LowerToolbar: React.FC = () => {
+	return (
+		
+		<IonTabBar className='tabBarSecondary' slot="top">
+		<IonTabButton tab="regimes" href="/regimes">
+		  <IonIcon icon={medkit} />
+		  <IonLabel>Regimes</IonLabel>
+		</IonTabButton>
+		<IonTabButton tab="chat" href="/chat">
+		  <IonIcon icon={calendar} />
+		  <IonLabel>Chat</IonLabel>
+		</IonTabButton>
+	  </IonTabBar>
+	);
+  };
+  
+  export default LowerToolbar;

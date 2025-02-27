@@ -3,9 +3,9 @@ import {
   IonContent,
 } from '@ionic/react';
 import LowerToolbar from '../components/LowerToolbar';
-import '../styles/Notifications.css';
+import '../styles/Menu.css';
 
-const Notifications: React.FC = () => (
+const Menu: React.FC = () => (
 	<IonPage>
   
 	  <IonContent></IonContent>
@@ -13,5 +13,5 @@ const Notifications: React.FC = () => (
 	</IonPage>
   );
 
-export default Notifications;
+export default Menu;
 
