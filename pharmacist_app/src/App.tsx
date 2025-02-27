@@ -35,6 +35,8 @@ import Notifications from './pages/Notifications';
 import Menu from './pages/Menu';
 import LowerToolbar from './components/LowerToolbar';
 import UpperToolbar from './components/UpperToolbar';
+import Account from './pages/Account';
+import FAQs from './pages/FAQs';
 
 setupIonicReact();
 
@@ -77,9 +79,19 @@ const App: React.FC = () => {
           <Route exact path="/chat">
             <Users />
           </Route>
+          
+          <Route exact path="/account">
+            <Account />
+          </Route>
+
           <Route exact path="/settings">
             <Settings />
           </Route>
+
+          <Route exact path="/faqs">
+            <FAQs />
+          </Route>
+
           <Route exact path="/">
             <Redirect to="/regimes" />
           </Route>
