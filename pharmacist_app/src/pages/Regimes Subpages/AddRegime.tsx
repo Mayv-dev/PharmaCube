@@ -279,11 +279,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
               <p><strong>Information:</strong> <pre>{information}</pre></p>
               <p><strong>Compartment:</strong> {compartment == undefined ? "Medication not stored in compartment" : compartment}</p>
               <p><strong>Day:</strong> {dayConvert(dateInfo.getDay())}</p>
-<<<<<<< HEAD
               <p><strong>Month:</strong> {monthConvert(dateInfo.getMonth() + 1)}</p>
-=======
-              <p><strong>Month:</strong> {monthConvert(dateInfo.getMonth()+1)}</p>
->>>>>>> 66ea665 (Implement styling tweaks for user tests)
               <p><strong>Year:</strong> {dateInfo.getFullYear()}</p>
               <p><strong>Time of Day:</strong> {timeOfDayConvert(timeOfDay)}</p>
               <p><strong>Hours before repeat:</strong> {timeOffset} hours</p>
