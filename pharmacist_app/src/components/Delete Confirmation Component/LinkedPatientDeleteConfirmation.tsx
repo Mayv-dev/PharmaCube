@@ -18,24 +18,19 @@ const LinkedPatientDeleteConfirmation: React.FC<popupInfo> = ({ patient_id, pati
 				</IonToolbar>
 			</IonHeader>
 			<IonContent className="ion-padding">
-
-				<div className='formBody'>
-					<p>Are you sure you wish to delete {patient_name} from your list? Please enter their name below to confirm deletion.</p>
-					<IonItem>
-						<IonInput value={deleteInput} onIonInput={e => setDeleteInput(e.target.value)}></IonInput>
-					</IonItem>
-					<IonButton expand="full" color={deleteInput == patient_name ? "primary" : "dark"} onClick={() => {
-						if (deleteInput == patient_name) {
-							deletePatient()
-							setShowModal(false)
-						}
-					}}>
-						Yes
-					</IonButton>
-					<IonButton expand="full" color="medium" className="cancel-button" onClick={() => setShowModal(false)}>
-						No
-					</IonButton>
-				</div>
+				<p>Are you sure you wish to delete {patient_name} from your list? Please enter their name below to confirm deletion.</p>
+				<IonInput value={deleteInput} onIonInput={e => setDeleteInput(e.target.value)}></IonInput>
+				<IonButton expand="full" color={deleteInput == patient_name ? "primary" : "dark"} onClick={() => {
+					if (deleteInput == patient_name) {
+						deletePatient()
+						setShowModal(false)
+					}
+				}}>
+					Yes
+				</IonButton>
+				<IonButton expand="full" color="medium" className="cancel-button" onClick={() => setShowModal(false)}>
+					No
+				</IonButton>
 			</IonContent>
 		</>
 	);
