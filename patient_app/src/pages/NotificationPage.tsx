@@ -18,7 +18,7 @@ type Notification = {
 async function getMockData() {
   try {
 	const { data, status } = await axios.get(
-	  'https://demo3553220.mockable.io/notification',
+	  'http://demo3553220.mockable.io/notification',
 	  {
 		headers: {
 		  Accept: 'application/json'
