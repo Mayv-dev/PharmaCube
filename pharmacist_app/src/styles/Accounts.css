@@ -1,0 +1,9 @@
+.headingText {
+	font-size: 36px;
+	margin-top: 10%;
+}
+
+.patientContainer {
+	display: flex;
+	flex-direction: row;
+}
