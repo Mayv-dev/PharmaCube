@@ -49,8 +49,6 @@ const Users: React.FC = () => {
   return (
     <IonPage>
 
-      <LowerToolbar title='Users'/>
-
       <IonContent>
         <IonSearchbar
           className="search-bar"

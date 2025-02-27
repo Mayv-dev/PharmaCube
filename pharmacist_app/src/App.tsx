@@ -11,7 +11,7 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { medkit, people, settings, triangle } from 'ionicons/icons'; // Icons for the tabs
+import { medkit, people, settings, triangle, chatbubbleOutline} from 'ionicons/icons'; // Icons for the tabs
 import Regimes from './pages/Regimes'; // Medications Tab
 import Users from './pages/Users'; // Users Tab
 import Settings from './pages/Settings'; // Settings Tab
@@ -36,6 +36,10 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import AddRegime from './pages/Regimes Subpages/AddRegime';
 import ViewRegime from './pages/Regimes Subpages/ViewRegime';
+import Notifications from './pages/Notifications';
+import Menu from './pages/Menu';
+import LowerToolbar from './components/LowerToolbar';
+import UpperToolbar from './components/UpperToolbar';
 
 setupIonicReact();
 
@@ -63,6 +67,15 @@ const App: React.FC = () => {
             <ViewRegime passModifyDataToApp={testRootMessage}/>
           </Route>
 
+          
+          <Route exact path="/notifications">
+            <Notifications />
+          </Route>
+
+          <Route exact path="/menu">
+            <Menu />
+          </Route>
+
           <Route exact path="/chat">
             <Users />
           </Route>
@@ -72,19 +85,13 @@ const App: React.FC = () => {
           <Route exact path="/">
             <Redirect to="/regimes" />
           </Route>
+
         </IonRouterOutlet>
 
+        <UpperToolbar/>
+        <LowerToolbar/>
         {/* Tab Bar */}
-        <IonTabBar slot="top">
-          <IonTabButton tab="regimes" href="/regimes">
-            <IonIcon icon={medkit} />
-            <IonLabel>Regimes</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="chat" href="/chat">
-            <IonIcon icon={people} />
-            <IonLabel>Chat</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
+        
       </IonTabs>
     </IonReactRouter>
   </IonApp>
