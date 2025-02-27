@@ -5,7 +5,10 @@ import LinkedPatientDeleteConfirmation from '../components/Delete Confirmation C
 
 const Account: React.FC = () => {
 	const [isInEditMode, setIsInEditMode] = useState<Boolean>(false)
+	const [patientName, setPatientName] = useState("")
+	const [patientId, setPatientId] = useState(-1)
 	const [showModal, setShowModal] = useState(false)
+	const [patientList, setPatientList] = useState(["Ann Murphy", "Juan Cortez", "Josh Higgins"])
 
 	return(
 		<IonPage>
@@ -32,27 +35,21 @@ const Account: React.FC = () => {
 						:
 						<IonButton onClick={e => setIsInEditMode(true)}>Edit List</IonButton>
 					}
-					<div className='patientContainer'>
-						<p>Ann Conway </p>
-						{isInEditMode ? <IonButton onClick={e => setShowModal(true)}>X</IonButton>:null}
-					</div>
-					<div className='patientContainer'>
-						<p>Juan Cortez</p>
-						{isInEditMode ? <IonButton onClick={e => setShowModal(true)}>X</IonButton>:null}
-					</div>
-					<div className='patientContainer'>
-						<p>Josh Higgins</p>
-						{isInEditMode ? <IonButton onClick={e => setShowModal(true)}>X</IonButton>:null}
-					</div>
+					{patientList.map((patient,index) =>
+						<div className='patientContainer'>
+						<p className="patientContainerName">{patient}</p>
+						{isInEditMode ? <IonButton className="deletePatientButton" onClick={e => {setShowModal(true); setPatientId(index); setPatientName(patient)}}>X</IonButton>:null}
+						</div>
+					)}
 
 					<p className='headingText'>Adding a new patient? Have them scan the code below with the app.</p>
-					<img src="https://media.istockphoto.com/id/1347277582/vector/qr-code-sample-for-smartphone-scanning-on-white-background.jpg?s=612x612&w=0&k=20&c=6e6Xqb1Wne79bJsWpyyNuWfkrUgNhXR4_UYj3i_poc0="></img>
+					<img width="30%" src="https://media.istockphoto.com/id/1347277582/vector/qr-code-sample-for-smartphone-scanning-on-white-background.jpg?s=612x612&w=0&k=20&c=6e6Xqb1Wne79bJsWpyyNuWfkrUgNhXR4_UYj3i_poc0="></img>
 				</div>
 			</IonContent>
 
 
 		<IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
-			<LinkedPatientDeleteConfirmation patient_id={1} patient_name={"Patient Name"} delete_denied={console.log("The delete was not carried out")} delete_confirmed={console.log("The delete was carried out")}></LinkedPatientDeleteConfirmation>
+			<LinkedPatientDeleteConfirmation patient_id={patientId} patient_name={patientName} setShowModal={setShowModal} deletePatient={() => setPatientList(patientList.filter(patient => patient != patientName))}></LinkedPatientDeleteConfirmation>
 		</IonModal>
 		</IonPage>
 	);
