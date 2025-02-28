@@ -4,7 +4,7 @@ import '../styles/Settings.css';
 const FAQs: React.FC = () => (
   <IonPage>
 
-	<IonContent>FAQs</IonContent>
+	<IonContent></IonContent>
 
   </IonPage>
 );

@@ -10,6 +10,7 @@ import {
   IonModal,
   IonTitle,
   IonToolbar,
+  IonRouterLink,
 } from '@ionic/react';
 import '../../styles/Regime Subpages/ViewRegime.css';
 import LowerToolbar from '../../components/LowerToolbar';
@@ -99,11 +100,16 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
   return (
     <IonPage>
 			<IonContent className="ion-padding">
-				<p>Select a user (currently hardcoded)</p>
-				<IonSelect placeholder='Users' onIonChange={e => handleUserSelect(e.target.value)}>
-					<IonSelectOption>Nina Muller</IonSelectOption>
+			<div className='formBody'>
+				<IonRouterLink routerLink='/regimes/'>
+					<IonButton expand="block" className='ScheduleButtons' color="light">
+						Back to Regime Home
+					</IonButton>
+				</IonRouterLink>
+				<IonSelect className="patientSelect" label="Select a patient:" placeholder='Users' onIonChange={e => handleUserSelect(e.target.value)}>
+					<IonSelectOption>Ann Murphy</IonSelectOption>
 					<IonSelectOption>Aaron Murphy</IonSelectOption>
-					<IonSelectOption>Dillon McMahon</IonSelectOption>
+					<IonSelectOption>Irene Duffy</IonSelectOption>
 				</IonSelect>
 			{
 				patientName == "Unselected" ? null :
@@ -124,6 +130,7 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
             </IonToolbar>
           </IonHeader>
           <IonContent className="ion-padding">
+		  <div className='formBody'>
             <p>Are you sure you wish to delete this regime?</p>
             <IonButton expand="full" color="primary" onClick={() => {
 				deleteRegimeItem()
@@ -133,8 +140,10 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
             <IonButton expand="full" color="medium" className="cancel-button" onClick={() => setShowModal(false)}>
               No
             </IonButton>
+			</div>
           </IonContent>
         </IonModal>
+		</div>
 			</IonContent>
     </IonPage>
   );
