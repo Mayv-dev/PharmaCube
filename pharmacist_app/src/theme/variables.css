@@ -6,7 +6,7 @@ http://ionicframework.com/docs/theming/ */
 	--ion-tab-bar-background:#084632;
 	--ion-tab-bar-border-color:#084632;
 
-	/* themes below generated from https://ionicframework.com/docs/theming/themes */
+	/* variables below generated from https://ionicframework.com/docs/theming/themes */
 	--ion-background-color: #594770;
 	--ion-background-color-rgb: 89,71,112;
 
@@ -55,3 +55,5 @@ http://ionicframework.com/docs/theming/ */
 }
 
 ion-tab-bar{ --color-selected: yellow }
+ion-item{ --background: var(--ion-text-color-step-650)}
+ion-datetime{ --background: var(--ion-text-color-step-700)}
