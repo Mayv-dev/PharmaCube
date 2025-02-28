@@ -16,11 +16,11 @@ import {
   IonSelectOption,
   IonTextarea,
   IonDatetime,
+  IonRouterLink,
 } from '@ionic/react';
 import '../../styles/Regime Subpages/AddRegime.css';
 import LowerToolbar from '../../components/LowerToolbar';
 import { RegimeItem } from 'api types/types';
-
 type AddRegimeProps = {
   passedInfo:any
 }
@@ -46,44 +46,6 @@ const AddRegime: React.FC<AddRegimeProps> = ({passedInfo}) => {
 
   const [showModal, setShowModal] = useState(false);
 
-
-  function dayConvert(day:string):number {
-    let intDay = -1;
-  
-    switch (day) {
-      case "Monday": {
-        intDay = 1;
-        break;
-      }
-      case "Tuesday": {
-        intDay = 2;
-        break;
-      }
-      case "Wednesday": {
-        intDay = 3;
-        break;
-      }
-      case "Thursday": {
-        intDay = 4;
-        break;
-      }
-      case "Friday": {
-        intDay = 5;
-        break;
-      }
-      case "Saturday": {
-        intDay = 6;
-        break;
-      }
-      case "Sunday": {
-        intDay = 7;
-        break;
-      }
-    }
-  
-    return intDay;
-  }
-
   useEffect(() => {
     if(passedInfo != null) {
       console.log(passedInfo)
@@ -97,7 +59,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({passedInfo}) => {
       setInstructions(passedInfo.instructions)
     }
     else getMockPatientList().then(setPatientList)
-    },[]);
+    },[passedInfo]);
 
     const getMockPatientList = async () => {
       try {
@@ -206,14 +168,26 @@ const AddRegime: React.FC<AddRegimeProps> = ({passedInfo}) => {
 
   return (
     <IonPage>
-
       <IonContent className="ion-padding">
+      
+              
         <div className='formBody'>
+        {passedInfo == null?
+      <IonRouterLink routerLink='/regimes/'>
+        <IonButton expand="block" className='ScheduleButtons' color="light">
+          Back to Regime Home
+        </IonButton>
+      </IonRouterLink>
+      :
+      <IonRouterLink routerLink='/regimes/view'>
+        <IonButton onClick={e => passedInfo = null} expand="block" className='ScheduleButtons' color="light">
+          Back to Regime View
+        </IonButton>
+      </IonRouterLink>}
         {passedInfo == null? 
           <IonItem>
-            <IonLabel position="fixed">Patient:</IonLabel>
             
-            <IonSelect  placeholder='Choose a patient' onIonChange={e => {
+            <IonSelect label='Patient' placeholder='Choose a patient' onIonChange={e => {
                 setPatientId(e.target.value.id)
                 setPatientName(e.target.value.name)
               }}> 
@@ -226,12 +200,10 @@ const AddRegime: React.FC<AddRegimeProps> = ({passedInfo}) => {
           <p className="sectionHeading">What is {patientName == "" ? "the patient" : patientName} taking?</p>
           <div className='formGroup'>
           <IonItem>
-            <IonLabel position="fixed">Information:</IonLabel>
-            <IonTextarea value={information} onIonChange={e => setInformation(e.target.value)}></IonTextarea>
+            <IonTextarea label="Information:" value={information} onIonChange={e => setInformation(e.target.value)}></IonTextarea>
           </IonItem>
           <IonItem>
-            <IonLabel position="fixed">Compartment: </IonLabel>
-            <IonSelect value={compartment} onIonChange={e => setCompartment(e.target.value)}>
+            <IonSelect label="Compartment:" value={compartment} onIonChange={e => setCompartment(e.target.value)}>
               <IonSelectOption value={0}>Not in a compartment</IonSelectOption>
               <IonSelectOption value={1}>Compartment 1</IonSelectOption>
               <IonSelectOption value={2}>Compartment 2</IonSelectOption>
@@ -255,7 +227,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({passedInfo}) => {
               else {
                 setDateInfo(dateData)
               }
-            }} presentation="date"></IonDatetime>;            
+            }} presentation="date"></IonDatetime>          
             {/* <IonSelect value={day} onIonChange={e => setDay(e.target.value)}>
               <IonSelectOption value={1}>Monday</IonSelectOption>
               <IonSelectOption value={2}>Tuesday</IonSelectOption>
@@ -268,8 +240,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({passedInfo}) => {
           </IonItem>
           
           <IonItem>
-            <IonLabel position="fixed">Time of Day:</IonLabel>
-            <IonSelect value={timeOfDay} onIonChange={e => setTimeOfDay(e.target.value)}>
+            <IonSelect label="Time of Day:" value={timeOfDay} onIonChange={e => setTimeOfDay(e.target.value)}>
               <IonSelectOption value={1}>Morning</IonSelectOption>
               <IonSelectOption value={2}>Afternoon</IonSelectOption>
               <IonSelectOption value={3}>Evening</IonSelectOption>
@@ -278,16 +249,14 @@ const AddRegime: React.FC<AddRegimeProps> = ({passedInfo}) => {
           </IonItem>
           
           <IonItem>
-            <IonLabel position="fixed">Time Offset:</IonLabel>
-            <IonInput type='number' value={timeOffset}  onIonChange={e => setTimeOffset(e.target.value)}></IonInput>
+            <IonInput label='Hours before repeat:' type='number' value={timeOffset}  onIonChange={e => setTimeOffset(e.target.value)}></IonInput>
           </IonItem>
 </div>
           <p className="sectionHeading">Please provide instructions that {patientName == "" ? "the patient" : patientName} must follow.</p>
           <div className='formGroup'>
 
           <IonItem>
-            <IonLabel position="fixed">Instructions:</IonLabel>
-            <IonTextarea value={instructions} onIonChange={e => setInstructions(e.target.value)}></IonTextarea>
+            <IonTextarea label='Instructions:' value={instructions} onIonChange={e => setInstructions(e.target.value)}></IonTextarea>
           </IonItem>
 </div>
           
@@ -307,14 +276,14 @@ const AddRegime: React.FC<AddRegimeProps> = ({passedInfo}) => {
             <div className="data-display">
               <h3>Entered Data:</h3>
               <p><strong>Patient:</strong> {patientName}</p>
-              <p><strong>Information:</strong> {information}</p>
+              <p><strong>Information:</strong> <pre>{information}</pre></p>
               <p><strong>Compartment:</strong> {compartment == undefined ? "Medication not stored in compartment" : compartment}</p>
-              <p><strong>Day:</strong> {dateInfo.getDay()}</p>
-              <p><strong>Month:</strong> {dateInfo.getMonth()+1}</p>
+              <p><strong>Day:</strong> {dayConvert(dateInfo.getDay())}</p>
+              <p><strong>Month:</strong> {monthConvert(dateInfo.getMonth()+1)}</p>
               <p><strong>Year:</strong> {dateInfo.getFullYear()}</p>
-              <p><strong>Time of Day:</strong> {timeOfDay}</p>
-              <p><strong>Time Offset:</strong> {timeOffset}</p>
-              <p><strong>Instructions:</strong> {instructions}</p>
+              <p><strong>Time of Day:</strong> {timeOfDayConvert(timeOfDay)}</p>
+              <p><strong>Hours before repeat:</strong> {timeOffset} hours</p>
+              <p><strong>Instructions:</strong> <pre>{instructions}</pre></p>
             </div>
             <IonButton expand="full" color="primary" onClick={handleConfirm}>
               Yes
@@ -328,5 +297,124 @@ const AddRegime: React.FC<AddRegimeProps> = ({passedInfo}) => {
     </IonPage>
   );
 };
+
+function dayConvert(day:number):string {
+  let stringDay = "";
+
+  switch (day) {
+    case 1: {
+      stringDay = "Monday";
+      break;
+    }
+    case 2: {
+      stringDay = "Tuesday";
+      break;
+    }
+    case 3: {
+      stringDay = "Wednesday";
+      break;
+    }
+    case 4: {
+      stringDay = "Thursday";
+      break;
+    }
+    case 5: {
+      stringDay = "Friday";
+      break;
+    }
+    case 6: {
+      stringDay = "Saturday";
+      break;
+    }
+    case 7: {
+      stringDay = "Sunday";
+      break;
+    }
+  }
+
+  return stringDay;
+}
+
+function monthConvert(month:number):string {
+  let stringMonth = "";
+
+  switch (month) {
+    case 1: {
+      stringMonth = "January";
+      break;
+    }
+    case 2: {
+      stringMonth = "February";
+      break;
+    }
+    case 3: {
+      stringMonth = "March";
+      break;
+    }
+    case 4: {
+      stringMonth = "April";
+      break;
+    }
+    case 5: {
+      stringMonth = "May";
+      break;
+    }
+    case 6: {
+      stringMonth = "June";
+      break;
+    }
+    case 7: {
+      stringMonth = "July";
+      break;
+    }
+    case 8: {
+      stringMonth = "August";
+      break;
+    }
+    case 9: {
+      stringMonth = "September";
+      break;
+    }
+    case 10: {
+      stringMonth = "October";
+      break;
+    }
+    case 11: {
+      stringMonth = "November";
+      break;
+    }
+    case 12: {
+      stringMonth = "December";
+      break;
+    }
+  }
+
+  return stringMonth;
+}
+
+function timeOfDayConvert(timeOfDay:number):string {
+  let stringTimeOfDay = "";
+
+  switch (timeOfDay) {
+    case 1: {
+      stringTimeOfDay = "Morning";
+      break;
+    }
+    case 2: {
+      stringTimeOfDay = "Afternoon";
+      break;
+    }
+    case 3: {
+      stringTimeOfDay = "Evening";
+      break;
+    }
+    case 4: {
+      stringTimeOfDay = "Night";
+      break;
+    }
+  }
+
+  return stringTimeOfDay;
+}
 
 export default AddRegime;

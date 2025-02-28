@@ -9,21 +9,16 @@ const Settings: React.FC = () => (
         <IonButton>Reset to defaults</IonButton>
 
         <IonItem>
-          <IonLabel>App theme</IonLabel>
-          <IonSelect>
+          <IonSelect label="App Theme:">
             <IonSelectOption>Auto (Device Selected)</IonSelectOption>
-            <IonSelectOption>Dark</IonSelectOption>
-            <IonSelectOption>Light</IonSelectOption>
           </IonSelect>
         </IonItem>
 
-        <IonText>Your device's current theme automatically sets the app theme to XXXXXX</IonText>
+        <IonText>Your device's current theme automatically sets the app theme to DARK</IonText>
 
         <IonItem>
-          <IonLabel>Navbar position</IonLabel>
-          <IonSelect>
+          <IonSelect label="Navbar position:">
             <IonSelectOption>Top</IonSelectOption>
-            <IonSelectOption>Bottom</IonSelectOption>
             </IonSelect>
         </IonItem>
       </div>

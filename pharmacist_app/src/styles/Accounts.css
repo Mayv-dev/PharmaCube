@@ -1,6 +1,8 @@
 .headingText {
 	font-size: 36px;
 	margin-top: 10%;
+	width: 100%;
+	text-align: center;
 }
 
 .patientContainer {
@@ -14,4 +16,12 @@
 }
 .deletePatientButton {
 	width: 10%;
+}
+
+.imageContainer {
+	margin: auto;
+	text-align: center;
+}
+.qrImg {
+	width: 50%;
 }
