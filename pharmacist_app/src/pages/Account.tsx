@@ -43,7 +43,7 @@ const Account: React.FC = () => {
 					)}
 
 					<p className='headingText'>Adding a new patient? Have them scan the code below with the app.</p>
-					<img width="30%" src="https://media.istockphoto.com/id/1347277582/vector/qr-code-sample-for-smartphone-scanning-on-white-background.jpg?s=612x612&w=0&k=20&c=6e6Xqb1Wne79bJsWpyyNuWfkrUgNhXR4_UYj3i_poc0="></img>
+					<img width="30%" src="https://qr.io/qr-svg/M5L6UF.svg?1740700782050"></img>
 				</div>
 			</IonContent>
 
