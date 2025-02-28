@@ -11,6 +11,7 @@ const Regimes = () => {
   return (
     <IonPage>
 			<IonContent className="ion-padding">
+				<div className='formBody'>
 				<IonRouterLink routerLink='/regimes/create'>
 					<IonButton expand="block" className='ScheduleButtons' color="light">
 						Make Regime For User
@@ -21,6 +22,7 @@ const Regimes = () => {
 						View User Regimes
 					</IonButton>
 				</IonRouterLink>
+				</div>
 			</IonContent>
     </IonPage>
   );
