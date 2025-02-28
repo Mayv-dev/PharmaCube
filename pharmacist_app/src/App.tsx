@@ -37,6 +37,7 @@ import LowerToolbar from './components/LowerToolbar';
 import UpperToolbar from './components/UpperToolbar';
 import Account from './pages/Account';
 import FAQs from './pages/FAQs';
+import PatientChat from './pages/Chat Subpage/PatientChat';
 
 setupIonicReact();
 
@@ -78,6 +79,9 @@ const App: React.FC = () => {
 
           <Route exact path="/chat">
             <Chat />
+          </Route>
+          <Route exact path="/chat/patient">
+            <PatientChat />
           </Route>
           
           <Route exact path="/account">
