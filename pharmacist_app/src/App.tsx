@@ -78,19 +78,9 @@ const App: React.FC = () => {
             </Route>
 
 
-<<<<<<< HEAD
             <Route exact path="/notifications">
               <Notifications />
             </Route>
-=======
-          <Route exact path="/chat">
-            <Chat />
-          </Route>
-          
-          <Route exact path="/account">
-            <Account />
-          </Route>
->>>>>>> a996a23 (Rename Users component to Chat for later feature)
 
             <Route exact path="/menu">
               <Menu />
