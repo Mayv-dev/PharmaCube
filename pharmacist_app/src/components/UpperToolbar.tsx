@@ -63,7 +63,24 @@ import NotificationItem from './NotificationItem';
 	const [notificationList, setNotificationList] = useState<Notification[]>();
 
 	useEffect(() => {
-		getMockData().then(setNotificationList);
+		setNotificationList([{
+			id: 1,
+			content: "Take your Wednesday morning medication from compartment 2",
+			timestamp: "2025-01-06T09:00:19+00:00",
+			urgency: 1
+		   },
+		   {
+			id: 1,
+			content: "Urgent message from your patient Aaron Murphy",
+			timestamp: "2025-01-06T06:00:19+00:00",
+			urgency: 2
+		   },
+		   {
+			id: 1,
+			content: "Take your Wednesday Night medication from compartment 5",
+			timestamp: "2025-01-06T23:00:19+00:00",
+			urgency: 0
+		   }]);
 	  }, []);
 
 	return (
@@ -82,9 +99,9 @@ import NotificationItem from './NotificationItem';
 	  <IonMenu menuId="hamburger-menu" contentId="main-content">
         <IonContent>
 			<div className="hamburger-menu">
-				<div>
-					<img></img>
-					<p>Hello, PharmacistName</p>
+				<div className='pharmacistMenuGreeting'>
+					<img width="13%" src='https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'></img>
+					<p>Hello, Henry!</p>
 				</div>
 				<IonButton href='/account'>My Account</IonButton> {/* Link to a new account page */}
 				<IonButton href='/faqs'>FAQs</IonButton> {/* Link to a new blank page */}
@@ -98,8 +115,7 @@ import NotificationItem from './NotificationItem';
         <IonContent className="ion-padding">
 		<div className='rowOfSelects'>
 			<IonItem>
-          <IonLabel>Filter By</IonLabel>
-          <IonSelect>
+          <IonSelect label="Filter By:">
             <IonSelectOption>None</IonSelectOption>
             <IonSelectOption>High Priority</IonSelectOption>
             <IonSelectOption>Medium Priority</IonSelectOption>
@@ -107,8 +123,7 @@ import NotificationItem from './NotificationItem';
           </IonSelect>
         </IonItem>
 		<IonItem>
-          <IonLabel>Sort By</IonLabel>
-          <IonSelect>
+          <IonSelect label="Sort By:">
             <IonSelectOption>Most Recent</IonSelectOption>
             <IonSelectOption>Highest Priority</IonSelectOption>
           </IonSelect>
