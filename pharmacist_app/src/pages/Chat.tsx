@@ -47,8 +47,8 @@ const Users: React.FC = () => {
           />
             <IonList>
               {filteredUsers.map((user: any) => (
-                <IonItem key={user.id}>
-                  <IonLabel>
+                <IonItem href="/chat/patient" key={user.id}>
+                  <IonLabel >
                     <img width="10%" src='https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'></img>
                     <h2>{user.username}</h2>
                   </IonLabel>
