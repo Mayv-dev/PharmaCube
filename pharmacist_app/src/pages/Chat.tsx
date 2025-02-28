@@ -12,34 +12,22 @@ import '../styles/Users.css';
 import LowerToolbar from '../components/LowerToolbar';
 
 const Users: React.FC = () => {
-  const [users, setUsers] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState([]);
+	const [patientList, setPatientList] = useState([{username:"Ann Murphy"},{username:"Aaron Murphy"},{username:"Irene Duffy"}])
+  const [filteredUsers, setFilteredUsers] = useState([{}]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await fetch('https://67580653c0a427baf94f0cd8.mockapi.io/users/users');
-        const data = await response.json();
-        setUsers(data);
-        setFilteredUsers(data);
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
 
-    fetchUsers();
-  }, []);
+  useEffect(() => {
+      setFilteredUsers(patientList);
+    }, []);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     if (query === '') {
-      setFilteredUsers(users);
+      setFilteredUsers(patientList);
     } else {
-      const filtered = users.filter((user: any) =>
+      const filtered = patientList.filter((user: any) =>
         user.username.toLowerCase().includes(query.toLowerCase())
       );
       setFilteredUsers(filtered);
@@ -57,19 +45,17 @@ const Users: React.FC = () => {
             onIonInput={(e: any) => handleSearch(e.target.value)}
             placeholder="Search for a user..."
           />
-          {loading ? (
-            <IonLoading isOpen={loading} message={'Loading users...'} />
-          ) : (
             <IonList>
               {filteredUsers.map((user: any) => (
                 <IonItem key={user.id}>
                   <IonLabel>
+                    <img width="10%" src='https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'></img>
                     <h2>{user.username}</h2>
                   </IonLabel>
                 </IonItem>
               ))}
             </IonList>
-          )}
+          
         </div>
       </IonContent>
     </IonPage>

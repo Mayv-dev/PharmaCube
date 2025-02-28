@@ -3,7 +3,7 @@
   margin-top: 20px;
   padding: 10px;
   border-radius: 8px;
-  background-color: #f4f4f4;
+  background-color: var(--ion-text-color-step-750);
 }
 
 .submit-button {
