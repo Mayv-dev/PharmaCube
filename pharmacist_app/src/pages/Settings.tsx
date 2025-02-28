@@ -19,7 +19,11 @@ const Settings: React.FC = () => (
         <IonItem>
           <IonSelect label="Navbar position:">
             <IonSelectOption>Top</IonSelectOption>
+<<<<<<< HEAD
           </IonSelect>
+=======
+            </IonSelect>
+>>>>>>> 66ea665 (Implement styling tweaks for user tests)
         </IonItem>
       </div>
     </IonContent>
