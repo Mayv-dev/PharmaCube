@@ -1,0 +1,32 @@
+.chatColumn {
+	display: flex;
+	flex-direction: column;
+}
+
+.chatRow {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	padding-top: 4%;
+}
+
+.chatRow div {
+	width: 45%;
+	border: 3px solid black;
+	border-radius: 9px;
+	padding: 3%;
+}
+
+.chatQuestion {
+	background-color: green;
+}
+
+.chatAnswer {
+	background-color: rgb(113, 179, 249);
+}
+
+.chatAnswerButton {
+	width: 45%;
+	height: 70%;
+}
