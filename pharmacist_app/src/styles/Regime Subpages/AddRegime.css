@@ -13,6 +13,17 @@
 	margin: 30px auto 5px auto;
 }
 
+.oroLogo {
+	width: 40%;
+	margin: auto;
+}
+
+.authenticationPageHeading {
+	width: 100%;
+	text-align: center;
+	font-size: 1.7rem;
+}
+
 .formBody {
 	width: 50%;
 	margin: auto;

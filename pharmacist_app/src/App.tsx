@@ -38,6 +38,8 @@ import UpperToolbar from './components/UpperToolbar';
 import Account from './pages/Account';
 import FAQs from './pages/FAQs';
 import PatientChat from './pages/Chat Subpage/PatientChat';
+import Login from './pages/Authentication Pages/Login';
+import Register from './pages/Authentication Pages/Register';
 
 setupIonicReact();
 
@@ -53,6 +55,13 @@ const App: React.FC = () => {
         {/* The necessity of an id for the menus to link to was pointed out by deanwilliammills in his answer to the following question
         https://stackoverflow.com/questions/53003274/ionic4-component-menu-must-have-a-content-element-to-listen-for-drag-events */}
         <IonRouterOutlet id="main-content">
+
+        <Route exact path="/login">
+            <Login />
+        </Route>
+        <Route exact path="/register">
+          <Register />
+        </Route>
 
           <Route exact path="/regimes">
             <Regimes />
@@ -97,7 +106,7 @@ const App: React.FC = () => {
           </Route>
 
           <Route exact path="/">
-            <Redirect to="/regimes" />
+            <Redirect to="/login" />
           </Route>
         </IonRouterOutlet>
 
