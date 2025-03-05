@@ -10,5 +10,6 @@ type PatientScheduledRegime struct {
 	CompartmentID  uint      `json:"compartment_id"`
 	Instructions   string    `json:"instuction"`
 	Information    string    `json:"information"`
+	TimePeriod     uint      `json:"time_period"`
 	PatientID      uint      `json:"patient_id"`
 }
