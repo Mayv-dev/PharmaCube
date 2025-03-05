@@ -60,6 +60,7 @@ func UpdateWasTaken(context *gin.Context) {
 		DateTimeScheduled:     scheduledRegime.DateTimeToTake,
 		DateTimeTaken:         time.Now(),
 		WasTaken:              wasTakenUpdate.WasTaken,
+		TimePeriod:            scheduledRegime.TimePeriod,
 	}
 
 	err = databaseadapters.UpdatePatientTaken(uint(patientId), scheduledRegime, wasTaken)
