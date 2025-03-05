@@ -1,4 +1,4 @@
-//import ExploreContainer from '../components/ExploreContainer';
+//import ExploreContainer from '../components/ExploreContainer'; 
 import { IonModal, IonToolbar, IonTitle, IonHeader, IonContent, IonButton, IonInput, IonItem } from '@ionic/react';
 import { useState } from 'react';
 type popupInfo = {

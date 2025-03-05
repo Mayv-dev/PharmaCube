@@ -108,14 +108,14 @@ const App: React.FC = () => {
             <Route exact path="/">
               <Redirect to="/login" />
             </Route>
-          </IonRouterOutlet>
+          </IonRouterOutlet >
 
           <UpperToolbar />
           <LowerToolbar />
 
-        </IonTabs>
-      </IonReactRouter>
-    </IonApp>
+        </IonTabs >
+      </IonReactRouter >
+    </IonApp >
   );
 }
 
