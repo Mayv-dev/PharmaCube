@@ -58,6 +58,5 @@ const Login: React.FC = () => {
 			</IonContent>
 		</IonPage>
 	);
-};
 
-export default Login;
+	export default Login;
