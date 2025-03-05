@@ -12,4 +12,6 @@ func AddPharmacistRoutes(router *gin.Engine) {
 	router.GET("pharmacist/:pharmacist_id/patient/:patient_id/regime/:regime_id", requesthandlers.ViewPatientRegime)
 	router.PUT("pharmacist/:pharmacist_id/patient/:patient_id/regime/:regime_id", requesthandlers.UpdatePatientRegime)
 	router.DELETE("pharmacist/:pharmacist_id/patient/:patient_id/regime/:regime_id", requesthandlers.DeletePatientRegime)
+
+	router.GET("pharmacist/:pharmacist_id/patient/:patient_id/history", requesthandlers.PharmacistViewPatientHistory)
 }
