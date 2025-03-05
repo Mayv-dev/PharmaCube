@@ -11,4 +11,5 @@ type PatientAdherenceRecord struct {
 	DateTimeScheduled     time.Time `json:"date_time_scheduled"`
 	DateTimeTaken         time.Time `json:"date_time_taken"`
 	WasTaken              bool      `json:"was_taken"`
+	TimePeriod            uint      `json:"time_period"`
 }
