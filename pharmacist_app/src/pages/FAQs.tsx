@@ -3,9 +3,9 @@ import '../styles/Settings.css';
 
 const FAQs: React.FC = () => (
   <IonPage>
+    <IonContent>
 
-	<IonContent></IonContent>
-
+    </IonContent>
   </IonPage>
 );
 
