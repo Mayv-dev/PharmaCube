@@ -87,6 +87,20 @@ const Account: React.FC = () => {
 
 					<IonButton onClick={e => handleModification()}>Modify Details</IonButton>
 
+					<IonItem>
+						<IonInput onIonChange={e => setAddressLine2(e.target.value)} label='Address Line 2'></IonInput>
+					</IonItem>
+
+					<IonItem>
+						<IonInput onIonChange={e => setAddressLine3(e.target.value)} label='Address Line 3'></IonInput>
+					</IonItem>
+
+					<IonItem>
+						<IonInput onIonChange={e => setPostcode(e.target.value)} label='Postal Code'></IonInput>
+					</IonItem>
+
+					<IonButton onClick={e => handleModification()}>Modify Details</IonButton>
+
 					<p className='headingText'>Patient list</p>
 					{isInEditMode ?
 						<IonButton color="danger" onClick={e => setIsInEditMode(false)}>Stop Editing List</IonButton>
