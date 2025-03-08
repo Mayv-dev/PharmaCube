@@ -1,14 +1,17 @@
 :root {
+
+
+  
     /* Primary Color */
-    --ion-color-primary: #72caad; 
+    --ion-color-primary: #66d6c3; 
     --ion-color-primary-rgb: 108, 154, 139;
     --ion-color-primary-contrast: #ffffff; 
     --ion-color-primary-contrast-rgb: 255, 255, 255;
-    --ion-color-primary-shade: #5a8879; 
-    --ion-color-primary-tint: #76c7ad; 
+    --ion-color-primary-shade: #53c29b; 
+    --ion-color-primary-tint: #020806; 
   
     /* Secondary Color */
-    --ion-color-secondary: #ddf5ed;
+    --ion-color-secondary: #d3e9e1;
     --ion-color-secondary-rgb: 122, 162, 193;
     --ion-color-secondary-contrast: #ffffff; 
     --ion-color-secondary-contrast-rgb: 255, 255, 255;

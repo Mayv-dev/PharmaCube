@@ -10,10 +10,11 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle } from 'ionicons/icons';
+import { calendarOutline, ellipse, notificationsOutline, square, triangle } from 'ionicons/icons';
 import SchedulePage from './pages/SchedulePage';
 import ScheduleViewPage from './pages/Schedule Subpages/ScheduleViewPage';
 import ScheduleAddModifyPage from './pages/Schedule Subpages/ScheduleAddModifyPage';
+import './App.css';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -72,16 +73,16 @@ const App: React.FC = () => (
               <Redirect to="/SchedulePage" />
             </Route>
           </IonRouterOutlet>
-          <IonTabBar slot="top">
-            <IonTabButton tab="SchedulePage" href="/SchedulePage">
-              <IonIcon aria-hidden="true" icon={triangle} />
-              <IonLabel>Schedule</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="NotificationsPage" href="/NotificationsPage">
-              <IonIcon aria-hidden="true" icon={square} />
-              <IonLabel>Notifications</IonLabel>
-            </IonTabButton>
-          </IonTabBar>
+          <IonTabBar slot="top" className="custom-tab-bar">
+  <IonTabButton tab="SchedulePage" href="/SchedulePage" className="custom-tab-button">
+    <IonIcon aria-hidden="true" icon={calendarOutline} className="tab-icon" />
+    <IonLabel className="tab-label">Schedule</IonLabel>
+  </IonTabButton>
+  <IonTabButton tab="NotificationsPage" href="/NotificationsPage" className="custom-tab-button">
+    <IonIcon aria-hidden="true" icon={notificationsOutline} className="tab-icon" />
+    <IonLabel className="tab-label">Notifications</IonLabel>
+  </IonTabButton>
+</IonTabBar>
         </IonTabs>
       </IonReactRouter>
     </ColorblindProvider>

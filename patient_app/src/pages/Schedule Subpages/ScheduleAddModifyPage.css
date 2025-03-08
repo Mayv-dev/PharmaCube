@@ -1,31 +1,83 @@
-/* Time Input Container */
-.time-input-container {
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
-    gap: 0.5rem;
-	margin: 1rem auto auto auto
-  }
-  
-  /* Time Inputs */
-  .time-input {
-    width: 60px; 
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 1rem;
-    text-align: center;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    transition: border-color 0.3s, box-shadow 0.3s;
-  }
-  
-  .time-input:focus {
-    outline: none;
-    border-color: #4caf50;
-    box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
-  }
+/* General Styles */
 
-  .input-wrapper {
-	align-items: center;
-  }
+.title {
+  font-size: 34px;
+  font-weight: bold;
+}
+
+/* Day selection buttons */
+.day-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.day-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.day-button {
+  font-size: 28px;
+  width: 100%;
+  height: 50px;
+}
+
+.selected-day {
+  background-color: var(--ion-color-primary);
+}
+
+/* Schedule list */
+.schedule-list {
+  margin-top: 35px;
+  font-size: 40px;
+}
+
+.schedule-item {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  margin-bottom: 36px;
+}
+
+
+
+.time-icon {
+  margin-right: 42px;
+  font-size: 30px; /* Increased icon size */
+}
+
+
+.time-input:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+}
+
+/* Buttons */
+.edit-button,
+.delete-button,
+.confirm-edit-button,
+.cancel-edit-button {
+  font-size: 32px; /* Increased icon size */
+  --padding-start: 32px;
+  --padding-end: 32px;
+}
+
+/* Toast */
+ion-toast {
+  --color: white;
+  --background: var(--ion-color-success);
+}
+/* Target the ion-icon inside schedule-label */
+.schedule-label ion-icon.time-icon {
+  font-size: 62px; /* Adjust this value to make the icon larger */
+  margin-right: 62px;
+}
+/* Override default IonLabel styles */
+ion-label.schedule-label {
+  font-size: 30px !important; 
+  
+}
