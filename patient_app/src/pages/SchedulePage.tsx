@@ -53,26 +53,31 @@ const SchedulePage: React.FC = () => {
 
         {/* Set My Free Times and View Schedule Labels */}
         <IonGrid className="center-grid">
-          <IonRow className="label-row">
-            <IonCol size="6">
-              <IonItem lines="none" className="card-item">
-                <IonRouterLink routerLink="/ScheduleAddModifyPage" className="card-link">
-                  <IonIcon icon={timeOutline} slot="start" />
-                  <IonLabel className="card-label">Set My Free Times</IonLabel>
-                </IonRouterLink>
-              </IonItem>
-            </IonCol>
+  <IonRow className="label-row">
+    <IonCol size="6">
+      <IonItem lines="none" className="card-item">
+        <IonRouterLink routerLink="/ScheduleAddModifyPage" className="card-link">
+          <div className="card-item-button">
+            <IonIcon icon={timeOutline} slot="start" />
+            <IonLabel className="card-label">Set My Free Times</IonLabel>
+          </div>
+        </IonRouterLink>
+      </IonItem>
+    </IonCol>
 
-            <IonCol size="6">
-              <IonItem lines="none" className="card-item">
-                <IonRouterLink routerLink="/ScheduleViewPage" className="card-link">
-                  <IonIcon icon={calendarOutline} slot="start" />
-                  <IonLabel className="card-label">View Schedule</IonLabel>
-                </IonRouterLink>
-              </IonItem>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
+    <IonCol size="6">
+      <IonItem lines="none" className="card-item">
+        <IonRouterLink routerLink="/ScheduleViewPage" className="card-link">
+          <div className="card-item-button">
+            <IonIcon icon={calendarOutline} slot="start" />
+            <IonLabel className="card-label">View Schedule</IonLabel>
+          </div>
+        </IonRouterLink>
+      </IonItem>
+    </IonCol>
+  </IonRow>
+</IonGrid>
+
       </IonContent>
     </IonPage>
   );

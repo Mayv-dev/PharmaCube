@@ -40,20 +40,31 @@
   --background: transparent;
   --padding-start: 0;
   --inner-padding-end: 0;
+  display: flex;
+  align-items: center; /* Align icon and label */
+  justify-content: center; /* Center the contents */
   text-align: center;
+  padding: 16px;
+  gap: 12px; /* Add space between icon and label */
 }
 
 /* Card Label */
 .card-label {
-  font-size: 2rem; /* Slightly smaller font size */
+  font-size: 1.8rem; /* Adjust font size to fit better */
   font-weight: 500;
   color: var(--ion-color-primary);
   cursor: pointer;
   transition: color 0.3s ease;
+  display: inline-block; /* Ensure label takes the width of the text */
 }
 
 .card-label:hover {
   color: var(--ion-color-primary-shade);
+}
+
+/* Adjusting Icon size to be more balanced */
+.card-item IonIcon {
+  font-size: 2.5rem; /* Adjust icon size to be smaller */
 }
 
 /* Filter Selector */
@@ -63,6 +74,81 @@
   background: white;
   border-radius: 8px;
   padding: 8px;
+}
+
+/* Center the Colorblind Button */
+.filter-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px auto;
+  max-width: 300px;
+  background: var(--ion-color-primary);
+  color: white;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+/* Add hover effect for better visibility */
+.filter-selector:hover {
+  background: var(--ion-color-primary-shade);
+}
+
+/* Style the dropdown arrow */
+.filter-selector::part(icon) {
+  color: white;
+}
+
+/* Style the dropdown options */
+.filter-selector::part(text) {
+  color: white;
+}
+
+/* Style the dropdown popover */
+.filter-selector::part(popover) {
+  background: white;
+  color: var(--ion-color-primary);
+}
+
+/* Button-like Labels for Schedule Options */
+.card-item-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--ion-color-primary);
+  color: white; /* Always keep text white */
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  width: 100%; /* Ensures it fills the width of its container */
+  margin: 8px 0; /* Adds space between items */
+}
+
+.card-item-button:hover {
+  background: var(--ion-color-primary-shade);
+}
+
+/* Card Item Button with Icon */
+.card-item-button IonIcon {
+  margin-right: 8px; /* Space between icon and label */
+  font-size: 2.5rem; /* Icon size */
+}
+
+/* Ensure the label text color stays white */
+.card-item-button .card-label {
+  color: white !important; /* Force text color to stay white */
+}
+
+.card-item-button:hover .card-label {
+  color: white !important; /* Ensure text color stays white on hover */
 }
 
 /* Responsive Design */
@@ -100,41 +186,4 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-}
-/* Center the Colorblind Button */
-.filter-selector {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 16px auto; 
-  max-width: 300px;
-  background: var(--ion-color-primary); 
-  color: white; 
-  border-radius: 8px;
-  padding: 12px 16px; 
-  font-size: 1.2rem; 
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-/* Add hover effect for better visibility */
-.filter-selector:hover {
-  background: var(--ion-color-primary-shade);
-}
-
-/* Style the dropdown arrow */
-.filter-selector::part(icon) {
-  color: white; 
-}
-
-/* Style the dropdown options */
-.filter-selector::part(text) {
-  color: white; 
-}
-
-/* Style the dropdown popover */
-.filter-selector::part(popover) {
-  background: white; 
-  color: var(--ion-color-primary); 
 }
