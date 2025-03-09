@@ -7,8 +7,8 @@ import { string, ValidationError } from 'yup';
 import { useHistory } from 'react-router';
 
 const Login: React.FC = () => {
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
+	const [email, setEmail] = useState("liammurphy86@gmail.com");
+	const [password, setPassword] = useState("pharmalord420");
 	const history = useHistory();
 
 	const handleLogin = async () => {
@@ -41,11 +41,11 @@ const Login: React.FC = () => {
 					<p className='authenticationPageHeading'>Log In</p>
 
 					<IonItem>
-						<IonInput onIonChange={e => setEmail(e.target.value)} type="email" label='Email'></IonInput>
+						<IonInput onIonChange={e => setEmail(e.target.value)} value={email} type="email" label='Email'></IonInput>
 					</IonItem>
 					
 					<IonItem>
-						<IonInput onIonChange={e => setPassword(e.target.value)} type="password" label='Password'></IonInput>
+						<IonInput onIonChange={e => setPassword(e.target.value)} value={password} type="password" label='Password'></IonInput>
 					</IonItem>
 
 					<IonButton onClick={e => handleLogin()}>Log In</IonButton>
