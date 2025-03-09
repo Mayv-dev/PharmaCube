@@ -9,7 +9,7 @@ import (
 func CreatePharmacistAccount(pharmacist models.Pharmacist) (models.Pharmacist, error) {
 	dbApdater := GromDbAdapter()
 
-	result := dbApdater.Create(pharmacist)
+	result := dbApdater.Create(&pharmacist)
 	if result.Error != nil {
 		log.Println(result.Error.Error())
 		return models.Pharmacist{}, fmt.Errorf("Failed to create pharmacist account")
