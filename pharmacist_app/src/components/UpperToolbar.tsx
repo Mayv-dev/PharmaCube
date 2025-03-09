@@ -8,7 +8,8 @@ import {
 	IonButton,
 	IonItem,
 	IonSelect,
-	IonSelectOption
+	IonSelectOption,
+	IonRouterLink
   } from '@ionic/react';
   import { menu,notifications } from 'ionicons/icons';
   import '../styles/LowerToolbar.css';
@@ -28,7 +29,7 @@ import NotificationItem from './NotificationItem';
 	enum urgency {
 		LOW, MEDIUM, HIGH
 	}
-	type Notification = {
+	export type Notification = {
 		id:number,
 		content:string,
 		timestamp:string,
@@ -90,10 +91,10 @@ import NotificationItem from './NotificationItem';
 			<IonIcon icon={menu} aria-hidden="true" />
 			<IonLabel>Menu</IonLabel>
 		</IonTabButton>
-		<IonTabButton tab="notifications" onClick={openNotificationMenu}>
-			<IonIcon icon={notifications} aria-hidden="true" />
-			<IonLabel>Notifications</IonLabel>
-		</IonTabButton>
+			<IonTabButton href="/notifications" tab="notifications" >
+				<IonIcon icon={notifications} aria-hidden="true" />
+				<IonLabel>Notifications</IonLabel>
+			</IonTabButton>
 	</IonTabBar>
 
 	  <IonMenu menuId="hamburger-menu" contentId="main-content">
