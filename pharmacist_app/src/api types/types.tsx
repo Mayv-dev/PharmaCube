@@ -9,3 +9,15 @@ export type RegimeItem = {
     time_adjustment:number; //Time adjustment before or after period to take
     instructions:string;
 };
+
+export type PharmacistAccount = {
+    name: string;
+    email: string;
+    password: string; 
+    pharmacy_name: string; 
+    pharmacy_address_1: string; 
+    pharmacy_address_2: string; 
+    pharmacy_address_3: string;  
+    postcode: string; 
+    patients: any[];
+};
