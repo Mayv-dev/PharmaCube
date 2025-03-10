@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { string, ValidationError } from 'yup';
 import { useHistory } from 'react-router';
 
+import axios from 'axios';
+
 const Login: React.FC = () => {
 	const [email, setEmail] = useState("liammurphy86@gmail.com");
 	const [password, setPassword] = useState("pharmalord420");
@@ -22,8 +24,25 @@ const Login: React.FC = () => {
 				console.log("incorrect login")
 			}
 			else {
-				// Found "history" solution to login/register prevention at https://stackoverflow.com/questions/70237476/react-link-async-await-does-not-wait-code-block
-				history.push("/regimes")
+				
+				try {
+					const { data, status } = await axios.get(
+						`http://localhost:8080/pharmacist/2`,
+						{
+						headers: {
+							Accept: 'application/json'
+						},
+						},
+					);
+					if(status == 200) {
+						// Found "history" solution to login/register prevention at https://stackoverflow.com/questions/70237476/react-link-async-await-does-not-wait-code-block
+						history.push("/regimes")
+					}
+				}
+				catch (e) {
+					console.log("User not found")
+				}
+				
 			}
 		}
 		catch (e) {
