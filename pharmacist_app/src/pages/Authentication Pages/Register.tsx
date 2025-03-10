@@ -5,19 +5,47 @@ import { useState } from 'react';
 // Referenced yup from https://www.npmjs.com/package/yup
 import { string } from 'yup';
 import { useHistory } from 'react-router';
+import { PharmacistAccount } from 'api types/types';
+
+import axios from 'axios';
 
 
 const Register: React.FC = () => {
+	const [name, setName] = useState("Liam Murphy");
 	const [email, setEmail] = useState("liammurphy86@gmail.com");
 	const [password, setPassword] = useState("pharmalord420");
 	const [confirmPassword, setConfirmPassword] = useState("pharmalord420");
-	const [pharmacyName, setPharmacyName] = useState("Allcare Pharmacy");
-	const [addressLine1, setAddressLine1] = useState("Carlingford");
-	const [addressLine2, setAddressLine2] = useState("Dundalk");
-	const [addressLine3, setAddressLine3] = useState("Co. Louth");
+	const [pharmacy_name, setPharmacyName] = useState("Allcare Pharmacy");
+	const [pharmacy_address_1, setAddressLine1] = useState("Carlingford");
+	const [pharmacy_address_2, setAddressLine2] = useState("Dundalk");
+	const [pharmacy_address_3, setAddressLine3] = useState("Co. Louth");
 	const [postcode, setPostcode] = useState("A91 D101");
 	const history = useHistory();
 
+	async function register(addedPharmacist:PharmacistAccount) {
+		try {
+		  console.log("post request being made...")
+		  const { data, status } = await axios.post(
+			`http://localhost:8080/pharmacist`,
+			addedPharmacist,
+			{
+			  headers: {
+				Accept: 'application/json'
+			  },
+			},
+		  );
+		  return data;
+		}
+		catch (error) {
+		  if (axios.isAxiosError(error)) {
+			console.log('error message: ', error.message);
+			return error.message;
+		  } else {
+			console.log('unexpected error: ', error);
+			return 'An unexpected error occurred';
+		  }
+		}
+	  };
 
 	const handleRegistration = async () => {
 		let emailValidation = string().email().required()
@@ -25,18 +53,30 @@ const Register: React.FC = () => {
 			await emailValidation.validate(email).then(result => console.log(result))
 
 			if(
+				name == "" ||
 				email == "" ||
 				password == "" ||
 				confirmPassword == "" || confirmPassword != password ||
-				pharmacyName == "" ||
-				addressLine1 == "" ||
-				addressLine2 == "" ||
-				addressLine3 == "" ||
+				pharmacy_name == "" ||
+				pharmacy_address_1 == "" ||
+				pharmacy_address_2 == "" ||
+				pharmacy_address_3 == "" ||
 				postcode == ""
 			){
 				console.log("incorrect login")
 			}
 			else {
+				let patients:any[] = []
+				register(
+					{name, 
+					email, 
+					password, 
+					pharmacy_name, 
+					pharmacy_address_1, 
+					pharmacy_address_2, 
+					pharmacy_address_3, 
+					postcode, 
+					patients})
 				// Found "history" solution to login/register prevention at https://stackoverflow.com/questions/70237476/react-link-async-await-does-not-wait-code-block
 				history.push("/regimes")
 			}
@@ -60,6 +100,10 @@ const Register: React.FC = () => {
 
 					<p>Your Details</p>
 					<IonItem>
+						<IonInput onIonChange={e => setName(e.target.value)} value={name} label='Your Name'></IonInput>
+					</IonItem>
+
+					<IonItem>
 						<IonInput onIonChange={e => setEmail(e.target.value)} type="email" value={email} label='Email'></IonInput>
 					</IonItem>
 					
@@ -73,19 +117,19 @@ const Register: React.FC = () => {
 					
 					<p>Your Pharmacy Details</p>
 					<IonItem>
-						<IonInput onIonChange={e => setPharmacyName(e.target.value)} value={pharmacyName} label='Pharmacy Name'></IonInput>
+						<IonInput onIonChange={e => setPharmacyName(e.target.value)} value={pharmacy_name} label='Pharmacy Name'></IonInput>
 					</IonItem>
 
 					<IonItem>
-						<IonInput onIonChange={e => setAddressLine1(e.target.value)} value={addressLine1} label='Address Line 1'></IonInput>
+						<IonInput onIonChange={e => setAddressLine1(e.target.value)} value={pharmacy_address_1} label='Address Line 1'></IonInput>
 					</IonItem>
 					
 					<IonItem>
-						<IonInput onIonChange={e => setAddressLine2(e.target.value)} value={addressLine2} label='Address Line 2'></IonInput>
+						<IonInput onIonChange={e => setAddressLine2(e.target.value)} value={pharmacy_address_2} label='Address Line 2'></IonInput>
 					</IonItem>
 					
 					<IonItem>
-						<IonInput onIonChange={e => setAddressLine3(e.target.value)} value={addressLine3} label='Address Line 3'></IonInput>
+						<IonInput onIonChange={e => setAddressLine3(e.target.value)} value={pharmacy_address_3} label='Address Line 3'></IonInput>
 					</IonItem>
 					
 					<IonItem>
