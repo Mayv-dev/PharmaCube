@@ -119,19 +119,19 @@ const Register: React.FC = () => {
 
 					<p>Your Pharmacy Details</p>
 					<IonItem>
-						<IonInput onIonChange={e => setPharmacyName(e.target.value)} value={pharmacyName} label='Pharmacy Name'></IonInput>
+						<IonInput onIonChange={e => setPharmacyName(e.target.value)} value={pharmacy_name} label='Pharmacy Name'></IonInput>
 					</IonItem>
 
 					<IonItem>
-						<IonInput onIonChange={e => setAddressLine1(e.target.value)} value={addressLine1} label='Address Line 1'></IonInput>
+						<IonInput onIonChange={e => setAddressLine1(e.target.value)} value={pharmacy_address_1} label='Address Line 1'></IonInput>
 					</IonItem>
 
 					<IonItem>
-						<IonInput onIonChange={e => setAddressLine2(e.target.value)} value={addressLine2} label='Address Line 2'></IonInput>
+						<IonInput onIonChange={e => setAddressLine2(e.target.value)} value={pharmacy_address_2} label='Address Line 2'></IonInput>
 					</IonItem>
 
 					<IonItem>
-						<IonInput onIonChange={e => setAddressLine3(e.target.value)} value={addressLine3} label='Address Line 3'></IonInput>
+						<IonInput onIonChange={e => setAddressLine3(e.target.value)} value={pharmacy_address_3} label='Address Line 3'></IonInput>
 					</IonItem>
 
 					<p>Your Pharmacy Details</p>
