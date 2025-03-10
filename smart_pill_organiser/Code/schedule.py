@@ -13,3 +13,6 @@ class schedule:
             return False
         
         return delta < limit
+    
+    def __str__(self):
+        return "Schedule(" + self.datetime + ", " + str(self.compartment) + ")"

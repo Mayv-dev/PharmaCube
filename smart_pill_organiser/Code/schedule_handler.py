@@ -1,7 +1,7 @@
 import web_connection as wc
 import urequests as requests
 import config
-import schedule
+from schedule import schedule
 
 class Schedule_Handler:
     ip = None
@@ -12,13 +12,20 @@ class Schedule_Handler:
             ip = wc.connect()
             
     def get_schedule(self, id):
-        url = "http://" + config.URL + ":8080/patient/" + str(id) + "/schedule"
+        url = "http://" + config.URL + ":8080/patient/" + str(id) + "/scheduledregime"
         print("Connecting to " + url)
         response = requests.get(url)
         if response.status_code == 200:
-            raise NotImplementedError("Not implemented")
+            items = response.json()
+            self.schedule = []
+            for i in items:
+                date_time_to_take = i["date_time_to_take"]
+                compartment_id = i["compartment_id"]
+                sc = schedule(date_time_to_take, compartment_id)
+                self.schedules.append(sc)
+            return self.schedules
         else:
-            return response
+            return None
     
     def get_due_schedule(self, time, limit):
         to_return = []
