@@ -29,6 +29,8 @@
 .takenDate {
 	background-color: green;
 }
+
+/*linear-gradient for background was found from https://medium.com/@miguelznunez/html-css-how-to-split-a-background-into-2-colors-1cdc394deb3d#:~:text=If%20you%20want%20the%20split,color%2C%20color%2C%20and%20color.*/
 .notTakenDate {
 	background: linear-gradient(
     to bottom,
