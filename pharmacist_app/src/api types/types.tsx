@@ -1,3 +1,5 @@
+import { number, string } from "yup";
+
 export type RegimeItem = {
     id: number;
     compartment_id: number; 
@@ -32,3 +34,12 @@ export type PharmacistAccountDetailModify = {
     pharmacy_address_3: string;  
     postcode: string; 
 };
+
+export type PatientAdherenceRecord = {
+    patient_id: number;
+    information: string;
+	date_time_scheduled: string;
+	date_time_taken: string;
+    was_taken: boolean;
+    time_period: number;
+}
