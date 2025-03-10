@@ -30,15 +30,29 @@
 	background-color: green;
 }
 .notTakenDate {
-	background-color: red;
+	background: linear-gradient(
+    to bottom,
+    red 0%,
+    red 20%,
+    black 20%,
+    black 30%,
+    red 30%,
+    red 70%,
+    black 70%,
+    black 80%,
+    red 80%,
+    red 100%
+  );
 
 }
 .partiallyTakenDate {
 	background: linear-gradient(
     to bottom,
     green 0%,
-    green 50%,
-    red 50%,
+    green 45%,
+    black 45%,
+    black 55%,
+    red 55%,
     red 100%
   );
 }
