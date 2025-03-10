@@ -1,0 +1,27 @@
+.calendar {
+	display: flex;
+	flex-direction: column;
+	width: 50%;
+	margin: auto;
+}
+.currentCalendarDate, .calendarDate {
+	width: 14%;
+	border: 1px solid black;
+	aspect-ratio: 1/1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.currentCalendarDate {
+	background-color: rgb(0, 175, 137);
+}
+.calendarRow {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}
+/*aspect-ratio property found from https://www.geeksforgeeks.org/how-to-set-height-equal-to-dynamic-width-css-fluid-layout/*/
+.calendarDate {
+	background-color: gray;
+}
