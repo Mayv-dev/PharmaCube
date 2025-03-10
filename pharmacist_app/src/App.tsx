@@ -11,6 +11,7 @@ import Regimes from './pages/Regimes'; // Medications Tab
 import Chat from './pages/Chat'; // Chat Tab
 import Settings from './pages/Settings'; // Settings Tab
 
+
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
 
@@ -40,6 +41,7 @@ import FAQs from './pages/FAQs';
 import PatientChat from './pages/Chat Subpage/PatientChat';
 import Login from './pages/Authentication Pages/Login';
 import Register from './pages/Authentication Pages/Register';
+import History from './pages/History';
 
 setupIonicReact();
 
@@ -108,6 +110,11 @@ const App: React.FC = () => {
           <Route exact path="/">
             <Redirect to="/login" />
           </Route>
+
+          <Route exact path="/history">
+            <History />
+          </Route>
+
         </IonRouterOutlet>
 
         <UpperToolbar/>
