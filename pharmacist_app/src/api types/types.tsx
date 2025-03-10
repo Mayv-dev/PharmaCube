@@ -21,3 +21,14 @@ export type PharmacistAccount = {
     postcode: string; 
     patients: any[];
 };
+
+export type PharmacistAccountDetailModify = {
+    name: string;
+    email: string;
+    password: string; 
+    pharmacy_name: string; 
+    pharmacy_address_1: string; 
+    pharmacy_address_2: string; 
+    pharmacy_address_3: string;  
+    postcode: string; 
+};
