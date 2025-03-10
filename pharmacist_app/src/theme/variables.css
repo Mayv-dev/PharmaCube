@@ -55,6 +55,9 @@ http://ionicframework.com/docs/theming/ */
 }
 
 ion-tab-bar{ --color-selected: yellow }
+<<<<<<< HEAD
 ion-tab-button{ --background: var(--ion-background-color-rgb) }
+=======
+>>>>>>> 2156ec7 (Add contrast for items/datetimes)
 ion-item{ --background: var(--ion-text-color-step-650)}
 ion-datetime{ --background: var(--ion-text-color-step-700)}
