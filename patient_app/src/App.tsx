@@ -74,8 +74,9 @@ const AppContent: React.FC = () => {
                 <Redirect to="/SchedulePage" />
               </Route>
             </IonRouterOutlet>
-            
-            <IonTabBar slot={tabBarPosition} className="custom-tab-bar"> {/* Set tab bar position dynamically */}
+
+            {/* Use the slot attribute to position the tab bar */}
+            <IonTabBar slot={tabBarPosition} className="custom-tab-bar">
               <IonTabButton tab="SchedulePage" href="/SchedulePage" className="custom-tab-button">
                 <IonIcon aria-hidden="true" icon={calendarOutline} className="tab-icon" />
                 <IonLabel className="tab-label">Schedule</IonLabel>

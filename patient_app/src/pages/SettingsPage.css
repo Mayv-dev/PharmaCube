@@ -7,3 +7,14 @@ body.dark {
     --ion-item-background: #1f1f1f;
     --ion-item-color: #ffffff;
   }
+  /* Move the tab bar to the top */
+.custom-tab-bar[slot="top"] {
+    top: 0;
+    bottom: auto;
+  }
+  
+  /* Move the tab bar to the bottom */
+  .custom-tab-bar[slot="bottom"] {
+    bottom: 0;
+    top: auto;
+  }

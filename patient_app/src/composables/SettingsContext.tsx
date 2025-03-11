@@ -4,7 +4,7 @@ import React, { createContext, useState, useContext, ReactNode } from 'react';
 type Settings = {
   theme: string;
   notificationsEnabled: boolean;
-  tabBarPosition: string; // Add tab bar position
+  tabBarPosition: "bottom" | "top"; // Explicitly define the type
 };
 
 // Define the type for the context value
@@ -13,8 +13,8 @@ export type SettingsContextType = {
   setTheme: (theme: string) => void;
   notificationsEnabled: boolean;
   setNotificationsEnabled: (enabled: boolean) => void;
-  tabBarPosition: string; // Add tab bar position
-  setTabBarPosition: (position: string) => void; // Add setter for tab bar position
+  tabBarPosition: "bottom" | "top"; // Explicitly define the type
+  setTabBarPosition: (position: "bottom" | "top") => void; // Explicitly define the type
 };
 
 // Create the context with a default value
@@ -36,7 +36,7 @@ type SettingsProviderProps = {
 export const SettingsProvider = ({ children }: SettingsProviderProps) => {
   const [theme, setTheme] = useState('light');
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [tabBarPosition, setTabBarPosition] = useState('bottom'); // Add tab bar position state
+  const [tabBarPosition, setTabBarPosition] = useState<"bottom" | "top">('bottom'); // Explicitly define the type
 
   return (
     <SettingsContext.Provider
