@@ -1,27 +1,60 @@
 import { Storage } from '@ionic/storage';
+import bcrypt from 'bcryptjs';
 
 const storage = new Storage();
 storage.create();
+storage.get('users').then(console.log);
+
 
 export const setItem = async (key: string, value: any) => {
-  await storage.set(key, value);
+  try {
+    await storage.set(key, value);
+  } catch (error) {
+    console.error(`Error setting item ${key}:`, error);
+  }
 };
 
 export const getItem = async (key: string) => {
-  return await storage.get(key);
+  try {
+    return await storage.get(key);
+  } catch (error) {
+    console.error(`Error getting item ${key}:`, error);
+    return null;
+  }
 };
 
 export const removeItem = async (key: string) => {
-  await storage.remove(key);
+  try {
+    await storage.remove(key);
+  } catch (error) {
+    console.error(`Error removing item ${key}:`, error);
+  }
 };
 
+//  Hash and store user 
 export const registerUser = async (username: string, password: string) => {
-  const existingUsers = (await getItem('users')) || {};
-  existingUsers[username] = password;
-  await setItem('users', existingUsers);
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const existingUsers = (await getItem('users')) || {};
+    existingUsers[username] = hashedPassword;
+    await setItem('users', existingUsers);
+  } catch (error) {
+    console.error(`Error registering user ${username}:`, error);
+  }
 };
 
+// Verify user login by comparing hashed password
 export const verifyUser = async (username: string, password: string) => {
-  const users = (await getItem('users')) || {};
-  return users[username] === password;
+  try {
+    const users = (await getItem('users')) || {};
+    if (!users[username]) return false; // User doesn't exist
+
+    const isMatch = await bcrypt.compare(password, users[username]); // Compare hashed password
+    return isMatch;
+  } catch (error) {
+    console.error(`Error verifying user ${username}:`, error);
+    return false;
+  }
 };

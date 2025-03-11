@@ -55,6 +55,12 @@ const App: React.FC = () => {
     checkUserSession();
   }, []);
 
+  const handleRegister = async () => {
+    await registerUser(username, password);
+    alert('Account registered successfully! You can now log in.');
+    setIsRegistering(false);
+  };
+  
   const handleLogin = async () => {
     const isValid = await verifyUser(username, password);
     if (isValid) {
@@ -64,12 +70,7 @@ const App: React.FC = () => {
       alert('Invalid username or password');
     }
   };
-
-  const handleRegister = async () => {
-    await registerUser(username, password);
-    alert('Account registered successfully! You can now log in.');
-    setIsRegistering(false);
-  };
+  
 
   const handleLogout = async () => {
     await removeItem('user');
