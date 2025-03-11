@@ -33,19 +33,7 @@ const SchedulePage: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen className="ion-padding content">
-        {/* Filter Selector */}
-        <IonSelect
-          value={filter}
-          placeholder="Select Colorblind Filter"
-          onIonChange={(e) => setFilter(e.detail.value)} // Update the global filter state
-          className="filter-selector"
-        >
-          <IonSelectOption value="">None</IonSelectOption>
-          <IonSelectOption value="protanopia-filter">Protanopia</IonSelectOption>
-          <IonSelectOption value="deuteranopia-filter">Deuteranopia</IonSelectOption>
-          <IonSelectOption value="tritanopia-filter">Tritanopia</IonSelectOption>
-          <IonSelectOption value="achromatopsia-filter">Achromatopsia</IonSelectOption>
-        </IonSelect>
+        
 
         {/* Calendar Component */}
         <IonDatetime

@@ -1,0 +1,9 @@
+/* App.css or SettingsPage.css */
+body.dark {
+    --ion-background-color: #121212;
+    --ion-text-color: #ffffff;
+    --ion-toolbar-background: #1f1f1f;
+    --ion-toolbar-color: #ffffff;
+    --ion-item-background: #1f1f1f;
+    --ion-item-color: #ffffff;
+  }

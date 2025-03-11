@@ -2,7 +2,7 @@
 .title {
   font-size: 2.5rem; /* Adjusted for better readability */
   font-weight: bold;
-  color: var(--ion-color-primary-contrast);
+  color: var(--ion-text-color); /* Use Ionic variable */
   margin: 0;
   padding: 16px 0; /* Added padding for better spacing */
 }
@@ -13,7 +13,7 @@
 
 /* Content Background */
 .content {
-  background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+  background: var(--ion-background-color); /* Use Ionic variable */
   padding: 20px;
   position: relative; /* For positioning the filter selector */
 }
@@ -32,7 +32,7 @@
 /* Center Icon */
 .center-icon {
   font-size: 12rem; /* Larger calendar icon */
-  color: var(--ion-color-primary);
+  color: var(--ion-color-primary); /* Use Ionic variable */
   margin-bottom: 20px; /* Consistent spacing */
 }
 
@@ -61,14 +61,14 @@
 .card-label {
   font-size: 1.5rem; /* Adjusted for better readability */
   font-weight: 500;
-  color: var(--ion-color-primary);
+  color: var(--ion-color-primary); /* Use Ionic variable */
   cursor: pointer;
   transition: color 0.3s ease;
   display: inline-block;
 }
 
 .card-label:hover {
-  color: var(--ion-color-primary-shade);
+  color: var(--ion-color-primary-shade); /* Use Ionic variable */
 }
 
 /* Adjusting Icon size to be more balanced */
@@ -86,8 +86,8 @@
 }
 
 .filter-selector {
-  background: var(--ion-color-primary);
-  color: white;
+  background: var(--ion-color-primary); /* Use Ionic variable */
+  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
   border-radius: 30px;
   padding: 10px 50px;
   font-size: 1.9rem;
@@ -97,23 +97,23 @@
 }
 
 .filter-selector:hover {
-  background: var(--ion-color-primary-shade);
+  background: var(--ion-color-primary-shade); /* Use Ionic variable */
 }
 
 /* Style the dropdown arrow */
 .filter-selector::part(icon) {
-  color: white;
+  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
 }
 
 /* Style the dropdown options */
 .filter-selector::part(text) {
-  color: white;
+  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
 }
 
 /* Style the dropdown popover */
 .filter-selector::part(popover) {
-  background: white;
-  color: var(--ion-color-primary);
+  background: var(--ion-background-color); /* Use Ionic variable */
+  color: var(--ion-text-color); /* Use Ionic variable */
 }
 
 /* Button-like Labels for Schedule Options */
@@ -121,8 +121,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: var(--ion-color-primary);
-  color: white;
+  background: var(--ion-color-primary); /* Use Ionic variable */
+  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
   border-radius: 10px;
   padding: 20px;
   font-size: 1.8rem; /* Adjusted for better readability */
@@ -135,7 +135,7 @@
 }
 
 .card-item-button:hover {
-  background: var(--ion-color-primary-shade);
+  background: var(--ion-color-primary-shade); /* Use Ionic variable */
 }
 
 /* Card Item Button with Icon */
@@ -146,11 +146,11 @@
 
 /* Ensure the label text color stays white */
 .card-item-button .card-label {
-  color: white !important;
+  color: var(--ion-color-primary-contrast) !important; /* Use Ionic variable */
 }
 
 .card-item-button:hover .card-label {
-  color: white !important;
+  color: var(--ion-color-primary-contrast) !important; /* Use Ionic variable */
 }
 
 /* Responsive Design */
