@@ -1,7 +1,7 @@
 /* General Styles */
 
 .title {
-  font-size: 34px;
+  font-size: 50px;
   font-weight: bold;
 }
 
@@ -10,28 +10,34 @@
   display: flex;
   justify-content: center;
   margin-bottom: 30px;
+  border-radius: 30px;
+
 }
 
 .day-col {
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 30px;
+
 }
 
 .day-button {
   font-size: 28px;
   width: 100%;
   height: 50px;
+  border-radius: 30px;
+
 }
 
-.selected-day {
-  background-color: var(--ion-color-primary);
-}
+
 
 /* Schedule list */
 .schedule-list {
   margin-top: 35px;
   font-size: 40px;
+  border-radius: 40px;
+
 }
 
 .schedule-item {
@@ -40,6 +46,8 @@
   --padding-top: 12px;
   --padding-bottom: 12px;
   margin-bottom: 36px;
+    border-radius: 40px;
+
 }
 
 
@@ -47,13 +55,24 @@
 .time-icon {
   margin-right: 42px;
   font-size: 30px; /* Increased icon size */
+  border-radius: 30px;
+
 }
+
+
 
 
 .time-input:focus {
   outline: none;
   border-color: #4caf50;
   box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+  border-radius: 40px;
+
+}
+
+
+.ion-padding content{
+  border-radius: 40px;
 }
 
 /* Buttons */
@@ -61,9 +80,11 @@
 .delete-button,
 .confirm-edit-button,
 .cancel-edit-button {
-  font-size: 32px; /* Increased icon size */
+  font-size: 35px; /* Increased icon size */
   --padding-start: 32px;
   --padding-end: 32px;
+  border-radius: 40px;
+
 }
 
 /* Toast */
@@ -75,9 +96,29 @@ ion-toast {
 .schedule-label ion-icon.time-icon {
   font-size: 62px; /* Adjust this value to make the icon larger */
   margin-right: 62px;
+  border-radius: 30px;
+
 }
 /* Override default IonLabel styles */
 ion-label.schedule-label {
   font-size: 30px !important; 
-  
+  border-radius: 40px;
+
+}
+.day-button {
+  width: 100%; /* Full width of the column */
+  height: 60px; /* Increased height for bigger buttons */
+  font-size: 1.6rem; /* Larger font size */
+  font-weight: bold; /* Bold text */
+  border-radius: 10px; /* Rounded corners */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth hover effect */
+}
+
+.day-button:hover {
+  transform: scale(1.2); /* Slightly enlarge on hover */
+}
+
+.selected-day .day-button {
+  background-color: var(--ion-color-primary); /* Primary color for selected day */
+  color: var(--ion-color-primary-contrast); /* Contrast text color */
 }
