@@ -1,14 +1,21 @@
 /* Header Title */
 .title {
-  font-size: 2.5rem;
+  font-size: 2.5rem; /* Adjusted for better readability */
   font-weight: bold;
   color: var(--ion-color-primary-contrast);
+  margin: 0;
+  padding: 16px 0; /* Added padding for better spacing */
+}
+
+.ion-text-center.title {
+  font-size: 1.5rem; /* Adjusted for better readability */
 }
 
 /* Content Background */
 .content {
   background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
-  padding: 16px;
+  padding: 20px;
+  position: relative; /* For positioning the filter selector */
 }
 
 /* Center Grid */
@@ -16,23 +23,24 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* Align items to the top */
-  height: auto; /* Prevent full height */
-  gap: 16px; /* Reduce spacing between elements */
+  justify-content: flex-start;
+  gap: 20px; /* Consistent spacing */
+  max-width: 800px; /* Limit width for better readability */
+  margin: 0 auto; /* Center the grid */
 }
 
 /* Center Icon */
 .center-icon {
-  font-size: 8rem; /* Slightly smaller icon */
+  font-size: 12rem; /* Larger calendar icon */
   color: var(--ion-color-primary);
-  margin-bottom: 16px; /* Reduce spacing below icon */
+  margin-bottom: 20px; /* Consistent spacing */
 }
 
 /* Label Row */
 .label-row {
   width: 100%;
   max-width: 600px;
-  margin-top: 16px; /* Add spacing above the labels */
+  margin-top: 20px; /* Consistent spacing */
 }
 
 /* Card Item */
@@ -41,21 +49,22 @@
   --padding-start: 0;
   --inner-padding-end: 0;
   display: flex;
-  align-items: center; /* Align icon and label */
-  justify-content: center; /* Center the contents */
+  align-items: center;
+  justify-content: center;
   text-align: center;
   padding: 16px;
-  gap: 12px; /* Add space between icon and label */
+  gap: 12px; /* Consistent spacing */
+  width: 100%; /* Full width for better clickability */
 }
 
 /* Card Label */
 .card-label {
-  font-size: 1.8rem; /* Adjust font size to fit better */
+  font-size: 1.5rem; /* Adjusted for better readability */
   font-weight: 500;
   color: var(--ion-color-primary);
   cursor: pointer;
   transition: color 0.3s ease;
-  display: inline-block; /* Ensure label takes the width of the text */
+  display: inline-block;
 }
 
 .card-label:hover {
@@ -63,37 +72,30 @@
 }
 
 /* Adjusting Icon size to be more balanced */
-.card-item IonIcon {
-  font-size: 2.5rem; /* Adjust icon size to be smaller */
+.card-item ion-icon {
+  font-size: 3rem; /* Adjusted for better balance */
 }
 
 /* Filter Selector */
-.filter-selector {
-  margin: 16px auto;
-  max-width: 300px;
-  background: white;
-  border-radius: 8px;
-  padding: 8px;
-}
-
-/* Center the Colorblind Button */
-.filter-selector {
+.filter-selector-container {
+  position: absolute;
+  top: 200px; 
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin: 16px auto;
-  max-width: 300px;
-  background: var(--ion-color-primary);
-  color: white;
-  border-radius: 8px;
-  padding: 12px 16px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease;
+  gap: 8px; 
 }
 
-/* Add hover effect for better visibility */
+.filter-selector {
+  background: var(--ion-color-primary);
+  color: white;
+  border-radius: 30px;
+  padding: 10px 50px;
+  font-size: 1.9rem;
+  cursor: pointer;
+  transition: background 0.6s ease;
+  text-align: center;
+}
+
 .filter-selector:hover {
   background: var(--ion-color-primary-shade);
 }
@@ -120,16 +122,16 @@
   justify-content: center;
   align-items: center;
   background: var(--ion-color-primary);
-  color: white; /* Always keep text white */
-  border-radius: 8px;
-  padding: 12px 16px;
-  font-size: 1.8rem;
+  color: white;
+  border-radius: 10px;
+  padding: 20px;
+  font-size: 1.8rem; /* Adjusted for better readability */
   font-weight: bold;
   text-align: center;
   cursor: pointer;
   transition: background 0.3s ease;
-  width: 100%; /* Ensures it fills the width of its container */
-  margin: 8px 0; /* Adds space between items */
+  width: 100%;
+  margin: 10px 0;
 }
 
 .card-item-button:hover {
@@ -137,29 +139,74 @@
 }
 
 /* Card Item Button with Icon */
-.card-item-button IonIcon {
-  margin-right: 8px; /* Space between icon and label */
-  font-size: 2.5rem; /* Icon size */
+.card-item-button ion-icon {
+  margin-right: 10px; /* Space between icon and label */
+  font-size: 4rem; /* Adjusted for better balance */
 }
 
 /* Ensure the label text color stays white */
 .card-item-button .card-label {
-  color: white !important; /* Force text color to stay white */
+  color: white !important;
 }
 
 .card-item-button:hover .card-label {
-  color: white !important; /* Ensure text color stays white on hover */
+  color: white !important;
 }
 
 /* Responsive Design */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem; /* Adjusted for smaller screens */
+  }
+
   .center-icon {
-    font-size: 6rem; /* Smaller icon for mobile */
-    margin-bottom: 12px; /* Reduce spacing below icon */
+    font-size: 8rem; /* Adjusted for smaller screens */
   }
 
   .card-label {
-    font-size: 1.75rem; /* Smaller font size for mobile */
+    font-size: 1.25rem; /* Adjusted for smaller screens */
+  }
+
+  .card-item-button {
+    font-size: 1.25rem; /* Adjusted for smaller screens */
+    padding: 16px;
+  }
+
+  .card-item-button ion-icon {
+    font-size: 2.5rem; /* Adjusted for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.75rem; /* Adjusted for mobile */
+  }
+
+  .center-icon {
+    font-size: 6rem; /* Adjusted for mobile */
+  }
+
+  .card-label {
+    font-size: 1rem; /* Adjusted for mobile */
+  }
+
+  .card-item-button {
+    font-size: 1rem; /* Adjusted for mobile */
+    padding: 12px;
+  }
+
+  .card-item-button ion-icon {
+    font-size: 2rem; /* Adjusted for mobile */
+  }
+
+  .filter-selector-container {
+    top: 40px; /* Adjusted for mobile */
+    left: 20px;
+  }
+
+  .filter-selector {
+    font-size: 2rem;
+    padding: 8px 32px;
   }
 }
 
