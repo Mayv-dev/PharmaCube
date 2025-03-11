@@ -118,7 +118,24 @@ const App: React.FC = () => {
           </IonTabBar>
         </IonTabs>
       </IonReactRouter>
-      <button onClick={handleLogout} style={{ position: 'absolute', top: 10, right: 10, padding: '10px' }}>Logout</button>
+      <button 
+  onClick={handleLogout} 
+  style={{ 
+    position: 'fixed', 
+    bottom: 20, 
+    left: '50%', 
+    transform: 'translateX(-50%)', 
+    padding: '10px 20px', 
+    fontSize: '16px', 
+    borderRadius: '5px', 
+    backgroundColor: '#d9534f', 
+    color: 'white', 
+    border: 'none', 
+    cursor: 'pointer' 
+  }}>
+  Logout
+</button>
+
     </IonApp>
   );
 };
