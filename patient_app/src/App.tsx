@@ -1,30 +1,30 @@
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
-  IonIcon,
-  IonLabel,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
   IonTabs,
+  IonLabel,
+  IonIcon,
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { calendarOutline, ellipse, notificationsOutline, square, triangle } from 'ionicons/icons';
+import { calendarOutline, notificationsOutline } from 'ionicons/icons';
 import SchedulePage from './pages/SchedulePage';
 import ScheduleViewPage from './pages/Schedule Subpages/ScheduleViewPage';
 import ScheduleAddModifyPage from './pages/Schedule Subpages/ScheduleAddModifyPage';
-import './App.css';
+import NotificationPage from './pages/NotificationPage';
+import { useEffect, useState } from 'react';
+import { getItem, setItem, removeItem } from './utils/storage';
 
-/* Core CSS required for Ionic components to work properly */
+/* Core CSS */
 import '@ionic/react/css/core.css';
-
-/* Basic CSS for apps built with Ionic */
 import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';
 
-/* Optional CSS utils that can be commented out */
+/* Optional CSS utils */
 import '@ionic/react/css/padding.css';
 import '@ionic/react/css/float-elements.css';
 import '@ionic/react/css/text-alignment.css';
@@ -32,28 +32,61 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
-
-/* import '@ionic/react/css/palettes/dark.always.css'; */
-/* import '@ionic/react/css/palettes/dark.class.css'; */
-import '@ionic/react/css/palettes/dark.system.css';
-
 /* Theme variables */
 import './theme/variables.css';
-import NotificationPage from './pages/NotificationPage';
-import { ColorblindProvider } from './colorBlindContext'; // Import the ColorblindProvider
 
 setupIonicReact();
 
+const App: React.FC = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
-const App: React.FC = () => (
-  <IonApp>
-    <ColorblindProvider> {/* Wrap the entire app with ColorblindProvider */}
+  useEffect(() => {
+    const checkUserSession = async () => {
+      const storedUser = await getItem('user');
+      if (storedUser) {
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
+    };
+    checkUserSession();
+  }, []);
+
+  const handleLogin = async () => {
+    if (username === 'tiao' && password === '1314') {
+      await setItem('user', { username });
+      setIsAuthenticated(true);
+    } else {
+      alert('Invalid username or password');
+    }
+  };
+
+  const handleLogout = async () => {
+    await removeItem('user');
+    setIsAuthenticated(false);
+  };
+
+  if (isAuthenticated === null) {
+    return <IonApp>Loading...</IonApp>;
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <IonApp>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", height: "100vh" }}>
+          <h2>Login</h2>
+          <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
+          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <button onClick={handleLogin} style={{ marginTop: '10px', padding: '10px' }}>Login</button>
+        </div>
+      </IonApp>
+    );
+  }
+
+  return (
+    <IonApp>
       <IonReactRouter>
         <IonTabs>
           <IonRouterOutlet>
@@ -73,20 +106,21 @@ const App: React.FC = () => (
               <Redirect to="/SchedulePage" />
             </Route>
           </IonRouterOutlet>
-          <IonTabBar slot="top" className="custom-tab-bar">
-  <IonTabButton tab="SchedulePage" href="/SchedulePage" className="custom-tab-button">
-    <IonIcon aria-hidden="true" icon={calendarOutline} className="tab-icon" />
-    <IonLabel className="tab-label">Schedule</IonLabel>
-  </IonTabButton>
-  <IonTabButton tab="NotificationsPage" href="/NotificationsPage" className="custom-tab-button">
-    <IonIcon aria-hidden="true" icon={notificationsOutline} className="tab-icon" />
-    <IonLabel className="tab-label">Notifications</IonLabel>
-  </IonTabButton>
-</IonTabBar>
+          <IonTabBar slot="top">
+            <IonTabButton tab="SchedulePage" href="/SchedulePage">
+              <IonIcon icon={calendarOutline} />
+              <IonLabel>Schedule</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="NotificationsPage" href="/NotificationsPage">
+              <IonIcon icon={notificationsOutline} />
+              <IonLabel>Notifications</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
         </IonTabs>
       </IonReactRouter>
-    </ColorblindProvider>
-  </IonApp>
-);
+      <button onClick={handleLogout} style={{ position: 'absolute', top: 10, right: 10, padding: '10px' }}>Logout</button>
+    </IonApp>
+  );
+};
 
 export default App;
