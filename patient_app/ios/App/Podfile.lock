@@ -14,6 +14,8 @@ PODS:
     - Capacitor
   - CapacitorKeyboard (6.0.3):
     - Capacitor
+  - CapacitorPreferences (6.0.3):
+    - Capacitor
   - CapacitorStatusBar (6.0.2):
     - Capacitor
   - SQLCipher (4.6.1):
@@ -31,6 +33,7 @@ DEPENDENCIES:
   - CapacitorFingerprintAuth (from `../../node_modules/capacitor-fingerprint-auth`)
   - "CapacitorHaptics (from `../../node_modules/@capacitor/haptics`)"
   - "CapacitorKeyboard (from `../../node_modules/@capacitor/keyboard`)"
+  - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
   - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
 
 SPEC REPOS:
@@ -53,6 +56,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/haptics"
   CapacitorKeyboard:
     :path: "../../node_modules/@capacitor/keyboard"
+  CapacitorPreferences:
+    :path: "../../node_modules/@capacitor/preferences"
   CapacitorStatusBar:
     :path: "../../node_modules/@capacitor/status-bar"
 
@@ -64,10 +69,11 @@ SPEC CHECKSUMS:
   CapacitorFingerprintAuth: a46a8cd3bac15e53c6e3ce0b098c6564901bb0a5
   CapacitorHaptics: b53409aaca1203f79c6d0eb3ed5de40556339518
   CapacitorKeyboard: 460c6f9ec5e52c84f2742d5ce2e67bbc7ab0ebb0
+  CapacitorPreferences: 9f9935bce493977183511362131a93f7b260191a
   CapacitorStatusBar: 3b9ac7d0684770522c532d1158a1434512ab1477
   SQLCipher: 77fbe633cd84db04b07876dd50766b4924b57d61
   ZIPFoundation: b8c29ea7ae353b309bc810586181fd073cb3312c
 
-PODFILE CHECKSUM: 6a8f7f9856a45cec20b04e019b2560f7184e1e83
+PODFILE CHECKSUM: 70fd4088ab3cf687f6d6d706f13dbd6fa5c59d69
 
 COCOAPODS: 1.16.2
