@@ -40,22 +40,7 @@ const SchedulePage: React.FC = () => {
           <IonIcon icon={calendar} className="center-icon" />
         </div>
 
-          {/* Colorblind Filter Selector */}
-          <div className="filter-selector-container">
           
-          <IonSelect
-            value={filter}
-            placeholder="Select Colorblind Filter"
-            onIonChange={(e) => setFilter(e.detail.value)}
-            className="filter-selector"
-          >
-            <IonSelectOption value="">Colorblind Filter</IonSelectOption>
-            <IonSelectOption value="protanopia-filter">Protanopia</IonSelectOption>
-            <IonSelectOption value="deuteranopia-filter">Deuteranopia</IonSelectOption>
-            <IonSelectOption value="tritanopia-filter">Tritanopia</IonSelectOption>
-            <IonSelectOption value="achromatopsia-filter">Achromatopsia</IonSelectOption>
-          </IonSelect>
-        </div>
 
 
         {/* Set My Free Times and View Schedule Labels */}
