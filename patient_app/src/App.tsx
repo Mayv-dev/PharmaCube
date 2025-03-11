@@ -16,7 +16,7 @@ import ScheduleViewPage from './pages/Schedule Subpages/ScheduleViewPage';
 import ScheduleAddModifyPage from './pages/Schedule Subpages/ScheduleAddModifyPage';
 import NotificationPage from './pages/NotificationPage';
 import { useEffect, useState } from 'react';
-import { getItem, setItem, removeItem } from './utils/storage';
+import { getItem, setItem, removeItem, registerUser, verifyUser } from './utils/storage';
 
 /* Core CSS */
 import '@ionic/react/css/core.css';
@@ -41,6 +41,7 @@ const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [isRegistering, setIsRegistering] = useState<boolean>(false);
 
   useEffect(() => {
     const checkUserSession = async () => {
@@ -55,12 +56,19 @@ const App: React.FC = () => {
   }, []);
 
   const handleLogin = async () => {
-    if (username === 'tiao' && password === '1314') {
+    const isValid = await verifyUser(username, password);
+    if (isValid) {
       await setItem('user', { username });
       setIsAuthenticated(true);
     } else {
       alert('Invalid username or password');
     }
+  };
+
+  const handleRegister = async () => {
+    await registerUser(username, password);
+    alert('Account registered successfully! You can now log in.');
+    setIsRegistering(false);
   };
 
   const handleLogout = async () => {
@@ -76,10 +84,20 @@ const App: React.FC = () => {
     return (
       <IonApp>
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", height: "100vh" }}>
-          <h2>Login</h2>
+          <h2>{isRegistering ? 'Register' : 'Login'}</h2>
           <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
           <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          <button onClick={handleLogin} style={{ marginTop: '10px', padding: '10px' }}>Login</button>
+          {isRegistering ? (
+            <>
+              <button onClick={handleRegister} style={{ marginTop: '10px', padding: '10px' }}>Register</button>
+              <button onClick={() => setIsRegistering(false)} style={{ marginTop: '5px', padding: '10px' }}>Back to Login</button>
+            </>
+          ) : (
+            <>
+              <button onClick={handleLogin} style={{ marginTop: '10px', padding: '10px' }}>Login</button>
+              <button onClick={() => setIsRegistering(true)} style={{ marginTop: '5px', padding: '10px' }}>Create an Account</button>
+            </>
+          )}
         </div>
       </IonApp>
     );
@@ -119,23 +137,22 @@ const App: React.FC = () => {
         </IonTabs>
       </IonReactRouter>
       <button 
-  onClick={handleLogout} 
-  style={{ 
-    position: 'fixed', 
-    bottom: 20, 
-    left: '50%', 
-    transform: 'translateX(-50%)', 
-    padding: '10px 20px', 
-    fontSize: '16px', 
-    borderRadius: '5px', 
-    backgroundColor: '#d9534f', 
-    color: 'white', 
-    border: 'none', 
-    cursor: 'pointer' 
-  }}>
-  Logout
-</button>
-
+        onClick={handleLogout} 
+        style={{ 
+          position: 'fixed', 
+          bottom: 20, 
+          left: '50%', 
+          transform: 'translateX(-50%)', 
+          padding: '10px 20px', 
+          fontSize: '16px', 
+          borderRadius: '5px', 
+          backgroundColor: '#d9534f', 
+          color: 'white', 
+          border: 'none', 
+          cursor: 'pointer' 
+        }}>
+        Logout
+      </button>
     </IonApp>
   );
 };

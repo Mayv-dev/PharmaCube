@@ -14,3 +14,14 @@ export const getItem = async (key: string) => {
 export const removeItem = async (key: string) => {
   await storage.remove(key);
 };
+
+export const registerUser = async (username: string, password: string) => {
+  const existingUsers = (await getItem('users')) || {};
+  existingUsers[username] = password;
+  await setItem('users', existingUsers);
+};
+
+export const verifyUser = async (username: string, password: string) => {
+  const users = (await getItem('users')) || {};
+  return users[username] === password;
+};
