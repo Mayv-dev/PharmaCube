@@ -96,7 +96,7 @@ const SettingsPage: React.FC = () => {
             <IonSelect
               value={tabBarPosition}
               placeholder="Select Tab Bar Position"
-              onIonChange={(e) => setTabBarPosition(e.detail.value)} // Update the global tab bar position
+              onIonChange={(e) => setTabBarPosition(e.detail.value as "bottom" | "top")} // Ensure the value is of type "bottom" | "top"
             >
               <IonSelectOption value="bottom">Bottom</IonSelectOption>
               <IonSelectOption value="top">Top</IonSelectOption>
