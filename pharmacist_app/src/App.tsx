@@ -114,6 +114,7 @@ const App: React.FC = () => {
           <Route exact path="/history">
             <History />
           </Route>
+
         </IonRouterOutlet>
 
         <UpperToolbar/>
