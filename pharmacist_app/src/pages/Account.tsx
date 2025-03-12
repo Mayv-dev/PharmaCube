@@ -159,34 +159,6 @@ const Account: React.FC = () => {
 
 					<IonButton onClick={e => handleModification()}>Modify Details</IonButton>
 
-					<IonItem>
-						<IonInput onIonChange={e => setAddressLine2(e.target.value)} label='Address Line 2'></IonInput>
-					</IonItem>
-
-					<IonItem>
-						<IonInput onIonChange={e => setAddressLine3(e.target.value)} label='Address Line 3'></IonInput>
-					</IonItem>
-
-					<IonItem>
-						<IonInput onIonChange={e => setPostcode(e.target.value)} label='Postal Code'></IonInput>
-					</IonItem>
-
-					<IonButton onClick={e => handleModification()}>Modify Details</IonButton>
-
-					<IonItem>
-						<IonInput onIonChange={e => setAddressLine2(e.target.value)} label='Address Line 2'></IonInput>
-					</IonItem>
-
-					<IonItem>
-						<IonInput onIonChange={e => setAddressLine3(e.target.value)} label='Address Line 3'></IonInput>
-					</IonItem>
-
-					<IonItem>
-						<IonInput onIonChange={e => setPostcode(e.target.value)} label='Postal Code'></IonInput>
-					</IonItem>
-
-					<IonButton onClick={e => handleModification()}>Modify Details</IonButton>
-
 					<IonButton color={"danger"} onClick={e => { setShowDeletionModal(true) }}>Delete Your Account</IonButton>
 					<p className='headingText'>Patient list</p>
 					{isInEditMode ?
@@ -212,6 +184,10 @@ const Account: React.FC = () => {
 
 			<IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
 				<LinkedPatientDeleteConfirmation patient_id={patientId} patient_name={patientName} setShowModal={setShowModal} deletePatient={() => setPatientList(patientList.filter(patient => patient != patientName))}></LinkedPatientDeleteConfirmation>
+			</IonModal>
+
+			<IonModal isOpen={showDeletionModal} onDidDismiss={() => setShowDeletionModal(false)}>
+				<DeletePharmacistAccountConfirmation setShowModal={setShowDeletionModal} deleteAccount={deleteAccount} ></DeletePharmacistAccountConfirmation>
 			</IonModal>
 		</IonPage >
 	);
