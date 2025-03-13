@@ -1,32 +1,236 @@
-.ScheduleButtons {
-    color: white; 
-    border-radius: 25px; 
-    padding: 12px 30px; 
-    font-size: 18px; 
-    font-weight: bold; 
-    text-transform: uppercase; 
-    letter-spacing: 1px; 
-    border: none; 
-    cursor: pointer; 
-    transition: background-color 0.3s ease, transform 0.2s ease; 
-  }
-.center {
-    text-align: center;
+/* Header Title */
+.title {
+  font-size: 2.5rem; /* Adjusted for better readability */
+  font-weight: bold;
+  color: var(--ion-text-color); /* Use Ionic variable */
+  margin: 0;
+  padding: 16px 0; /* Added padding for better spacing */
 }
-.wrapper {
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
-    height: 100vh;
-    background-color: aqua;
+
+.ion-text-center.title {
+  font-size: 1.5rem; /* Adjusted for better readability */
+}
+
+/* Content Background */
+.content {
+  background: var(--ion-background-color); /* Use Ionic variable */
+  padding: 20px;
+  position: relative; /* For positioning the filter selector */
+}
+
+/* Center Grid */
+.center-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px; /* Consistent spacing */
+  max-width: 800px; /* Limit width for better readability */
+  margin: 0 auto; /* Center the grid */
+}
+
+/* Center Icon */
+.center-icon {
+  font-size: 12rem; /* Larger calendar icon */
+  color: var(--ion-color-primary); /* Use Ionic variable */
+  margin-bottom: 20px; /* Consistent spacing */
+}
+
+/* Label Row */
+.label-row {
+  width: 100%;
+  max-width: 600px;
+  margin-top: 20px; /* Consistent spacing */
+}
+
+/* Card Item */
+.card-item {
+  --background: transparent;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 16px;
+  gap: 12px; /* Consistent spacing */
+  width: 100%; /* Full width for better clickability */
+}
+
+/* Card Label */
+.card-label {
+  font-size: 1.5rem; /* Adjusted for better readability */
+  font-weight: 500;
+  color: var(--ion-color-primary); /* Use Ionic variable */
+  cursor: pointer;
+  transition: color 0.3s ease;
+  display: inline-block;
+}
+
+.card-label:hover {
+  color: var(--ion-color-primary-shade); /* Use Ionic variable */
+}
+
+/* Adjusting Icon size to be more balanced */
+.card-item ion-icon {
+  font-size: 3rem; /* Adjusted for better balance */
+}
+
+/* Filter Selector */
+.filter-selector-container {
+  position: absolute;
+  top: 200px; 
+  display: flex;
+  align-items: center;
+  gap: 8px; 
+}
+
+.filter-selector {
+  background: var(--ion-color-primary); /* Use Ionic variable */
+  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
+  border-radius: 30px;
+  padding: 10px 50px;
+  font-size: 1.9rem;
+  cursor: pointer;
+  transition: background 0.6s ease;
+  text-align: center;
+}
+
+.filter-selector:hover {
+  background: var(--ion-color-primary-shade); /* Use Ionic variable */
+}
+
+/* Style the dropdown arrow */
+.filter-selector::part(icon) {
+  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
+}
+
+/* Style the dropdown options */
+.filter-selector::part(text) {
+  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
+}
+
+/* Style the dropdown popover */
+.filter-selector::part(popover) {
+  background: var(--ion-background-color); /* Use Ionic variable */
+  color: var(--ion-text-color); /* Use Ionic variable */
+}
+
+/* Button-like Labels for Schedule Options */
+.card-item-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--ion-color-primary); /* Use Ionic variable */
+  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
+  border-radius: 10px;
+  padding: 20px;
+  font-size: 1.8rem; /* Adjusted for better readability */
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.card-item-button:hover {
+  background: var(--ion-color-primary-shade); /* Use Ionic variable */
+}
+
+/* Card Item Button with Icon */
+.card-item-button ion-icon {
+  margin-right: 10px; /* Space between icon and label */
+  font-size: 4rem; /* Adjusted for better balance */
+}
+
+/* Ensure the label text color stays white */
+.card-item-button .card-label {
+  color: var(--ion-color-primary-contrast) !important; /* Use Ionic variable */
+}
+
+.card-item-button:hover .card-label {
+  color: var(--ion-color-primary-contrast) !important; /* Use Ionic variable */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem; /* Adjusted for smaller screens */
   }
-.card {
-    width: 90%; 
-    max-width: 400px; 
-    padding: 20px; 
-    align-items: center; 
-    justify-content: center; 
-    flex-direction: column;
-    gap: 10px; 
-    margin:auto auto auto auto;
+
+  .center-icon {
+    font-size: 8rem; /* Adjusted for smaller screens */
   }
+
+  .card-label {
+    font-size: 1.25rem; /* Adjusted for smaller screens */
+  }
+
+  .card-item-button {
+    font-size: 1.25rem; /* Adjusted for smaller screens */
+    padding: 16px;
+  }
+
+  .card-item-button ion-icon {
+    font-size: 2.5rem; /* Adjusted for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.75rem; /* Adjusted for mobile */
+  }
+
+  .center-icon {
+    font-size: 6rem; /* Adjusted for mobile */
+  }
+
+  .card-label {
+    font-size: 1rem; /* Adjusted for mobile */
+  }
+
+  .card-item-button {
+    font-size: 1rem; /* Adjusted for mobile */
+    padding: 12px;
+  }
+
+  .card-item-button ion-icon {
+    font-size: 2rem; /* Adjusted for mobile */
+  }
+
+  .filter-selector-container {
+    top: 40px; /* Adjusted for mobile */
+    left: 20px;
+  }
+
+  .filter-selector {
+    font-size: 2rem;
+    padding: 8px 32px;
+  }
+}
+
+/* Colorblind Filters */
+.protanopia-filter {
+  filter: url('#protanopia');
+}
+
+.deuteranopia-filter {
+  filter: url('#deuteranopia');
+}
+
+.tritanopia-filter {
+  filter: url('#tritanopia');
+}
+
+.achromatopsia-filter {
+  filter: grayscale(100%);
+}
+
+/* Remove full-height container */
+.center-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}

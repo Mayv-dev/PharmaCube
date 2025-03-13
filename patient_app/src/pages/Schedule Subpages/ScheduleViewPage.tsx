@@ -1,106 +1,56 @@
 import {
-  IonButton,
+  IonCard,
   IonContent,
   IonHeader,
+  IonIcon,
   IonPage,
+  IonRouterLink,
   IonTitle,
   IonToolbar,
   IonGrid,
   IonRow,
   IonCol,
-  IonList,
   IonItem,
   IonLabel,
-} from "@ionic/react";
-import "./ScheduleViewPage.css";
-import React, { useEffect, useState } from "react";
-import { SQLiteDBConnection } from "@capacitor-community/sqlite";
-import useSQLiteDB from "../../composables/useSQLiteDB";
+  IonSelect,
+  IonSelectOption,
+  IonDatetime,
+} from '@ionic/react';
+import { timeOutline, calendarOutline, calendar } from 'ionicons/icons';
+import { useColorblindFilter } from '../../colorBlindContext'; 
+import './ScheduleViewPage.css';
 
-// Type definition for a schedule entry
-type SQLItem = {
-  id: number;
-  day: number;
-  timeofday: number;
-  time: string;
-};
-
-const daysOfWeek = [,"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-
-const timeOfDayMap: { [key: number]: string } = {
-  1: "Early Morning",
-  2: "Morning",
-  3: "Afternoon",
-  4: "Evening",
-  5: "Night",
-};
-
-const ScheduleViewPage: React.FC = () => {
-  const [selectedDay, setSelectedDay] = useState<string>("Monday"); // Default to Monday
-  const [schedule, setSchedule] = useState<SQLItem[]>([]);
-
-  const { performSQLAction, initialized } = useSQLiteDB();
-
-  useEffect(() => {
-    if (initialized) {
-      loadData(selectedDay);
-    }
-  }, [initialized, selectedDay]);
-
-  const loadData = async (day: string) => {
-    try {
-      performSQLAction(async (db: SQLiteDBConnection | undefined) => {
-        const respSelect = await db?.query("SELECT * FROM schedule WHERE day = ?", [day]);
-        setSchedule(respSelect?.values || []);
-      });
-    } catch (error) {
-      alert((error as Error).message);
-      setSchedule([]);
-    }
-  };
+const SchedulePage: React.FC = () => {
+  const { filter, setFilter } = useColorblindFilter();
 
   return (
-    <IonPage>
+    <IonPage className={filter}> {}
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Your Schedule</IonTitle>
+          <IonTitle className="ion-text-center title">
+            PharmaCube Schedule
+          </IonTitle>
         </IonToolbar>
       </IonHeader>
+      <IonContent fullscreen className="ion-padding content">
+        
 
-      <IonContent fullscreen className="ion-padding">
-        {/* Day Selector */}
-        <IonGrid>
-          <IonRow>
-            {daysOfWeek.map((day) => (
-              <IonCol key={day} size="1" className={selectedDay === day ? "selected-day" : "day-col"}>
-                <IonButton fill="clear" onClick={() => setSelectedDay(day)}>
-                  {day.charAt(0)}
-                </IonButton>
-              </IonCol>
-            ))}
-          </IonRow>
-        </IonGrid>
+        {/* Calendar Component */}
+        <IonDatetime
+          displayFormat="MM/DD/YYYY"
+          placeholder="Select Date"
+          className="calendar"
+        ></IonDatetime>
 
-        {/* Schedule List */}
-        <IonList>
-  {schedule.map((item) => (
-    <IonItem key={item.id}>
-      <IonLabel>
-        {item.time} | {timeOfDayMap[item.timeofday] || "Unknown Time"}
-      </IonLabel>
-    </IonItem>
-  ))}
-</IonList>
+        {/* Large Schedule Icon */}
+        <div className="center-icon-container">
+          <IonIcon icon={calendar} className="center-icon" />
+        </div>
 
-        {/* No Entries Message */}
-        {schedule.length === 0 && (
-          <IonItem>
-            <IonLabel>No entries for {selectedDay}</IonLabel>
-          </IonItem>
-        )}
+        
       </IonContent>
     </IonPage>
   );
 };
 
-export default ScheduleViewPage;
+export default SchedulePage;

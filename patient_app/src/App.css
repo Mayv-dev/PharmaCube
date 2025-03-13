@@ -1,0 +1,62 @@
+/* Custom Tab Bar */
+.custom-tab-bar {
+  background-color: var(--ion-tab-bar-background, #ffffff); /* Use Ionic variable */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 8px 0; /* Add padding */
+  border-bottom: 1px solid var(--ion-border-color, #e0e0e0); /* Use Ionic variable */
+}
+
+/* Custom Tab Button */
+.custom-tab-button {
+  --background: transparent; /* Transparent background */
+  --color: var(--ion-tab-bar-color, #6c9a8b); /* Use Ionic variable */
+  --color-selected: var(--ion-tab-bar-color-activated, #66d6c3); /* Use Ionic variable */
+  --padding-start: 16px;
+  --padding-end: 16px;
+  transition: all 0.3s ease; /* Smooth transition */
+}
+
+.custom-tab-button:hover {
+  --background: rgba(108, 154, 139, 0.1); /* Light hover background */
+  --color: var(--ion-tab-bar-color-activated, #66d6c3); /* Use Ionic variable */
+}
+
+.custom-tab-button.tab-selected {
+  --background: rgba(108, 154, 139, 0.1); /* Active background */
+  --color: var(--ion-tab-bar-color-activated, #66d6c3); /* Use Ionic variable */
+}
+
+/* Tab Icon */
+.tab-icon {
+  font-size: 24px; /* Icon size */
+  margin-bottom: 4px; /* Space between icon and label */
+}
+
+/* Tab Label */
+.tab-label {
+  font-size: 14px; /* Label size */
+  font-weight: 500; /* Medium font weight */
+  text-transform: uppercase; /* Uppercase text */
+}
+/* Default styles for the tab bar */
+.custom-tab-bar {
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  background-color: var(--ion-tab-bar-background, #ffffff);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--ion-border-color, #e0e0e0);
+}
+
+/* Move the tab bar to the top */
+.custom-tab-bar.top {
+  top: 0;
+  bottom: auto;
+}
+
+/* Move the tab bar to the bottom */
+.custom-tab-bar.bottom {
+  bottom: 0;
+  top: auto;
+}
