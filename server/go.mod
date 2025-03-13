@@ -1,6 +1,6 @@
 module pharmacube/server
 
-go 1.23.4
+go 1.22.7
 
 require (
 	github.com/bytedance/sonic v1.12.6 // indirect
