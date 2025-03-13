@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
   IonCard,
   IonContent,
@@ -15,9 +16,9 @@ import {
   IonSelect,
   IonSelectOption,
 } from '@ionic/react';
-import { timeOutline, calendarOutline, calendar, eyeOutline } from 'ionicons/icons'; // Added eyeOutline for colorblind icon
-import { useState } from 'react';
+import { timeOutline, calendarOutline, eyeOutline } from 'ionicons/icons'; // Removed calendar icon as it's no longer needed
 import './SchedulePage.css';
+import calendarImage from '../../../Adobe Express - file.png'; // Adjust the path to your image
 
 const SchedulePage: React.FC = () => {
   const [filter, setFilter] = useState<string>(''); 
@@ -26,22 +27,16 @@ const SchedulePage: React.FC = () => {
     <IonPage className={filter}>
       <IonHeader>
         <IonToolbar color="primary">
-         
           <IonTitle className="ion-text-center title">
             PharmaCube Schedule
           </IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen className="ion-padding content" color="secondary">
-       
-
         {/* Large Schedule Icon */}
         <div className="center-icon-container">
-          <IonIcon icon={calendar} className="center-icon" />
+          <img src={calendarImage} alt="Calendar" className="center-icon" />
         </div>
-
-          
-
 
         {/* Set My Free Times and View Schedule Labels */}
         <IonGrid className="center-grid">
