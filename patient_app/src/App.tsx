@@ -7,7 +7,13 @@ import {
   IonTabs,
   IonLabel,
   IonIcon,
-  setupIonicReact
+  IonContent,
+  IonInput,
+  IonButton,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  setupIonicReact,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { calendarOutline, medical, notificationsOutline, settingsOutline } from 'ionicons/icons';
@@ -17,11 +23,12 @@ import ScheduleAddModifyPage from './pages/Schedule Subpages/ScheduleAddModifyPa
 import NotificationPage from './pages/NotificationPage';
 import MedicationPage from './pages/MedicationsPage';
 import SettingsPage from './pages/SettingsPage';
-import { ColorblindProvider, useColorblindFilter } from './colorBlindContext';
-import { SettingsProvider, useSettings } from './composables/SettingsContext';
-import './App.css';
+import { ColorblindProvider } from './colorBlindContext';
+import { SettingsProvider } from './composables/SettingsContext';
 import { useEffect, useState } from 'react';
 import { getItem, setItem, removeItem, registerUser, verifyUser } from './utils/storage';
+import './App.css';
+import './loginAndRegister.css'; // Import the new CSS file
 
 /* Core CSS */
 import '@ionic/react/css/core.css';
@@ -84,22 +91,56 @@ const App: React.FC = () => {
   if (!isAuthenticated) {
     return (
       <IonApp>
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", height: "100vh" }}>
-          <h2>{isRegistering ? 'Register' : 'Login'}</h2>
-          <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          {isRegistering ? (
-            <>
-              <button onClick={handleRegister} style={{ marginTop: '10px', padding: '10px' }}>Register</button>
-              <button onClick={() => setIsRegistering(false)} style={{ marginTop: '5px', padding: '10px' }}>Back to Login</button>
-            </>
-          ) : (
-            <>
-              <button onClick={handleLogin} style={{ marginTop: '10px', padding: '10px' }}>Login</button>
-              <button onClick={() => setIsRegistering(true)} style={{ marginTop: '5px', padding: '10px' }}>Create an Account</button>
-            </>
-          )}
-        </div>
+        <IonContent className="login-container">
+          <div className="login-form">
+            <img
+              src="src\Adobe Express - file.png" 
+              alt="Logo"
+              className="login-image"
+            />
+            <h2 className="login-title">{isRegistering ? 'Register' : 'Login'}</h2>
+            <IonInput
+              className="login-input"
+              placeholder="Username"
+              value={username}
+              onIonChange={(e) => setUsername(e.detail.value!)}
+            />
+            <IonInput
+              className="login-input"
+              type="password"
+              placeholder="Password"
+              value={password}
+              onIonChange={(e) => setPassword(e.detail.value!)}
+            />
+            {isRegistering ? (
+              <>
+                <IonButton className="login-button" onClick={handleRegister}>
+                  Register
+                </IonButton>
+                <IonButton
+                  className="toggle-button"
+                  fill="clear"
+                  onClick={() => setIsRegistering(false)}
+                >
+                  Back to Login
+                </IonButton>
+              </>
+            ) : (
+              <>
+                <IonButton className="login-button" onClick={handleLogin}>
+                  Login
+                </IonButton>
+                <IonButton
+                  className="toggle-button"
+                  fill="clear"
+                  onClick={() => setIsRegistering(true)}
+                >
+                  Create an Account
+                </IonButton>
+              </>
+            )}
+          </div>
+        </IonContent>
       </IonApp>
     );
   }
@@ -167,8 +208,9 @@ const App: React.FC = () => {
               backgroundColor: '#d9534f',
               color: 'white',
               border: 'none',
-              cursor: 'pointer'
-            }}>
+              cursor: 'pointer',
+            }}
+          >
             Logout
           </button>
         </IonApp>

@@ -19,13 +19,13 @@ import {
 import { timeOutline, calendarOutline } from 'ionicons/icons';
 import { useColorblindFilter } from '../colorBlindContext'; // Import the colorblind context
 import './SchedulePage.css';
-import calendarImage from '../../../Adobe Express - file.png'; // Adjust the path to your image
+import calendarImage from '../../../Adobe Express - file.png'; 
 
 const SchedulePage: React.FC = () => {
-  const { filter } = useColorblindFilter(); // Use the filter from the context
+  const { filter } = useColorblindFilter(); 
 
   return (
-    <IonPage className={filter}> {/* Apply the filter class */}
+    <IonPage className={filter}> 
       <IonHeader>
         <IonToolbar color="primary">
           <IonTitle className="ion-text-center title">
@@ -34,12 +34,11 @@ const SchedulePage: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen className="ion-padding content" color="secondary">
-        {/* Large Schedule Icon */}
+
         <div className="center-icon-container">
           <img src={calendarImage} alt="Calendar" className="center-icon" />
         </div>
 
-        {/* Set My Free Times and View Schedule Labels */}
         <IonGrid className="center-grid">
           <IonRow className="label-row">
             <IonCol size="6">
@@ -47,7 +46,7 @@ const SchedulePage: React.FC = () => {
                 <IonRouterLink routerLink="/ScheduleAddModifyPage" className="card-link">
                   <div className="card-item-button">
                     <IonIcon icon={timeOutline} slot="start" />
-                    <IonLabel className="card-label">Set My Free Times</IonLabel>
+                    <IonLabel className="card-label">Edit Schedule</IonLabel>
                   </div>
                 </IonRouterLink>
               </IonItem>

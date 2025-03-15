@@ -61,11 +61,7 @@
   top: auto;
 }
 
-    background-color: #ffffff; /* Light background */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    padding: 8px 0; /* Add padding */
-    border-bottom: 1px solid #e0e0e0; /* Add a border */
-  }
+  
   
   /* Custom Tab Button */
   .custom-tab-button {
