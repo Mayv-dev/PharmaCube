@@ -5,21 +5,18 @@
   color: var(--ion-text-color); /* Use Ionic variable */
   margin: 0;
   padding: 16px 0; /* Added padding for better spacing */
+  text-align: center;
 }
 
 .ion-text-center.title {
-  
-  font-size: 2.5rem;
-  font-weight: bold;
   color: var(--ion-color-primary-contrast);
 }
 
 /* Content Background */
 .content {
-  background: var(--ion-background-color); /* Use Ionic variable */
+  background: var(--ion-background-color);
   padding: 20px;
   position: relative; /* For positioning the filter selector */
-
 }
 
 /* Center Grid */
@@ -28,139 +25,77 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: 20px; /* Consistent spacing */
-  max-width: 800px; /* Limit width for better readability */
-  margin: 0 auto; /* Center the grid */
+  gap: 20px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 /* Center Icon */
 .center-icon {
-  font-size: 12rem; /* Larger calendar icon */
-  color: var(--ion-color-primary); /* Use Ionic variable */
-  margin-bottom: 20px; /* Consistent spacing */
+  font-size: 12rem;
+  color: var(--ion-color-primary);
+  margin-bottom: 20px;
 }
 
 /* Label Row */
 .label-row {
   width: 100%;
   max-width: 600px;
-  margin-top: 20px; /* Consistent spacing */
+  margin-top: 20px;
 }
 
 /* Card Item */
 .card-item {
   --background: transparent;
-  --padding-start: 0;
-  --inner-padding-end: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   padding: 16px;
-  gap: 12px; /* Consistent spacing */
-  width: 100%; /* Full width for better clickability */
+  gap: 12px;
+  width: 100%;
 }
 
 /* Card Label */
 .card-label {
-  font-size: 1.5rem; /* Adjusted for better readability */
-  font-weight: 500;
-  color: var(--ion-color-primary); /* Use Ionic variable */
-  cursor: pointer;
-  transition: color 0.3s ease;
-  display: inline-block;
-}
-
-.card-label:hover {
-  color: var(--ion-color-primary-shade); /* Use Ionic variable */
-}
-
-/* Adjusting Icon size to be more balanced */
-.card-item ion-icon {
-  font-size: 3rem; /* Adjusted for better balance */
-}
-
-/* Filter Selector */
-.filter-selector-container {
-  position: absolute;
-  top: 200px; 
-  display: flex;
-  align-items: center;
-  gap: 8px; 
-}
-
-.filter-selector {
-  background: var(--ion-color-primary); /* Use Ionic variable */
-  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
-  border-radius: 30px;
-  padding: 10px 50px;
-  font-size: 1.9rem;
-  cursor: pointer;
-  transition: background 0.6s ease;
-  text-align: center;
-}
-
-.filter-selector:hover {
-  background: var(--ion-color-primary-shade); /* Use Ionic variable */
-  font-size: 1.8rem; /* Adjust font size to fit better */
+  font-size: 1.5rem;
   font-weight: 500;
   color: var(--ion-color-primary);
   cursor: pointer;
   transition: color 0.3s ease;
-  display: inline-block; /* Ensure label takes the width of the text */
 }
 
 .card-label:hover {
   color: var(--ion-color-primary-shade);
 }
 
-/* Adjusting Icon size to be more balanced */
-.card-item IonIcon {
-  font-size: 2.5rem; /* Adjust icon size to be smaller */
+/* Adjusting Icon size */
+.card-item ion-icon {
+  font-size: 3rem;
 }
 
 /* Filter Selector */
-.filter-selector {
-  margin: 16px auto;
-  max-width: 300px;
-  background: white;
-  border-radius: 8px;
-  padding: 8px;
-}
-
-/* Center the Colorblind Button */
-.filter-selector {
+.filter-selector-container {
+  position: absolute;
+  top: 200px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin: 16px auto;
-  max-width: 300px;
+  gap: 8px;
+}
+
+.filter-selector {
   background: var(--ion-color-primary);
-  color: white;
-  border-radius: 8px;
-  padding: 12px 16px;
-  font-size: 1.2rem;
-  font-weight: bold;
+  color: var(--ion-color-primary-contrast);
+  border-radius: 30px;
+  padding: 10px 50px;
+  font-size: 1.9rem;
   cursor: pointer;
   transition: background 0.3s ease;
+  text-align: center;
 }
 
-
-
-/* Style the dropdown arrow */
-.filter-selector::part(icon) {
-  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
-}
-
-/* Style the dropdown options */
-.filter-selector::part(text) {
-  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
-}
-
-/* Style the dropdown popover */
-.filter-selector::part(popover) {
-  background: var(--ion-background-color); /* Use Ionic variable */
-  color: var(--ion-text-color); /* Use Ionic variable */
+.filter-selector:hover {
+  background: var(--ion-color-primary-shade);
 }
 
 /* Button-like Labels for Schedule Options */
@@ -168,11 +103,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: var(--ion-color-primary); /* Use Ionic variable */
-  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
   border-radius: 10px;
   padding: 20px;
-  font-size: 1.8rem; /* Adjusted for better readability */
+  font-size: 1.8rem;
   font-weight: bold;
   text-align: center;
   cursor: pointer;
@@ -182,107 +117,65 @@
 }
 
 .card-item-button:hover {
-  background: var(--ion-color-primary-shade); /* Use Ionic variable */
-}
-
-/* Card Item Button with Icon */
-.card-item-button ion-icon {
-  margin-right: 10px; /* Space between icon and label */
-  font-size: 4rem; /* Adjusted for better balance */
-  width: 100%; /* Ensures it fills the width of its container */
-  margin: 8px 0; /* Adds space between items */
-}
-
-.card-item-button:hover {
   background: var(--ion-color-primary-shade);
 }
 
 /* Card Item Button with Icon */
-.card-item-button IonIcon {
-  margin-right: 8px; /* Space between icon and label */
-  font-size: 2.5rem; /* Icon size */
-}
-
-/* Ensure the label text color stays white */
-.card-item-button .card-label {
-  color: var(--ion-color-primary-contrast) !important; /* Use Ionic variable */
+.card-item-button ion-icon {
+  margin-right: 10px;
+  font-size: 4rem;
 }
 
 .card-item-button:hover .card-label {
-  color: var(--ion-color-primary-contrast) !important; /* Use Ionic variable */
+  color: var(--ion-color-primary-contrast) !important;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .title {
-    font-size: 2rem; /* Adjusted for smaller screens */
+    font-size: 2rem;
   }
-
   .center-icon {
-    font-size: 8rem; /* Adjusted for smaller screens */
+    font-size: 8rem;
   }
-
   .card-label {
-    font-size: 1.25rem; /* Adjusted for smaller screens */
+    font-size: 1.25rem;
   }
-
   .card-item-button {
-    font-size: 1.25rem; /* Adjusted for smaller screens */
+    font-size: 1.25rem;
     padding: 16px;
   }
-
   .card-item-button ion-icon {
-    font-size: 2.5rem; /* Adjusted for smaller screens */
+    font-size: 2.5rem;
   }
 }
 
 @media (max-width: 480px) {
   .title {
-    font-size: 1.75rem; /* Adjusted for mobile */
+    font-size: 1.75rem;
   }
-
   .center-icon {
-    font-size: 6rem; /* Adjusted for mobile */
+    font-size: 6rem;
+    margin-bottom: 12px;
   }
-
   .card-label {
-    font-size: 1rem; /* Adjusted for mobile */
+    font-size: 1rem;
   }
-
   .card-item-button {
-    font-size: 1rem; /* Adjusted for mobile */
+    font-size: 1rem;
     padding: 12px;
   }
-
   .card-item-button ion-icon {
-    font-size: 2rem; /* Adjusted for mobile */
+    font-size: 2rem;
   }
-
   .filter-selector-container {
-    top: 40px; /* Adjusted for mobile */
+    top: 40px;
     left: 20px;
   }
-
   .filter-selector {
     font-size: 2rem;
     padding: 8px 32px;
-=======
-  color: white !important; /* Force text color to stay white */
-}
-
-.card-item-button:hover .card-label {
-  color: white !important; /* Ensure text color stays white on hover */
-}
-
-/* Responsive Design */
-@media (max-width: 480px) {
-  .center-icon {
-    font-size: 6rem; /* Smaller icon for mobile */
-    margin-bottom: 12px; /* Reduce spacing below icon */
-  }
-
-  .card-label {
-    font-size: 1.75rem; /* Smaller font size for mobile */
+    color: white !important;
   }
 }
 
@@ -290,23 +183,20 @@
 .protanopia-filter {
   filter: url('#protanopia');
 }
-
 .deuteranopia-filter {
   filter: url('#deuteranopia');
 }
-
 .tritanopia-filter {
   filter: url('#tritanopia');
 }
-
 .achromatopsia-filter {
   filter: grayscale(100%);
 }
 
-/* Remove full-height container */
+/* Center Icon Container */
 .center-icon-container {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  }
+}

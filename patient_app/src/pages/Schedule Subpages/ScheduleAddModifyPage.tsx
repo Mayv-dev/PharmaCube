@@ -18,11 +18,11 @@ import {
   IonSelect,
   IonSelectOption,
   IonToast,
-  
 } from "@ionic/react";
 import { trashOutline, createOutline, checkmarkOutline, closeOutline, timeOutline } from "ionicons/icons";
 import axios from "axios";
 import { ScheduleData } from "../../api types/types";
+import { useColorblindFilter } from "../../colorBlindContext"; // Corrected import path
 import "./ScheduleAddModifyPage.css";
 import { getWeekdayName } from "../../helper functions/getWeekdayName"; // Ensure this import is correct
 
@@ -44,6 +44,7 @@ const ScheduleAddModifyPage: React.FC = () => {
   const [deleteScheduleId, setDeleteScheduleId] = useState<number>(-1);
   const [showToast, setShowToast] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
+  const { filter } = useColorblindFilter(); // Use the filter from the context
 
   useEffect(() => {
     loadSchedule(selectedDay);
@@ -110,7 +111,7 @@ const ScheduleAddModifyPage: React.FC = () => {
   const timePadding = (value: number) => (value < 10 ? `0${value}` : value);
 
   return (
-    <IonPage>
+    <IonPage className={filter}> {/* Apply the filter class */}
       <IonHeader>
         <IonToolbar color="primary">
           <IonTitle className="ion-text-center title">Your Schedule</IonTitle>

@@ -1,4 +1,4 @@
-
+import React from 'react';
 import {
   IonCard,
   IonContent,
@@ -16,18 +16,16 @@ import {
   IonSelect,
   IonSelectOption,
 } from '@ionic/react';
-
-import { timeOutline, calendarOutline, calendar } from 'ionicons/icons'; 
-import { useState } from 'react';
+import { timeOutline, calendarOutline } from 'ionicons/icons';
+import { useColorblindFilter } from '../colorBlindContext'; // Import the colorblind context
 import './SchedulePage.css';
 import calendarImage from '../../../Adobe Express - file.png'; // Adjust the path to your image
 
 const SchedulePage: React.FC = () => {
-  const [filter, setFilter] = useState<string>(''); 
+  const { filter } = useColorblindFilter(); // Use the filter from the context
 
   return (
-
-    <IonPage className={filter}> {}
+    <IonPage className={filter}> {/* Apply the filter class */}
       <IonHeader>
         <IonToolbar color="primary">
           <IonTitle className="ion-text-center title">
@@ -39,51 +37,34 @@ const SchedulePage: React.FC = () => {
         {/* Large Schedule Icon */}
         <div className="center-icon-container">
           <img src={calendarImage} alt="Calendar" className="center-icon" />
-
-        {/* Filter Selector */}
-        <IonSelect
-          value={filter}
-          placeholder="Select Colorblind Filter"
-          onIonChange={(e) => setFilter(e.detail.value)}
-          className="filter-selector"
-        >
-          <IonSelectOption value="">None</IonSelectOption>
-          <IonSelectOption value="protanopia-filter">Protanopia</IonSelectOption>
-          <IonSelectOption value="deuteranopia-filter">Deuteranopia</IonSelectOption>
-          <IonSelectOption value="tritanopia-filter">Tritanopia</IonSelectOption>
-          <IonSelectOption value="achromatopsia-filter">Achromatopsia</IonSelectOption>
-        </IonSelect>
-
-      
+        </div>
 
         {/* Set My Free Times and View Schedule Labels */}
         <IonGrid className="center-grid">
+          <IonRow className="label-row">
+            <IonCol size="6">
+              <IonItem lines="none" className="card-item">
+                <IonRouterLink routerLink="/ScheduleAddModifyPage" className="card-link">
+                  <div className="card-item-button">
+                    <IonIcon icon={timeOutline} slot="start" />
+                    <IonLabel className="card-label">Set My Free Times</IonLabel>
+                  </div>
+                </IonRouterLink>
+              </IonItem>
+            </IonCol>
 
-  <IonRow className="label-row">
-    <IonCol size="6">
-      <IonItem lines="none" className="card-item">
-        <IonRouterLink routerLink="/ScheduleAddModifyPage" className="card-link">
-          <div className="card-item-button">
-            <IonIcon icon={timeOutline} slot="start" />
-            <IonLabel className="card-label">Set My Free Times</IonLabel>
-          </div>
-        </IonRouterLink>
-      </IonItem>
-    </IonCol>
-
-    <IonCol size="6">
-      <IonItem lines="none" className="card-item">
-        <IonRouterLink routerLink="/ScheduleViewPage" className="card-link">
-          <div className="card-item-button">
-            <IonIcon icon={calendarOutline} slot="start" />
-            <IonLabel className="card-label">View Schedule</IonLabel>
-          </div>
-        </IonRouterLink>
-      </IonItem>
-    </IonCol>
-  </IonRow>
-</IonGrid>
-
+            <IonCol size="6">
+              <IonItem lines="none" className="card-item">
+                <IonRouterLink routerLink="/ScheduleViewPage" className="card-link">
+                  <div className="card-item-button">
+                    <IonIcon icon={calendarOutline} slot="start" />
+                    <IonLabel className="card-label">View Schedule</IonLabel>
+                  </div>
+                </IonRouterLink>
+              </IonItem>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
     </IonPage>
   );
