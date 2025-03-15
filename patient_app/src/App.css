@@ -60,3 +60,42 @@
   bottom: 0;
   top: auto;
 }
+
+    background-color: #ffffff; /* Light background */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 8px 0; /* Add padding */
+    border-bottom: 1px solid #e0e0e0; /* Add a border */
+  }
+  
+  /* Custom Tab Button */
+  .custom-tab-button {
+    --background: transparent; /* Transparent background */
+    --color: #6c9a8b; /* Default text color */
+    --color-selected: #66d6c3; /* Active text color */
+    --padding-start: 16px;
+    --padding-end: 16px;
+    transition: all 0.3s ease; /* Smooth transition */
+  }
+  
+  .custom-tab-button:hover {
+    --background: rgba(108, 154, 139, 0.1); /* Light hover background */
+    --color: #66d6c3; /* Hover text color */
+  }
+  
+  .custom-tab-button.tab-selected {
+    --background: rgba(108, 154, 139, 0.1); /* Active background */
+    --color: #66d6c3; /* Active text color */
+  }
+  
+  /* Tab Icon */
+  .tab-icon {
+    font-size: 24px; /* Icon size */
+    margin-bottom: 4px; /* Space between icon and label */
+  }
+  
+  /* Tab Label */
+  .tab-label {
+    font-size: 14px; /* Label size */
+    font-weight: 500; /* Medium font weight */
+    text-transform: uppercase; /* Uppercase text */
+  }

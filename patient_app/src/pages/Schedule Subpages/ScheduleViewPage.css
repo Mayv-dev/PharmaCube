@@ -16,6 +16,7 @@
 .center-icon {
   font-size: 64px;
   color: var(--ion-color-primary); /* Use Ionic variable */
+
 }
 
 .center-grid {
@@ -39,7 +40,7 @@
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  color: var(--ion-color-primary); /* Use Ionic variable */
+  color: var(--ion-color-primary);
 }
 
 .card-label {

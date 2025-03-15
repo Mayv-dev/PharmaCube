@@ -8,7 +8,10 @@
 }
 
 .ion-text-center.title {
-  font-size: 1.5rem; /* Adjusted for better readability */
+  
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--ion-color-primary-contrast);
 }
 
 /* Content Background */
@@ -16,6 +19,7 @@
   background: var(--ion-background-color); /* Use Ionic variable */
   padding: 20px;
   position: relative; /* For positioning the filter selector */
+
 }
 
 /* Center Grid */
@@ -98,7 +102,50 @@
 
 .filter-selector:hover {
   background: var(--ion-color-primary-shade); /* Use Ionic variable */
+  font-size: 1.8rem; /* Adjust font size to fit better */
+  font-weight: 500;
+  color: var(--ion-color-primary);
+  cursor: pointer;
+  transition: color 0.3s ease;
+  display: inline-block; /* Ensure label takes the width of the text */
 }
+
+.card-label:hover {
+  color: var(--ion-color-primary-shade);
+}
+
+/* Adjusting Icon size to be more balanced */
+.card-item IonIcon {
+  font-size: 2.5rem; /* Adjust icon size to be smaller */
+}
+
+/* Filter Selector */
+.filter-selector {
+  margin: 16px auto;
+  max-width: 300px;
+  background: white;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+/* Center the Colorblind Button */
+.filter-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px auto;
+  max-width: 300px;
+  background: var(--ion-color-primary);
+  color: white;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+
 
 /* Style the dropdown arrow */
 .filter-selector::part(icon) {
@@ -142,6 +189,18 @@
 .card-item-button ion-icon {
   margin-right: 10px; /* Space between icon and label */
   font-size: 4rem; /* Adjusted for better balance */
+  width: 100%; /* Ensures it fills the width of its container */
+  margin: 8px 0; /* Adds space between items */
+}
+
+.card-item-button:hover {
+  background: var(--ion-color-primary-shade);
+}
+
+/* Card Item Button with Icon */
+.card-item-button IonIcon {
+  margin-right: 8px; /* Space between icon and label */
+  font-size: 2.5rem; /* Icon size */
 }
 
 /* Ensure the label text color stays white */
@@ -207,6 +266,23 @@
   .filter-selector {
     font-size: 2rem;
     padding: 8px 32px;
+=======
+  color: white !important; /* Force text color to stay white */
+}
+
+.card-item-button:hover .card-label {
+  color: white !important; /* Ensure text color stays white on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .center-icon {
+    font-size: 6rem; /* Smaller icon for mobile */
+    margin-bottom: 12px; /* Reduce spacing below icon */
+  }
+
+  .card-label {
+    font-size: 1.75rem; /* Smaller font size for mobile */
   }
 }
 
@@ -233,4 +309,4 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-}
+  }
