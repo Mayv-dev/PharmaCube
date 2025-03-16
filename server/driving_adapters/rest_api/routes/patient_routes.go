@@ -20,4 +20,9 @@ func PatientRoutes(router *gin.Engine) {
 	router.GET("/patient/:patient_id/scheduledregime/:scheduled_regime_id", requesthandlers.GetPatientScheduledRegimeItem)
 
 	router.GET("/patient/:patient_id/history", requesthandlers.GetPatientHistroy)
+
+	router.POST("patient", requesthandlers.AddPatientAccount)
+	router.GET("patient/:patient_id", requesthandlers.GetPatientAccount)
+	router.PUT("patient/:patient_id", requesthandlers.ModifyPatientAccount)
+	router.DELETE("patient/:patient_id", requesthandlers.RemovePatientAccount)
 }
