@@ -91,7 +91,7 @@ const UpperToolbar: React.FC = () => {
 					<IonIcon icon={menu} aria-hidden="true" />
 					<IonLabel>Menu</IonLabel>
 				</IonTabButton>
-				<IonTabButton href="/notifications" tab="notifications" >
+				<IonTabButton tab="notifications" onClick={openNotificationMenu}>
 					<IonIcon icon={notifications} aria-hidden="true" />
 					<IonLabel>Notifications</IonLabel>
 				</IonTabButton>
@@ -100,6 +100,7 @@ const UpperToolbar: React.FC = () => {
 			<IonMenu menuId="hamburger-menu" contentId="main-content">
 				<IonContent>
 					<div className="hamburger-menu">
+					<IonButton onClick={() => menuController.close()}>Close Menu</IonButton>
 						<div className='pharmacistMenuGreeting'>
 							<img width="13%" src='https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'></img>
 							<p>Hello, Henry!</p>
@@ -114,6 +115,7 @@ const UpperToolbar: React.FC = () => {
 
 			<IonMenu side="end" className="notificationMenu" menuId="notifications" contentId="main-content">
 				<IonContent className="ion-padding">
+					<IonButton onClick={() => menuController.close()}>Close Menu</IonButton>
 					<div className='rowOfSelects'>
 						<IonItem>
 							<IonSelect label="Filter By:">
