@@ -59,7 +59,6 @@ const NotificationPage: React.FC = () => {
     <IonPage className={filter}> {/* Apply the filter class */}
       <IonHeader>
         <IonToolbar>
-          <IonTitle className="center">Notifications</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen className="wrapper ion-padding">

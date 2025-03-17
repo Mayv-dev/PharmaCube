@@ -17,27 +17,14 @@ import { useSettings } from "../composables/SettingsContext";
 import "./SettingsPage.css";
 
 const SettingsPage: React.FC = () => {
-  const [darkMode, setDarkMode] = useState<boolean>(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState<boolean>(true);
-  const [theme, setTheme] = useState<string>("light");
   const [fontSize, setFontSize] = useState<string>("medium");
   const [language, setLanguage] = useState<string>("en");
-  const [accentColor, setAccentColor] = useState<string>("default");
+  const [accentColor, setAccentColor] = useState<string>("#66d6c3"); // Default accent color
   const [appLayout, setAppLayout] = useState<string>("list");
 
-  const { filter, setFilter } = useColorblindFilter();
+  const { filter, setFilter, isDarkMode, toggleDarkMode } = useColorblindFilter();
   const { tabBarPosition, setTabBarPosition } = useSettings();
-
-  const toggleDarkMode = (enabled: boolean) => {
-    setDarkMode(enabled);
-    document.body.classList.toggle("dark", enabled);
-    document.body.setAttribute("color-theme", enabled ? "dark" : "light");
-  };
-
-  const handleThemeChange = (selectedTheme: string) => {
-    setTheme(selectedTheme);
-    toggleDarkMode(selectedTheme === "dark");
-  };
 
   const handleFontSizeChange = (size: string) => {
     setFontSize(size);
@@ -50,7 +37,29 @@ const SettingsPage: React.FC = () => {
 
   const handleAccentColorChange = (color: string) => {
     setAccentColor(color);
+
+    // Update the primary color variable
     document.documentElement.style.setProperty("--ion-color-primary", color);
+
+    // Calculate contrast color (white or black) based on the brightness of the accent color
+    const brightness = Math.round(
+      (parseInt(color.slice(1, 3), 16) * 299 +
+        parseInt(color.slice(3, 5), 16) * 587 +
+        parseInt(color.slice(5, 7), 16) * 114) /
+        1000
+    );
+    const contrastColor = brightness > 125 ? "#000000" : "#ffffff";
+    document.documentElement.style.setProperty("--ion-color-primary-contrast", contrastColor);
+
+    // Update shade and tint (optional, based on your design)
+    const shade = `#${(parseInt(color.slice(1, 3), 16) - 20).toString(16)}${(
+      parseInt(color.slice(3, 5), 16) - 20
+    ).toString(16)}${(parseInt(color.slice(5, 7), 16) - 20).toString(16)}`;
+    const tint = `#${(parseInt(color.slice(1, 3), 16) + 20).toString(16)}${(
+      parseInt(color.slice(3, 5), 16) + 20
+    ).toString(16)}${(parseInt(color.slice(5, 7), 16) + 20).toString(16)}`;
+    document.documentElement.style.setProperty("--ion-color-primary-shade", shade);
+    document.documentElement.style.setProperty("--ion-color-primary-tint", tint);
   };
 
   const handleAppLayoutChange = (layout: string) => {
@@ -60,9 +69,7 @@ const SettingsPage: React.FC = () => {
   return (
     <IonPage className={filter}>
       <IonHeader>
-        <IonToolbar color="primary">
-          <IonTitle>Settings</IonTitle>
-        </IonToolbar>
+        
       </IonHeader>
 
       <IonContent className="settings-container">
@@ -70,15 +77,11 @@ const SettingsPage: React.FC = () => {
           <h2 className="settings-title">Settings</h2>
           <IonList>
             <IonItem>
-              <IonLabel>Theme</IonLabel>
-              <IonSelect
-                value={theme}
-                placeholder="Select Theme"
-                onIonChange={(e) => handleThemeChange(e.detail.value)}
-              >
-                <IonSelectOption value="light">Light</IonSelectOption>
-                <IonSelectOption value="dark">Dark</IonSelectOption>
-              </IonSelect>
+              <IonLabel>Enable Dark Mode</IonLabel>
+              <IonToggle
+                checked={isDarkMode}
+                onIonChange={toggleDarkMode}
+              />
             </IonItem>
 
             <IonItem>
@@ -143,20 +146,20 @@ const SettingsPage: React.FC = () => {
             </IonItem>
 
             <IonItem>
-              <IonLabel>Theme</IonLabel>
+              <IonLabel>Accent Color</IonLabel>
               <IonSelect
                 value={accentColor}
                 placeholder="Select Accent Color"
                 onIonChange={(e) => handleAccentColorChange(e.detail.value)}
               >
-                <IonSelectOption value="default">Default</IonSelectOption>
+                <IonSelectOption value="#66d6c3">Default (Teal)</IonSelectOption>
                 <IonSelectOption value="#3880ff">Blue</IonSelectOption>
                 <IonSelectOption value="#ff5722">Orange</IonSelectOption>
                 <IonSelectOption value="#4caf50">Green</IonSelectOption>
+                <IonSelectOption value="#9c27b0">Purple</IonSelectOption>
+                <IonSelectOption value="#f44336">Red</IonSelectOption>
               </IonSelect>
             </IonItem>
-
-            
           </IonList>
         </div>
       </IonContent>

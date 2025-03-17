@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
@@ -10,9 +11,6 @@ import {
   IonContent,
   IonInput,
   IonButton,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   setupIonicReact,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
@@ -24,28 +22,22 @@ import NotificationPage from './pages/NotificationPage';
 import MedicationPage from './pages/MedicationsPage';
 import SettingsPage from './pages/SettingsPage';
 import { ColorblindProvider } from './colorBlindContext';
-import { SettingsProvider } from './composables/SettingsContext';
-import { useEffect, useState } from 'react';
+import { SettingsProvider, useSettings } from './composables/SettingsContext';
 import { getItem, setItem, removeItem, registerUser, verifyUser } from './utils/storage';
 import './App.css';
-import './loginAndRegister.css'; // Import the new CSS file
-
-/* Core CSS */
+import './loginAndRegister.css';
 import '@ionic/react/css/core.css';
 import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';
-
-/* Optional CSS utils */
 import '@ionic/react/css/padding.css';
 import '@ionic/react/css/float-elements.css';
 import '@ionic/react/css/text-alignment.css';
 import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
-
-/* Theme variables */
 import './theme/variables.css';
+import CustomHeader from './components/CustomHeader'; // Import the CustomHeader component
 
 setupIonicReact();
 
@@ -151,6 +143,7 @@ const App: React.FC = () => {
         <IonApp>
           <IonReactRouter>
             <IonTabs>
+              <CustomHeader /> {/* Add the CustomHeader here */}
               <IonRouterOutlet>
                 <Route exact path="/SchedulePage">
                   <SchedulePage />
@@ -199,7 +192,7 @@ const App: React.FC = () => {
             onClick={handleLogout}
             style={{
               position: 'fixed',
-              bottom: 20,
+              bottom: 80, // Adjusted to avoid overlapping with the tab bar
               left: '50%',
               transform: 'translateX(-50%)',
               padding: '10px 20px',

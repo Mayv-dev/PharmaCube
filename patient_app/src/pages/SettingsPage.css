@@ -1,15 +1,3 @@
-:root {
-  --ion-color-primary: #3880ff; /* Default accent color */
-}
-body.dark {
-  --ion-background-color: #121212;
-  --ion-text-color: #ffffff;
-  --ion-toolbar-background: #1f1f1f;
-  --ion-toolbar-color: #ffffff;
-  --ion-item-background: #1f1f1f;
-  --ion-item-color: #ffffff;
-}
-
 .custom-tab-bar[slot="top"] {
   top: 0;
   bottom: auto;

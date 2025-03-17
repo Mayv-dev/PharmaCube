@@ -1,0 +1,51 @@
+
+  
+  /* CustomHeader.css */
+
+/* Header styling */
+ion-header {
+    background: linear-gradient(135deg, #99f7db, #1e90b3); /* Gradient background */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Light border for depth */
+    height: 80px; /* Increase the height of the header */
+    display: flex;
+    align-items: center; /* Vertically center the content */
+    position: static; /* Make the header part of the document flow */
+    z-index: 1; /* Ensure it stays above other content */
+  }
+  
+  /* Toolbar styling */
+  ion-toolbar {
+    --background: transparent; /* Make the toolbar transparent to show the gradient */
+    --color: white; /* White text for contrast */
+    padding: 0 24px; /* Increase padding for a larger toolbar */
+    height: 100%; /* Make the toolbar fill the header height */
+    display: flex;
+    align-items: center; /* Vertically center the content */
+  }
+  
+  /* Title styling */
+  ion-title {
+    font-size: 2rem; /* Even larger font size */
+    font-weight: 600; /* Semi-bold font */
+    letter-spacing: 0.5px; /* Slight letter spacing */
+    text-align: center; /* Center the title */
+    transition: opacity 0.3s ease; /* Smooth transition for title changes */
+    flex: 1; /* Allow the title to take up remaining space */
+  }
+  
+  /* Hover effect for toolbar (optional) */
+  ion-toolbar:hover {
+    opacity: 0.9; /* Slight fade on hover */
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    ion-header {
+      height: 70px; /* Slightly smaller height for mobile */
+    }
+  
+    ion-title {
+      font-size: 1.5rem; /* Smaller font size for mobile */
+    }
+  }

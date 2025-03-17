@@ -114,7 +114,6 @@ const ScheduleAddModifyPage: React.FC = () => {
     <IonPage className={filter}> {/* Apply the filter class */}
       <IonHeader>
         <IonToolbar color="primary">
-          <IonTitle className="ion-text-center title">Your Schedule</IonTitle>
         </IonToolbar>
       </IonHeader>
 

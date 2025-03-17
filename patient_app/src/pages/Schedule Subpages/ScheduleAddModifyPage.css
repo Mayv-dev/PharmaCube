@@ -35,17 +35,16 @@
 }
 
 .selected-day .day-button {
-  background-color: var(--ion-color-primary-shade); /* Use Ionic variable */
-  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
+  background-color: var(--ion-color-primary-shade); 
+  color: var(--ion-color-primary-contrast);
 }
 
 
 
-/* Schedule list */
 .schedule-list {
   font-size: 40px;
   border-radius: 40px;
-  color: var(--ion-text-color); /* Use Ionic variable */
+  color: var(--ion-text-color);
 }
 
 .schedule-item {

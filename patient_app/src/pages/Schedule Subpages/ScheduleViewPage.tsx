@@ -27,9 +27,7 @@ const SchedulePage: React.FC = () => {
     <IonPage className={filter}> {}
       <IonHeader>
         <IonToolbar>
-          <IonTitle className="ion-text-center title">
-            PharmaCube Schedule
-          </IonTitle>
+          
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen className="ion-padding content">
