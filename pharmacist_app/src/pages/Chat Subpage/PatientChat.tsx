@@ -16,6 +16,7 @@ import '../../styles/Chat Subpage/PatientChat.css';
 import LowerToolbar from '../../components/LowerToolbar';
 import { RegimeItem } from 'api types/types';
 import RegimeItemContainer from '../../components/Regime Components/RegimeItemContainer';
+import ChatBubble from '../../components/Chat Components/ChatBubble';
 
 // type ContainerProps = {
 // 	passModifyDataToApp:any
@@ -39,6 +40,7 @@ const PatientChat: React.FC =  () => {
 					</IonButton>
 				</IonRouterLink>
 				<p>Selected patient: {patientName}</p>
+				<ChatBubble passedMessage='Hello world, paracetamol is an amazing pharmaceutical drug!' passedDateTimeOfMessage='2025-03-17T15:40:57+00:00'></ChatBubble>
 				<div className='chatColumn'>
 					<div className='chatRow'>
 						<div className='chatQuestion'>Can I drink alcohol while on sertraline?</div>
