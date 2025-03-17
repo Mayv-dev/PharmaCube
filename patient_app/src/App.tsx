@@ -10,11 +10,16 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { calendarOutline, notificationsOutline } from 'ionicons/icons';
+import { calendarOutline, medical, notificationsOutline, settingsOutline } from 'ionicons/icons';
 import SchedulePage from './pages/SchedulePage';
 import ScheduleViewPage from './pages/Schedule Subpages/ScheduleViewPage';
 import ScheduleAddModifyPage from './pages/Schedule Subpages/ScheduleAddModifyPage';
 import NotificationPage from './pages/NotificationPage';
+import MedicationPage from './pages/MedicationsPage';
+import SettingsPage from './pages/SettingsPage';
+import { ColorblindProvider, useColorblindFilter } from './colorBlindContext';
+import { SettingsProvider, useSettings } from './composables/SettingsContext';
+import './App.css';
 import { useEffect, useState } from 'react';
 import { getItem, setItem, removeItem, registerUser, verifyUser } from './utils/storage';
 
@@ -46,11 +51,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const checkUserSession = async () => {
       const storedUser = await getItem('user');
-      if (storedUser) {
-        setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
-      }
+      setIsAuthenticated(storedUser ? true : false);
     };
     checkUserSession();
   }, []);
@@ -60,7 +61,7 @@ const App: React.FC = () => {
     alert('Account registered successfully! You can now log in.');
     setIsRegistering(false);
   };
-  
+
   const handleLogin = async () => {
     const isValid = await verifyUser(username, password);
     if (isValid) {
@@ -70,7 +71,6 @@ const App: React.FC = () => {
       alert('Invalid username or password');
     }
   };
-  
 
   const handleLogout = async () => {
     await removeItem('user');
@@ -105,56 +105,75 @@ const App: React.FC = () => {
   }
 
   return (
-    <IonApp>
-      <IonReactRouter>
-        <IonTabs>
-          <IonRouterOutlet>
-            <Route exact path="/SchedulePage">
-              <SchedulePage />
-            </Route>
-            <Route exact path="/ScheduleViewPage">
-              <ScheduleViewPage />
-            </Route>
-            <Route path="/ScheduleAddModifyPage">
-              <ScheduleAddModifyPage />
-            </Route>
-            <Route path="/NotificationsPage">
-              <NotificationPage />
-            </Route>
-            <Route exact path="/">
-              <Redirect to="/SchedulePage" />
-            </Route>
-          </IonRouterOutlet>
-          <IonTabBar slot="top">
-            <IonTabButton tab="SchedulePage" href="/SchedulePage">
-              <IonIcon icon={calendarOutline} />
-              <IonLabel>Schedule</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="NotificationsPage" href="/NotificationsPage">
-              <IonIcon icon={notificationsOutline} />
-              <IonLabel>Notifications</IonLabel>
-            </IonTabButton>
-          </IonTabBar>
-        </IonTabs>
-      </IonReactRouter>
-      <button 
-        onClick={handleLogout} 
-        style={{ 
-          position: 'fixed', 
-          bottom: 20, 
-          left: '50%', 
-          transform: 'translateX(-50%)', 
-          padding: '10px 20px', 
-          fontSize: '16px', 
-          borderRadius: '5px', 
-          backgroundColor: '#d9534f', 
-          color: 'white', 
-          border: 'none', 
-          cursor: 'pointer' 
-        }}>
-        Logout
-      </button>
-    </IonApp>
+    <ColorblindProvider>
+      <SettingsProvider>
+        <IonApp>
+          <IonReactRouter>
+            <IonTabs>
+              <IonRouterOutlet>
+                <Route exact path="/SchedulePage">
+                  <SchedulePage />
+                </Route>
+                <Route exact path="/ScheduleViewPage">
+                  <ScheduleViewPage />
+                </Route>
+                <Route path="/ScheduleAddModifyPage">
+                  <ScheduleAddModifyPage />
+                </Route>
+                <Route path="/NotificationsPage">
+                  <NotificationPage />
+                </Route>
+                <Route path="/MedicationsPage">
+                  <MedicationPage />
+                </Route>
+                <Route path="/SettingsPage">
+                  <SettingsPage />
+                </Route>
+                <Route exact path="/">
+                  <Redirect to="/SchedulePage" />
+                </Route>
+              </IonRouterOutlet>
+
+              <IonTabBar slot="bottom">
+                <IonTabButton tab="SchedulePage" href="/SchedulePage">
+                  <IonIcon icon={calendarOutline} />
+                  <IonLabel>Schedule</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="NotificationsPage" href="/NotificationsPage">
+                  <IonIcon icon={notificationsOutline} />
+                  <IonLabel>Notifications</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="MedicationsPage" href="/MedicationsPage">
+                  <IonIcon icon={medical} />
+                  <IonLabel>Medication</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="SettingsPage" href="/SettingsPage">
+                  <IonIcon icon={settingsOutline} />
+                  <IonLabel>Settings</IonLabel>
+                </IonTabButton>
+              </IonTabBar>
+            </IonTabs>
+          </IonReactRouter>
+          <button
+            onClick={handleLogout}
+            style={{
+              position: 'fixed',
+              bottom: 20,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              padding: '10px 20px',
+              fontSize: '16px',
+              borderRadius: '5px',
+              backgroundColor: '#d9534f',
+              color: 'white',
+              border: 'none',
+              cursor: 'pointer'
+            }}>
+            Logout
+          </button>
+        </IonApp>
+      </SettingsProvider>
+    </ColorblindProvider>
   );
 };
 

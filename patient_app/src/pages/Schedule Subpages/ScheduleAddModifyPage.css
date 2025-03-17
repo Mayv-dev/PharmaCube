@@ -1,8 +1,8 @@
 /* General Styles */
-
 .title {
-  font-size: 34px;
+  font-size: 50px;
   font-weight: bold;
+  color: var(--ion-text-color); /* Use Ionic variable */
 }
 
 /* Day selection buttons */
@@ -10,28 +10,42 @@
   display: flex;
   justify-content: center;
   margin-bottom: 30px;
+  border-radius: 30px;
 }
 
 .day-col {
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 30px;
 }
 
 .day-button {
   font-size: 28px;
   width: 100%;
   height: 50px;
+  border-radius: 30px;
+  background: var(--ion-color-primary); /* Use Ionic variable */
+  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth hover effect */
 }
 
-.selected-day {
-  background-color: var(--ion-color-primary);
+.day-button:hover {
+  transform: scale(1.2); /* Slightly enlarge on hover */
 }
+
+.selected-day .day-button {
+  background-color: var(--ion-color-primary-shade); /* Use Ionic variable */
+  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
+}
+
+
 
 /* Schedule list */
 .schedule-list {
-  margin-top: 35px;
   font-size: 40px;
+  border-radius: 40px;
+  color: var(--ion-text-color); /* Use Ionic variable */
 }
 
 .schedule-item {
@@ -40,7 +54,73 @@
   --padding-top: 12px;
   --padding-bottom: 12px;
   margin-bottom: 36px;
+  border-radius: 40px;
+ 
 }
+
+.time-icon {
+  margin-right: 42px;
+  font-size: 30px; /* Increased icon size */
+  border-radius: 30px;
+  color: var(--ion-text-color); /* Use Ionic variable */
+}
+
+.time-input:focus {
+  outline: none;
+  border-color: var(--ion-color-primary); /* Use Ionic variable */
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+  border-radius: 40px;
+}
+
+.ion-padding content {
+  border-radius: 40px;
+}
+
+/* Buttons */
+.edit-button,
+.delete-button,
+.confirm-edit-button,
+.cancel-edit-button {
+  font-size: 35px; /* Increased icon size */
+  --padding-start: 32px;
+  --padding-end: 32px;
+  border-radius: 40px;
+  background: var(--ion-color-primary); /* Use Ionic variable */
+  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
+}
+
+/* Toast */
+ion-toast {
+  --color: var(--ion-color-primary-contrast); /* Use Ionic variable */
+  --background: var(--ion-color-success); /* Use Ionic variable */
+}
+
+/* Target the ion-icon inside schedule-label */
+.schedule-label ion-icon.time-icon {
+  font-size: 62px; /* Adjust this value to make the icon larger */
+  margin-right: 62px;
+  border-radius: 30px;
+  color: var(--ion-text-color); /* Use Ionic variable */
+}
+
+/* Override default IonLabel styles */
+ion-label.schedule-label {
+  font-size: 30px !important;
+  border-radius: 40px;
+  color: var(--ion-text-color); /* Use Ionic variable */
+}
+
+/* Day button hover and selected styles */
+.day-button:hover {
+  background-color: var(--ion-color-primary-shade); /* Use Ionic variable */
+  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
+}
+
+.selected-day .day-button {
+  background-color: var(--ion-color-primary-shade); /* Use Ionic variable */
+  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
+}
+
 
 
 

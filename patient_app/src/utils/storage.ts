@@ -1,10 +1,13 @@
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';
 import bcrypt from 'bcryptjs';
 
 const storage = new Storage();
-storage.create();
-storage.get('users').then(console.log);
 
+const initStorage = async () => {
+  await storage.create();
+};
+
+initStorage(); // Initialize storage before usage
 
 export const setItem = async (key: string, value: any) => {
   try {
@@ -31,7 +34,7 @@ export const removeItem = async (key: string) => {
   }
 };
 
-//  Hash and store user 
+// Hash and store user
 export const registerUser = async (username: string, password: string) => {
   try {
     const salt = await bcrypt.genSalt(10);
