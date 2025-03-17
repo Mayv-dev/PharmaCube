@@ -17,6 +17,7 @@ import LowerToolbar from '../../components/LowerToolbar';
 import { RegimeItem } from 'api types/types';
 import RegimeItemContainer from '../../components/Regime Components/RegimeItemContainer';
 import ChatBubble from '../../components/Chat Components/ChatBubble';
+import ChatTextbox from '../../components/Chat Components/ChatTextbox';
 
 // type ContainerProps = {
 // 	passModifyDataToApp:any
@@ -29,6 +30,10 @@ const PatientChat: React.FC =  () => {
 	const [patientName, setPatientName] = useState('Unselected');
 
 	const [answered, setAnswered] = useState(false);
+
+	const messageSent = (message:string) => {
+		console.log(message)
+	}
 
 	return (
 		<IonPage>
@@ -55,6 +60,7 @@ const PatientChat: React.FC =  () => {
 						}
 					</div>
 				</div>
+				<ChatTextbox messageSent={messageSent}></ChatTextbox>
 			</div>
 				</IonContent>
 		</IonPage>
