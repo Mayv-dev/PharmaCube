@@ -16,6 +16,10 @@ const History: React.FC = () => {
 	const [dateList, setDateList] = useState<any[]>([])
 
 	const [patientHistoricalDosesList, setPatientHistoricalDosesList] = useState<PatientAdherenceRecord[]>([])
+
+	const [patientId, setPatientId] = useState<number>(0)
+	const [patientList, setPatientList] = useState<any[]>([])
+
 	
 	const getDateRange = (from: CalendarDate, to: CalendarDate):any[] =>  {
 		let i = from.day
@@ -31,7 +35,7 @@ const History: React.FC = () => {
 	const getHistoryFromServer = async () => {
 		try {
 		  const { data, status } = await axios.get(
-			`http://localhost:8080/patient/1/history`,
+			`http://localhost:8080/patient/${patientId}/history`,
 			{
 			  headers: {
 				Accept: 'application/json'
@@ -56,21 +60,49 @@ const History: React.FC = () => {
 		}
 	  };
 
-	useEffect(() => {
+	  const getMockPatientList = async () => {
+		try {
+		  const { data, status } = await axios.get(
+			`http://demo3553220.mockable.io/patients`,
+			{
+			  headers: {
+				Accept: 'application/json'
+			  },
+			},
+		  );
+	
+		  return data;
+	
+		} catch (error) {
+		  if (axios.isAxiosError(error)) {
+			console.log('error message: ', error.message);
+			return error.message;
+		  } else {
+			console.log('unexpected error: ', error);
+			return 'An unexpected error occurred';
+		  }
+		}
+	  };
+
+	  useEffect(() => {
 		setDateList(getDateRange({ year: date.year, month: date.month, day: 1 }, { year: date.year, month: date.month, day: numberOfDaysInMonth(date)})) 
-		getHistoryFromServer().then(setPatientHistoricalDosesList)
+		getMockPatientList().then(setPatientList)
 	},[]);
+
+	useEffect(() => {
+		getHistoryFromServer().then(setPatientHistoricalDosesList)
+	},[patientId]);
 
   return(
   <IonPage>
 	<IonContent className="ion-padding">
 		<div className='webBody'>
 			<IonItem>
-				<IonSelect label='Choose a patient'>
-					<IonSelectOption></IonSelectOption>
+				<IonSelect value={patientId} onIonChange={e => setPatientId(e.target.value)} label='Choose a patient'>
+					{patientList.map(patientInList => <IonSelectOption value={patientInList.id}>{patientInList.name}</IonSelectOption>)}
 				</IonSelect>
 			</IonItem>
-			<Calendar dateNow={dateNow} dateList={dateList} history={patientHistoricalDosesList}></Calendar>
+			{patientId == 0 ? <p>Select a patient to view their history</p> : <Calendar dateNow={dateNow} dateList={dateList} history={patientHistoricalDosesList}></Calendar>}
 		</div>
 	</IonContent>
   </IonPage>
