@@ -43,3 +43,9 @@ export type PatientAdherenceRecord = {
     was_taken: boolean;
     time_period: number;
 }
+
+export type Message = {
+	sender_id:number;
+	time_sent:string;
+	message_body:string;
+}

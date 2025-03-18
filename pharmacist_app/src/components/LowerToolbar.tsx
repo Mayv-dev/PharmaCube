@@ -4,7 +4,7 @@ import {
 	IonTabBar,
 	IonTabButton
 } from '@ionic/react';
-import { medkit, chatbubbleOutline } from 'ionicons/icons';
+import { medkit, chatbubbleOutline, calendarOutline } from 'ionicons/icons';
 import '../styles/LowerToolbar.css';
 
 const LowerToolbar: React.FC = () => {
@@ -13,6 +13,10 @@ const LowerToolbar: React.FC = () => {
 			<IonTabButton tab="regimes" href="/regimes">
 				<IonIcon icon={medkit} />
 				<IonLabel>Regimes</IonLabel>
+			</IonTabButton>
+			<IonTabButton tab="history" href="/history">
+				<IonIcon icon={calendarOutline} />
+				<IonLabel>History</IonLabel>
 			</IonTabButton>
 			<IonTabButton tab="chat" href="/chat">
 				<IonIcon icon={chatbubbleOutline} />

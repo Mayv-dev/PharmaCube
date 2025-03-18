@@ -84,6 +84,10 @@ const App: React.FC = () => {
               <Notifications />
             </Route>
 
+            <Route exact path="/history">
+              <History />
+            </Route>
+
             <Route exact path="/menu">
               <Menu />
             </Route>

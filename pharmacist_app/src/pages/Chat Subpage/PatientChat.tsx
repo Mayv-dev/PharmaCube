@@ -19,6 +19,8 @@ import RegimeItemContainer from '../../components/Regime Components/RegimeItemCo
 import ChatBubble from '../../components/Chat Components/ChatBubble';
 import ChatTextbox from '../../components/Chat Components/ChatTextbox';
 
+import { Message } from 'api types/types';
+
 // type ContainerProps = {
 // 	passModifyDataToApp:any
 // }
@@ -28,8 +30,10 @@ const PatientChat: React.FC =  () => {
 
 	const [patientId, setPatientId] = useState<number>(1);
 	const [patientName, setPatientName] = useState('Unselected');
+	const [patientMessageList, setPatientMessageList] = useState<Message[]>([]);
 
 	const [answered, setAnswered] = useState(false);
+
 
 	const messageSent = (message:string) => {
 		console.log(message)
