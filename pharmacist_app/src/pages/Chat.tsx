@@ -38,8 +38,8 @@ const Users: React.FC = () => {
   return (
     <IonPage>
 
-      <IonContent>
-        <div className='formBody'>
+      <IonContent className="ion-padding">
+        <div className='webBody'>
           <IonSearchbar
             className="search-bar"
             value={searchQuery}

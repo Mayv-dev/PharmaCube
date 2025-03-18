@@ -169,9 +169,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
   return (
     <IonPage>
       <IonContent className="ion-padding">
-
-
-        <div className='formBody'>
+        <div className='webBody'>
           {passedInfo == null ?
             <IonRouterLink routerLink='/regimes/'>
               <IonButton expand="block" className='ScheduleButtons' color="light">

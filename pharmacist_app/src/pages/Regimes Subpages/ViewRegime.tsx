@@ -100,7 +100,7 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
   return (
     <IonPage>
 			<IonContent className="ion-padding">
-			<div className='formBody'>
+			<div className='webBody'>
 				<IonRouterLink routerLink='/regimes/'>
 					<IonButton expand="block" className='ScheduleButtons' color="light">
 						Back to Regime Home
@@ -129,8 +129,8 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
               <IonTitle>Confirm Submission</IonTitle>
             </IonToolbar>
           </IonHeader>
-          <IonContent className="ion-padding">
-		  <div className='formBody'>
+          <IonContent>
+		  <div className='webBody'>
             <p>Are you sure you wish to delete this regime?</p>
             <IonButton expand="full" color="primary" onClick={() => {
 				deleteRegimeItem()

@@ -16,7 +16,7 @@ const DeletePharmacistAccountConfirmation: React.FC<popupInfo> = ({deleteAccount
 		</IonHeader>
 		<IonContent className="ion-padding">
 			
-		<div className='formBody'>
+		<div className='webBody'>
 		<p>Are you sure you wish to delete your account?</p>
 		<IonButton expand="full" color={"danger"} onClick={() => {
 			deleteAccount()

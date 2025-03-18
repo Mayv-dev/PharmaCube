@@ -74,8 +74,8 @@ const History: React.FC = () => {
 
   return(
   <IonPage>
-	<IonContent>
-		<div className='formBody'>
+	<IonContent className="ion-padding">
+		<div className='webBody'>
 			<IonItem>
 				<IonSelect label='Choose a patient'>
 					<IonSelectOption></IonSelectOption>

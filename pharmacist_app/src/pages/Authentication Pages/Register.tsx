@@ -92,8 +92,8 @@ const Register: React.FC = () => {
 
 	return (
 		<IonPage>
-			<IonContent>
-				<div className='formBody'>
+			<IonContent className="ion-padding">
+				<div className='webBody'>
 					<div className='oroLogo'>
 						<img width="100%" src="..\ORO logo v2 bg-removed.png" />
 					</div>
