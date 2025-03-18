@@ -22,9 +22,9 @@ import {
 import { trashOutline, createOutline, checkmarkOutline, closeOutline, timeOutline } from "ionicons/icons";
 import axios from "axios";
 import { ScheduleData } from "../../api types/types";
-import { useColorblindFilter } from "../../colorBlindContext"; // Corrected import path
+import { useColorblindFilter } from "../../colorBlindContext";
 import "./ScheduleAddModifyPage.css";
-import { getWeekdayName } from "../../helper functions/getWeekdayName"; // Ensure this import is correct
+import { getWeekdayName } from "../../helper functions/getWeekdayName";
 
 const daysOfWeek = [1, 2, 3, 4, 5, 6, 7];
 const timeOfDayMap: { [key: number]: string } = {
@@ -44,7 +44,7 @@ const ScheduleAddModifyPage: React.FC = () => {
   const [deleteScheduleId, setDeleteScheduleId] = useState<number>(-1);
   const [showToast, setShowToast] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
-  const { filter } = useColorblindFilter(); // Use the filter from the context
+  const { filter } = useColorblindFilter();
 
   useEffect(() => {
     loadSchedule(selectedDay);
@@ -111,13 +111,14 @@ const ScheduleAddModifyPage: React.FC = () => {
   const timePadding = (value: number) => (value < 10 ? `0${value}` : value);
 
   return (
-    <IonPage className={filter}> {/* Apply the filter class */}
+    <IonPage className={filter}>
       <IonHeader>
-        <IonToolbar color="primary">
+        <IonToolbar>
+          <IonTitle>Add/Modify Schedule</IonTitle>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen className="ion-padding content" color="secondary">
+      <IonContent fullscreen className="ion-padding content">
         {/* Day selection buttons */}
         <IonGrid>
           <IonRow className="day-row">
@@ -186,7 +187,7 @@ const ScheduleAddModifyPage: React.FC = () => {
         {/* Delete confirmation modal */}
         <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
           <IonHeader>
-            <IonToolbar color="primary">
+            <IonToolbar>
               <IonTitle className="ion-text-center title">Confirm Deletion</IonTitle>
             </IonToolbar>
           </IonHeader>

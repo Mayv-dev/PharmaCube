@@ -104,7 +104,8 @@ const MedicationPage: React.FC = () => {
   return (
     <IonPage className={filter}>
       <IonHeader>
-        <IonToolbar color="primary">
+        <IonToolbar>
+          <IonTitle>Medications</IonTitle>
         </IonToolbar>
       </IonHeader>
 

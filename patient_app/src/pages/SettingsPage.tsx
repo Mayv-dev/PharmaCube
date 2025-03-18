@@ -19,7 +19,6 @@ import "./SettingsPage.css";
 const SettingsPage: React.FC = () => {
   const [notificationsEnabled, setNotificationsEnabled] = useState<boolean>(true);
   const [fontSize, setFontSize] = useState<string>("medium");
-  const [language, setLanguage] = useState<string>("en");
   const [accentColor, setAccentColor] = useState<string>("#66d6c3"); // Default accent color
   const [appLayout, setAppLayout] = useState<string>("list");
 
@@ -28,11 +27,12 @@ const SettingsPage: React.FC = () => {
 
   const handleFontSizeChange = (size: string) => {
     setFontSize(size);
-    document.body.style.fontSize = size === "small" ? "14px" : size === "medium" ? "16px" : "18px";
-  };
-
-  const handleLanguageChange = (lang: string) => {
-    setLanguage(lang);
+    const fontSizeMap = {
+      small: "14px",
+      medium: "16px",
+      large: "18px",
+    };
+    document.documentElement.style.setProperty("--ion-font-size", fontSizeMap[size]);
   };
 
   const handleAccentColorChange = (color: string) => {
@@ -69,7 +69,9 @@ const SettingsPage: React.FC = () => {
   return (
     <IonPage className={filter}>
       <IonHeader>
-        
+        <IonToolbar>
+          <IonTitle>Settings</IonTitle>
+        </IonToolbar>
       </IonHeader>
 
       <IonContent className="settings-container">
@@ -129,19 +131,6 @@ const SettingsPage: React.FC = () => {
                 <IonSelectOption value="small">Small</IonSelectOption>
                 <IonSelectOption value="medium">Medium</IonSelectOption>
                 <IonSelectOption value="large">Large</IonSelectOption>
-              </IonSelect>
-            </IonItem>
-
-            <IonItem>
-              <IonLabel>Language</IonLabel>
-              <IonSelect
-                value={language}
-                placeholder="Select Language"
-                onIonChange={(e) => handleLanguageChange(e.detail.value)}
-              >
-                <IonSelectOption value="en">English</IonSelectOption>
-                <IonSelectOption value="es">Spanish</IonSelectOption>
-                <IonSelectOption value="fr">French</IonSelectOption>
               </IonSelect>
             </IonItem>
 

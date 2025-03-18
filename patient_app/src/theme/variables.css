@@ -1,130 +1,20 @@
 :root {
-  /* Light Mode Colors */
-  --ion-color-primary: #66d6c3; /* Default accent color */
+  --ion-color-primary: #65f1da;
   --ion-color-primary-rgb: 108, 154, 139;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
   --ion-color-primary-shade: #53c29b;
-  --ion-color-primary-tint: #020806;
+  --ion-color-primary-tint: #94ffdb;
 
-  --ion-color-secondary: #d3e9e1;
-  --ion-color-secondary-rgb: 122, 162, 193;
-  --ion-color-secondary-contrast: #ffffff;
-  --ion-color-secondary-contrast-rgb: 255, 255, 255;
-  --ion-color-secondary-shade: #2f4455;
-  --ion-color-secondary-tint: #021320;
-
-  --ion-color-tertiary: #d4a88c;
-  --ion-color-tertiary-rgb: 212, 168, 140;
-  --ion-color-tertiary-contrast: #000000;
-  --ion-color-tertiary-contrast-rgb: 0, 0, 0;
-  --ion-color-tertiary-shade: #ba947b;
-  --ion-color-tertiary-tint: #d8b198;
-
-  --ion-background-color: #f4f4f4;
+  --ion-background-color: #ebffff;
   --ion-toolbar-background: #ffffff;
-  --ion-toolbar-color: #6c9a8b;
+  --ion-toolbar-color: #4ed1a5;
   --ion-item-background: #ffffff;
-  --ion-text-color: #333333;
+  --ion-text-color: #000000;
 
-  /* Tab Bar Colors (Light Mode) */
-  --ion-tab-bar-background: #ffffff;
-  --ion-tab-bar-color: #6c9a8b;
-  --ion-tab-bar-color-activated: #66d6c3;
-
-  /* Custom Accent Color Variables */
-  --accent-color: var(--ion-color-primary);
-  --accent-color-contrast: var(--ion-color-primary-contrast);
-  --accent-color-shade: var(--ion-color-primary-shade);
-  --accent-color-tint: var(--ion-color-primary-tint);
+  --schedule-background-color: #f4f4f4;
 }
 
-/* Dark Mode Colors */
-.dark {
-  --ion-color-primary: #ffffff; /* White for primary color */
-  --ion-color-primary-rgb: 255, 255, 255;
-  --ion-color-primary-contrast: #000000; /* Black text for primary */
-  --ion-color-primary-contrast-rgb: 0, 0, 0;
-  --ion-color-primary-shade: #e0e0e0; /* Slightly darker white */
-  --ion-color-primary-tint: #ffffff; /* Pure white */
-
-  --ion-color-secondary: #000000; /* Black for secondary color */
-  --ion-color-secondary-rgb: 0, 0, 0;
-  --ion-color-secondary-contrast: #ffffff; /* White text for secondary */
-  --ion-color-secondary-contrast-rgb: 255, 255, 255;
-  --ion-color-secondary-shade: #000000; /* Black shade */
-  --ion-color-secondary-tint: #1a1a1a; /* Slightly lighter black */
-
-  --ion-color-tertiary: #d4a88c; /* Keep tertiary color as is */
-  --ion-color-tertiary-rgb: 212, 168, 140;
-  --ion-color-tertiary-contrast: #000000;
-  --ion-color-tertiary-contrast-rgb: 0, 0, 0;
-  --ion-color-tertiary-shade: #ba947b;
-  --ion-color-tertiary-tint: #d8b198;
-
-  --ion-background-color: #000000; /* Black background */
-  --ion-toolbar-background: #1a1a1a; /* Dark gray toolbar */
-  --ion-toolbar-color: #ffffff; /* White text for toolbar */
-  --ion-item-background: #1a1a1a; /* Dark gray item background */
-  --ion-text-color: #ffffff; /* White text */
-
-  /* Tab Bar Colors (Dark Mode) */
-  --ion-tab-bar-background: #1a1a1a; /* Dark gray tab bar */
-  --ion-tab-bar-color: #ffffff; /* White text for tab bar */
-  --ion-tab-bar-color-activated: #ffffff; /* White text for active tab */
-
-  /* Custom Accent Color Variables (Dark Mode) */
-  --accent-color: var(--ion-color-primary);
-  --accent-color-contrast: var(--ion-color-primary-contrast);
-  --accent-color-shade: var(--ion-color-primary-shade);
-  --accent-color-tint: var(--ion-color-primary-tint);
-}
-body.dark {
-  background-color: var(--ion-background-color);
-  color: var(--ion-text-color);
-}
-
-body.dark ion-item,
-body.dark ion-label,
-body.dark ion-title,
-body.dark ion-button {
-  color: var(--ion-text-color);
-}
-
-body.dark ion-input,
-body.dark ion-select,
-body.dark ion-toggle {
-  --background: var(--ion-item-background);
-  --color: var(--ion-text-color);
-  --placeholder-color: var(--ion-text-color);
-}
-
-body.dark ion-card,
-body.dark ion-modal {
-  --background: var(--ion-item-background);
-  --color: var(--ion-text-color);
-}:root {
-  /* Light Mode Colors */
-  --ion-color-primary: #66d6c3;
-  --ion-color-primary-rgb: 108, 154, 139;
-  --ion-color-primary-contrast: #ffffff;
-  --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #53c29b;
-  --ion-color-primary-tint: #020806;
-
-  --ion-background-color: #f4f4f4;
-  --ion-toolbar-background: #ffffff;
-  --ion-toolbar-color: #6c9a8b;
-  --ion-item-background: #ffffff;
-  --ion-text-color: #333333;
-
-  /* Tab Bar Colors (Light Mode) */
-  --ion-tab-bar-background: #ffffff;
-  --ion-tab-bar-color: #6c9a8b;
-  --ion-tab-bar-color-activated: #66d6c3;
-}
-
-/* Dark Mode Colors */
 .dark {
   --ion-color-primary: #ffffff;
   --ion-color-primary-rgb: 255, 255, 255;
@@ -139,32 +29,9 @@ body.dark ion-modal {
   --ion-item-background: #1a1a1a;
   --ion-text-color: #ffffff;
 
-  /* Tab Bar Colors (Dark Mode) */
-  --ion-tab-bar-background: #1a1a1a;
-  --ion-tab-bar-color: #ffffff;
-  --ion-tab-bar-color-activated: #ffffff;
+  --schedule-background-color: #000000;
 }
 
-/* Ensure all text is readable in dark mode */
-body.dark ion-item,
-body.dark ion-label,
-body.dark ion-title,
-body.dark ion-button {
-  color: var(--ion-text-color);
-}
-
-/* Ensure inputs and buttons are styled correctly in dark mode */
-body.dark ion-input,
-body.dark ion-select,
-body.dark ion-toggle {
-  --background: var(--ion-item-background);
-  --color: var(--ion-text-color);
-  --placeholder-color: var(--ion-text-color);
-}
-
-/* Ensure cards and modals are styled correctly in dark mode */
-body.dark ion-card,
-body.dark ion-modal {
-  --background: var(--ion-item-background);
-  --color: var(--ion-text-color);
+body, h1, h2, h3, h4, h5, h6, p, ion-label, ion-title, ion-button, ion-item, ion-input, ion-select, ion-text {
+  font-size: var(--ion-font-size);
 }

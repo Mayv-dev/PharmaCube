@@ -1,6 +1,6 @@
 import React from 'react';
 import { IonHeader, IonToolbar, IonTitle, useIonRouter } from '@ionic/react';
-import './CustomHeader.css'; // Import the CSS file
+import './CustomHeader.css';
 
 const CustomHeader: React.FC = () => {
   const router = useIonRouter();

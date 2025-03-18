@@ -17,22 +17,21 @@ import {
   IonSelectOption,
 } from '@ionic/react';
 import { timeOutline, calendarOutline } from 'ionicons/icons';
-import { useColorblindFilter } from '../colorBlindContext'; // Import the colorblind context
+import { useColorblindFilter } from '../colorBlindContext';
 import './SchedulePage.css';
-import calendarImage from '../../../Adobe Express - file.png'; 
+import calendarImage from '../../../Adobe Express - file.png';
 
 const SchedulePage: React.FC = () => {
-  const { filter } = useColorblindFilter(); 
+  const { filter } = useColorblindFilter();
 
   return (
-    <IonPage className={filter}> 
+    <IonPage className={filter}>
       <IonHeader>
-        <IonToolbar color="primary">
-          
+        <IonToolbar>
+          <IonTitle>Schedule</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen className="ion-padding content" color="secondary">
-
+      <IonContent fullscreen className="ion-padding content">
         <div className="center-icon-container">
           <img src={calendarImage} alt="Calendar" className="center-icon" />
         </div>
