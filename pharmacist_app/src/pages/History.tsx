@@ -1,4 +1,4 @@
-import { IonContent, IonPage} from '@ionic/react';
+import { IonContent, IonItem, IonPage, IonSelect, IonSelectOption} from '@ionic/react';
 import '../styles/Settings.css';
 import '../styles/History.css';
 import { useEffect, useState } from 'react';
@@ -6,12 +6,56 @@ import { useEffect, useState } from 'react';
 // Used this as my library and reference for my calendar work https://www.npmjs.com/package/typescript-calendar-date
 import { CalendarDate, calendarDateFromJsDateObject, numberOfDaysInMonth } from 'typescript-calendar-date';
 import Calendar from '../components/History Components/Calendar';
+import { PatientAdherenceRecord } from 'api types/types';
 
 
 const History: React.FC = () => {
 	const [date, setDate] = useState(calendarDateFromJsDateObject(new Date(Date.now())))
 	const [dateNow, setDateNow] = useState(calendarDateFromJsDateObject(new Date(Date.now())))
 	const [dateList, setDateList] = useState<any[]>([])
+
+	const [patientHistoricalDosesList, setPatientHistoricalDosesList] = useState<PatientAdherenceRecord[]>([
+		{
+		  "patient_id": 1,
+		  "information": "Aspirin 100mg",
+		  "date_time_scheduled": "2025-03-17T08:00:00Z",
+		  "date_time_taken": "2025-03-17T08:00:00Z",
+		  "was_taken": true,
+		  "time_period": 1
+		},
+		{
+		  "patient_id": 1,
+		  "information": "Metformin 500mg",
+		  "date_time_scheduled": "2025-03-15T12:00:00Z",
+		  "date_time_taken": "2025-03-15T12:00:00Z",
+		  "was_taken": false,
+		  "time_period": 1
+		},
+		{
+		  "patient_id": 1,
+		  "information": "Lisinopril 10mg",
+		  "date_time_scheduled": "2025-03-16T18:00:00Z",
+		  "date_time_taken": "2025-03-16T18:00:00Z",
+		  "was_taken": true,
+		  "time_period": 1
+		},
+		{
+		  "patient_id": 1,
+		  "information": "Lisinopril 10mg",
+		  "date_time_scheduled": "2025-03-16T18:00:00Z",
+		  "date_time_taken": "2025-03-16T18:00:00Z",
+		  "was_taken": false,
+		  "time_period": 1
+		},
+		{
+		  "patient_id": 1,
+		  "information": "Lisinopril 10mg",
+		  "date_time_scheduled": "2025-03-14T18:00:00Z",
+		  "date_time_taken": "2025-03-14T18:00:00Z",
+		  "was_taken": true,
+		  "time_period": 1
+		}
+	  ])
 	
 	const getDateRange = (from: CalendarDate, to: CalendarDate):any[] =>  {
 		let i = from.day
@@ -31,13 +75,13 @@ const History: React.FC = () => {
   return(
   <IonPage>
 	<IonContent>
-		<p>{date.month}</p>
-		<Calendar dateNow={dateNow} dateList={dateList}></Calendar>
-		<br></br>
-		<div className='calendarRow'>
-			<div className={'calendarDate takenDate'}>{date.day}</div>
-			<div className={'calendarDate notTakenDate'}>{date.day}</div>
-			<div className={'calendarDate partiallyTakenDate'}>{date.day}</div>
+		<div className='formBody'>
+			<IonItem>
+				<IonSelect label='Choose a patient'>
+					<IonSelectOption></IonSelectOption>
+				</IonSelect>
+			</IonItem>
+			<Calendar dateNow={dateNow} dateList={dateList} history={patientHistoricalDosesList}></Calendar>
 		</div>
 	</IonContent>
   </IonPage>

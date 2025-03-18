@@ -14,6 +14,8 @@ type ChatBubbleProps = {
 	passedDateTimeOfMessage:string
 }
 
+
+
 const ChatBubble: React.FC<ChatBubbleProps> = ({passedMessage,passedDateTimeOfMessage}) => {
 	const [message, setMessage] = useState<string>("")
 	const [datetimeOfMessage, setDatetimeOfMessage] = useState<string>("")

@@ -11,6 +11,7 @@ import {
 import '../styles/Users.css';
 import LowerToolbar from '../components/LowerToolbar';
 
+
 const Users: React.FC = () => {
   const [patientList, setPatientList] = useState([{ username: "Ann Murphy" }, { username: "Aaron Murphy" }, { username: "Irene Duffy" }])
   const [filteredUsers, setFilteredUsers] = useState([{}]);
