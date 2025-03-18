@@ -118,20 +118,20 @@ const CalendarDateSquare: React.FC<CalendarProps> = ({date,dateNow,history}) => 
 		<>
 			{square}
 			<IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
-					  <IonHeader>
-						<IonToolbar>
-						  <IonTitle>Confirm Submission</IonTitle>
-						</IonToolbar>
-					  </IonHeader>
-					  <IonContent className="ion-padding">
-						<p>Dose overview for the {handleDate(date.day)} of {convertMonthName(date.month)} {date.year}</p>
-						{history.map(hist => hist.date_time_scheduled.substring(0,4) == date.year.toString() && convertMonthDigits(hist.date_time_scheduled.substring(5,7)) == date.month.toString() && hist.date_time_scheduled.substring(8,10) == date.day.toString() ? 
-						<DoseTakenStatus time={hist.date_time_scheduled.substring(11,16)} takenStatus={hist.was_taken}/>: null)}
-						<IonButton expand="full" color="medium" className="cancel-button" onClick={() => setShowModal(false)}>
-						  Close
-						</IonButton>
-					  </IonContent>
-					</IonModal>
+				<IonButton expand="full" color="medium" className="cancel-button" onClick={() => setShowModal(false)}>
+					Close
+				</IonButton>
+				<IonHeader>
+				<IonToolbar>
+					<IonTitle>Confirm Submission</IonTitle>
+				</IonToolbar>
+				</IonHeader>
+				<IonContent className="ion-padding">
+					<p>Dose overview for the {handleDate(date.day)} of {convertMonthName(date.month)} {date.year}</p>
+					{history.map(hist => hist.date_time_scheduled.substring(0,4) == date.year.toString() && convertMonthDigits(hist.date_time_scheduled.substring(5,7)) == date.month.toString() && hist.date_time_scheduled.substring(8,10) == date.day.toString() ? 
+					<DoseTakenStatus time={hist.date_time_scheduled.substring(11,16)} takenStatus={hist.was_taken}/>: null)}
+				</IonContent>
+			</IonModal>
 		</>
 	);
 	
