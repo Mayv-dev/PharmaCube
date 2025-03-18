@@ -42,7 +42,7 @@ const PatientChat: React.FC =  () => {
 	return (
 		<IonPage>
 			<IonContent className="ion-padding">
-			<div className='formBody'>
+			<div className='webBody'>
 				<IonRouterLink routerLink='/chat'>
 					<IonButton expand="block" className='ScheduleButtons' color="light">
 						Back to Chat Menu

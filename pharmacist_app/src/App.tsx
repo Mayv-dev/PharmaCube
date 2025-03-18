@@ -43,6 +43,7 @@ import Login from './pages/Authentication Pages/Login';
 import Register from './pages/Authentication Pages/Register';
 import History from './pages/History';
 
+import "./styles/GlobalStyling.css"
 setupIonicReact();
 
 

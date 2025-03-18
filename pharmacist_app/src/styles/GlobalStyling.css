@@ -1,0 +1,14 @@
+.webBody {
+	width: 60%;
+	margin: auto;
+	background-color: #2b2336;
+	border-radius: 40px;
+	padding: 5%;
+	height: 100%;
+}
+
+@media screen and (max-width: 680px) {
+	.webBody {
+		width: 90%;
+	}
+  }

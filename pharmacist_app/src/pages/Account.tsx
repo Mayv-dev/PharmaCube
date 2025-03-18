@@ -122,7 +122,7 @@ const Account: React.FC = () => {
 	return (
 		<IonPage>
 			<IonContent className='ion-padding'>
-				<div className='formBody'>
+				<div className='webBody'>
 					<p>Your Details</p>
 					<IonItem>
 						<IonInput onIonChange={e => setName(e.target.value)} label='Your Name'></IonInput>
