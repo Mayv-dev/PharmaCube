@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
@@ -46,10 +46,19 @@ import History from './pages/History';
 import "./styles/GlobalStyling.css"
 setupIonicReact();
 
+// firebase notification code taken from https://www.youtube.com/watch?v=IK8x7qc9ZsA
+import {generateToken, messaging} from "./notifications/firebase"
+import { onMessage } from 'firebase/messaging';
 
 const App: React.FC = () => {
   const [modifyRegimeInfo, setModifyRegimeInfo] = useState(null);
   const testRootMessage = (regime: any) => setModifyRegimeInfo(regime)
+  useEffect(() => {
+    generateToken()
+    onMessage(messaging, (payload) => {
+      console.log("notification: ", payload);
+    })
+  },[])
 
   return (
     <IonApp>
