@@ -63,8 +63,34 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus}) => 
 		  }
 	}
 
-	const messageSent = (message:string) => {
-		console.log(message)
+	const messageSent = async (message:string) => {
+		try {
+			const sentMessage:Message = {
+				sender_id:pharmacistId,
+				time_sent:new Date(Date.now()).toISOString(),
+				message_body:message
+			}
+			console.log("post request being made...")
+			const { data, status } = await axios.post(
+				`http://demo3553220.mockable.io/pharmacist/pharmacist_id/patient/patient_id/chat`,
+				sentMessage,
+				{
+					headers: {
+						Accept: 'application/json'
+					},
+				},
+			);
+			return data;
+		}
+		catch (error) {
+			if (axios.isAxiosError(error)) {
+				console.log('error message: ', error.message);
+				return error.message;
+			} else {
+				console.log('unexpected error: ', error);
+				return 'An unexpected error occurred';
+			}
+		}
 	}
 
 	return (

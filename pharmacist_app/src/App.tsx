@@ -76,7 +76,7 @@ const App: React.FC = () => {
 			timestamp: "2025-01-06T23:00:19+00:00",
 			urgency: 0
 		}]);
-  const [pharmacistId, setPharmacistId] = useState<number>(1);
+  const [pharmacistId, setPharmacistId] = useState<number>(0); // TODO: Set to actual pharmacist  when notification route is established and working
 
 
   const [modifyRegimeInfo, setModifyRegimeInfo] = useState(null);

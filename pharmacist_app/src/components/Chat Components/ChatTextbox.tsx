@@ -20,13 +20,11 @@ type ChatTextboxProps = {
 const ChatTextbox: React.FC<ChatTextboxProps> = ({messageSent}) => {
 	const [messageToSend, setMessageToSend] = useState<string>("");
 
-	
-
 	const processMessage = () => messageToSend.length == 0 || profanity.exists(messageToSend) ? null : messageSent(messageToSend);
 
 	return (
 		<div>
-			<IonInput value={messageToSend} onIonChange={e => setMessageToSend(e.target.value)} placeholder='Enter your message...'></IonInput>
+			<IonInput value={messageToSend} onIonInput={e => setMessageToSend(e.target.value)} placeholder='Enter your message...'></IonInput>
 			<IonButton onClick={() => processMessage()}>
 				<IonIcon icon={send}></IonIcon>
 			</IonButton>
