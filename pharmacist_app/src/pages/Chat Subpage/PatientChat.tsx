@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   IonPage,
@@ -14,7 +14,7 @@ import {
 } from '@ionic/react';
 import '../../styles/Chat Subpage/PatientChat.css';
 import LowerToolbar from '../../components/LowerToolbar';
-import { RegimeItem } from 'api types/types';
+import { Chat, RegimeItem } from 'api types/types';
 import RegimeItemContainer from '../../components/Regime Components/RegimeItemContainer';
 import ChatBubble from '../../components/Chat Components/ChatBubble';
 import ChatTextbox from '../../components/Chat Components/ChatTextbox';
@@ -30,10 +30,41 @@ const PatientChat: React.FC =  () => {
 
 	const [patientId, setPatientId] = useState<number>(1);
 	const [patientName, setPatientName] = useState('Unselected');
-	const [patientMessageList, setPatientMessageList] = useState<Message[]>([]);
+	const [patientChat, setPatientChat] = useState<Chat>();
+	const [count, setCount] = useState(0)
 
 	const [answered, setAnswered] = useState(false);
 
+	useEffect(()=> {
+		getPatientChat().then(res => res == "Network Error" ? null:setPatientChat(res))
+		setTimeout(() => {
+			setCount((count) => count + 1);
+		  }, 5000);
+	},[count])
+
+	const getPatientChat = async () => {
+		try {
+			const { data, status } = await axios.get(
+			  `http://localhost:8080/pharmacist/${pharmacistId}/patient/${patientId}/chat`,
+			  {
+				headers: {
+				  Accept: 'application/json'
+				},
+			  },
+			);
+	  
+			return data;
+	  
+		  } catch (error) {
+			if (axios.isAxiosError(error)) {
+			  console.log('error message: ', error.message);
+			  return error.message;
+			} else {
+			  console.log('unexpected error: ', error);
+			  return 'An unexpected error occurred';
+			}
+		  }
+	}
 
 	const messageSent = (message:string) => {
 		console.log(message)
@@ -49,7 +80,8 @@ const PatientChat: React.FC =  () => {
 					</IonButton>
 				</IonRouterLink>
 				<p>Selected patient: {patientName}</p>
-				<ChatBubble passedMessage='Hello world, paracetamol is an amazing pharmaceutical drug!' passedDateTimeOfMessage='2025-03-17T15:40:57+00:00'></ChatBubble>
+				{ patientChat?.messages.map(message => <ChatBubble passedMessage={message.message_body} passedDateTimeOfMessage={message.time_sent}></ChatBubble>)}
+				<ChatBubble passedMessage='Test chat bubble. Left align if patient, right align if pharmacist.' passedDateTimeOfMessage='2025-03-17T15:40:57+00:00'></ChatBubble>
 				<div className='chatColumn'>
 					<div className='chatRow'>
 						<div className='chatQuestion'>Can I drink alcohol while on sertraline?</div>
