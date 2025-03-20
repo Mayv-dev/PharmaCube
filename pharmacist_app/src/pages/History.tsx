@@ -8,6 +8,7 @@ import { CalendarDate, calendarDateFromJsDateObject, numberOfDaysInMonth } from 
 import Calendar from '../components/History Components/Calendar';
 import { PatientAdherenceRecord } from 'api types/types';
 import axios from 'axios';
+import CalendarDateSquare from 'components/History Components/CalendarDateSquare';
 
 
 const History: React.FC = () => {
@@ -102,7 +103,29 @@ const History: React.FC = () => {
 					{patientList.map(patientInList => <IonSelectOption value={patientInList.id}>{patientInList.name}</IonSelectOption>)}
 				</IonSelect>
 			</IonItem>
-			{patientId == 0 ? <p>Select a patient to view their history</p> : <Calendar dateNow={dateNow} dateList={dateList} history={patientHistoricalDosesList}></Calendar>}
+			{patientId == 0 ? <p>Select a patient to view their history</p> : 
+				<div className='calendarLayout'>
+					<div className='history'>
+						<p>Calendar</p>
+						<Calendar dateNow={dateNow} dateList={dateList} history={patientHistoricalDosesList}/>
+					</div>
+					<div className='historyLegend'>
+						<p>Legend</p>
+						<div className='historyLegendRow'>
+							<div className={'legendCalendarDate notTakenDate'}></div> 
+							<p>No doses taken</p>
+						</div>
+						<div className='historyLegendRow'>
+							<div className={'legendCalendarDate takenDate'}></div>
+							<p>All doses taken</p>
+						</div>
+						<div className='historyLegendRow'>
+							<div className={'legendCalendarDate partiallyTakenDate'}></div>
+							<p>Only some doses have been taken</p>
+						</div>
+					</div>
+				</div>
+			}
 		</div>
 	</IonContent>
   </IonPage>
