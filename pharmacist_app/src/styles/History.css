@@ -1,11 +1,20 @@
 .calendar {
 	display: flex;
 	flex-direction: column;
-	width: 50%;
+	width: 90%;
 	margin: auto;
 }
 .currentCalendarDate, .calendarDate {
 	width: 14%;
+	border: 1px solid black;
+	aspect-ratio: 1/1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.legendCalendarDate {
+  width: 30%;
 	border: 1px solid black;
 	aspect-ratio: 1/1;
 	display: flex;
@@ -57,4 +66,38 @@
     red 55%,
     red 100%
   );
+}
+
+.calendarLayout {
+  display: flex;
+  flex-direction: row;
+  margin-top: 2%;
+}
+.historyLegend {
+  width: 30%;
+}
+
+.historyLegendRow {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 5%;
+  justify-content: space-between;
+  background-color: gray;
+  border-radius: 3px;
+  padding: 3%;
+  align-items: center;
+  border:1px solid black;
+}
+
+.historyLegendRow p {
+  width: 50%;
+  font-size: 12px;
+}
+
+.historyLegend p, .history p {
+  text-align: center;
+}
+
+.history {
+  width: 100%;
 }
