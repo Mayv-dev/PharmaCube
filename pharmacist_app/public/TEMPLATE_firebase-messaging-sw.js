@@ -1,3 +1,9 @@
+/*
+	NOTE: THIS IS NOT THE ACTUAL FILE USED, CREATE A NEW FILE CALLED firebase-messaging-sw.js, COPY THE CODE HERE AND 
+	AND FILL IN THE firebaseConfig FIELDS. THE GITIGNORE WILL PREVENT KEYS PUT IN YOUR LOCAL VERSION OF THAT FILE 
+	FROM BEING PUSHED/LEAKED
+*/
+
 // Firebase notification code video reference: https://www.youtube.com/watch?v=IK8x7qc9ZsA
 // Firebase notification code import reference: https://console.firebase.google.com/
 
