@@ -49,3 +49,9 @@ export type Message = {
 	time_sent:string;
 	message_body:string;
 }
+
+export type Chat = {
+	patient_id:number
+	pharmacist_id:number
+	messages:Message[]
+}
