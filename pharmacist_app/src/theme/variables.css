@@ -2,12 +2,12 @@
 http://ionicframework.com/docs/theming/ */
 
 :root {
-	--ion-tab-bar-background:#084632;
+	--ion-tab-bar-background:#063425;
 	--ion-tab-bar-background-rgb:rgba(0,0,0,0);
-	--ion-tab-bar-border-color:#084632;
+	--ion-tab-bar-border-color:#063425;
 
 	/* variables below generated from https://ionicframework.com/docs/theming/themes */
-	--ion-background-color: #17131d;
+	--ion-background-color: #161616;
 	--ion-background-color-rgb: 89,71,112;
 
 	--ion-text-color: ffffff;
