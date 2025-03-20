@@ -47,7 +47,7 @@ import "./styles/GlobalStyling.css"
 setupIonicReact();
 
 // firebase notification code taken from https://www.youtube.com/watch?v=IK8x7qc9ZsA
-import {generateToken, messaging} from "./notifications/firebase"
+import {generateToken, messaging} from "./notifications/firebaseHidden"
 import { onMessage } from 'firebase/messaging';
 
 const App: React.FC = () => {
