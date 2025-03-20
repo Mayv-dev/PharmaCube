@@ -21,27 +21,23 @@ import ChatTextbox from '../../components/Chat Components/ChatTextbox';
 
 import { Message } from 'api types/types';
 
-// type ContainerProps = {
-// 	passModifyDataToApp:any
-// }
+type PatientChatProps = {
+	passedPatientChatStatus:boolean
+}
 
-const PatientChat: React.FC =  () => {
+const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus}) => {
 	const [pharmacistId, setPharmacistId] = useState<number>(1);
 
 	const [patientId, setPatientId] = useState<number>(1);
 	const [patientName, setPatientName] = useState('Unselected');
 	const [patientChat, setPatientChat] = useState<Chat>();
-	const [count, setCount] = useState(0)
 
 	const [answered, setAnswered] = useState(false);
 
 	// Code for setTimeout found at w3schools.com: https://www.w3schools.com/react/react_useeffect.asp
 	useEffect(()=> {
-		getPatientChat().then(res => res == "Network Error" ? null:setPatientChat(res))
-		setTimeout(() => {			
-			setCount((count) => count + 1);
-		}, 5000);
-	},[count])
+		getPatientChat().then(res => res == "Network Error" ? null:setPatientChat(res))	
+	},[passedPatientChatStatus])
 
 	const getPatientChat = async () => {
 		try {

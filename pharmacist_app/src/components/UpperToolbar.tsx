@@ -18,11 +18,11 @@ import { menuController } from '@ionic/core/components';
 import { useEffect, useState } from 'react';
 import NotificationItem from './NotificationItem';
 
-async function openHamburgerMenu() {
+export async function openHamburgerMenu() {
 	await menuController.open('hamburger-menu');
 }
 
-async function openNotificationMenu() {
+export async function openNotificationMenu() {
 	await menuController.open('notifications');
 }
 
@@ -60,30 +60,12 @@ async function getMockData() {
 	}
 }
 
-const UpperToolbar: React.FC = () => {
-	const [notificationList, setNotificationList] = useState<Notification[]>();
+type UpperToolbarProps = {
+	passedNotificationList:Notification[]
+}
 
-	useEffect(() => {
-		setNotificationList([{
-			id: 1,
-			content: "Take your Wednesday morning medication from compartment 2",
-			timestamp: "2025-01-06T09:00:19+00:00",
-			urgency: 1
-		},
-		{
-			id: 1,
-			content: "Urgent message from your patient Aaron Murphy",
-			timestamp: "2025-01-06T06:00:19+00:00",
-			urgency: 2
-		},
-		{
-			id: 1,
-			content: "Take your Wednesday Night medication from compartment 5",
-			timestamp: "2025-01-06T23:00:19+00:00",
-			urgency: 0
-		}]);
-	}, []);
-
+const UpperToolbar: React.FC<UpperToolbarProps> = ({passedNotificationList}) => {
+	
 	return (
 		<>
 			<IonTabBar className='tabBarPrimary' slot="top">
@@ -132,7 +114,7 @@ const UpperToolbar: React.FC = () => {
 							</IonSelect>
 						</IonItem>
 					</div>
-					{notificationList?.map(notification => <NotificationItem id={notification.id} content={notification.content} timestamp={notification.timestamp} urgencyPassed={notification.urgency} />)}
+					{passedNotificationList?.map(notification => <NotificationItem id={notification.id} content={notification.content} timestamp={notification.timestamp} urgencyPassed={notification.urgency} />)}
 				</IonContent>
 			</IonMenu>
 		</>
