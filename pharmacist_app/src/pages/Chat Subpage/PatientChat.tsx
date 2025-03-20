@@ -35,11 +35,12 @@ const PatientChat: React.FC =  () => {
 
 	const [answered, setAnswered] = useState(false);
 
+	// Code for setTimeout found at w3schools.com: https://www.w3schools.com/react/react_useeffect.asp
 	useEffect(()=> {
 		getPatientChat().then(res => res == "Network Error" ? null:setPatientChat(res))
-		setTimeout(() => {
+		setTimeout(() => {			
 			setCount((count) => count + 1);
-		  }, 5000);
+		}, 5000);
 	},[count])
 
 	const getPatientChat = async () => {
