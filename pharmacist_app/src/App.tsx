@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
+  IonIcon,
+  IonLabel,
   IonRouterOutlet,
+  IonTabBar,
+  IonTabButton,
   IonTabs,
   setupIonicReact
 } from '@ionic/react';
@@ -35,7 +39,7 @@ import ViewRegime from './pages/Regimes Subpages/ViewRegime';
 import Notifications from './pages/Notifications';
 import Menu from './pages/Menu';
 import LowerToolbar from './components/LowerToolbar';
-import UpperToolbar from './components/UpperToolbar';
+import UpperToolbar, { Notification, openHamburgerMenu, openNotificationMenu } from './components/UpperToolbar';
 import Account from './pages/Account';
 import FAQs from './pages/FAQs';
 import PatientChat from './pages/Chat Subpage/PatientChat';
@@ -47,10 +51,34 @@ import "./styles/GlobalStyling.css"
 setupIonicReact();
 
 // firebase notification code taken from https://www.youtube.com/watch?v=IK8x7qc9ZsA
-import {generateToken, messaging} from "./notifications/firebaseHidden"
+import {generateToken, messaging} from "./notifications/firebaseHidden.js"
 import { onMessage } from 'firebase/messaging';
+import axios from 'axios';
 
 const App: React.FC = () => {
+	const [pollState, setPollState] = useState(true)
+	const [getPatientChatStatus, setGetPatientChatStatus] = useState(true)
+  const [notificationList, setNotificationList] = useState<Notification[]>([{
+			id: 1,
+			content: "Take your Wednesday morning medication from compartment 2",
+			timestamp: "2025-01-06T09:00:19+00:00",
+			urgency: 1
+		},
+		{
+			id: 1,
+			content: "Urgent message from your patient Aaron Murphy",
+			timestamp: "2025-01-06T06:00:19+00:00",
+			urgency: 2
+		},
+		{
+			id: 1,
+			content: "Take your Wednesday Night medication from compartment 5",
+			timestamp: "2025-01-06T23:00:19+00:00",
+			urgency: 0
+		}]);
+  const [pharmacistId, setPharmacistId] = useState<number>(1);
+
+
   const [modifyRegimeInfo, setModifyRegimeInfo] = useState(null);
   const testRootMessage = (regime: any) => setModifyRegimeInfo(regime)
   useEffect(() => {
@@ -59,6 +87,38 @@ const App: React.FC = () => {
       console.log("notification: ", payload);
     })
   },[])
+
+  useEffect(() => {
+    if(window.location.href.endsWith("chat/patient")) setGetPatientChatStatus(!getPatientChatStatus)
+    if(pharmacistId != 0) fetchNotifications().then(res => res == "Network Error" ? null:setNotificationList(res))
+    setTimeout(() => {			
+      setPollState(!pollState);
+    }, 5000);
+  },[pollState])
+
+  const fetchNotifications = async () => {
+    try {
+			const { data, status } = await axios.get(
+			  `http://localhost:8080/pharmacist/${pharmacistId}/notifications`,
+			  {
+				headers: {
+				  Accept: 'application/json'
+				},
+			  },
+			);
+	  
+			return data;
+	  
+		  } catch (error) {
+			if (axios.isAxiosError(error)) {
+			  console.log('error message: ', error.message);
+			  return error.message;
+			} else {
+			  console.log('unexpected error: ', error);
+			  return 'An unexpected error occurred';
+			}
+		  }
+  }
 
   return (
     <IonApp>
@@ -106,7 +166,7 @@ const App: React.FC = () => {
               <Chat />
             </Route>
             <Route exact path="/chat/patient">
-              <PatientChat />
+              <PatientChat passedPatientChatStatus={getPatientChatStatus}/>
             </Route>
 
             <Route exact path="/account">
@@ -126,7 +186,7 @@ const App: React.FC = () => {
             </Route>
           </IonRouterOutlet >
 
-          <UpperToolbar />
+          <UpperToolbar passedNotificationList={notificationList} />
           <LowerToolbar />
 
         </IonTabs >
