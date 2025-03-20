@@ -123,6 +123,10 @@ const History: React.FC = () => {
 							<div className={'legendCalendarDate partiallyTakenDate'}></div>
 							<p>Only some doses have been taken</p>
 						</div>
+						<div className='historyLegendRow'>
+							<div className={'legendCalendarDate currentCalendarDate'}></div>
+							<p>Current day</p>
+						</div>
 					</div>
 				</div>
 			}
