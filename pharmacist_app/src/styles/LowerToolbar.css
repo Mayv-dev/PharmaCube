@@ -25,8 +25,8 @@
 	font-weight: bold;
 }
 
-.tabBarPrimary, .tabBarSecondary {
-	border:1px solid black
+.tabBarSecondary {
+	border-top:1px solid black;
 }
 
 .tabBarPrimary {
@@ -47,7 +47,7 @@
 }
 
 .hamburger-menu {
-	background-color: #7da371;
+	background-color: #335f51;
 	height: 100%;
 	width: 100%;
 	padding:3%
@@ -68,9 +68,28 @@
 	--min-width:500px;
 }
 
+.menuBackButton {
+	width: 40%;
+	float: right;
+	margin-bottom: 12%;
+}
+
+.menuBackButton, .notificationsBackButton, .menuOptionButton {
+	--background: rgb(112, 112, 112);
+}
+
+.notificationsBackButton {
+	width: 30%;
+	margin-bottom: 4%;
+	float: left;
+}
+
 @media screen and (max-width: 680px) {
 	.notificationMenu {
 		--max-width:80%;
 		--min-width:300px;
+	}
+	.notificationsBackButton {
+		width: 40%;
 	}
   }

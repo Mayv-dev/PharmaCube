@@ -9,9 +9,10 @@ import {
 	IonItem,
 	IonSelect,
 	IonSelectOption,
-	IonRouterLink
+	IonRouterLink,
+	IonText
 } from '@ionic/react';
-import { menu, notifications } from 'ionicons/icons';
+import { arrowBack, arrowDownRightBoxOutline, arrowForward, handRight, handRightSharp, menu, notifications } from 'ionicons/icons';
 import '../styles/LowerToolbar.css';
 import axios from 'axios';
 import { menuController } from '@ionic/core/components';
@@ -82,39 +83,46 @@ const UpperToolbar: React.FC<UpperToolbarProps> = ({passedNotificationList}) => 
 			<IonMenu menuId="hamburger-menu" contentId="main-content">
 				<IonContent>
 					<div className="hamburger-menu">
-					<IonButton onClick={() => menuController.close()}>Close Menu</IonButton>
-						<div className='pharmacistMenuGreeting'>
+					<IonButton onClick={() => menuController.close()} className='menuBackButton'>
+						<IonText>Close Menu</IonText>
+						<IonIcon icon={arrowBack}></IonIcon>
+					</IonButton>						<div className='pharmacistMenuGreeting'>
 							<img width="13%" src='https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'></img>
 							<p>Hello, Henry!</p>
 						</div>
-						<IonButton href='/account'>My Account</IonButton> {/* Link to a new account page */}
-						<IonButton href='/faqs'>FAQs</IonButton> {/* Link to a new blank page */}
-						<IonButton href='/settings'>Settings</IonButton> {/* Link to settings page */}
+						<IonButton className={"menuOptionButton"} href='/account'>My Account</IonButton> 
+						<IonButton className={"menuOptionButton"} href='/faqs'>FAQs</IonButton>
+						<IonButton className={"menuOptionButton"} href='/settings'>Settings</IonButton> 
 						<IonButton color={"danger"}>Log Out</IonButton>
 					</div>
 				</IonContent>
 			</IonMenu>
 
 			<IonMenu side="end" className="notificationMenu" menuId="notifications" contentId="main-content">
-				<IonContent className="ion-padding">
-					<IonButton onClick={() => menuController.close()}>Close Menu</IonButton>
-					<div className='rowOfSelects'>
-						<IonItem>
-							<IonSelect label="Filter By:">
-								<IonSelectOption>None</IonSelectOption>
-								<IonSelectOption>High Priority</IonSelectOption>
-								<IonSelectOption>Medium Priority</IonSelectOption>
-								<IonSelectOption>Low Priority</IonSelectOption>
-							</IonSelect>
-						</IonItem>
-						<IonItem>
-							<IonSelect label="Sort By:">
-								<IonSelectOption>Most Recent</IonSelectOption>
-								<IonSelectOption>Highest Priority</IonSelectOption>
-							</IonSelect>
-						</IonItem>
-					</div>
+				<IonContent>
+				<div className="hamburger-menu">
+						<IonButton onClick={() => menuController.close()} className='notificationsBackButton'>
+							<IonIcon icon={arrowForward}></IonIcon>
+							<IonText>Close Menu</IonText>
+						</IonButton>
+						<div className='rowOfSelects'>
+							{/* <IonItem>
+								<IonSelect label="Filter By:">
+									<IonSelectOption>None</IonSelectOption>
+									<IonSelectOption>High Priority</IonSelectOption>
+									<IonSelectOption>Medium Priority</IonSelectOption>
+									<IonSelectOption>Low Priority</IonSelectOption>
+								</IonSelect>
+							</IonItem>
+							<IonItem>
+								<IonSelect label="Sort By:">
+									<IonSelectOption>Most Recent</IonSelectOption>
+									<IonSelectOption>Highest Priority</IonSelectOption>
+								</IonSelect>
+							</IonItem> */}
+						</div>
 					{passedNotificationList?.map(notification => <NotificationItem id={notification.id} content={notification.content} timestamp={notification.timestamp} urgencyPassed={notification.urgency} />)}
+				</div>
 				</IonContent>
 			</IonMenu>
 		</>
