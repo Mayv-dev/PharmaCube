@@ -1,9 +1,10 @@
 .webBody {
 	width: 60%;
 	margin: auto;
-	background-color: #2b2336;
+	background-color: #313033;
 	border-radius: 40px;
 	padding: 5%;
+	min-height: fit-content;
 	height: 100%;
 }
 
