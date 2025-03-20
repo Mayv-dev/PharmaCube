@@ -1,6 +1,8 @@
 // Firebase notification code video reference: https://www.youtube.com/watch?v=IK8x7qc9ZsA
 // Firebase notification code import reference: https://console.firebase.google.com/
 
+import { fb_api_key, fb_app_id, fb_auth_domain, fb_measurement_id, fb_messaging_sender_id, fb_project_id, fb_storage_bucket, fb_vapid_key } from "../src/pages/firebaseEnv";
+
 // Give the service worker access to Firebase Messaging.
 // Note that you can only use Firebase Messaging here. Other Firebase libraries
 // are not available in the service worker.
@@ -12,13 +14,13 @@ importScripts('https://www.gstatic.com/firebasejs/10.13.2/firebase-messaging-com
 // your app's Firebase config object.
 // https://firebase.google.com/docs/web/setup#config-object
 firebase.initializeApp({
-	apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-	authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-	projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-	storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-	messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-	appId: import.meta.env.VITE_FIREBASE_APP_ID,
-	measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
+	apiKey: "", //Enter FIREBASE_API_KEY her,
+	authDomain: "", //Enter FIREBASE_AUTH_DOMAIN here
+	projectId: "", //Enter FIREBASE_PROJECT_ID here
+	storageBucket: "", //Enter FIREBASE_STORAGE_BUCKET here
+	messagingSenderId: "", //Enter FIREBASE_MESSAGING_SENDER_ID here
+	appId: "", //Enter FIREBASE_APP_ID here
+	measurementId: "" //Enter FIREBASE_MEASUREMENT_ID here
   });
 
 // Retrieve an instance of Firebase Messaging so that it can handle background
