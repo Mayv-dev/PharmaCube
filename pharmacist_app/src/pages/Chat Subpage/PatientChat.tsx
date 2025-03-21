@@ -28,9 +28,9 @@ type PatientChatProps = {
 const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus}) => {
 	const [pharmacistId, setPharmacistId] = useState<number>(1);
 
-	const [patientId, setPatientId] = useState<number>(1);
+	const [patientId, setPatientId] = useState<number>(2);
 	const [patientName, setPatientName] = useState('Unselected');
-	const [patientChat, setPatientChat] = useState<Chat>();
+	const [patientChat, setPatientChat] = useState<Chat>({patient_id:2, pharmacist_id:1, messages:[{sender_id:2,time_sent:"2025-03-17T15:40:57+00:00",message_body:"Are you my new pharmacist?"}, {sender_id:1,time_sent:"2025-03-17T15:40:57+00:00",message_body:"Yes, how can I help you?"}]});
 
 	const [answered, setAnswered] = useState(false);
 
@@ -49,7 +49,6 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus}) => 
 				},
 			  },
 			);
-	  
 			return data;
 	  
 		  } catch (error) {
@@ -80,6 +79,9 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus}) => 
 					},
 				},
 			);
+			let updatedPatientChat = patientChat.messages
+			updatedPatientChat.push(sentMessage)
+			setPatientChat({patient_id:patientId, pharmacist_id:pharmacistId, messages:updatedPatientChat})
 			return data;
 		}
 		catch (error) {
@@ -103,22 +105,7 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus}) => 
 					</IonButton>
 				</IonRouterLink>
 				<p>Selected patient: {patientName}</p>
-				{ patientChat?.messages.map(message => <ChatBubble passedMessage={message.message_body} passedDateTimeOfMessage={message.time_sent}></ChatBubble>)}
-				<ChatBubble passedMessage='Test chat bubble. Left align if patient, right align if pharmacist.' passedDateTimeOfMessage='2025-03-17T15:40:57+00:00'></ChatBubble>
-				<div className='chatColumn'>
-					<div className='chatRow'>
-						<div className='chatQuestion'>Can I drink alcohol while on sertraline?</div>
-						<div className='chatAnswer'>I would advise against it. It is not advised to drink alcohol while on sertraline.</div>
-					</div>
-					<div className='chatRow'>
-						<div className='chatQuestion'>I have been getting a rash since I've started on Keppra. Should I stop?</div>
-						{answered ? 
-							<div className='chatAnswer'>If the rash is very irritating, it may be best to try alternative anti-seizure medications. You should contact your GP and ask about alternatives.</div>
-							:
-							<IonButton onClick={e => setAnswered(true)} className='chatAnswerButton'>Answer</IonButton>
-						}
-					</div>
-				</div>
+				{ patientChat?.messages.map(message => <ChatBubble passedPharmacistId={pharmacistId} passedPatientId={patientId} passedMessage={message}></ChatBubble>)}
 				<ChatTextbox messageSent={messageSent}></ChatTextbox>
 			</div>
 				</IonContent>

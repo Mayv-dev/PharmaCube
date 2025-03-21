@@ -1,0 +1,52 @@
+.pharmacistBubble, .patientBubble {
+	padding: 2%;
+	display: flex;
+	flex-direction: row;
+	border: 1px solid black;
+	width: 80%;
+	margin-bottom: 3%;
+	justify-content: space-between;
+}
+
+.bubbleMessage {
+	width:75%
+}
+
+.bubbleMisc {
+	width: 20%;
+	display: flex;
+	flex-direction: column;
+}
+
+.pharmacistBubble .bubbleMisc {
+	border-left: 1px solid black;
+	padding-left: 1%;
+}
+
+.patientBubble .bubbleMisc {
+	border-right: 1px solid black;
+	padding-right: 1%;
+}
+
+.bubbleTimestamp {
+	font-size: 10px;
+	text-align: center;
+	margin: 0;
+}
+
+.pharmacistBubble {
+	background-color: green;
+	border-radius: 18px 18px 0px 18px;
+	margin-top: 0;
+	margin-left: auto;
+	margin-right: 0;
+}
+
+.patientBubble {
+	background-color: rgb(231, 239, 200);
+	color: black;
+	border-radius: 18px 18px 18px 0px;
+	margin-top: 0;
+	margin-left: 0;
+	margin-right: auto;
+}
