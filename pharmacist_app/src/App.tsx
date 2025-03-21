@@ -51,8 +51,20 @@ import "./styles/GlobalStyling.css"
 setupIonicReact();
 // firebase notification code taken from https://www.youtube.com/watch?v=IK8x7qc9ZsA
 import {generateToken, messaging} from "./notifications/firebaseHidden.js"
-import { onMessage } from 'firebase/messaging';
+import { onMessage} from 'firebase/messaging';
 import axios from 'axios';
+
+// Code snippets to help me implement audio were taken from a usage example in the following
+// library page link: https://www.npmjs.com/package/@capacitor-community/native-audio
+import {NativeAudio} from '@capacitor-community/native-audio'
+
+// the royalty free sound used to demonstrate the notification comes from RasoolAsaad at: https://pixabay.com/users/rasoolasaad-47313572/
+NativeAudio.preload({
+  assetId: "notify",
+  assetPath: "notify.mp3",
+  audioChannelNum: 1,
+  isUrl: false
+});
 
 const App: React.FC = () => {
 	const [pollState, setPollState] = useState(true)
@@ -80,10 +92,20 @@ const App: React.FC = () => {
 
   const [modifyRegimeInfo, setModifyRegimeInfo] = useState(null);
   const testRootMessage = (regime: any) => setModifyRegimeInfo(regime)
+
   useEffect(() => {
     generateToken()
     onMessage(messaging, (payload) => {
       console.log("notification: ", payload);
+      console.log(payload.notification?.body)
+      if(payload.notification?.body != undefined){
+        const updatedNotificationList = notificationList;
+        updatedNotificationList.push({id:0,content:payload.notification.body, urgency:1, timestamp: new Date(Date.now()).toISOString()});
+        setNotificationList(updatedNotificationList);
+        NativeAudio.play({
+          assetId: 'notify'
+        });
+      }
     })
   },[])
 
