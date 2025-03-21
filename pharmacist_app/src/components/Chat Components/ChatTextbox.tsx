@@ -20,7 +20,7 @@ type ChatTextboxProps = {
 const ChatTextbox: React.FC<ChatTextboxProps> = ({messageSent}) => {
 	const [messageToSend, setMessageToSend] = useState<string>("");
 
-	const processMessage = () => messageToSend.length == 0 || profanity.exists(messageToSend) ? null : messageSent(messageToSend);
+	const processMessage = () => messageToSend.length == 0 || profanity.exists(messageToSend) ? alert("Is there profanity in your message? Please edit your message and try sending again") : messageSent(messageToSend);
 
 	return (
 		<div>
