@@ -17,10 +17,14 @@ import {
   IonTextarea,
   IonDatetime,
   IonRouterLink,
+  IonText,
+  IonIcon,
 } from '@ionic/react';
 import '../../styles/Regime Subpages/AddRegime.css';
 import LowerToolbar from '../../components/LowerToolbar';
 import { RegimeItem } from 'api types/types';
+import { date } from 'yup';
+import { arrowBack } from 'ionicons/icons';
 type AddRegimeProps = {
   passedInfo: any
 }
@@ -171,21 +175,24 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
       <IonContent className="ion-padding">
         <div className='webBody'>
           {passedInfo == null ?
-            <IonRouterLink routerLink='/regimes/'>
-              <IonButton expand="block" className='ScheduleButtons' color="light">
-                Back to Regime Home
-              </IonButton>
-            </IonRouterLink>
+              <div className='regimeReturn'>
+                  <IonButton routerLink='/regimes/' color="light">
+                    <IonIcon icon={arrowBack}></IonIcon>
+                    <IonText>Back to Regime Home</IonText>
+                  </IonButton>
+              </div>
             :
-            <IonRouterLink routerLink='/regimes/view'>
-              <IonButton onClick={e => passedInfo = null} expand="block" className='ScheduleButtons' color="light">
-                Back to Regime View
+            <div className='regimeReturn'>
+              <IonButton routerLink='/regimes/view' onClick={e => passedInfo = null} className='regimeReturn' color="light">
+                <IonIcon icon={arrowBack}></IonIcon>
+                <IonText>Back to Regime View</IonText>
               </IonButton>
-            </IonRouterLink>}
+            </div>
+            }
           {passedInfo == null ?
             <IonItem>
 
-              <IonSelect label='Patient' placeholder='Choose a patient' onIonChange={e => {
+              <IonSelect label='Patient' interface="popover" placeholder='Choose a patient' onIonChange={e => {
                 setPatientId(e.target.value.id)
                 setPatientName(e.target.value.name)
               }}>
@@ -198,10 +205,10 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
           <p className="sectionHeading">What is {patientName == "" ? "the patient" : patientName} taking?</p>
           <div className='formGroup'>
             <IonItem>
-              <IonTextarea label="Information:" value={information} onIonChange={e => setInformation(e.target.value)}></IonTextarea>
+              <IonTextarea labelPlacement="fixed" label="Information:" value={information} onIonInput={e => setInformation(e.target.value)}></IonTextarea>
             </IonItem>
             <IonItem>
-              <IonSelect label="Compartment:" value={compartment} onIonChange={e => setCompartment(e.target.value)}>
+              <IonSelect label="Compartment:" interface="popover" value={compartment} onIonChange={e => setCompartment(e.target.value)}>
                 <IonSelectOption value={0}>Not in a compartment</IonSelectOption>
                 <IonSelectOption value={1}>Compartment 1</IonSelectOption>
                 <IonSelectOption value={2}>Compartment 2</IonSelectOption>
@@ -226,7 +233,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
                   setDateInfo(dateData)
                 }
               }} presentation="date"></IonDatetime>
-              {/* <IonSelect value={day} onIonChange={e => setDay(e.target.value)}>
+              {/* <IonSelect value={day} onIonInput={e => setDay(e.target.value)}>
               <IonSelectOption value={1}>Monday</IonSelectOption>
               <IonSelectOption value={2}>Tuesday</IonSelectOption>
               <IonSelectOption value={3}>Wednesday</IonSelectOption>
@@ -238,7 +245,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
             </IonItem>
 
             <IonItem>
-              <IonSelect label="Time of Day:" value={timeOfDay} onIonChange={e => setTimeOfDay(e.target.value)}>
+              <IonSelect label="Time of Day:" interface="popover" value={timeOfDay} onIonChange={e => setTimeOfDay(e.target.value)}>
                 <IonSelectOption value={1}>Morning</IonSelectOption>
                 <IonSelectOption value={2}>Afternoon</IonSelectOption>
                 <IonSelectOption value={3}>Evening</IonSelectOption>
@@ -247,19 +254,19 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
             </IonItem>
 
             <IonItem>
-              <IonInput label='Hours before repeat:' type='number' value={timeOffset} onIonChange={e => setTimeOffset(e.target.value)}></IonInput>
+              <IonInput label='Hours before repeat:' type='number' value={timeOffset} onIonInput={e => setTimeOffset(e.target.value)}></IonInput>
             </IonItem>
           </div>
           <p className="sectionHeading">Please provide instructions that {patientName == "" ? "the patient" : patientName} must follow.</p>
           <div className='formGroup'>
 
             <IonItem>
-              <IonTextarea label='Instructions:' value={instructions} onIonChange={e => setInstructions(e.target.value)}></IonTextarea>
+              <IonTextarea labelPlacement="fixed" label='Instructions:' value={instructions} onIonInput={e => setInstructions(e.target.value)}></IonTextarea>
             </IonItem>
           </div>
 
 
-          <IonButton expand="full" color="danger" className="submit-button" onClick={handleSubmit}>
+          <IonButton expand="full" color="primary" className="submit-button" onClick={handleSubmit}>
             Submit
           </IonButton>
         </div>
@@ -270,25 +277,37 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
             </IonToolbar>
           </IonHeader>
           <IonContent className="ion-padding">
-            <p>Are you sure you wish to create this regime?</p>
-            <div className="data-display">
-              <h3>Entered Data:</h3>
-              <p><strong>Patient:</strong> {patientName}</p>
-              <p><strong>Information:</strong> <pre>{information}</pre></p>
-              <p><strong>Compartment:</strong> {compartment == undefined ? "Medication not stored in compartment" : compartment}</p>
-              <p><strong>Day:</strong> {dayConvert(dateInfo.getDay())}</p>
-              <p><strong>Month:</strong> {monthConvert(dateInfo.getMonth() + 1)}</p>
-              <p><strong>Year:</strong> {dateInfo.getFullYear()}</p>
-              <p><strong>Time of Day:</strong> {timeOfDayConvert(timeOfDay)}</p>
-              <p><strong>Hours before repeat:</strong> {timeOffset} hours</p>
-              <p><strong>Instructions:</strong> <pre>{instructions}</pre></p>
-            </div >
-            <IonButton expand="full" color="primary" onClick={handleConfirm}>
+            <p className='regimeConfirm'>Are you sure you wish to create this regime?</p>
+            <IonButton expand="full" color="success" onClick={handleConfirm}>
               Yes
             </IonButton>
-            <IonButton expand="full" color="medium" className="cancel-button" onClick={() => setShowModal(false)}>
+            <IonButton expand="full" color="danger" className="cancel-button" onClick={() => setShowModal(false)}>
               No
             </IonButton>
+            <div className="data-display">
+              <div className='alignRegimeReview'>
+                <p><strong>Patient:</strong> {patientName}</p>
+              </div>
+              <div className='alignRegimeReview'>
+                <p><strong>Information:</strong> </p><p>{information}</p>
+              </div>
+              <div className='alignRegimeReview'>
+                <p><strong>Compartment:</strong> {compartment == undefined ? "Medication not stored in compartment" : compartment}</p> 
+              </div>
+              <div className='alignRegimeReview'>
+                <p><strong>Date:</strong> {dayConvert(dateInfo.getDay())}, {handleDate(dateInfo.getDay())} {monthConvert(dateInfo.getMonth() + 1)}</p>
+              </div>
+              <div className='alignRegimeReview'>
+                <p><strong>Time of Day:</strong> {timeOfDayConvert(timeOfDay)}</p>
+              </div>
+              <div className='alignRegimeReview'>
+                <p><strong>Hours before repeat:</strong> {timeOffset} hours</p>
+              </div>
+              <div className='alignRegimeReview'>
+                <p><strong>Instructions:</strong></p>
+                 <p>{instructions}</p>
+              </div>
+              </div >
           </IonContent >
         </IonModal >
       </IonContent >
@@ -413,6 +432,17 @@ function timeOfDayConvert(timeOfDay: number): string {
   }
 
   return stringTimeOfDay;
+}
+
+function handleDate(date:number):string {
+  let stringDay = "";
+
+  if(date % 10 == 1 && date != 11) stringDay = date + "st"
+  else if(date % 10 == 2 && date != 12) stringDay = date + "nd"
+  else if(date % 10 == 3 && date != 13) stringDay = date + "rd"
+  else stringDay = date + "th"
+
+  return stringDay;
 }
 
 export default AddRegime;

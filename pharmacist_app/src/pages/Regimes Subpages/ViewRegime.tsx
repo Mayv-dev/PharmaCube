@@ -11,11 +11,14 @@ import {
   IonTitle,
   IonToolbar,
   IonRouterLink,
+  IonIcon,
+  IonText,
 } from '@ionic/react';
 import '../../styles/Regime Subpages/ViewRegime.css';
 import LowerToolbar from '../../components/LowerToolbar';
 import { RegimeItem } from 'api types/types';
 import RegimeItemContainer from '../../components/Regime Components/RegimeItemContainer';
+import { arrowBack } from 'ionicons/icons';
 
 type ContainerProps = {
 	passModifyDataToApp:any
@@ -101,11 +104,12 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
     <IonPage>
 			<IonContent className="ion-padding">
 			<div className='webBody'>
-				<IonRouterLink routerLink='/regimes/'>
-					<IonButton expand="block" className='ScheduleButtons' color="light">
-						Back to Regime Home
-					</IonButton>
-				</IonRouterLink>
+				<div className='regimeReturn'>
+                  <IonButton routerLink='/regimes/' color="light">
+                    <IonIcon icon={arrowBack}></IonIcon>
+                    <IonText>Back to Regime Home</IonText>
+                  </IonButton>
+              </div>
 				<IonSelect className="patientSelect" label="Select a patient:" placeholder='Users' onIonChange={e => handleUserSelect(e.target.value)}>
 					<IonSelectOption>Ann Murphy</IonSelectOption>
 					<IonSelectOption>Aaron Murphy</IonSelectOption>
@@ -129,7 +133,7 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
               <IonTitle>Confirm Submission</IonTitle>
             </IonToolbar>
           </IonHeader>
-          <IonContent>
+          <IonContent className="ion-padding">
 		  <div className='webBody'>
             <p>Are you sure you wish to delete this regime?</p>
             <IonButton expand="full" color="primary" onClick={() => {
