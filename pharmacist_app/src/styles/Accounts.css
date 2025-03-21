@@ -9,13 +9,19 @@
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
+	background-color: var(--ion-background-color);
+	justify-content: flex-start;
+	height: fit-content;
 }
 
 .patientContainerName {
-	width: 20%;
+	width: 74%;
+	text-align: center;	
+	font-size: 24px;
 }
 .deletePatientButton {
 	width: 10%;
+	position: relative;
 }
 
 .imageContainer {
@@ -24,4 +30,14 @@
 }
 .qrImg {
 	width: 50%;
+}
+
+.patientImage {
+	width: 15%;
+	aspect-ratio: 1/1;
+}
+
+.patientDeleteNameEntry {
+	background-color: rgb(79, 78, 78);
+	border: 1px solid black;
 }
