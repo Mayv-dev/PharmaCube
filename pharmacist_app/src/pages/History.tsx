@@ -18,7 +18,7 @@ const History: React.FC = () => {
 
 	const [patientHistoricalDosesList, setPatientHistoricalDosesList] = useState<PatientAdherenceRecord[]>([])
 
-	const [patientId, setPatientId] = useState<number>(0)
+	const [patientId, setPatientId] = useState(undefined)
 	const [patientList, setPatientList] = useState<any[]>([])
 
 	
@@ -61,37 +61,22 @@ const History: React.FC = () => {
 		}
 	  };
 
-	  const getMockPatientList = async () => {
-		try {
-		  const { data, status } = await axios.get(
-			`http://demo3553220.mockable.io/patients`,
-			{
-			  headers: {
-				Accept: 'application/json'
-			  },
-			},
-		  );
-	
-		  return data;
-	
-		} catch (error) {
-		  if (axios.isAxiosError(error)) {
-			console.log('error message: ', error.message);
-			return error.message;
-		  } else {
-			console.log('unexpected error: ', error);
-			return 'An unexpected error occurred';
-		  }
-		}
-	  };
+	  const getMockPatientList = () => {
+		return [{
+		  "id":1,
+		  "name":"Ann Murphy",
+		  "patient_schedule_ids":[0,1,2,3],
+		  "scheduled_regime_ids":[0,1,2,3]
+	  }]
+	};
 
 	  useEffect(() => {
 		setDateList(getDateRange({ year: date.year, month: date.month, day: 1 }, { year: date.year, month: date.month, day: numberOfDaysInMonth(date)})) 
-		getMockPatientList().then(setPatientList)
+		setPatientList(getMockPatientList)
 	},[]);
 
 	useEffect(() => {
-		getHistoryFromServer().then(setPatientHistoricalDosesList)
+		patientId != undefined ? getHistoryFromServer().then(setPatientHistoricalDosesList) : null;
 	},[patientId]);
 
   return(
@@ -103,7 +88,7 @@ const History: React.FC = () => {
 					{patientList.map(patientInList => <IonSelectOption value={patientInList.id}>{patientInList.name}</IonSelectOption>)}
 				</IonSelect>
 			</IonItem>
-			{patientId == 0 ? <p>Select a patient to view their history</p> : 
+			{patientId == undefined ? <p>Select a patient to view their history</p> : 
 				<div className='calendarLayout'>
 					<div className='history'>
 						<p>Calendar</p>

@@ -29,7 +29,7 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus}) => 
 	const [pharmacistId, setPharmacistId] = useState<number>(1);
 
 	const [patientId, setPatientId] = useState<number>(2);
-	const [patientName, setPatientName] = useState('Unselected');
+	const [patientName, setPatientName] = useState('Ann Murphy');
 	const [patientChat, setPatientChat] = useState<Chat>({patient_id:2, pharmacist_id:1, messages:[{sender_id:2,time_sent:"2025-03-17T15:40:57+00:00",message_body:"Are you my new pharmacist?"}, {sender_id:1,time_sent:"2025-03-17T15:40:57+00:00",message_body:"Yes, how can I help you?"}]});
 
 	const [answered, setAnswered] = useState(false);
