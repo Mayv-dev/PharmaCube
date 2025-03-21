@@ -36,7 +36,7 @@ const Account: React.FC = () => {
 		try {
 			console.log("put request being made...")
 			const { data, status } = await axios.put(
-				`http://localhost:8080/pharmacist/2`,
+				`http://localhost:8080/pharmacist/1`,
 				addedPharmacist,
 				{
 					headers: {
