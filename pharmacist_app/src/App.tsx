@@ -117,6 +117,10 @@ const App: React.FC = () => {
     }, 5000);
   },[pollState])
 
+  useEffect(() => {
+    // this useEffect ensures that there is no delay in the notification list being updated from firebase
+  },[notificationList])
+
   const fetchNotifications = async () => {
     try {
 			const { data, status } = await axios.get(
