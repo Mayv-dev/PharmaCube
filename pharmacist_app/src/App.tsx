@@ -49,7 +49,6 @@ import History from './pages/History';
 
 import "./styles/GlobalStyling.css"
 setupIonicReact();
-
 // firebase notification code taken from https://www.youtube.com/watch?v=IK8x7qc9ZsA
 import {generateToken, messaging} from "./notifications/firebaseHidden.js"
 import { onMessage } from 'firebase/messaging';
@@ -76,7 +75,7 @@ const App: React.FC = () => {
 			timestamp: "2025-01-06T23:00:19+00:00",
 			urgency: 0
 		}]);
-  const [pharmacistId, setPharmacistId] = useState<number>(0); // TODO: Set to actual pharmacist  when notification route is established and working
+  const [pharmacistId, setPharmacistId] = useState<number>(0); // TODO: Set to actual pharmacist when notification route is established and working
 
 
   const [modifyRegimeInfo, setModifyRegimeInfo] = useState(null);
@@ -90,7 +89,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if(window.location.href.endsWith("chat/patient")) setGetPatientChatStatus(!getPatientChatStatus)
-    if(pharmacistId != 0) fetchNotifications().then(res => res == "Network Error" ? null:setNotificationList(res))
+    if(pharmacistId != 0) fetchNotifications().then(res => res == "Network Error" || res == "Request failed with status code 404" ? console.log("Server connection has failed in App.tsx with the following error message: ", res):setNotificationList(res))
     setTimeout(() => {			
       setPollState(!pollState);
     }, 5000);

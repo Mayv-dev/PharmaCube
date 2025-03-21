@@ -36,7 +36,7 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus}) => 
 
 	// Code for setTimeout found at w3schools.com: https://www.w3schools.com/react/react_useeffect.asp
 	useEffect(()=> {
-		getPatientChat().then(res => res == "Network Error" ? null:setPatientChat(res))	
+		getPatientChat().then(res => res == "Network Error" || res == "Request failed with status code 404" ? console.log("Server connection has failed in PatientApp.tsx with the following error message: ", res):setPatientChat(res))	
 	},[passedPatientChatStatus])
 
 	const getPatientChat = async () => {
