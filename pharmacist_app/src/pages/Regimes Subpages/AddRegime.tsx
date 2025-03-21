@@ -62,31 +62,16 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
       setTimeOffset(passedInfo.time_adjustment)
       setInstructions(passedInfo.instructions)
     }
-    else getMockPatientList().then(setPatientList)
+    else setPatientList(getMockPatientList())
   }, [passedInfo]);
 
-  const getMockPatientList = async () => {
-    try {
-      const { data, status } = await axios.get(
-        `http://demo3553220.mockable.io/patients`,
-        {
-          headers: {
-            Accept: 'application/json'
-          },
-        },
-      );
-
-      return data;
-
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log('error message: ', error.message);
-        return error.message;
-      } else {
-        console.log('unexpected error: ', error);
-        return 'An unexpected error occurred';
-      }
-    }
+  const getMockPatientList = () => {
+      return [{
+        "id":1,
+        "name":"Ann Murphy",
+        "patient_schedule_ids":[0,1,2,3],
+        "scheduled_regime_ids":[0,1,2,3]
+    }]
   };
 
   const handleSubmit = () => {

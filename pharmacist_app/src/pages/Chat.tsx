@@ -13,7 +13,7 @@ import LowerToolbar from '../components/LowerToolbar';
 
 
 const Users: React.FC = () => {
-  const [patientList, setPatientList] = useState([{ username: "Ann Murphy" }, { username: "Aaron Murphy" }, { username: "Irene Duffy" }])
+  const [patientList, setPatientList] = useState([{ username: "Ann Murphy" }])
   const [filteredUsers, setFilteredUsers] = useState([{}]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);

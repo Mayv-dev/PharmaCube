@@ -112,8 +112,6 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
               </div>
 				<IonSelect className="patientSelect" label="Select a patient:" placeholder='Users' onIonChange={e => handleUserSelect(e.target.value)}>
 					<IonSelectOption>Ann Murphy</IonSelectOption>
-					<IonSelectOption>Aaron Murphy</IonSelectOption>
-					<IonSelectOption>Irene Duffy</IonSelectOption>
 				</IonSelect>
 			{
 				patientName == "Unselected" ? null :
