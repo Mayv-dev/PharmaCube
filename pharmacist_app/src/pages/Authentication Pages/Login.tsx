@@ -27,7 +27,7 @@ const Login: React.FC = () => {
 				
 				try {
 					const { data, status } = await axios.get(
-						`http://localhost:8080/pharmacist/2`,
+						`http://localhost:8080/pharmacist/1`,
 						{
 						headers: {
 							Accept: 'application/json'
