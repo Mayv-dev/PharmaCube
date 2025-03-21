@@ -13,6 +13,7 @@ import {
   IonRouterLink,
   IonIcon,
   IonText,
+  IonItem,
 } from '@ionic/react';
 import '../../styles/Regime Subpages/ViewRegime.css';
 import LowerToolbar from '../../components/LowerToolbar';
@@ -110,9 +111,12 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
                     <IonText>Back to Regime Home</IonText>
                   </IonButton>
               </div>
-				<IonSelect className="patientSelect" label="Select a patient:" placeholder='Users' onIonChange={e => handleUserSelect(e.target.value)}>
+				<IonItem>
+
+				<IonSelect interface="popover" label="Patient" placeholder='Choose a patient' onIonChange={e => handleUserSelect(e.target.value)}>
 					<IonSelectOption>Ann Murphy</IonSelectOption>
 				</IonSelect>
+				</IonItem>
 			{
 				patientName == "Unselected" ? null :
 				<>
