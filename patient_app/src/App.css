@@ -1,8 +1,6 @@
 /* Custom Tab Bar */
 .custom-tab-bar {
-  position: fixed;
   width: 100%;
-  z-index: 1000;
   background-color: var(--ion-tab-bar-background, #ffffff);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 8px 0;
@@ -25,80 +23,66 @@
   border-bottom: none;
 }
 
-/* Dynamic Header/Footer */
+/* Dynamic Header */
 ion-header {
-  position: fixed;
   width: 100%;
   z-index: 1000;
+  background: linear-gradient(135deg, #99f7db, #1e90b3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  height: 80px;
+  display: flex;
+  align-items: center;
 }
 
-ion-header[slot="top"] {
-  top: 0;
+/* Dark Mode Header */
+.dark ion-header {
+  background: linear-gradient(135deg, #1a1a1a, #000000);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-ion-header[slot="bottom"] {
-  bottom: 0;
+/* Toolbar Styles */
+ion-toolbar {
+  --background: transparent;
+  --color: white;
+  padding: 0 24px;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
-/* Custom Tab Button */
-.custom-tab-button {
-  --background: transparent; /* Transparent background */
-  --color: var(--ion-tab-bar-color, #6c9a8b); /* Default text color */
-  --color-selected: var(--ion-tab-bar-color-activated, #66d6c3); /* Active text color */
-  --padding-start: 16px;
-  --padding-end: 16px;
-  transition: all 0.3s ease; /* Smooth transition */
+/* Dark Mode Toolbar */
+.dark ion-toolbar {
+  --color: #ffffff;
 }
 
-.custom-tab-button:hover {
-  --background: rgba(108, 154, 139, 0.1); /* Light hover background */
-  --color: var(--ion-tab-bar-color-activated, #66d6c3); /* Hover text color */
+/* Title Styles */
+ion-title {
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-align: center;
+  transition: opacity 0.3s ease;
+  flex: 1;
 }
 
-.custom-tab-button.tab-selected {
-  --background: rgba(108, 154, 139, 0.1); /* Active background */
-  --color: var(--ion-tab-bar-color-activated, #66d6c3); /* Active text color */
+/* Dark Mode Title */
+.dark ion-title {
+  color: #ffffff;
 }
 
-/* Tab Icon */
-.tab-icon {
-  font-size: 24px; /* Icon size */
-  margin-bottom: 4px; /* Space between icon and label */
+/* Hover Effect on Toolbar */
+ion-toolbar:hover {
+  opacity: 0.9;
 }
 
-/* Tab Label */
-.tab-label {
-  font-size: 14px; /* Label size */
-  font-weight: 500; /* Medium font weight */
-  text-transform: uppercase; /* Uppercase text */
-}
+/* Responsive Styles */
+@media (max-width: 768px) {
+  ion-header {
+    height: 70px;
+  }
 
-/* Global Dark Mode Styles */
-body.dark {
-  background-color: var(--ion-background-color);
-  color: var(--ion-text-color);
-}
-
-/* Ensure all text is readable in dark mode */
-body.dark ion-item,
-body.dark ion-label,
-body.dark ion-title,
-body.dark ion-button {
-  color: var(--ion-text-color);
-}
-
-/* Ensure inputs and buttons are styled correctly in dark mode */
-body.dark ion-input,
-body.dark ion-select,
-body.dark ion-toggle {
-  --background: var(--ion-item-background);
-  --color: var(--ion-text-color);
-  --placeholder-color: var(--ion-text-color);
-}
-
-/* Ensure cards and modals are styled correctly in dark mode */
-body.dark ion-card,
-body.dark ion-modal {
-  --background: var(--ion-item-background);
-  --color: var(--ion-text-color);
+  ion-title {
+    font-size: 1.5rem;
+  }
 }

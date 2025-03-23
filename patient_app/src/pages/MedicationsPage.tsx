@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   IonContent,
   IonHeader,
@@ -19,8 +19,6 @@ import {
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
-  IonSelect,
-  IonSelectOption,
   IonAlert,
   IonImg,
   IonFab,
@@ -31,22 +29,12 @@ import { addOutline, trashOutline, camera } from 'ionicons/icons';
 import { useColorblindFilter } from '../colorBlindContext';
 import { usePhotoGallery } from './usePhotoGallery';
 import './MedicationsPage.css';
-
-interface Medication {
-  id: number;
-  name: string;
-  type: string;
-  dosage: string;
-  frequency: string;
-  image?: string;
-}
+import { Medication } from '../api types/types';
 
 const MedicationPage: React.FC = () => {
   const [medications, setMedications] = useState<Medication[]>([]);
   const [name, setName] = useState<string>('');
-  const [type, setType] = useState<string>('');
-  const [dosage, setDosage] = useState<string>('');
-  const [frequency, setFrequency] = useState<string>('');
+  const [amount, setAmount] = useState<string>('');
   const [showToast, setShowToast] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>('');
   const [showDeleteAlert, setShowDeleteAlert] = useState<boolean>(false);
@@ -55,8 +43,13 @@ const MedicationPage: React.FC = () => {
   const { filter } = useColorblindFilter();
   const { takePhoto, photos } = usePhotoGallery();
 
+  useEffect(() => {
+    const storedMedications = JSON.parse(localStorage.getItem('medications') || '[]');
+    setMedications(storedMedications);
+  }, []);
+
   const addMedication = () => {
-    if (!name || !type || !dosage || !frequency) {
+    if (!name || !amount) {
       setToastMessage("Please fill in all fields.");
       setShowToast(true);
       return;
@@ -65,17 +58,15 @@ const MedicationPage: React.FC = () => {
     const newMedication: Medication = {
       id: Date.now(),
       name,
-      type,
-      dosage,
-      frequency,
+      amount,
       image: photos[0]?.webviewPath,
     };
 
-    setMedications([...medications, newMedication]);
+    const updatedMedications = [...medications, newMedication];
+    setMedications(updatedMedications);
+    localStorage.setItem('medications', JSON.stringify(updatedMedications));
     setName("");
-    setType("");
-    setDosage("");
-    setFrequency("");
+    setAmount("");
     setToastMessage("Medication added successfully!");
     setShowToast(true);
     setShowAddModal(false);
@@ -90,16 +81,13 @@ const MedicationPage: React.FC = () => {
     if (medicationToDelete !== null) {
       const updatedMedications = medications.filter((med) => med.id !== medicationToDelete);
       setMedications(updatedMedications);
+      localStorage.setItem('medications', JSON.stringify(updatedMedications));
       setToastMessage("Medication deleted successfully!");
       setShowToast(true);
     }
     setShowDeleteAlert(false);
     setMedicationToDelete(null);
   };
-
-  // Calculate quick stats
-  const totalMedications = medications.length;
-  const upcomingMedications = medications.filter((med) => med.frequency === "Once daily").length;
 
   return (
     <IonPage className={filter}>
@@ -110,20 +98,18 @@ const MedicationPage: React.FC = () => {
       </IonHeader>
 
       <IonContent fullscreen className="ion-padding content">
-        {/* Welcome Message and Quick Stats */}
         <div className="welcome-section">
           <h1 className="welcome-title">Welcome Back!</h1>
           <div className="quick-stats">
             <IonCard className="stat-card">
               <IonCardContent>
-                <h2>{totalMedications}</h2>
+                <h2>{medications.length}</h2>
                 <p>Total Medications</p>
               </IonCardContent>
             </IonCard>
           </div>
         </div>
 
-        {/* Today's Medicines Section */}
         <div className="medications-section">
           <h2 className="section-title">Today's Medicines</h2>
           <IonList className="medication-list">
@@ -137,8 +123,7 @@ const MedicationPage: React.FC = () => {
                   )}
                   <div className="medication-details">
                     <h2>{med.name}</h2>
-                    <p>{med.type}, {med.dosage}</p>
-                    <p>{med.frequency}</p>
+                    <p>{med.amount}</p>
                   </div>
                   <IonButton
                     color="danger"
@@ -153,14 +138,12 @@ const MedicationPage: React.FC = () => {
           </IonList>
         </div>
 
-        {/* Add Medication Button */}
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
           <IonFabButton onClick={() => setShowAddModal(true)}>
             <IonIcon icon={addOutline} />
           </IonFabButton>
         </IonFab>
 
-        {/* Add Medication Modal */}
         <IonModal isOpen={showAddModal} onDidDismiss={() => setShowAddModal(false)}>
           <IonContent>
             <div className="modal-content">
@@ -178,33 +161,12 @@ const MedicationPage: React.FC = () => {
                     />
                   </IonItem>
                   <IonItem>
-                    <IonLabel position="floating">Type</IonLabel>
+                    <IonLabel position="floating">Amount</IonLabel>
                     <IonInput
-                      value={type}
-                      onIonChange={(e) => setType(e.detail.value!)}
-                      placeholder="e.g., Capsule"
+                      value={amount}
+                      onIonChange={(e) => setAmount(e.detail.value!)}
+                      placeholder="e.g., 3 pills"
                     />
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel position="floating">Dosage</IonLabel>
-                    <IonInput
-                      value={dosage}
-                      onIonChange={(e) => setDosage(e.detail.value!)}
-                      placeholder="e.g., 500mg"
-                    />
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel position="floating">Frequency</IonLabel>
-                    <IonSelect
-                      value={frequency}
-                      placeholder="Select Frequency"
-                      onIonChange={(e) => setFrequency(e.detail.value)}
-                    >
-                      <IonSelectOption value="Once daily">Once daily</IonSelectOption>
-                      <IonSelectOption value="Twice daily">Twice daily</IonSelectOption>
-                      <IonSelectOption value="Three times daily">Three times daily</IonSelectOption>
-                      <IonSelectOption value="As needed">As needed</IonSelectOption>
-                    </IonSelect>
                   </IonItem>
                   <IonButton expand="block" onClick={takePhoto} className="ion-margin-top">
                     <IonIcon icon={camera} slot="start" />
@@ -220,7 +182,6 @@ const MedicationPage: React.FC = () => {
           </IonContent>
         </IonModal>
 
-        {/* Toast for feedback */}
         <IonToast
           isOpen={showToast}
           onDidDismiss={() => setShowToast(false)}
@@ -229,7 +190,6 @@ const MedicationPage: React.FC = () => {
           color="success"
         />
 
-        {/* Delete Confirmation Alert */}
         <IonAlert
           isOpen={showDeleteAlert}
           onDidDismiss={() => setShowDeleteAlert(false)}

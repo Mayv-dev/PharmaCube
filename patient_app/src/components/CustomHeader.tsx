@@ -26,9 +26,9 @@ const CustomHeader: React.FC = () => {
   };
 
   return (
-    <IonHeader>
-      <IonToolbar>
-        <IonTitle>{getPageTitle()}</IonTitle>
+    <IonHeader className="custom-header">
+      <IonToolbar className="custom-toolbar">
+        <IonTitle className="custom-title">{getPageTitle()}</IonTitle>
       </IonToolbar>
     </IonHeader>
   );

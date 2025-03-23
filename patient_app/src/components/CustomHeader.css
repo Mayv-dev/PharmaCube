@@ -1,20 +1,23 @@
-ion-header {
+/* Custom Header */
+.custom-header {
+  width: 100%;
+  z-index: 1000;
   background: linear-gradient(135deg, #99f7db, #1e90b3);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   height: 80px;
   display: flex;
   align-items: center;
-  position: static;
-  z-index: 1;
 }
 
-.dark ion-header {
+/* Dark Mode Header */
+.dark .custom-header {
   background: linear-gradient(135deg, #1a1a1a, #000000);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-ion-toolbar {
+/* Toolbar Styles */
+.custom-toolbar {
   --background: transparent;
   --color: white;
   padding: 0 24px;
@@ -23,11 +26,13 @@ ion-toolbar {
   align-items: center;
 }
 
-.dark ion-toolbar {
+/* Dark Mode Toolbar */
+.dark .custom-toolbar {
   --color: #ffffff;
 }
 
-ion-title {
+/* Title Styles */
+.custom-title {
   font-size: 2rem;
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -36,20 +41,23 @@ ion-title {
   flex: 1;
 }
 
-.dark ion-title {
+/* Dark Mode Title */
+.dark .custom-title {
   color: #ffffff;
 }
 
-ion-toolbar:hover {
+/* Hover Effect on Toolbar */
+.custom-toolbar:hover {
   opacity: 0.9;
 }
 
+/* Responsive Styles */
 @media (max-width: 768px) {
-  ion-header {
+  .custom-header {
     height: 70px;
   }
 
-  ion-title {
+  .custom-title {
     font-size: 1.5rem;
   }
 }

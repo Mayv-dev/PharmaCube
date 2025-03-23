@@ -1,11 +1,9 @@
-/* General Styles */
 .title {
   font-size: 50px;
   font-weight: bold;
-  color: var(--ion-text-color); /* Use Ionic variable */
+  color: var(--ion-text-color);
 }
 
-/* Day selection buttons */
 .day-row {
   display: flex;
   justify-content: center;
@@ -25,21 +23,19 @@
   width: 100%;
   height: 50px;
   border-radius: 30px;
-  background: var(--ion-color-primary); /* Use Ionic variable */
-  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
-  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth hover effect */
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .day-button:hover {
-  transform: scale(1.2); /* Slightly enlarge on hover */
+  transform: scale(1.2);
 }
 
 .selected-day .day-button {
-  background-color: var(--ion-color-primary-shade); 
+  background-color: var(--ion-color-primary-shade);
   color: var(--ion-color-primary-contrast);
 }
-
-
 
 .schedule-list {
   font-size: 40px;
@@ -54,19 +50,18 @@
   --padding-bottom: 12px;
   margin-bottom: 36px;
   border-radius: 40px;
- 
 }
 
 .time-icon {
   margin-right: 42px;
-  font-size: 30px; /* Increased icon size */
+  font-size: 30px;
   border-radius: 30px;
-  color: var(--ion-text-color); /* Use Ionic variable */
+  color: var(--ion-text-color);
 }
 
 .time-input:focus {
   outline: none;
-  border-color: var(--ion-color-primary); /* Use Ionic variable */
+  border-color: var(--ion-color-primary);
   box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
   border-radius: 40px;
 }
@@ -75,59 +70,50 @@
   border-radius: 40px;
 }
 
-/* Buttons */
 .edit-button,
 .delete-button,
 .confirm-edit-button,
 .cancel-edit-button {
-  font-size: 35px; /* Increased icon size */
+  font-size: 35px;
   --padding-start: 32px;
   --padding-end: 32px;
   border-radius: 40px;
-  background: var(--ion-color-primary); /* Use Ionic variable */
-  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
 }
 
-/* Toast */
 ion-toast {
-  --color: var(--ion-color-primary-contrast); /* Use Ionic variable */
-  --background: var(--ion-color-success); /* Use Ionic variable */
+  --color: var(--ion-color-primary-contrast);
+  --background: var(--ion-color-success);
 }
 
-/* Target the ion-icon inside schedule-label */
 .schedule-label ion-icon.time-icon {
-  font-size: 62px; /* Adjust this value to make the icon larger */
+  font-size: 62px;
   margin-right: 62px;
   border-radius: 30px;
-  color: var(--ion-text-color); /* Use Ionic variable */
+  color: var(--ion-text-color);
 }
 
-/* Override default IonLabel styles */
 ion-label.schedule-label {
   font-size: 30px !important;
   border-radius: 40px;
-  color: var(--ion-text-color); /* Use Ionic variable */
+  color: var(--ion-text-color);
 }
 
-/* Day button hover and selected styles */
 .day-button:hover {
-  background-color: var(--ion-color-primary-shade); /* Use Ionic variable */
-  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
+  background-color: var(--ion-color-primary-shade);
+  color: var(--ion-color-primary-contrast);
 }
 
 .selected-day .day-button {
-  background-color: var(--ion-color-primary-shade); /* Use Ionic variable */
-  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
+  background-color: var(--ion-color-primary-shade);
+  color: var(--ion-color-primary-contrast);
 }
-
-
-
 
 .time-icon {
   margin-right: 42px;
-  font-size: 30px; /* Increased icon size */
+  font-size: 30px;
 }
-
 
 .time-input:focus {
   outline: none;
@@ -135,28 +121,39 @@ ion-label.schedule-label {
   box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
 }
 
-/* Buttons */
 .edit-button,
 .delete-button,
 .confirm-edit-button,
 .cancel-edit-button {
-  font-size: 32px; /* Increased icon size */
+  font-size: 32px;
   --padding-start: 32px;
   --padding-end: 32px;
 }
 
-/* Toast */
 ion-toast {
   --color: white;
   --background: var(--ion-color-success);
 }
-/* Target the ion-icon inside schedule-label */
+
 .schedule-label ion-icon.time-icon {
-  font-size: 62px; /* Adjust this value to make the icon larger */
+  font-size: 62px;
   margin-right: 62px;
 }
-/* Override default IonLabel styles */
+
 ion-label.schedule-label {
-  font-size: 30px !important; 
-  
+  font-size: 30px !important;
+}
+
+.medications-list {
+  margin-top: 5px;
+}
+
+.medication-item {
+  font-size: 0.8em;
+  color: #666;
+}
+
+.medication-item small {
+  display: block;
+  margin-top: 5px;
 }

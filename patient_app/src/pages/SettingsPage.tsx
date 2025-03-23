@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   IonContent,
   IonHeader,
@@ -11,35 +11,35 @@ import {
   IonToggle,
   IonSelect,
   IonSelectOption,
-} from "@ionic/react";
-import { useColorblindFilter } from "../colorBlindContext";
-import { useSettings } from "../composables/SettingsContext";
-import "./SettingsPage.css";
+} from '@ionic/react';
+import { useColorblindFilter } from '../colorBlindContext';
+import { useSettings } from '../composables/SettingsContext';
+import './SettingsPage.css';
 
 const SettingsPage: React.FC = () => {
   const [notificationsEnabled, setNotificationsEnabled] = useState<boolean>(true);
-  const [fontSize, setFontSize] = useState<string>("medium");
-  const [accentColor, setAccentColor] = useState<string>("#66d6c3"); // Default accent color
-  const [appLayout, setAppLayout] = useState<string>("list");
+  const [fontSize, setFontSize] = useState<string>('medium');
+  const [accentColor, setAccentColor] = useState<string>('#66d6c3'); // Default accent color
+  const [appLayout, setAppLayout] = useState<string>('list');
 
   const { filter, setFilter, isDarkMode, toggleDarkMode } = useColorblindFilter();
-  const { tabBarPosition, setTabBarPosition } = useSettings();
+  const { tabBarPosition, setTabBarPosition, theme, setTheme } = useSettings();
 
   const handleFontSizeChange = (size: string) => {
     setFontSize(size);
     const fontSizeMap = {
-      small: "14px",
-      medium: "16px",
-      large: "18px",
+      small: '14px',
+      medium: '16px',
+      large: '18px',
     };
-    document.documentElement.style.setProperty("--ion-font-size", fontSizeMap[size]);
+    document.documentElement.style.setProperty('--ion-font-size', fontSizeMap[size]);
   };
 
   const handleAccentColorChange = (color: string) => {
     setAccentColor(color);
 
     // Update the primary color variable
-    document.documentElement.style.setProperty("--ion-color-primary", color);
+    document.documentElement.style.setProperty('--ion-color-primary', color);
 
     // Calculate contrast color (white or black) based on the brightness of the accent color
     const brightness = Math.round(
@@ -48,8 +48,8 @@ const SettingsPage: React.FC = () => {
         parseInt(color.slice(5, 7), 16) * 114) /
         1000
     );
-    const contrastColor = brightness > 125 ? "#000000" : "#ffffff";
-    document.documentElement.style.setProperty("--ion-color-primary-contrast", contrastColor);
+    const contrastColor = brightness > 125 ? '#000000' : '#ffffff';
+    document.documentElement.style.setProperty('--ion-color-primary-contrast', contrastColor);
 
     // Update shade and tint (optional, based on your design)
     const shade = `#${(parseInt(color.slice(1, 3), 16) - 20).toString(16)}${(
@@ -58,8 +58,8 @@ const SettingsPage: React.FC = () => {
     const tint = `#${(parseInt(color.slice(1, 3), 16) + 20).toString(16)}${(
       parseInt(color.slice(3, 5), 16) + 20
     ).toString(16)}${(parseInt(color.slice(5, 7), 16) + 20).toString(16)}`;
-    document.documentElement.style.setProperty("--ion-color-primary-shade", shade);
-    document.documentElement.style.setProperty("--ion-color-primary-tint", tint);
+    document.documentElement.style.setProperty('--ion-color-primary-shade', shade);
+    document.documentElement.style.setProperty('--ion-color-primary-tint', tint);
   };
 
   const handleAppLayoutChange = (layout: string) => {
@@ -114,7 +114,7 @@ const SettingsPage: React.FC = () => {
               <IonSelect
                 value={tabBarPosition}
                 placeholder="Select Tab Bar Position"
-                onIonChange={(e) => setTabBarPosition(e.detail.value as "bottom" | "top")}
+                onIonChange={(e) => setTabBarPosition(e.detail.value as 'bottom' | 'top')}
               >
                 <IonSelectOption value="bottom">Bottom</IonSelectOption>
                 <IonSelectOption value="top">Top</IonSelectOption>

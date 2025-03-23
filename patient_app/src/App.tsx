@@ -37,7 +37,7 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 import './theme/variables.css';
-import CustomHeader from './components/CustomHeader'; // Import the CustomHeader component
+import CustomHeader from './components/CustomHeader';
 
 setupIonicReact();
 
@@ -46,6 +46,9 @@ const App: React.FC = () => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isRegistering, setIsRegistering] = useState<boolean>(false);
+  const { tabBarPosition } = useSettings();
+
+  console.log('Current Tab Bar Position:', tabBarPosition); // Debugging
 
   useEffect(() => {
     const checkUserSession = async () => {
@@ -86,7 +89,7 @@ const App: React.FC = () => {
         <IonContent className="login-container">
           <div className="login-form">
             <img
-              src="src\Adobe Express - file.png" 
+              src="src\Adobe Express - file.png"
               alt="Logo"
               className="login-image"
             />
@@ -143,7 +146,9 @@ const App: React.FC = () => {
         <IonApp>
           <IonReactRouter>
             <IonTabs>
-              <CustomHeader /> {/* Add the CustomHeader here */}
+              {/* Render CustomHeader at the top if tabBarPosition is 'bottom' */}
+              {tabBarPosition === 'bottom' && <CustomHeader />}
+
               <IonRouterOutlet>
                 <Route exact path="/SchedulePage">
                   <SchedulePage />
@@ -168,7 +173,8 @@ const App: React.FC = () => {
                 </Route>
               </IonRouterOutlet>
 
-              <IonTabBar slot="bottom">
+              {/* Render IonTabBar based on tabBarPosition */}
+              <IonTabBar slot={tabBarPosition}>
                 <IonTabButton tab="SchedulePage" href="/SchedulePage">
                   <IonIcon icon={calendarOutline} />
                   <IonLabel>Schedule</IonLabel>
@@ -186,13 +192,16 @@ const App: React.FC = () => {
                   <IonLabel>Settings</IonLabel>
                 </IonTabButton>
               </IonTabBar>
+
+              {/* Render CustomHeader at the bottom if tabBarPosition is 'top' */}
+              {tabBarPosition === 'top' && <CustomHeader />}
             </IonTabs>
           </IonReactRouter>
           <button
             onClick={handleLogout}
             style={{
               position: 'fixed',
-              bottom: 80, // Adjusted to avoid overlapping with the tab bar
+              bottom: 80,
               left: '50%',
               transform: 'translateX(-50%)',
               padding: '10px 20px',
