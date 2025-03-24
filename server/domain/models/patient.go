@@ -7,4 +7,5 @@ type Patient struct {
 	ScheduledRegimes []PatientScheduledRegime `json:"scheduled_regimes"`
 	AdherenceRecord  []PatientAdherenceRecord `json:"adherence_record"`
 	PharmacistID     uint                     `json:"pharmacist_id"`
+	Chats            []Chat                   `json:"chats"`
 }
