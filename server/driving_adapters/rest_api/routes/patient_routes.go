@@ -6,11 +6,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+
+
 func PatientRoutes(router *gin.Engine) {
 	router.GET("/patient/:patient_id/regime", requesthandlers.GetPatientRegime)
 	router.GET("/patient/:patient_id/regime/:regime_id", requesthandlers.GetPatientRegimeItem)
 
 	router.GET("/patient/:patient_id/notifications", requesthandlers.GetPatientNotifications)
+
 
 
 	router.GET("/patient/:patient_id/schedule", requesthandlers.GetPatientSchedule)

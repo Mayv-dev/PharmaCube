@@ -29,7 +29,7 @@ type Notification = {
 
 async function getMockData() {
   try {
-    const { data, status } = await axios.get('http://demo3553220.mockable.io/notification', {
+    const { data } = await axios.get('http://localhost:8080/patient/123/notifications', {
       headers: {
         Accept: 'application/json',
       },
@@ -39,13 +39,14 @@ async function getMockData() {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log('error message: ', error.message);
-      return error.message;
+      return [];
     } else {
       console.log('unexpected error: ', error);
-      return 'An unexpected error occurred';
+      return [];
     }
   }
 }
+
 
 const NotificationPage: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>();
