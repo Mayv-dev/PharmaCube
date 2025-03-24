@@ -1,0 +1,10 @@
+npm install @capacitor/camera
+
+(if using capacitor)npx cap sync
+
+npm run start
+
+
+npm install @capacitor/core@latest
+npm install @capacitor/camera@latest
+npm install @capacitor/core@latest @capacitor/camera@latest @capacitor/cli@latest

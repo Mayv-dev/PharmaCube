@@ -4,6 +4,8 @@
   margin: 20px auto;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: var(--ion-background-color); /* Use Ionic variable */
+  color: var(--ion-text-color); /* Use Ionic variable */
 }
 
 .center-icon-container {
@@ -13,7 +15,8 @@
 
 .center-icon {
   font-size: 64px;
-  color: var(--ion-color-primary);
+  color: var(--ion-color-primary); /* Use Ionic variable */
+
 }
 
 .center-grid {
@@ -43,9 +46,21 @@
 .card-label {
   margin-left: 10px;
   font-size: 18px;
+  color: var(--ion-text-color); /* Use Ionic variable */
 }
 
 .filter-selector {
   max-width: 300px;
   margin: 20px auto;
+  background: var(--ion-color-primary); /* Use Ionic variable */
+  color: var(--ion-color-primary-contrast); /* Use Ionic variable */
+  border-radius: 30px;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.filter-selector:hover {
+  background: var(--ion-color-primary-shade); /* Use Ionic variable */
 }

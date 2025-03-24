@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   IonCard,
   IonContent,
@@ -15,69 +16,51 @@ import {
   IonSelect,
   IonSelectOption,
 } from '@ionic/react';
-import { timeOutline, calendarOutline, calendar } from 'ionicons/icons'; 
-import { useState } from 'react';
+import { timeOutline, calendarOutline } from 'ionicons/icons';
+import { useColorblindFilter } from '../colorBlindContext';
 import './SchedulePage.css';
+import calendarImage from '../../../Adobe Express - file.png';
 
 const SchedulePage: React.FC = () => {
-  const [filter, setFilter] = useState<string>(''); 
+  const { filter } = useColorblindFilter();
 
   return (
-    <IonPage className={filter}> {}
+    <IonPage className={filter}>
       <IonHeader>
-        <IonToolbar color="primary">
-          <IonTitle className="ion-text-center title">
-            PharmaCube Schedule
-          </IonTitle>
+        <IonToolbar>
+          <IonTitle>Schedule</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen className="ion-padding content" color="secondary">
-        {/* Filter Selector */}
-        <IonSelect
-          value={filter}
-          placeholder="Select Colorblind Filter"
-          onIonChange={(e) => setFilter(e.detail.value)}
-          className="filter-selector"
-        >
-          <IonSelectOption value="">None</IonSelectOption>
-          <IonSelectOption value="protanopia-filter">Protanopia</IonSelectOption>
-          <IonSelectOption value="deuteranopia-filter">Deuteranopia</IonSelectOption>
-          <IonSelectOption value="tritanopia-filter">Tritanopia</IonSelectOption>
-          <IonSelectOption value="achromatopsia-filter">Achromatopsia</IonSelectOption>
-        </IonSelect>
-
-        {/* Large Schedule Icon */}
+      <IonContent fullscreen className="ion-padding content">
         <div className="center-icon-container">
-          <IonIcon icon={calendar} className="center-icon" />
+          <img src={calendarImage} alt="Calendar" className="center-icon" />
         </div>
 
-        {/* Set My Free Times and View Schedule Labels */}
         <IonGrid className="center-grid">
-  <IonRow className="label-row">
-    <IonCol size="6">
-      <IonItem lines="none" className="card-item">
-        <IonRouterLink routerLink="/ScheduleAddModifyPage" className="card-link">
-          <div className="card-item-button">
-            <IonIcon icon={timeOutline} slot="start" />
-            <IonLabel className="card-label">Set My Free Times</IonLabel>
-          </div>
-        </IonRouterLink>
-      </IonItem>
-    </IonCol>
+          <IonRow className="label-row">
+            <IonCol size="6">
+              <IonItem lines="none" className="card-item">
+                <IonRouterLink routerLink="/ScheduleAddModifyPage" className="card-link">
+                  <div className="card-item-button">
+                    <IonIcon icon={timeOutline} slot="start" />
+                    <IonLabel className="card-label">Edit Schedule</IonLabel>
+                  </div>
+                </IonRouterLink>
+              </IonItem>
+            </IonCol>
 
-    <IonCol size="6">
-      <IonItem lines="none" className="card-item">
-        <IonRouterLink routerLink="/ScheduleViewPage" className="card-link">
-          <div className="card-item-button">
-            <IonIcon icon={calendarOutline} slot="start" />
-            <IonLabel className="card-label">View Schedule</IonLabel>
-          </div>
-        </IonRouterLink>
-      </IonItem>
-    </IonCol>
-  </IonRow>
-</IonGrid>
-
+            <IonCol size="6">
+              <IonItem lines="none" className="card-item">
+                <IonRouterLink routerLink="/ScheduleViewPage" className="card-link">
+                  <div className="card-item-button">
+                    <IonIcon icon={calendarOutline} slot="start" />
+                    <IonLabel className="card-label">View Schedule</IonLabel>
+                  </div>
+                </IonRouterLink>
+              </IonItem>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
     </IonPage>
   );
