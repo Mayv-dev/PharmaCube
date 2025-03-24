@@ -14,16 +14,26 @@ import {
   setupIonicReact,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { calendarOutline, medical, notificationsOutline, settingsOutline } from 'ionicons/icons';
+import {
+  calendarOutline,
+  medical,
+  notificationsOutline,
+  settingsOutline,
+  chatbubbleOutline
+} from 'ionicons/icons';
+
 import SchedulePage from './pages/SchedulePage';
 import ScheduleViewPage from './pages/Schedule Subpages/ScheduleViewPage';
 import ScheduleAddModifyPage from './pages/Schedule Subpages/ScheduleAddModifyPage';
 import NotificationPage from './pages/NotificationPage';
 import MedicationPage from './pages/MedicationsPage';
 import SettingsPage from './pages/SettingsPage';
+import ChatPage from './pages/ChatPage';
+
 import { ColorblindProvider } from './colorBlindContext';
 import { SettingsProvider, useSettings } from './composables/SettingsContext';
 import { getItem, setItem, removeItem, registerUser, verifyUser } from './utils/storage';
+
 import './App.css';
 import './loginAndRegister.css';
 import '@ionic/react/css/core.css';
@@ -37,6 +47,7 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 import './theme/variables.css';
+
 import CustomHeader from './components/CustomHeader';
 
 setupIonicReact();
@@ -47,8 +58,6 @@ const App: React.FC = () => {
   const [password, setPassword] = useState<string>('');
   const [isRegistering, setIsRegistering] = useState<boolean>(false);
   const { tabBarPosition } = useSettings();
-
-  console.log('Current Tab Bar Position:', tabBarPosition); // Debugging
 
   useEffect(() => {
     const checkUserSession = async () => {
@@ -89,7 +98,7 @@ const App: React.FC = () => {
         <IonContent className="login-container">
           <div className="login-form">
             <img
-              src="src\Adobe Express - file.png"
+              src="src/Adobe Express - file.png"
               alt="Logo"
               className="login-image"
             />
@@ -146,7 +155,6 @@ const App: React.FC = () => {
         <IonApp>
           <IonReactRouter>
             <IonTabs>
-              {/* Render CustomHeader at the top if tabBarPosition is 'bottom' */}
               {tabBarPosition === 'bottom' && <CustomHeader />}
 
               <IonRouterOutlet>
@@ -168,12 +176,14 @@ const App: React.FC = () => {
                 <Route path="/SettingsPage">
                   <SettingsPage />
                 </Route>
+                <Route path="/ChatPage">
+                  <ChatPage />
+                </Route>
                 <Route exact path="/">
                   <Redirect to="/SchedulePage" />
                 </Route>
               </IonRouterOutlet>
 
-              {/* Render IonTabBar based on tabBarPosition */}
               <IonTabBar slot={tabBarPosition}>
                 <IonTabButton tab="SchedulePage" href="/SchedulePage">
                   <IonIcon icon={calendarOutline} />
@@ -187,16 +197,20 @@ const App: React.FC = () => {
                   <IonIcon icon={medical} />
                   <IonLabel>Medication</IonLabel>
                 </IonTabButton>
+                <IonTabButton tab="ChatPage" href="/ChatPage">
+                  <IonIcon icon={chatbubbleOutline} />
+                  <IonLabel>AI Chat</IonLabel>
+                </IonTabButton>
                 <IonTabButton tab="SettingsPage" href="/SettingsPage">
                   <IonIcon icon={settingsOutline} />
                   <IonLabel>Settings</IonLabel>
                 </IonTabButton>
               </IonTabBar>
 
-              {/* Render CustomHeader at the bottom if tabBarPosition is 'top' */}
               {tabBarPosition === 'top' && <CustomHeader />}
             </IonTabs>
           </IonReactRouter>
+
           <button
             onClick={handleLogout}
             style={{
