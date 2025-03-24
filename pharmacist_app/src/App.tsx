@@ -48,6 +48,10 @@ import Register from './pages/Authentication Pages/Register';
 import History from './pages/History';
 
 import "./styles/GlobalStyling.css"
+
+
+import OneSignal from 'onesignal-cordova-plugin';
+
 setupIonicReact();
 // firebase notification code taken from https://www.youtube.com/watch?v=IK8x7qc9ZsA
 import {generateToken, messaging} from "./notifications/firebaseHidden.js"
@@ -57,6 +61,8 @@ import axios from 'axios';
 // Code snippets to help me implement audio were taken from a usage example in the following
 // library page link: https://www.npmjs.com/package/@capacitor-community/native-audio
 import {NativeAudio} from '@capacitor-community/native-audio'
+import { Capacitor } from '@capacitor/core';
+import React from 'react';
 
 // the royalty free sound used to demonstrate the notification comes from RasoolAsaad at: https://pixabay.com/users/rasoolasaad-47313572/
 NativeAudio.preload({
@@ -65,8 +71,31 @@ NativeAudio.preload({
   audioChannelNum: 1,
   isUrl: false
 });
+const platform = Capacitor.getPlatform();
 
 const App: React.FC = () => {
+  // Retrieved from https://documentation.onesignal.com/docs/ionic-capacitor-cordova-sdk-setup
+  const OneSignalInit = () => {
+  // Remove this method to stop OneSignal Debugging
+  OneSignal.Debug.setLogLevel(6)
+  
+  OneSignal.initialize(import.meta.env.VITE_ONESIGNAL_APP_ID);
+  console.log(import.meta.env.VITE_ONESIGNAL_APP_ID)
+
+  OneSignal.Notifications.addEventListener('click', async (e) => {
+    let clickData = await e.notification;
+    console.log("Notification Clicked : " + clickData);
+  })
+
+  OneSignal.Notifications.requestPermission(true).then((success: Boolean) => {
+    console.log("Notification permission granted " + success);
+  })
+  }
+
+  // This if statement is necessary to stop mobile notification cod TypeErrors on the incompatible web version
+  // This solution is adapted from previous attempts at getting sqlite working from https://www.youtube.com/watch?v=tixvx5nsJO8&t=1130s
+  if (platform != "web") {OneSignalInit();}
+
 	const [pollState, setPollState] = useState(true)
 	const [getPatientChatStatus, setGetPatientChatStatus] = useState(true)
   const [notificationList, setNotificationList] = useState<Notification[]>([{
