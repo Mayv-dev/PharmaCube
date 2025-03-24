@@ -28,7 +28,7 @@ const ChatPage: React.FC = () => {
       const res = await axios.post(
         'https://api.openai.com/v1/chat/completions',
         {
-          model: 'gpt-3.5-turbo', 
+          model: 'gpt-3.5-turbo',
           messages: [
             { role: 'system', content: 'You are a helpful assistant.' },
             ...newMessages,
@@ -36,7 +36,7 @@ const ChatPage: React.FC = () => {
         },
         {
           headers: {
-            Authorization: `Bearer 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`, 
+            Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
             'Content-Type': 'application/json',
           },
         }
@@ -45,25 +45,22 @@ const ChatPage: React.FC = () => {
       const aiReply = res.data.choices[0].message.content;
       setMessages((prev) => [...prev, { role: 'assistant', content: aiReply }]);
     } catch (error: any) {
-        console.error('❌ OpenAI API Error:', error);
-      
-        // Log status + data if available
-        if (error.response) {
-          console.error('🔴 Status:', error.response.status);
-          console.error('📦 Data:', error.response.data);
-        } else if (error.request) {
-          console.error('📡 Request was made but no response:', error.request);
-        } else {
-          console.error('⚠️ General Error:', error.message);
-        }
-      
-        setMessages((prev) => [
-          ...prev,
-          { role: 'assistant', content: 'Something went wrong. Try again.' },
-        ]);
-      }
-      
+      console.error('❌ OpenAI API Error:', error);
 
+      if (error.response) {
+        console.error('🔴 Status:', error.response.status);
+        console.error('📦 Data:', error.response.data);
+      } else if (error.request) {
+        console.error('📡 No response:', error.request);
+      } else {
+        console.error('⚠️ Error:', error.message);
+      }
+
+      setMessages((prev) => [
+        ...prev,
+        { role: 'assistant', content: 'Something went wrong. Try again.' },
+      ]);
+    }
   };
 
   return (
