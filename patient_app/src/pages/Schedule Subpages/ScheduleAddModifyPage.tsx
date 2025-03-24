@@ -66,7 +66,9 @@ const ScheduleAddModifyPage: React.FC = () => {
 
   async function loadSchedule(day: number) {
     try {
-      const { data } = await axios.get(`http://localhost:8080/patient/1/schedule?day=${day}`);
+      // 🧪 Switch to mock endpoint temporarily
+      const { data } = await axios.get(`http://localhost:8080/patient/1/mock_schedule`);
+  
       const allTimesOfDay = Object.keys(timeOfDayMap).map((key) => parseInt(key, 10));
       const scheduleWithDefaults = allTimesOfDay.map((timePeriod) => {
         const existingItem = data.find((item: ScheduleData) => item.time_period === timePeriod && item.day === day);
@@ -77,6 +79,7 @@ const ScheduleAddModifyPage: React.FC = () => {
       console.error("Error loading schedule:", error);
     }
   }
+  
 
   async function updateTime(timePeriod: number) {
     if (editHours < 0 || editHours > 23 || editMinutes < 0 || editMinutes > 59) {
