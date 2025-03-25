@@ -7,6 +7,6 @@ type Message struct {
 	TimeSent    time.Time `json:"time_sent"`
 	ChatID      uint      `json:"chat_id"`
 	SenderID    uint      `json:"sender_id"`
-	ReceivedID  uint      `json:"receiver_id"`
+	ReceiverID  uint      `json:"receiver_id"`
 	MessageBody string    `json:"message_body"`
 }
