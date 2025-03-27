@@ -38,7 +38,7 @@ const Notifications: React.FC = () => {
 	<IonPage>
   
   <IonContent className="ion-padding">
-	<div className='formBody'>
+	<div className='webBody'>
 		<div className='rowOfSelects'>
 			<IonItem>
           <IonSelect label="Filter By:">

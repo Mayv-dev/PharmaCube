@@ -57,19 +57,19 @@ const RegimeItemContainer: React.FC<ContainerProps> = ({regime, deleteItem, modi
 				
 			<IonList className='listElement'>
       <IonItem>
-        <IonLabel><span className='regimeInfoField'>Compartment:</span> {regime.compartment_id == 0 ? "No compartment, indicated by 0" : regime.compartment_id}</IonLabel>
+        <IonLabel><span className='regimeInfoField'>Compartment:</span> <p>{regime.compartment_id == 0 ? "No compartment, indicated by 0" : regime.compartment_id}</p></IonLabel>
       </IonItem>
       <IonItem>
-        <IonLabel><span className='regimeInfoField'>Information:</span> <pre>{regime.information}</pre></IonLabel>
+        <IonLabel><span className='regimeInfoField'>Information:</span> <p>{regime.information}</p></IonLabel>
       </IonItem>
       <IonItem>
-        <IonLabel><span className='regimeInfoField'>Instructions:</span> <pre>{regime.instructions}</pre></IonLabel>
+        <IonLabel><span className='regimeInfoField'>Instructions:</span> <p>{regime.instructions}</p></IonLabel>
       </IonItem>
       <IonItem>
-        <IonLabel><span className='regimeInfoField'>When to take:</span> {handleDate(regime.date)}, {timeOfDayConvert(regime.time_period)}</IonLabel>
+        <IonLabel><span className='regimeInfoField'>When to take:</span> <p>{handleDate(regime.date)}, {timeOfDayConvert(regime.time_period)}</p></IonLabel>
       </IonItem>
       <IonItem>
-        <IonLabel><span className='regimeInfoField'>Hours before repeat:</span> {regime.time_adjustment} hours</IonLabel>
+        <IonLabel><span className='regimeInfoField'>Hours before repeat:</span> <p>{regime.time_adjustment} hours</p></IonLabel>
       </IonItem>
     </IonList>
 

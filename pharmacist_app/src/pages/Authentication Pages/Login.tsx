@@ -27,7 +27,7 @@ const Login: React.FC = () => {
 				
 				try {
 					const { data, status } = await axios.get(
-						`http://localhost:8080/pharmacist/2`,
+						`http://localhost:8080/pharmacist/1`,
 						{
 						headers: {
 							Accept: 'application/json'
@@ -51,8 +51,8 @@ const Login: React.FC = () => {
 	}
 	return (
 		<IonPage>
-			<IonContent>
-				<div className='formBody'>
+			<IonContent className="ion-padding">
+				<div className='webBody'>
 					<div className='oroLogo'>
 						<img width="100%" src="..\ORO logo v2 bg-removed.png" />
 					</div>

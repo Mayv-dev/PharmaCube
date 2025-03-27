@@ -1,0 +1,19 @@
+.webBody {
+	width: 60%;
+	margin: auto;
+	background-color: #313033;
+	border-radius: 40px;
+	padding: 5%;
+	min-height: fit-content;
+	height: 100%;
+}
+
+@media screen and (max-width: 680px) {
+	.webBody {
+		width: 90%;
+	}
+  }
+
+pre {
+	font-family: var(--ion-font-family);
+}

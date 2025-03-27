@@ -7,7 +7,7 @@
 	text-align: center;
 	margin: 5px auto auto auto;
 	display: flex;
-	min-width: 300px;
+	min-width: 400px;
 	align-items: center;
 	height: 8%;
 	min-height: 70px;
@@ -26,15 +26,43 @@
 }
 
 .timeContainer {
-	width: 20%;
+	width: 10%;
 	min-width: 80px;
 	border-right: 1px solid black;
 	margin: 0;
 }
 
 .contentContainer {
-	width: 80%;
+	width: 60%;
 	min-width: 200px;
 	margin: 0 0 0 2%;
 	text-align: left;
 }
+
+.notificationItemContainer ion-icon {
+	font-size: 40px;
+}
+
+@media screen and (max-width: 680px) {
+	.notificationItemContainer {
+		min-width: 100%;
+	}
+
+	.timeContainer {
+		width: 10%;
+		min-width: 80px;
+		border-right: 1px solid black;
+		margin: 0;
+	}
+	
+	.contentContainer {
+		width: 40%;
+		min-width: 100px;
+		margin: 0 0 0 2%;
+		text-align: left;
+	}
+	
+	.notificationItemContainer ion-icon {
+		font-size: 40px;
+	}
+  }

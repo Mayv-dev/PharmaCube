@@ -24,10 +24,7 @@
 	font-size: 1.7rem;
 }
 
-.formBody {
-	width: 50%;
-	margin: auto;
-}
+
 
 .label-fixed.sc-ion-label-md-h {
 	min-width: 110px;
@@ -36,8 +33,6 @@
 .formGroup {
 	width: 80%;
 	margin: auto auto 50px auto;
-	border: 1px solid black;
-	padding: 8px;
 }
 
 
@@ -49,7 +44,7 @@
 }
 
 @media only screen and (max-width: 600px) {
-	.formBody {
+	.webBody {
 		width: 100%;
 		margin: auto;
 	}
@@ -57,3 +52,25 @@
 		font-size: 25px;
 	}
   }
+
+  .alignRegimeReview {
+	display: flex;
+	flex-direction: row;
+  }
+
+  /*pre-wrap solution to displaying information and instructions while preserving newline character was found at this link
+  by author VocoJax: https://stackoverflow.com/questions/39106389/pre-tag-not-shrinking-not-showing-horizontal-scroll-bar*/
+  p {
+	white-space: pre-wrap;
+  }
+
+  .regimeConfirm {
+	text-align: center;
+	font-size: 24px;
+  }
+
+
+.regimeReturn {
+	width: 40%;
+	margin: auto;
+}

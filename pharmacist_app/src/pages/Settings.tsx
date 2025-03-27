@@ -4,8 +4,8 @@ import '../styles/Settings.css';
 const Settings: React.FC = () => (
   <IonPage>
 
-    <IonContent>
-      <div className='formBody'>
+    <IonContent className="ion-padding">
+      <div className='webBody'>
         <IonButton>Reset to defaults</IonButton>
 
         <IonItem>
