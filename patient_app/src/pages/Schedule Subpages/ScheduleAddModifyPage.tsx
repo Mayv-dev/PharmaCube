@@ -15,10 +15,7 @@ import {
   IonRow,
   IonCol,
   IonModal,
-  IonSelect,
-  IonSelectOption,
   IonToast,
-  IonTextarea,
   IonCheckbox,
 } from "@ionic/react";
 import { trashOutline, createOutline, checkmarkOutline, closeOutline, timeOutline, checkmarkCircle, closeCircle } from "ionicons/icons";
@@ -44,86 +41,122 @@ const ScheduleAddModifyPage: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<number>(1);
   const [schedule, setSchedule] = useState<ScheduleData[]>([]);
   const [editedId, setEditedId] = useState<number>(-1);
-  const [editHours, setEditHours] = useState<number>(0);
-  const [editMinutes, setEditMinutes] = useState<number>(0);
+  const [editHours, setEditHours] = useState<string>("");
+  const [editMinutes, setEditMinutes] = useState<string>("");
   const [showModal, setShowModal] = useState<boolean>(false);
   const [deleteScheduleId, setDeleteScheduleId] = useState<number>(-1);
   const [showToast, setShowToast] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
-  const [showMissingDoseModal, setShowMissingDoseModal] = useState<boolean>(false);
-  const [missingDoseHandling, setMissingDoseHandling] = useState<string>("");
-  const [currentTimePeriod, setCurrentTimePeriod] = useState<number>(-1);
   const [showAddMedicationModal, setShowAddMedicationModal] = useState<boolean>(false);
   const [selectedMedications, setSelectedMedications] = useState<Medication[]>([]);
   const [medications, setMedications] = useState<Medication[]>([]);
+  const [currentTimePeriod, setCurrentTimePeriod] = useState<number>(-1);
   const { filter } = useColorblindFilter();
 
   useEffect(() => {
     loadSchedule(selectedDay);
-    const storedMedications = JSON.parse(localStorage.getItem('medications') || '[]');
-    setMedications(storedMedications);
+    loadMedications();
   }, [selectedDay]);
 
   async function loadSchedule(day: number) {
     try {
-      // 🧪 Switch to mock endpoint temporarily
-      const { data } = await axios.get(`http://localhost:8080/patient/1/mock_schedule`);
-  
+      // Mock data - replace with your actual API call
+      const mockData: ScheduleData[] = [
+        { id: 1, day: 1, hour: 8, minute: 0, time_period: 1, taken: false, medications: [] },
+        { id: 2, day: 1, hour: 12, minute: 0, time_period: 2, taken: false, medications: [] },
+        { id: 3, day: 1, hour: 18, minute: 0, time_period: 3, taken: false, medications: [] },
+        { id: 4, day: 1, hour: 22, minute: 0, time_period: 4, taken: false, medications: [] },
+      ];
+
       const allTimesOfDay = Object.keys(timeOfDayMap).map((key) => parseInt(key, 10));
       const scheduleWithDefaults = allTimesOfDay.map((timePeriod) => {
-        const existingItem = data.find((item: ScheduleData) => item.time_period === timePeriod && item.day === day);
-        return existingItem || { id: -1, day, hour: 0, minute: 0, time_period: timePeriod, taken: false, medications: [] };
+        const existingItem = mockData.find((item) => item.time_period === timePeriod && item.day === day);
+        return existingItem || { 
+          id: -1, 
+          day, 
+          hour: 0, 
+          minute: 0, 
+          time_period: timePeriod, 
+          taken: false, 
+          medications: [] 
+        };
       });
       setSchedule(scheduleWithDefaults);
     } catch (error) {
       console.error("Error loading schedule:", error);
     }
   }
-  
 
+  async function loadMedications() {
+    try {
+      const storedMedications = JSON.parse(localStorage.getItem('medications') || '[]');
+      setMedications(storedMedications);
+    } catch (error) {
+      console.error("Error loading medications:", error);
+    }
+  }
   async function updateTime(timePeriod: number) {
-    if (editHours < 0 || editHours > 23 || editMinutes < 0 || editMinutes > 59) {
-      setToastMessage("Please enter valid hours (0-23) and minutes (0-59).");
+    const hours = parseInt(editHours, 10);
+    const minutes = parseInt(editMinutes, 10);
+    
+    if (isNaN(hours)) {
+      setToastMessage("Please enter valid hours (0-23)");
       setShowToast(true);
       return;
     }
-
+  
+    if (isNaN(minutes)) {
+      setToastMessage("Please enter valid minutes (0-59)");
+      setShowToast(true);
+      return;
+    }
+  
+    if (hours < 0 || hours > 23) {
+      setToastMessage("Hours must be between 0 and 23");
+      setShowToast(true);
+      return;
+    }
+  
+    if (minutes < 0 || minutes > 59) {
+      setToastMessage("Minutes must be between 0 and 59");
+      setShowToast(true);
+      return;
+    }
+  
     try {
-      const existingItem = schedule.find((item) => item.time_period === timePeriod && item.day === selectedDay);
-      const payload: ScheduleData = {
-        id: existingItem?.id || -1,
-        day: selectedDay,
-        hour: editHours,
-        minute: editMinutes,
-        time_period: timePeriod,
-        taken: existingItem?.taken || false,
-        medications: existingItem?.medications || [],
-      };
-
-      if (existingItem?.id && existingItem.id !== -1) {
-        await axios.put(`http://localhost:8080/patient/1/schedule/${existingItem.id}`, payload);
-      } else {
-        await axios.post(`http://localhost:8080/patient/1/schedule`, payload);
-      }
-
-      loadSchedule(selectedDay);
+      const updatedSchedule = schedule.map(item => {
+        if (item.time_period === timePeriod) {
+          return {
+            ...item,
+            hour: hours,
+            minute: minutes
+          };
+        }
+        return item;
+      });
+  
+      setSchedule(updatedSchedule);
       setEditedId(-1);
-      setToastMessage("Schedule updated successfully!");
+      setToastMessage("Time updated successfully!");
       setShowToast(true);
     } catch (error) {
       console.error("Error updating time:", error);
+      setToastMessage("Error updating time");
+      setShowToast(true);
     }
   }
 
   async function deleteTime(id: number) {
     try {
-      await axios.delete(`http://localhost:8080/patient/1/schedule/${id}`);
-      loadSchedule(selectedDay);
+      const updatedSchedule = schedule.filter(item => item.id !== id);
+      setSchedule(updatedSchedule);
       setShowModal(false);
       setToastMessage("Schedule deleted successfully!");
       setShowToast(true);
     } catch (error) {
       console.error("Error deleting time:", error);
+      setToastMessage("Error deleting schedule");
+      setShowToast(true);
     }
   }
 
@@ -135,6 +168,8 @@ const ScheduleAddModifyPage: React.FC = () => {
   };
 
   const handleAddMedications = (timePeriod: number) => {
+    const currentItem = schedule.find(item => item.time_period === timePeriod);
+    setSelectedMedications(currentItem?.medications || []);
     setCurrentTimePeriod(timePeriod);
     setShowAddMedicationModal(true);
   };
@@ -156,7 +191,6 @@ const ScheduleAddModifyPage: React.FC = () => {
     );
     setSchedule(updatedSchedule);
     setShowAddMedicationModal(false);
-    setSelectedMedications([]);
   };
 
   return (
@@ -194,17 +228,21 @@ const ScheduleAddModifyPage: React.FC = () => {
                   <IonInput
                     type="number"
                     value={editHours}
-                    onIonChange={(e) => setEditHours(parseInt(e.detail.value || "0", 10))}
-                    placeholder="HH"
+                    onIonChange={(e) => setEditHours(e.detail.value || "")}
+                    placeholder={timePadding(item.hour)}
                     className="time-input"
+                    min="0"
+                    max="23"
                   />
                   :
                   <IonInput
                     type="number"
                     value={editMinutes}
-                    onIonChange={(e) => setEditMinutes(parseInt(e.detail.value || "0", 10))}
-                    placeholder="MM"
+                    onIonChange={(e) => setEditMinutes(e.detail.value || "")}
+                    placeholder={timePadding(item.minute)}
                     className="time-input"
+                    min="0"
+                    max="59"
                   />
                   <IonButton slot="end" className="confirm-edit-button" onClick={() => updateTime(item.time_period)}>
                     <IonIcon icon={checkmarkOutline} />
@@ -231,12 +269,29 @@ const ScheduleAddModifyPage: React.FC = () => {
                   <IonButton slot="end" onClick={() => handleAddMedications(item.time_period)}>
                     Add Medications
                   </IonButton>
-                  <IonButton slot="end" className="edit-button" onClick={() => { setEditedId(item.time_period); setEditHours(item.hour); setEditMinutes(item.minute); }}>
+                  <IonButton 
+                    slot="end" 
+                    className="edit-button" 
+                    onClick={() => { 
+                      setEditedId(item.time_period); 
+                      setEditHours(item.hour.toString());
+                      setEditMinutes(item.minute.toString());
+                    }}
+                  >
                     <IonIcon icon={createOutline} />
                   </IonButton>
-                  <IonButton slot="end" className="delete-button" onClick={() => { setDeleteScheduleId(item.id); setShowModal(true); }}>
-                    <IonIcon icon={trashOutline} />
-                  </IonButton>
+                  {item.id !== -1 && (
+                    <IonButton 
+                      slot="end" 
+                      className="delete-button" 
+                      onClick={() => { 
+                        setDeleteScheduleId(item.id); 
+                        setShowModal(true); 
+                      }}
+                    >
+                      <IonIcon icon={trashOutline} />
+                    </IonButton>
+                  )}
                   <IonButton
                     slot="end"
                     color={item.taken ? 'success' : 'danger'}
@@ -269,10 +324,37 @@ const ScheduleAddModifyPage: React.FC = () => {
               ))}
             </IonList>
             <IonButton expand="block" onClick={saveMedicationsToSchedule}>
-              Save
+              Save Medications
             </IonButton>
           </IonContent>
         </IonModal>
+
+        <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle>Confirm Deletion</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent className="ion-padding">
+            <p>Are you sure you want to delete this schedule item?</p>
+            <IonButton expand="block" color="danger" onClick={() => {
+              deleteTime(deleteScheduleId);
+              setShowModal(false);
+            }}>
+              Delete
+            </IonButton>
+            <IonButton expand="block" color="light" onClick={() => setShowModal(false)}>
+              Cancel
+            </IonButton>
+          </IonContent>
+        </IonModal>
+
+        <IonToast
+          isOpen={showToast}
+          onDidDismiss={() => setShowToast(false)}
+          message={toastMessage}
+          duration={2000}
+        />
       </IonContent>
     </IonPage>
   );
