@@ -1,0 +1,3 @@
+SSID = ""
+PASSWORD = ""
+URL = ""

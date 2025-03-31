@@ -1,106 +1,98 @@
+import React, { useState } from 'react';
 import {
-  IonButton,
+  IonCard,
   IonContent,
   IonHeader,
+  IonIcon,
   IonPage,
   IonTitle,
   IonToolbar,
   IonGrid,
   IonRow,
   IonCol,
-  IonList,
   IonItem,
   IonLabel,
-} from "@ionic/react";
-import "./ScheduleViewPage.css";
-import React, { useEffect, useState } from "react";
-import { SQLiteDBConnection } from "@capacitor-community/sqlite";
-import useSQLiteDB from "../../composables/useSQLiteDB";
-
-// Type definition for a schedule entry
-type SQLItem = {
-  id: number;
-  day: number;
-  timeofday: number;
-  time: string;
-};
-
-const daysOfWeek = [,"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-
-const timeOfDayMap: { [key: number]: string } = {
-  1: "Early Morning",
-  2: "Morning",
-  3: "Afternoon",
-  4: "Evening",
-  5: "Night",
-};
+  IonDatetime,
+  IonButton,
+  IonList,
+} from '@ionic/react';
+import { timeOutline, calendarOutline, calendar, checkmarkCircle, closeCircle } from 'ionicons/icons';
+import { useColorblindFilter } from '../../colorBlindContext'; 
+import './ScheduleViewPage.css';
 
 const ScheduleViewPage: React.FC = () => {
-  const [selectedDay, setSelectedDay] = useState<string>("Monday"); // Default to Monday
-  const [schedule, setSchedule] = useState<SQLItem[]>([]);
+  const { filter } = useColorblindFilter();
+  const [medicationStatus, setMedicationStatus] = useState<{ [key: string]: { taken: boolean, missingDoseHandling?: string } }>({});
 
-  const { performSQLAction, initialized } = useSQLiteDB();
-
-  useEffect(() => {
-    if (initialized) {
-      loadData(selectedDay);
-    }
-  }, [initialized, selectedDay]);
-
-  const loadData = async (day: string) => {
-    try {
-      performSQLAction(async (db: SQLiteDBConnection | undefined) => {
-        const respSelect = await db?.query("SELECT * FROM schedule WHERE day = ?", [day]);
-        setSchedule(respSelect?.values || []);
-      });
-    } catch (error) {
-      alert((error as Error).message);
-      setSchedule([]);
-    }
+  const handleMedicationStatus = (date: string, taken: boolean, missingDoseHandling?: string) => {
+    setMedicationStatus(prevStatus => ({
+      ...prevStatus,
+      [date]: { taken, missingDoseHandling },
+    }));
   };
 
   return (
-    <IonPage>
+    <IonPage className={filter}>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Your Schedule</IonTitle>
+          <IonTitle>Schedule View</IonTitle>
         </IonToolbar>
       </IonHeader>
+      <IonContent fullscreen className="ion-padding content">
+        {/* Calendar Component */}
+        <IonDatetime
+          displayFormat="MM/DD/YYYY"
+          placeholder="Select Date"
+          className="calendar"
+          onIonChange={(e) => console.log(e.detail.value)}
+        ></IonDatetime>
 
-      <IonContent fullscreen className="ion-padding">
-        {/* Day Selector */}
+        {/* Medication Status Buttons */}
         <IonGrid>
           <IonRow>
-            {daysOfWeek.map((day) => (
-              <IonCol key={day} size="1" className={selectedDay === day ? "selected-day" : "day-col"}>
-                <IonButton fill="clear" onClick={() => setSelectedDay(day)}>
-                  {day.charAt(0)}
-                </IonButton>
-              </IonCol>
-            ))}
+            <IonCol>
+              <IonButton
+                expand="block"
+                color="success"
+                onClick={() => handleMedicationStatus(new Date().toISOString().split('T')[0], true)}
+              >
+                <IonIcon icon={checkmarkCircle} slot="start" />
+                Taken
+              </IonButton>
+            </IonCol>
+            <IonCol>
+              <IonButton
+                expand="block"
+                color="danger"
+                onClick={() => handleMedicationStatus(new Date().toISOString().split('T')[0], false, "Handling information")}
+              >
+                <IonIcon icon={closeCircle} slot="start" />
+                Not Taken
+              </IonButton>
+            </IonCol>
           </IonRow>
         </IonGrid>
 
-        {/* Schedule List */}
+        {/* Display Medication Status */}
         <IonList>
-  {schedule.map((item) => (
-    <IonItem key={item.id}>
-      <IonLabel>
-        {item.time} | {timeOfDayMap[item.timeofday] || "Unknown Time"}
-      </IonLabel>
-    </IonItem>
-  ))}
-</IonList>
+          {Object.entries(medicationStatus).map(([date, status]) => (
+            <IonItem key={date}>
+              <IonLabel>
+                {new Date(date).toLocaleDateString()}: {status.taken ? 'Taken' : 'Not Taken'}
+                {status.missingDoseHandling && <p>{status.missingDoseHandling}</p>}
+              </IonLabel>
+              <IonIcon icon={status.taken ? checkmarkCircle : closeCircle} color={status.taken ? 'success' : 'danger'} />
+            </IonItem>
+          ))}
+        </IonList>
 
-        {/* No Entries Message */}
-        {schedule.length === 0 && (
-          <IonItem>
-            <IonLabel>No entries for {selectedDay}</IonLabel>
-          </IonItem>
-        )}
+        {/* Large Schedule Icon */}
+        <div className="center-icon-container">
+          <IonIcon icon={calendar} className="center-icon" />
+        </div>
       </IonContent>
     </IonPage>
-  );
-};
-
-export default ScheduleViewPage;
+    );
+  };
+  
+  export default ScheduleViewPage;

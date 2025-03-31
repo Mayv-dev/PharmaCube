@@ -1,2 +1,37 @@
-/* For information on how to create your own theme, please see:
-http://ionicframework.com/docs/theming/ */
+:root {
+  --ion-color-primary: #65f1da;
+  --ion-color-primary-rgb: 108, 154, 139;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #53c29b;
+  --ion-color-primary-tint: #94ffdb;
+
+  --ion-background-color: #ebffff;
+  --ion-toolbar-background: #ffffff;
+  --ion-toolbar-color: #4ed1a5;
+  --ion-item-background: #ffffff;
+  --ion-text-color: #000000;
+
+  --schedule-background-color: #f4f4f4;
+}
+
+.dark {
+  --ion-color-primary: #ffffff;
+  --ion-color-primary-rgb: 255, 255, 255;
+  --ion-color-primary-contrast: #000000;
+  --ion-color-primary-contrast-rgb: 0, 0, 0;
+  --ion-color-primary-shade: #e0e0e0;
+  --ion-color-primary-tint: #ffffff;
+
+  --ion-background-color: #000000;
+  --ion-toolbar-background: #1a1a1a;
+  --ion-toolbar-color: #ffffff;
+  --ion-item-background: #1a1a1a;
+  --ion-text-color: #ffffff;
+
+  --schedule-background-color: #000000;
+}
+
+body, h1, h2, h3, h4, h5, h6, p, ion-label, ion-title, ion-button, ion-item, ion-input, ion-select, ion-text {
+  font-size: var(--ion-font-size);
+}

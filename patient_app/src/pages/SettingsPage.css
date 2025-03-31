@@ -1,0 +1,104 @@
+.custom-tab-bar[slot="top"] {
+  top: 0;
+  bottom: auto;
+}
+
+.custom-tab-bar[slot="bottom"] {
+  bottom: 0;
+  top: auto;
+}
+
+
+
+.settings-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--ion-color-light);
+  background-image: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-secondary));
+  background-size: cover;
+  background-position: center;
+}
+
+.settings-form {
+  width: 90%;
+  max-width: 400px;
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  animation: fadeIn 0.5s ease-in-out;
+  margin: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.settings-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--ion-color-primary);
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.settings-input {
+  margin-bottom: 20px;
+  --background: rgba(255, 255, 255, 0.9);
+  --color: var(--ion-color-dark);
+  --padding-start: 20px;
+  --padding-end: 20px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.settings-input:focus-within {
+  border-color: var(--ion-color-primary);
+  box-shadow: 0 0 8px rgba(var(--ion-color-primary-rgb), 0.2);
+}
+
+.settings-button {
+  margin-top: 20px;
+  --background: var(--ion-color-primary);
+  --color: var(--ion-color-light);
+  --border-radius: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.settings-button:hover {
+  --background: var(--ion-color-primary-shade);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(var(--ion-color-primary-rgb), 0.3);
+}
+
+.toggle-button {
+  margin-top: 15px;
+  --color: var(--ion-color-medium);
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.toggle-button:hover {
+  --color: var(--ion-color-primary);
+  text-decoration: underline;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -10,11 +10,16 @@ import {
   IonModal,
   IonTitle,
   IonToolbar,
+  IonRouterLink,
+  IonIcon,
+  IonText,
+  IonItem,
 } from '@ionic/react';
 import '../../styles/Regime Subpages/ViewRegime.css';
 import LowerToolbar from '../../components/LowerToolbar';
 import { RegimeItem } from 'api types/types';
 import RegimeItemContainer from '../../components/Regime Components/RegimeItemContainer';
+import { arrowBack } from 'ionicons/icons';
 
 type ContainerProps = {
 	passModifyDataToApp:any
@@ -98,14 +103,20 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
 
   return (
     <IonPage>
-        <LowerToolbar title="Regimes"/>
 			<IonContent className="ion-padding">
-				<p>Select a user (currently hardcoded)</p>
-				<IonSelect placeholder='Users' onIonChange={e => handleUserSelect(e.target.value)}>
-					<IonSelectOption>Nina Muller</IonSelectOption>
-					<IonSelectOption>Aaron Murphy</IonSelectOption>
-					<IonSelectOption>Dillon McMahon</IonSelectOption>
+			<div className='webBody'>
+				<div className='regimeReturn'>
+                  <IonButton routerLink='/regimes/' color="light">
+                    <IonIcon icon={arrowBack}></IonIcon>
+                    <IonText>Back to Regime Home</IonText>
+                  </IonButton>
+              </div>
+				<IonItem>
+
+				<IonSelect interface="popover" label="Patient" placeholder='Choose a patient' onIonChange={e => handleUserSelect(e.target.value)}>
+					<IonSelectOption>Ann Murphy</IonSelectOption>
 				</IonSelect>
+				</IonItem>
 			{
 				patientName == "Unselected" ? null :
 				<>
@@ -125,6 +136,7 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
             </IonToolbar>
           </IonHeader>
           <IonContent className="ion-padding">
+		  <div className='webBody'>
             <p>Are you sure you wish to delete this regime?</p>
             <IonButton expand="full" color="primary" onClick={() => {
 				deleteRegimeItem()
@@ -134,8 +146,10 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
             <IonButton expand="full" color="medium" className="cancel-button" onClick={() => setShowModal(false)}>
               No
             </IonButton>
+			</div>
           </IonContent>
         </IonModal>
+		</div>
 			</IonContent>
     </IonPage>
   );

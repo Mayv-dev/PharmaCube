@@ -325,3 +325,53 @@ func DeletePatientRegime(context *gin.Context) {
 
 	context.JSON(http.StatusOK, responses.ApiResponse{Data: "Deleted regime item"})
 }
+
+func PharmacistViewPatientHistory(context *gin.Context) {
+	pharmacistId, err := strconv.Atoi(context.Param("pharmacist_id"))
+	if err != nil {
+		//Invalid ID
+		log.Println(err.Error())
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid Pharmacist ID"})
+		return
+	}
+
+	patientId, err := strconv.Atoi(context.Param("patient_id"))
+	if err != nil {
+		//Invalid ID
+		log.Println(err.Error())
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid Patient ID"})
+		return
+	}
+
+	//Get Pharmacist
+	pharmacist, err := databaseadapters.GetPharmacist(pharmacistId)
+	if err != nil {
+		//Not found
+		log.Println(err.Error())
+		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Pharmacist not Found"})
+	}
+
+	//Get Patient
+	patient, err := databaseadapters.GetPatient(uint(patientId))
+	if err != nil {
+		//Not found
+		log.Println(err.Error())
+		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Patient not Found"})
+		return
+	}
+
+	//Check is Pharmacists patient
+	if patient.PharmacistID != pharmacist.ID {
+		//Not patient of pharmacist
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Pharmacist does not have Patient"})
+		return
+	}
+
+	patientHistory, err := databaseadapters.GetPatientHistory(patient.ID)
+	if err != nil {
+		log.Println(err.Error())
+		context.JSON(http.StatusInternalServerError, responses.ApiResponse{Data: "Error finding Patient History"})
+	}
+
+	context.JSON(http.StatusOK, patientHistory)
+}

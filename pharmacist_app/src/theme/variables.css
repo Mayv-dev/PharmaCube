@@ -1,2 +1,62 @@
 /* For information on how to create your own theme, please see:
 http://ionicframework.com/docs/theming/ */
+
+:root {
+	--ion-tab-bar-background:#063425;
+	--ion-tab-bar-background-rgb:rgba(0,0,0,0);
+	--ion-tab-bar-border-color:#063425;
+
+	/* variables below generated from https://ionicframework.com/docs/theming/themes */
+	--ion-background-color: #161616;
+	--ion-background-color-rgb: 89,71,112;
+
+	--ion-text-color: ffffff;
+	--ion-text-color-rgb: 255,255,255;
+
+	--ion-text-color-step-50: #f7f6f8;
+	--ion-text-color-step-100: #eeedf1;
+	--ion-text-color-step-150: #e6e3ea;
+	--ion-text-color-step-200: #dedae2;
+	--ion-text-color-step-250: #d6d1db;
+	--ion-text-color-step-300: #cdc8d4;
+	--ion-text-color-step-350: #c5bfcd;
+	--ion-text-color-step-400: #bdb5c6;
+	--ion-text-color-step-450: #b4acbf;
+	--ion-text-color-step-500: #aca3b8;
+	--ion-text-color-step-550: #a49ab0;
+	--ion-text-color-step-600: #9b91a9;
+	--ion-text-color-step-650: #9387a2;
+	--ion-text-color-step-700: #8b7e9b;
+	--ion-text-color-step-750: #837594;
+	--ion-text-color-step-800: #7a6c8d;
+	--ion-text-color-step-850: #726385;
+	--ion-text-color-step-900: #6a597e;
+	--ion-text-color-step-950: #615077;
+
+	--ion-background-color-step-50: #615077;
+	--ion-background-color-step-100: #6a597e;
+	--ion-background-color-step-150: #726385;
+	--ion-background-color-step-200: #7a6c8d;
+	--ion-background-color-step-250: #837594;
+	--ion-background-color-step-300: #8b7e9b;
+	--ion-background-color-step-350: #9387a2;
+	--ion-background-color-step-400: #9b91a9;
+	--ion-background-color-step-450: #a49ab0;
+	--ion-background-color-step-500: #aca3b8;
+	--ion-background-color-step-550: #b4acbf;
+	--ion-background-color-step-600: #bdb5c6;
+	--ion-background-color-step-650: #c5bfcd;
+	--ion-background-color-step-700: #cdc8d4;
+	--ion-background-color-step-750: #d6d1db;
+	--ion-background-color-step-800: #dedae2;
+	--ion-background-color-step-850: #e6e3ea;
+	--ion-background-color-step-900: #eeedf1;
+	--ion-background-color-step-950: #f7f6f8;
+	
+	--element-hover-highlight-color: rgb(201, 201, 0);
+}
+
+ion-tab-bar{ --color-selected: var(--element-hover-highlight-color) }
+ion-tab-button{ --background: var(--ion-background-color-rgb) }
+ion-item{ --background: var(--ion-background-color); --inner-border-width:0}
+ion-datetime{ --background: var(--ion-background-color)}

@@ -1,17 +1,14 @@
-from Motor import motor_controller
-import time
+import MotorController, time
+import schedule_handler
 
-motorcontroller = motor_controller.MotorController()
+motorcontroller = MotorController.MotorController()
+sh = schedule_handler.Schedule_Handler()
 
 def main():
-    i = 1
-    motorcontroller.start()
-    while(True):
-        motorcontroller.move_to_compartment(i)
-        i+= 2
-        if(i >= 9):
-            i = 1
-            
+    schedule = sh.get_schedule(1)
+    for s in schedule:
+        print(s)
+    
 if __name__ == "__main__":
     main()
     

@@ -1,30 +1,35 @@
-import { useState } from 'react';
 import {
   IonPage,
   IonContent,
   IonButton,
-  IonCard,
-  IonRouterLink
+  IonRouterLink,
+  IonIcon,
+  IonText
 } from '@ionic/react';
 import '../styles/Regimes.css';
-import LowerToolbar from '../components/LowerToolbar';
+import { add, search } from 'ionicons/icons';
 
 const Regimes = () => {
 
   return (
     <IonPage>
-		<LowerToolbar title="Regimes"/>
 			<IonContent className="ion-padding">
-				<IonRouterLink routerLink='/regimes/create'>
-					<IonButton expand="block" className='ScheduleButtons' color="light">
-						Make Regime For User
-					</IonButton>
-				</IonRouterLink>
-				<IonRouterLink routerLink='/regimes/view'>
-					<IonButton expand="block" className='ScheduleButtons' color="light">
-						View User Regimes
-					</IonButton>
-				</IonRouterLink>
+				<div className='webBody'>
+					<div className='regimeButtonLayout'>
+							<IonButton routerLink="/regimes/create" expand="block" className='regimeButtonSizing' color="light">
+								<div className='regimeButtonInternals'>
+									<IonIcon icon={add} size='large'></IonIcon>
+									<IonText>Create Regime For Patient</IonText>
+								</div>
+							</IonButton>
+							<IonButton routerLink="/regimes/view" expand="block" className='regimeButtonSizing' color="light">
+							<div className='regimeButtonInternals'>
+								<IonIcon icon={search} size='large'></IonIcon>
+								<IonText>View Existing Patient Regimes</IonText>
+							</div>
+							</IonButton>
+					</div>
+				</div>
 			</IonContent>
     </IonPage>
   );

@@ -75,6 +75,7 @@ func AutoScheduleRegime(patientId uint) error {
 			Information:   regimeItem.MedicationInformation,
 			Instructions:  regimeItem.Instructions,
 			PatientID:     patientId,
+			TimePeriod:    uint(regimeItem.TimePeriod),
 		}
 
 		_, err = databaseadapters.AddPatientScheduleRegime(scheduledRegimeItem)

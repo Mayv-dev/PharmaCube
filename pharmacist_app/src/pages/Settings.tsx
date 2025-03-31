@@ -1,14 +1,28 @@
-import { IonContent, IonPage} from '@ionic/react';
-import LowerToolbar from '../components/LowerToolbar';
+import { IonButton, IonContent, IonItem, IonLabel, IonPage, IonSelect, IonSelectOption, IonText } from '@ionic/react';
 import '../styles/Settings.css';
 
 const Settings: React.FC = () => (
   <IonPage>
-    
-    <LowerToolbar title='Settings'/>
 
-    <IonContent></IonContent>
+    <IonContent className="ion-padding">
+      <div className='webBody'>
+        <IonButton>Reset to defaults</IonButton>
 
+        <IonItem>
+          <IonSelect label="App Theme:">
+            <IonSelectOption>Auto (Device Selected)</IonSelectOption>
+          </IonSelect>
+        </IonItem>
+
+        <IonText>Your device's current theme automatically sets the app theme to DARK</IonText>
+
+        <IonItem>
+          <IonSelect label="Navbar position:">
+            <IonSelectOption>Top</IonSelectOption>
+          </IonSelect>
+        </IonItem>
+      </div>
+    </IonContent>
   </IonPage>
 );
 

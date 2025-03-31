@@ -1,0 +1,68 @@
+.notificationItemContainer {
+	color: hsl(0, 0%, 11%);
+	border-radius: 3px;
+	border: 1px solid;
+	width: 30%;
+	font-size: 12px;
+	text-align: center;
+	margin: 5px auto auto auto;
+	display: flex;
+	min-width: 400px;
+	align-items: center;
+	height: 8%;
+	min-height: 70px;
+}
+
+.highNotification {
+	background-color: red;
+}
+
+.mediumNotification {
+	background-color: yellow;
+}
+
+.lowNotification {
+	background-color: green;
+}
+
+.timeContainer {
+	width: 10%;
+	min-width: 80px;
+	border-right: 1px solid black;
+	margin: 0;
+}
+
+.contentContainer {
+	width: 60%;
+	min-width: 200px;
+	margin: 0 0 0 2%;
+	text-align: left;
+}
+
+.notificationItemContainer ion-icon {
+	font-size: 40px;
+}
+
+@media screen and (max-width: 680px) {
+	.notificationItemContainer {
+		min-width: 100%;
+	}
+
+	.timeContainer {
+		width: 10%;
+		min-width: 80px;
+		border-right: 1px solid black;
+		margin: 0;
+	}
+	
+	.contentContainer {
+		width: 40%;
+		min-width: 100px;
+		margin: 0 0 0 2%;
+		text-align: left;
+	}
+	
+	.notificationItemContainer ion-icon {
+		font-size: 40px;
+	}
+  }

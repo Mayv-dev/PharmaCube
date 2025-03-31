@@ -1,10 +1,27 @@
 .regimeItemContainer {
-	background-color: rgb(219, 219, 219);
+	background-color: rgb(0, 0, 0);
 	margin: auto auto 10px auto;
 	border: 1px solid black;
 	border-radius: 6px;
-	width: 30%;
+	width: 80%;
 	display: flex;
+}
+
+.regimeItemContainer:hover {
+	background-color: var(--element-hover-highlight-color);
+	border: 1px solid var(--element-hover-highlight-color);
+}
+
+
+.listElement {
+	padding: 0%;
+}
+
+/* The white-space element was inspired by https://www.geeksforgeeks.org/how-to-wrap-a-text-in-a-pre-tag-using-css/
+   the wrap value was something I stumbled across randomly, highlighted by syntax highlighting, which luckily did
+   what I wanted it to */
+pre {
+	white-space: wrap;
 }
 
 .regimeItemContainerText {

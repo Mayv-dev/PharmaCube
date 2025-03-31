@@ -1,0 +1,17 @@
+.doseTakenStatus {
+	display: flex;
+	justify-content: space-around;
+	border: 2px solid black;
+	border-radius: 6px;
+	width: 80%;
+	margin: 3px auto;
+	background-color:gray;
+}
+
+.takenDose {
+	color: green;
+}
+
+.untakenDose {
+	color: red;
+}

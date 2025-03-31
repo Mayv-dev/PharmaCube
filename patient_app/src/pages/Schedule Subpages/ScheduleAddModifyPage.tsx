@@ -1,350 +1,275 @@
 import React, { useEffect, useState } from "react";
-
-import { IonContent, IonButton, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, 
-  IonList, IonIcon, IonGrid, IonRow, IonCol, IonModal, IonSelectOption, IonSelect } from "@ionic/react";
-
-import { trashOutline, createOutline, checkmarkOutline, closeOutline } from "ionicons/icons";
-
-import axios from 'axios';
-import { ScheduleData } from "../../api types/types";
-
-import useSQLiteDB from "../../composables/useSQLiteDB";
-
+import {
+  IonContent,
+  IonButton,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+  IonItem,
+  IonLabel,
+  IonInput,
+  IonList,
+  IonIcon,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonModal,
+  IonSelect,
+  IonSelectOption,
+  IonToast,
+  IonTextarea,
+  IonCheckbox,
+} from "@ionic/react";
+import { trashOutline, createOutline, checkmarkOutline, closeOutline, timeOutline, checkmarkCircle, closeCircle } from "ionicons/icons";
+import axios from "axios";
+import { ScheduleData, Medication } from "../../api types/types";
+import { useColorblindFilter } from "../../colorBlindContext";
 import "./ScheduleAddModifyPage.css";
 import { getWeekdayName } from "../../helper functions/getWeekdayName";
 
-const daysOfWeek = [1,2,3,4,5,6,7];
+const daysOfWeek = [1, 2, 3, 4, 5, 6, 7];
+const timeOfDayMap: { [key: number]: string } = {
+  1: "Morning",
+  2: "Afternoon",
+  3: "Evening",
+  4: "Night",
+};
 
+const timePadding = (value: number): string => {
+  return value < 10 ? `0${value}` : value.toString();
+};
 
 const ScheduleAddModifyPage: React.FC = () => {
-
-  const [deleteScheduleId, setDeleteScheduleId] = useState<number>(-1);
-
-  const [selectedDay, setSelectedDay] = useState<number | null>(1);
-
-
+  const [selectedDay, setSelectedDay] = useState<number>(1);
   const [schedule, setSchedule] = useState<ScheduleData[]>([]);
-
-  const { performSQLAction, initialized } = useSQLiteDB();
-
-  const [hours, setHours] = useState<string>("");
-  const [minutes, setMinutes] = useState<string>("");
-
-  const [editedId, setEditedId] = useState<number>()
-  const [editHours, setEditHours] = useState<number>();
-  const [editMinutes, setEditMinutes] = useState<number>();
-
-  const [showModal, setShowModal] = useState(false);
-  const [selectedTimeOfDay, setSelectedTimeOfDay] = useState<number | null>(null);
-
-  const timeOfDayMap: { [key: number]: string } = {
-    1: "Morning",
-    2: "Afternoon",
-    3: "Evening",
-    4: "Night",
-  };
+  const [editedId, setEditedId] = useState<number>(-1);
+  const [editHours, setEditHours] = useState<number>(0);
+  const [editMinutes, setEditMinutes] = useState<number>(0);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [deleteScheduleId, setDeleteScheduleId] = useState<number>(-1);
+  const [showToast, setShowToast] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string>("");
+  const [showMissingDoseModal, setShowMissingDoseModal] = useState<boolean>(false);
+  const [missingDoseHandling, setMissingDoseHandling] = useState<string>("");
+  const [currentTimePeriod, setCurrentTimePeriod] = useState<number>(-1);
+  const [showAddMedicationModal, setShowAddMedicationModal] = useState<boolean>(false);
+  const [selectedMedications, setSelectedMedications] = useState<Medication[]>([]);
+  const [medications, setMedications] = useState<Medication[]>([]);
+  const { filter } = useColorblindFilter();
 
   useEffect(() => {
     loadSchedule(selectedDay);
-  }, [initialized, selectedDay]);
+    const storedMedications = JSON.parse(localStorage.getItem('medications') || '[]');
+    setMedications(storedMedications);
+  }, [selectedDay]);
 
-  async function loadSchedule(day: number | null) {
-
+  async function loadSchedule(day: number) {
     try {
-      const { data, status } = await axios.get(
-        'http://localhost:8080/patient/1/schedule',
-        {
-        headers: {
-          Accept: 'application/json'
-        },
-        },
-      );
-      console.log("schedule data from GET:", data)
-      const scheduleitemsbyday = data.filter((item:ScheduleData) => item.day == selectedDay ? true:false)
-      setSchedule(scheduleitemsbyday.map((sItem:ScheduleData) => {
-        return {id:sItem.id, day:sItem.day, hour:sItem.hour, minute:sItem.minute, time_period:sItem.time_period}
-        }) || []);
-        return data;
-    
-      } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log('error message: ', error.message);
-        return error.message;
-      } else {
-        console.log('unexpected error: ', error);
-        return 'An unexpected error occurred';
-      }
+      const { data } = await axios.get(`http://localhost:8080/patient/1/schedule?day=${day}`);
+      const allTimesOfDay = Object.keys(timeOfDayMap).map((key) => parseInt(key, 10));
+      const scheduleWithDefaults = allTimesOfDay.map((timePeriod) => {
+        const existingItem = data.find((item: ScheduleData) => item.time_period === timePeriod && item.day === day);
+        return existingItem || { id: -1, day, hour: 0, minute: 0, time_period: timePeriod, taken: false, medications: [] };
+      });
+      setSchedule(scheduleWithDefaults);
+    } catch (error) {
+      console.error("Error loading schedule:", error);
     }
   }
 
-  async function addTime() {
-    const formattedTime = formatTime(hours, minutes);
-    if (!formattedTime) return;
-    if (typeof selectedDay != "number" || typeof selectedTimeOfDay != "number" ) return;
-    if (schedule.find(sItem => sItem.time_period == selectedTimeOfDay && sItem.day == selectedDay) != undefined) {
-      alert("This time of day has already been set for today");
+  async function updateTime(timePeriod: number) {
+    if (editHours < 0 || editHours > 23 || editMinutes < 0 || editMinutes > 59) {
+      setToastMessage("Please enter valid hours (0-23) and minutes (0-59).");
+      setShowToast(true);
       return;
     }
+
     try {
-      let scheduleData:ScheduleData = {
-        id: 0,
+      const existingItem = schedule.find((item) => item.time_period === timePeriod && item.day === selectedDay);
+      const payload: ScheduleData = {
+        id: existingItem?.id || -1,
         day: selectedDay,
-        hour: parseInt(hours, 10),
-        minute: parseInt(minutes, 10),
-        time_period:selectedTimeOfDay
-      }
-      console.log("post request being made...")
-      const { data, status } = await axios.post(
-        'http://localhost:8080/patient/1/schedule',
-        scheduleData,
-        {
-          headers: {
-            Accept: 'application/json'
-          },
-        },
-      );
-      loadSchedule(selectedDay)
+        hour: editHours,
+        minute: editMinutes,
+        time_period: timePeriod,
+        taken: existingItem?.taken || false,
+        medications: existingItem?.medications || [],
+      };
 
-      setHours("");
-      setMinutes("");
-
-      return data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.log('error message: ', error.message);
-      return error.message;
-    } else {
-      console.log('unexpected error: ', error);
-      return 'An unexpected error occurred';
-    }
-  }
-    
-  }
-
-
-  const confirmDeletion = (id:number) => {
-    setDeleteScheduleId(id)
-    setShowModal(true)
-    }
-
-  async function deleteTime(id:number) {
-
-    try {
-      const { data, status } = await axios.delete(
-        `http://localhost:8080/patient/1/schedule/${id}`,
-        {
-        headers: {
-          Accept: 'application/json'
-        }
-        }
-      );
-      loadSchedule(selectedDay)
-      return data;
-    
-      } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log('error message: ', error.message);
-        return error.message;
+      if (existingItem?.id && existingItem.id !== -1) {
+        await axios.put(`http://localhost:8080/patient/1/schedule/${existingItem.id}`, payload);
       } else {
-        console.log('unexpected error: ', error);
-        return 'An unexpected error occurred';
+        await axios.post(`http://localhost:8080/patient/1/schedule`, payload);
       }
-    }
 
-    
-  }
-
-  const timePadding = (hourOrMinute:number) => hourOrMinute < 10 ? "0"+hourOrMinute:hourOrMinute;
-
-  async function editTimeConfirm(timeOfDay:number) {
-    console.log(editHours, editMinutes, editedId, selectedDay)
-    if(editHours == undefined || editMinutes == undefined || editedId == undefined || selectedDay == undefined) return;
-    if (editHours > 23 || editHours < 0) return;
-    if (editMinutes > 59 || editMinutes < 0) return;
-
-    try {
-      console.log("put request being made...")
-      const modifiedScheduleItem:ScheduleData = {
-        id:editedId,
-        day:selectedDay,
-        hour:editHours,
-        minute:editMinutes,
-        time_period:timeOfDay
-      } 
-      const { data, status } = await axios.put(
-        `http://localhost:8080/patient/1/schedule/${editedId}`,
-        modifiedScheduleItem,
-        {
-          headers: {
-            Accept: 'application/json'
-          },
-        },
-      );
-      
-      setEditedId(-1)
-      setEditHours(-1);
-      setEditMinutes(-1);
       loadSchedule(selectedDay);
-
-      return data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.log('error message: ', error.message);
-      return error.message;
-    } else {
-      console.log('unexpected error: ', error);
-      return 'An unexpected error occurred';
+      setEditedId(-1);
+      setToastMessage("Schedule updated successfully!");
+      setShowToast(true);
+    } catch (error) {
+      console.error("Error updating time:", error);
     }
   }
+
+  async function deleteTime(id: number) {
+    try {
+      await axios.delete(`http://localhost:8080/patient/1/schedule/${id}`);
+      loadSchedule(selectedDay);
+      setShowModal(false);
+      setToastMessage("Schedule deleted successfully!");
+      setShowToast(true);
+    } catch (error) {
+      console.error("Error deleting time:", error);
+    }
   }
 
-  function formatTime(hours: string, minutes: string): string | null {
-    const hoursNum = parseInt(hours, 10);
-    const minutesNum = parseInt(minutes, 10);
+  const handleMedicationStatus = (timePeriod: number, taken: boolean) => {
+    const updatedSchedule = schedule.map(item =>
+      item.time_period === timePeriod ? { ...item, taken } : item
+    );
+    setSchedule(updatedSchedule);
+  };
 
-    if (isNaN(hoursNum) || isNaN(minutesNum)) {
-      alert("Please enter valid numbers for hours and minutes.");
-      return null;
-    }
-    if (hoursNum < 0 || hoursNum > 23) {
-      alert("Hours must be between 0 and 23.");
-      return null;
-    }
-    if (minutesNum < 0 || minutesNum > 59) {
-      alert("Minutes must be between 0 and 59.");
-      return null;
-    }
+  const handleAddMedications = (timePeriod: number) => {
+    setCurrentTimePeriod(timePeriod);
+    setShowAddMedicationModal(true);
+  };
 
-    return `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}`;
-  }
+  const handleMedicationSelection = (medication: Medication) => {
+    setSelectedMedications(prev => {
+      const isSelected = prev.some(med => med.id === medication.id);
+      if (isSelected) {
+        return prev.filter(med => med.id !== medication.id);
+      } else {
+        return [...prev, medication];
+      }
+    });
+  };
+
+  const saveMedicationsToSchedule = () => {
+    const updatedSchedule = schedule.map(item =>
+      item.time_period === currentTimePeriod ? { ...item, medications: selectedMedications } : item
+    );
+    setSchedule(updatedSchedule);
+    setShowAddMedicationModal(false);
+    setSelectedMedications([]);
+  };
 
   return (
-    <IonPage>
+    <IonPage className={filter}>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Your Schedule</IonTitle>
+          <IonTitle>Add/Modify Schedule</IonTitle>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen className="ion-padding">
+      <IonContent fullscreen className="ion-padding content">
         <IonGrid>
-          <IonRow>
+          <IonRow className="day-row">
             {daysOfWeek.map((day) => (
               <IonCol key={day} size="1" className={selectedDay === day ? "selected-day" : "day-col"}>
-                <IonButton fill="clear" onClick={() => setSelectedDay(day)}>
-                  {getWeekdayName(day)?.substring(0,2)}
+                <IonButton
+                  fill="solid"
+                  color={selectedDay === day ? "primary" : "light"}
+                  expand="block"
+                  onClick={() => setSelectedDay(day)}
+                  className="day-button"
+                >
+                  {getWeekdayName(day)?.substring(0, 2)}
                 </IonButton>
               </IonCol>
             ))}
           </IonRow>
         </IonGrid>
 
-        <IonItem>
-  <IonLabel position="stacked">Add New Time:</IonLabel>
-  <div className="time-input-container">
-    <IonInput
-      type="number"
-      value={hours}
-      onIonChange={(e) => setHours(e.detail.value || "")}
-      placeholder="HH"
-      className="time-input"
-    />
-    :
-    <IonInput
-      type="number"
-      value={minutes}
-      onIonChange={(e) => setMinutes(e.detail.value || "")}
-      placeholder="MM"
-      className="time-input"
-    />
-    <IonItem>
-      <IonLabel position="fixed">Time of Day:</IonLabel>
-      <IonSelect onIonChange={(e) => setSelectedTimeOfDay(e.detail.value)}>
-        <IonSelectOption value={1}>Morning</IonSelectOption>
-        <IonSelectOption value={2}>Afternoon</IonSelectOption>
-        <IonSelectOption value={3}>Evening</IonSelectOption>
-        <IonSelectOption value={4}>Night</IonSelectOption>
-      </IonSelect>
-    </IonItem>
-  </div>
-</IonItem>
+        <IonList className="schedule-list">
+          {schedule.map((item) => (
+            <IonItem key={item.time_period} className="schedule-item">
+              {editedId === item.time_period ? (
+                <>
+                  <IonInput
+                    type="number"
+                    value={editHours}
+                    onIonChange={(e) => setEditHours(parseInt(e.detail.value || "0", 10))}
+                    placeholder="HH"
+                    className="time-input"
+                  />
+                  :
+                  <IonInput
+                    type="number"
+                    value={editMinutes}
+                    onIonChange={(e) => setEditMinutes(parseInt(e.detail.value || "0", 10))}
+                    placeholder="MM"
+                    className="time-input"
+                  />
+                  <IonButton slot="end" className="confirm-edit-button" onClick={() => updateTime(item.time_period)}>
+                    <IonIcon icon={checkmarkOutline} />
+                  </IonButton>
+                  <IonButton slot="end" className="cancel-edit-button" onClick={() => setEditedId(-1)}>
+                    <IonIcon icon={closeOutline} />
+                  </IonButton>
+                </>
+              ) : (
+                <>
+                  <IonLabel className="schedule-label">
+                    <IonIcon icon={timeOutline} className="time-icon" />
+                    {timeOfDayMap[item.time_period]}: {timePadding(item.hour)}:{timePadding(item.minute)}
+                    {item.medications && item.medications.length > 0 && (
+                      <div className="medications-list">
+                        {item.medications.map((medication) => (
+                          <div key={medication.id} className="medication-item">
+                            <small>{medication.name} - {medication.amount}</small>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </IonLabel>
+                  <IonButton slot="end" onClick={() => handleAddMedications(item.time_period)}>
+                    Add Medications
+                  </IonButton>
+                  <IonButton slot="end" className="edit-button" onClick={() => { setEditedId(item.time_period); setEditHours(item.hour); setEditMinutes(item.minute); }}>
+                    <IonIcon icon={createOutline} />
+                  </IonButton>
+                  <IonButton slot="end" className="delete-button" onClick={() => { setDeleteScheduleId(item.id); setShowModal(true); }}>
+                    <IonIcon icon={trashOutline} />
+                  </IonButton>
+                  <IonButton
+                    slot="end"
+                    color={item.taken ? 'success' : 'danger'}
+                    onClick={() => handleMedicationStatus(item.time_period, !item.taken)}
+                  >
+                    <IonIcon icon={item.taken ? checkmarkCircle : closeCircle} />
+                  </IonButton>
+                </>
+              )}
+            </IonItem>
+          ))}
+        </IonList>
 
-        <IonButton onClick={addTime} expand="block" color="primary">
-          Add Time
-        </IonButton>
-
-        <IonList>
-  {schedule.map((item, index) => (
-    <IonItem key={index}>
-        {item.id == editedId ? (
-        <>
-          <IonInput
-            type="number"
-            value={editHours}
-            onIonChange={(e) => setEditHours(parseInt(e.detail.value,10))}
-            placeholder="HH"
-            className="time-input"
-          />
-          :
-          <IonInput
-            type="number"
-            value={editMinutes}
-            onIonChange={(e) => setEditMinutes(parseInt(e.detail.value,10))}
-            placeholder="MM"
-            className="time-input"
-          />
-          <IonButton slot="end" color="success" onClick={() => editTimeConfirm(item.time_period)}>
-            <IonIcon icon={checkmarkOutline} />
-          </IonButton>
-          <IonButton slot="end" color="medium" onClick={() => {
-            setEditedId(-1)
-            setEditHours(-1)
-            setEditMinutes(-1)
-          }
-            }>
-            <IonIcon icon={closeOutline} />
-          </IonButton>
-        </>
-      ) : (
-        <>
-          <IonLabel>{timePadding(item.hour)}:{timePadding(item.minute)} | {timeOfDayMap[item.time_period] || "Unknown Time"}</IonLabel>
-          <IonButton slot="end" color="primary" onClick={() => {
-            setEditedId(item.id)
-            setEditHours(item.hour)
-            setEditMinutes(item.minute)
-          }}>
-            <IonIcon icon={createOutline} />
-          </IonButton>
-          <IonButton slot="end" color="danger" onClick={() => confirmDeletion(item.id)}>
-            <IonIcon icon={trashOutline} />
-          </IonButton>
-        </>
-  )}
-    </IonItem>
-  ))}
-</IonList>
-
-
-        <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
+        <IonModal isOpen={showAddMedicationModal} onDidDismiss={() => setShowAddMedicationModal(false)}>
           <IonHeader>
             <IonToolbar>
-              <IonTitle>Confirm Submission</IonTitle>
+              <IonTitle>Add Medications</IonTitle>
             </IonToolbar>
           </IonHeader>
-          <IonContent className="ion-padding">
-            <p>Are you sure you wish to delete this time?</p>
-            <IonButton expand="full" color="primary" onClick={() => {
-              deleteTime(deleteScheduleId)
-              setShowModal(false)}}>
-              Yes
-            </IonButton>
-            <IonButton expand="full" color="medium" className="cancel-button" onClick={() => setShowModal(false)}>
-              No
+          <IonContent>
+            <IonList>
+              {medications.map((medication) => (
+                <IonItem key={medication.id}>
+                  <IonLabel>{medication.name} - {medication.amount}</IonLabel>
+                  <IonCheckbox
+                    checked={selectedMedications.some(med => med.id === medication.id)}
+                    onIonChange={() => handleMedicationSelection(medication)}
+                  />
+                </IonItem>
+              ))}
+            </IonList>
+            <IonButton expand="block" onClick={saveMedicationsToSchedule}>
+              Save
             </IonButton>
           </IonContent>
         </IonModal>
-
-
       </IonContent>
     </IonPage>
   );
