@@ -2,12 +2,12 @@
 http://ionicframework.com/docs/theming/ */
 
 :root {
-	--ion-tab-bar-background:#084632;
+	--ion-tab-bar-background:#063425;
 	--ion-tab-bar-background-rgb:rgba(0,0,0,0);
-	--ion-tab-bar-border-color:#084632;
+	--ion-tab-bar-border-color:#063425;
 
 	/* variables below generated from https://ionicframework.com/docs/theming/themes */
-	--ion-background-color: #594770;
+	--ion-background-color: #161616;
 	--ion-background-color-rgb: 89,71,112;
 
 	--ion-text-color: ffffff;
@@ -52,9 +52,11 @@ http://ionicframework.com/docs/theming/ */
 	--ion-background-color-step-850: #e6e3ea;
 	--ion-background-color-step-900: #eeedf1;
 	--ion-background-color-step-950: #f7f6f8;
+	
+	--element-hover-highlight-color: rgb(201, 201, 0);
 }
 
-ion-tab-bar{ --color-selected: yellow }
+ion-tab-bar{ --color-selected: var(--element-hover-highlight-color) }
 ion-tab-button{ --background: var(--ion-background-color-rgb) }
-ion-item{ --background: var(--ion-text-color-step-650)}
-ion-datetime{ --background: var(--ion-text-color-step-700)}
+ion-item{ --background: var(--ion-background-color); --inner-border-width:0}
+ion-datetime{ --background: var(--ion-background-color)}

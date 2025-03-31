@@ -19,7 +19,6 @@ import {
 import { timeOutline, calendarOutline } from 'ionicons/icons';
 import { useColorblindFilter } from '../colorBlindContext';
 import './SchedulePage.css';
-import calendarImage from '../Picture2.png';
 
 const SchedulePage: React.FC = () => {
   const { filter } = useColorblindFilter();

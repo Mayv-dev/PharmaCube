@@ -3,7 +3,7 @@ import '../styles/Settings.css';
 
 const FAQs: React.FC = () => (
 	<IonPage>
-		<IonContent>
+		<IonContent className="ion-padding">
 
 		</IonContent>
 	</IonPage>

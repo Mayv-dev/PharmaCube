@@ -16,7 +16,7 @@ import {
   IonCol,
   IonModal,
   IonToast,
-  IonCheckbox,
+  
 } from "@ionic/react";
 import { trashOutline, createOutline, checkmarkOutline, closeOutline, timeOutline, checkmarkCircle, closeCircle } from "ionicons/icons";
 import axios from "axios";
@@ -47,15 +47,9 @@ const ScheduleAddModifyPage: React.FC = () => {
   const [deleteScheduleId, setDeleteScheduleId] = useState<number>(-1);
   const [showToast, setShowToast] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
-  const [showAddMedicationModal, setShowAddMedicationModal] = useState<boolean>(false);
-  const [selectedMedications, setSelectedMedications] = useState<Medication[]>([]);
-  const [medications, setMedications] = useState<Medication[]>([]);
-  const [currentTimePeriod, setCurrentTimePeriod] = useState<number>(-1);
-  const { filter } = useColorblindFilter();
 
   useEffect(() => {
     loadSchedule(selectedDay);
-    loadMedications();
   }, [selectedDay]);
 
   async function loadSchedule(day: number) {
@@ -70,16 +64,8 @@ const ScheduleAddModifyPage: React.FC = () => {
 
       const allTimesOfDay = Object.keys(timeOfDayMap).map((key) => parseInt(key, 10));
       const scheduleWithDefaults = allTimesOfDay.map((timePeriod) => {
-        const existingItem = mockData.find((item) => item.time_period === timePeriod && item.day === day);
-        return existingItem || { 
-          id: -1, 
-          day, 
-          hour: 0, 
-          minute: 0, 
-          time_period: timePeriod, 
-          taken: false, 
-          medications: [] 
-        };
+        const existingItem = data.find((item: ScheduleData) => item.time_period === timePeriod && item.day === day);
+        return existingItem || { id: -1, day, hour: 0, minute: 0, time_period: timePeriod };
       });
       setSchedule(scheduleWithDefaults);
     } catch (error) {
@@ -124,18 +110,22 @@ const ScheduleAddModifyPage: React.FC = () => {
     }
   
     try {
-      const updatedSchedule = schedule.map(item => {
-        if (item.time_period === timePeriod) {
-          return {
-            ...item,
-            hour: hours,
-            minute: minutes
-          };
-        }
-        return item;
-      });
-  
-      setSchedule(updatedSchedule);
+      const existingItem = schedule.find((item) => item.time_period === timePeriod && item.day === selectedDay);
+      const payload: ScheduleData = {
+        id: existingItem?.id || -1,
+        day: selectedDay,
+        hour: editHours,
+        minute: editMinutes,
+        time_period: timePeriod,
+      };
+
+      if (existingItem?.id && existingItem.id !== -1) {
+        await axios.put(`http://localhost:8080/patient/1/schedule/${existingItem.id}`, payload);
+      } else {
+        await axios.post(`http://localhost:8080/patient/1/schedule`, payload);
+      }
+
+      loadSchedule(selectedDay);
       setEditedId(-1);
       setToastMessage("Time updated successfully!");
       setShowToast(true);
@@ -160,38 +150,7 @@ const ScheduleAddModifyPage: React.FC = () => {
     }
   }
 
-  const handleMedicationStatus = (timePeriod: number, taken: boolean) => {
-    const updatedSchedule = schedule.map(item =>
-      item.time_period === timePeriod ? { ...item, taken } : item
-    );
-    setSchedule(updatedSchedule);
-  };
-
-  const handleAddMedications = (timePeriod: number) => {
-    const currentItem = schedule.find(item => item.time_period === timePeriod);
-    setSelectedMedications(currentItem?.medications || []);
-    setCurrentTimePeriod(timePeriod);
-    setShowAddMedicationModal(true);
-  };
-
-  const handleMedicationSelection = (medication: Medication) => {
-    setSelectedMedications(prev => {
-      const isSelected = prev.some(med => med.id === medication.id);
-      if (isSelected) {
-        return prev.filter(med => med.id !== medication.id);
-      } else {
-        return [...prev, medication];
-      }
-    });
-  };
-
-  const saveMedicationsToSchedule = () => {
-    const updatedSchedule = schedule.map(item =>
-      item.time_period === currentTimePeriod ? { ...item, medications: selectedMedications } : item
-    );
-    setSchedule(updatedSchedule);
-    setShowAddMedicationModal(false);
-  };
+  const timePadding = (value: number) => (value < 10 ? `0${value}` : value);
 
   return (
     <IonPage className={filter}>
@@ -266,18 +225,7 @@ const ScheduleAddModifyPage: React.FC = () => {
                       </div>
                     )}
                   </IonLabel>
-                  <IonButton slot="end" onClick={() => handleAddMedications(item.time_period)}>
-                    Add Medications
-                  </IonButton>
-                  <IonButton 
-                    slot="end" 
-                    className="edit-button" 
-                    onClick={() => { 
-                      setEditedId(item.time_period); 
-                      setEditHours(item.hour.toString());
-                      setEditMinutes(item.minute.toString());
-                    }}
-                  >
+                  <IonButton slot="end" className="edit-button" onClick={() => { setEditedId(item.time_period); setEditHours(item.hour); setEditMinutes(item.minute); }}>
                     <IonIcon icon={createOutline} />
                   </IonButton>
                   {item.id !== -1 && (
@@ -299,61 +247,44 @@ const ScheduleAddModifyPage: React.FC = () => {
                   >
                     <IonIcon icon={item.taken ? checkmarkCircle : closeCircle} />
                   </IonButton>
+                  <IonButton
+                    slot="end"
+                    color={item.taken ? 'success' : 'danger'}
+                    onClick={() => handleMedicationStatus(item.time_period, !item.taken)}
+                  >
+                    <IonIcon icon={item.taken ? checkmarkCircle : closeCircle} />
+                  </IonButton>
                 </>
               )}
             </IonItem>
           ))}
         </IonList>
 
-        <IonModal isOpen={showAddMedicationModal} onDidDismiss={() => setShowAddMedicationModal(false)}>
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle>Add Medications</IonTitle>
-            </IonToolbar>
-          </IonHeader>
-          <IonContent>
-            <IonList>
-              {medications.map((medication) => (
-                <IonItem key={medication.id}>
-                  <IonLabel>{medication.name} - {medication.amount}</IonLabel>
-                  <IonCheckbox
-                    checked={selectedMedications.some(med => med.id === medication.id)}
-                    onIonChange={() => handleMedicationSelection(medication)}
-                  />
-                </IonItem>
-              ))}
-            </IonList>
-            <IonButton expand="block" onClick={saveMedicationsToSchedule}>
-              Save Medications
-            </IonButton>
-          </IonContent>
-        </IonModal>
-
+        {/* Delete confirmation modal */}
         <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
           <IonHeader>
-            <IonToolbar>
-              <IonTitle>Confirm Deletion</IonTitle>
+            <IonToolbar color="primary">
+              <IonTitle className="ion-text-center title">Confirm Deletion</IonTitle>
             </IonToolbar>
           </IonHeader>
           <IonContent className="ion-padding">
-            <p>Are you sure you want to delete this schedule item?</p>
-            <IonButton expand="block" color="danger" onClick={() => {
-              deleteTime(deleteScheduleId);
-              setShowModal(false);
-            }}>
-              Delete
+            <p>Are you sure you wish to delete this time?</p>
+            <IonButton expand="full" className="confirm-delete-button" onClick={() => deleteTime(deleteScheduleId)}>
+              Yes
             </IonButton>
-            <IonButton expand="block" color="light" onClick={() => setShowModal(false)}>
-              Cancel
+            <IonButton expand="full" className="cancel-delete-button" onClick={() => setShowModal(false)}>
+              No
             </IonButton>
           </IonContent>
         </IonModal>
 
+        {/* Toast for feedback */}
         <IonToast
           isOpen={showToast}
           onDidDismiss={() => setShowToast(false)}
           message={toastMessage}
           duration={2000}
+          color="success"
         />
       </IonContent>
     </IonPage>
