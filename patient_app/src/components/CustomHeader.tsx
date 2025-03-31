@@ -20,8 +20,10 @@ const CustomHeader: React.FC = () => {
         return 'Medications';
       case '/SettingsPage':
         return 'Settings';
+      case '/ChatPage':
+        return 'AI Helper';
       default:
-        return 'My App';
+        return 'AI Helper'; 
     }
   };
 

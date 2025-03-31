@@ -14,10 +14,58 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+func GetMockPatientSchedule(context *gin.Context) {
+	patientId := context.Param("patient_id")
+	log.Printf("Returning mock schedule for patient ID: %s", patientId)
+
+	// ✅ Local mock-only structs
+	type Medication struct {
+		ID     int    `json:"id"`
+		Name   string `json:"name"`
+		Amount string `json:"amount"`
+	}
+
+	type MockSchedule struct {
+		ID          int          `json:"id"`
+		Day         int          `json:"day"`
+		Hour        int          `json:"hour"`
+		Minute      int          `json:"minute"`
+		TimePeriod  int          `json:"time_period"`
+		Taken       bool         `json:"taken"`
+		Medications []Medication `json:"medications"`
+	}
+
+	mockSchedule := []MockSchedule{
+		{
+			ID:         1,
+			Day:        1,
+			Hour:       8,
+			Minute:     30,
+			TimePeriod: 1,
+			Taken:      false,
+			Medications: []Medication{
+				{ID: 1, Name: "Paracetamol", Amount: "500mg"},
+			},
+		},
+		{
+			ID:         2,
+			Day:        1,
+			Hour:       13,
+			Minute:     0,
+			TimePeriod: 2,
+			Taken:      true,
+			Medications: []Medication{
+				{ID: 2, Name: "Aspirin", Amount: "100mg"},
+			},
+		},
+	}
+
+	context.JSON(http.StatusOK, mockSchedule)
+}
+
 func GetPatientSchedule(context *gin.Context) {
 	patientId, err := strconv.Atoi(context.Param("patient_id"))
 	if err != nil {
-		//Invalid ID
 		log.Println(err.Error())
 		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid Patient ID"})
 		return
@@ -25,7 +73,6 @@ func GetPatientSchedule(context *gin.Context) {
 
 	patient, err := databaseadapters.GetPatient(uint(patientId))
 	if err != nil {
-		//Not found
 		log.Println(err.Error())
 		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Patient not Found"})
 		return
@@ -34,7 +81,7 @@ func GetPatientSchedule(context *gin.Context) {
 	schedule, err := databaseadapters.GetPatientSchedule(patient.ID)
 	if err != nil {
 		log.Println(err.Error())
-		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Patient Scheduele not Found"})
+		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Patient Schedule not Found"})
 		return
 	}
 
@@ -44,7 +91,6 @@ func GetPatientSchedule(context *gin.Context) {
 func GetPatientScheduleItem(context *gin.Context) {
 	patientId, err := strconv.Atoi(context.Param("patient_id"))
 	if err != nil {
-		//Invalid ID
 		log.Println(err.Error())
 		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid Patient ID"})
 		return
@@ -52,16 +98,13 @@ func GetPatientScheduleItem(context *gin.Context) {
 
 	scheduleId, err := strconv.Atoi(context.Param("schedule_id"))
 	if err != nil {
-		//Invalid ID
 		log.Println(err.Error())
 		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid Schedule ID"})
 		return
 	}
 
-	//Get Patient
 	patient, err := databaseadapters.GetPatient(uint(patientId))
 	if err != nil {
-		//Not found
 		log.Println(err.Error())
 		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Patient not Found"})
 		return
@@ -80,7 +123,6 @@ func GetPatientScheduleItem(context *gin.Context) {
 func CreatePatientScheduleItem(context *gin.Context) {
 	patientId, err := strconv.Atoi(context.Param("patient_id"))
 	if err != nil {
-		//Invalid ID
 		log.Println(err.Error())
 		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid Patient ID"})
 		return
@@ -89,7 +131,6 @@ func CreatePatientScheduleItem(context *gin.Context) {
 	var newSchedule apimodels.PatientSchedule
 	err = context.BindJSON(&newSchedule)
 	if err != nil {
-		//Invalid json
 		log.Println(err.Error())
 		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid schedule"})
 		return
@@ -98,7 +139,6 @@ func CreatePatientScheduleItem(context *gin.Context) {
 	validator := validator.New()
 	err = validator.Struct(newSchedule)
 	if err != nil {
-		//Invalid
 		log.Println(err.Error())
 		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid Schedule"})
 		return
@@ -112,10 +152,8 @@ func CreatePatientScheduleItem(context *gin.Context) {
 		TimePeriod: newSchedule.TimePeriod,
 	}
 
-	//Get Patient
 	_, err = databaseadapters.GetPatient(uint(patientId))
 	if err != nil {
-		//Not found
 		log.Println(err.Error())
 		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Patient not Found"})
 		return
@@ -136,7 +174,6 @@ func CreatePatientScheduleItem(context *gin.Context) {
 func ModifyPatientScheduleItem(context *gin.Context) {
 	patientId, err := strconv.Atoi(context.Param("patient_id"))
 	if err != nil {
-		//Invalid ID
 		log.Println(err.Error())
 		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid Patient ID"})
 		return
@@ -144,7 +181,6 @@ func ModifyPatientScheduleItem(context *gin.Context) {
 
 	scheduleId, err := strconv.Atoi(context.Param("schedule_id"))
 	if err != nil {
-		//Invalid ID
 		log.Println(err.Error())
 		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid Schedule ID"})
 		return
@@ -153,7 +189,6 @@ func ModifyPatientScheduleItem(context *gin.Context) {
 	var newSchedule apimodels.PatientSchedule
 	err = context.BindJSON(&newSchedule)
 	if err != nil {
-		//Invalid json
 		log.Println(err.Error())
 		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid schedule"})
 		return
@@ -162,7 +197,6 @@ func ModifyPatientScheduleItem(context *gin.Context) {
 	validator := validator.New()
 	err = validator.Struct(newSchedule)
 	if err != nil {
-		//Invalid
 		log.Println(err.Error())
 		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid Schedule1"})
 		return
@@ -175,10 +209,8 @@ func ModifyPatientScheduleItem(context *gin.Context) {
 		TimePeriod: newSchedule.TimePeriod,
 	}
 
-	//Get Patient
 	_, err = databaseadapters.GetPatient(uint(patientId))
 	if err != nil {
-		//Not found
 		log.Println(err.Error())
 		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Patient not Found"})
 		return
@@ -199,7 +231,6 @@ func ModifyPatientScheduleItem(context *gin.Context) {
 func DeletePatientScheduleItem(context *gin.Context) {
 	patientId, err := strconv.Atoi(context.Param("patient_id"))
 	if err != nil {
-		//Invalid ID
 		log.Println(err.Error())
 		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid Patient ID"})
 		return
@@ -207,16 +238,13 @@ func DeletePatientScheduleItem(context *gin.Context) {
 
 	scheduleId, err := strconv.Atoi(context.Param("schedule_id"))
 	if err != nil {
-		//Invalid ID
 		log.Println(err.Error())
 		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid Schedule ID"})
 		return
 	}
 
-	// Get Patient
 	_, err = databaseadapters.GetPatient(uint(patientId))
 	if err != nil {
-		//Not found
 		log.Println(err.Error())
 		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Patient not Found"})
 		return
@@ -232,5 +260,4 @@ func DeletePatientScheduleItem(context *gin.Context) {
 	autoscheduler.AutoScheduleRegime(uint(patientId))
 
 	context.JSON(http.StatusOK, responses.ApiResponse{Data: "Patient Schedule Item Deleted"})
-
 }
