@@ -1,0 +1,95 @@
+.notification-icon, .hamburger-icon {
+	font-size: 24px;
+	cursor: pointer;
+	margin: 1%;
+}
+
+.pharmacistMenuGreeting {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.pharmacistMenuGreeting img {
+	height: 100%;
+	margin-right: 3%;
+}
+
+.notification-badge {
+	font-size: 12px;
+  }
+
+.centerTitle {
+	text-align: center;
+	font-weight: bold;
+}
+
+.tabBarSecondary {
+	border-top:1px solid black;
+}
+
+.tabBarPrimary {
+	display: flex;
+	justify-content: space-between;
+}
+
+.tabBarSecondary {
+	background-color: #204036;
+}
+
+.hiddenOutlet{
+	display: none;
+}
+
+.tabs-inner {
+	display: none;
+}
+
+.hamburger-menu {
+	background-color: rgb(56, 56, 56);
+	height: 100%;
+	width: 100%;
+	padding:3%
+}
+
+.rowOfSelects{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.rowOfSelects ion-item{
+	width: 48%;
+}
+
+.notificationMenu {
+	--max-width:80%;
+	--min-width:500px;
+}
+
+.menuBackButton {
+	width: 40%;
+	float: right;
+	margin-bottom: 12%;
+}
+
+.menuBackButton, .notificationsBackButton, .menuOptionButton {
+	--background: rgb(112, 112, 112);
+}
+
+.notificationsBackButton {
+	width: 30%;
+	margin-bottom: 4%;
+	float: left;
+}
+
+@media screen and (max-width: 680px) {
+	.notificationMenu {
+		--max-width:80%;
+		--min-width:300px;
+	}
+	.notificationsBackButton {
+		width: 40%;
+	}
+  }

@@ -1,0 +1,88 @@
+/* Custom Tab Bar */
+.custom-tab-bar {
+  width: 100%;
+  background-color: var(--ion-tab-bar-background, #ffffff);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--ion-border-color, #e0e0e0);
+}
+
+/* Move the tab bar to the top */
+.custom-tab-bar[slot="top"] {
+  top: 0;
+  bottom: auto;
+  border-bottom: 1px solid var(--ion-border-color, #e0e0e0);
+  border-top: none;
+}
+
+/* Move the tab bar to the bottom */
+.custom-tab-bar[slot="bottom"] {
+  bottom: 0;
+  top: auto;
+  border-top: 1px solid var(--ion-border-color, #e0e0e0);
+  border-bottom: none;
+}
+
+/* Dynamic Header */
+ion-header {
+  width: 100%;
+  z-index: 1000;
+  background: linear-gradient(135deg, #99f7db, #1e90b3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  height: 80px;
+  display: flex;
+  align-items: center;
+}
+
+/* Dark Mode Header */
+.dark ion-header {
+  background: linear-gradient(135deg, #1a1a1a, #000000);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Toolbar Styles */
+ion-toolbar {
+  --background: transparent;
+  --color: white;
+  padding: 0 24px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* Dark Mode Toolbar */
+.dark ion-toolbar {
+  --color: #ffffff;
+}
+
+/* Title Styles */
+ion-title {
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-align: center;
+  transition: opacity 0.3s ease;
+  flex: 1;
+}
+
+/* Dark Mode Title */
+.dark ion-title {
+  color: #ffffff;
+}
+
+/* Hover Effect on Toolbar */
+ion-toolbar:hover {
+  opacity: 0.9;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  ion-header {
+    height: 70px;
+  }
+
+  ion-title {
+    font-size: 1.5rem;
+  }
+}

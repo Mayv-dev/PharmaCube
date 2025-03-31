@@ -1,0 +1,112 @@
+.calendar {
+	display: flex;
+	flex-direction: column;
+	width: 90%;
+	margin: auto;
+}
+.currentCalendarDate, .calendarDate {
+	width: 14%;
+	border: 1px solid black;
+	aspect-ratio: 1/1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.legendCalendarDate {
+  width: 30%;
+	border: 1px solid black;
+	aspect-ratio: 1/1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.calendarDate, .currentCalendarDate {
+  cursor:pointer;
+}
+
+.calendarDate:hover, .currentCalendarDate:hover {
+  border: 6px solid var(--element-hover-highlight-color);
+  border-radius: 3px;
+}
+
+.currentCalendarDate {
+	background-color: rgb(0, 175, 137);
+}
+.calendarRow {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}
+/*aspect-ratio property found from https://www.geeksforgeeks.org/how-to-set-height-equal-to-dynamic-width-css-fluid-layout/*/
+.calendarDate {
+	background-color: gray;
+}
+
+.takenDate {
+	background-color: green;
+}
+
+/*linear-gradient for background was found from https://medium.com/@miguelznunez/html-css-how-to-split-a-background-into-2-colors-1cdc394deb3d#:~:text=If%20you%20want%20the%20split,color%2C%20color%2C%20and%20color.*/
+.notTakenDate {
+	background: linear-gradient(
+    to bottom,
+    red 0%,
+    red 20%,
+    black 20%,
+    black 30%,
+    red 30%,
+    red 70%,
+    black 70%,
+    black 80%,
+    red 80%,
+    red 100%
+  );
+
+}
+.partiallyTakenDate {
+	background: linear-gradient(
+    to bottom,
+    green 0%,
+    green 45%,
+    black 45%,
+    black 55%,
+    red 55%,
+    red 100%
+  );
+}
+
+.calendarLayout {
+  display: flex;
+  flex-direction: row;
+  margin-top: 2%;
+}
+.historyLegend {
+  width: 30%;
+}
+
+.historyLegendRow {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 5%;
+  justify-content: space-between;
+  background-color: gray;
+  border-radius: 3px;
+  padding: 3%;
+  align-items: center;
+  border:1px solid black;
+}
+
+.historyLegendRow p {
+  width: 50%;
+  font-size: 12px;
+}
+
+.historyLegend p, .history p {
+  text-align: center;
+}
+
+.history {
+  width: 100%;
+}
