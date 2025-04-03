@@ -58,5 +58,5 @@ http://ionicframework.com/docs/theming/ */
 
 ion-tab-bar{ --color-selected: var(--element-hover-highlight-color) }
 ion-tab-button{ --background: var(--ion-background-color-rgb) }
-ion-item{ --background: var(--ion-background-color); --inner-border-width:0}
+ion-item{ --background: var(--ion-background-color); --inner-border-width:0;}
 ion-datetime{ --background: var(--ion-background-color)}

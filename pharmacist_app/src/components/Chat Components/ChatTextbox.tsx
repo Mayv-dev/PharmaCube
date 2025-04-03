@@ -2,9 +2,11 @@ import {
 	IonButton,
 	IonIcon,
 	IonInput,
+	IonItem,
 	IonLabel,
 	IonTabBar,
-	IonTabButton
+	IonTabButton,
+	IonTextarea
 } from '@ionic/react';
 import { musicalNotes, send } from 'ionicons/icons';
 import { useState } from 'react';
@@ -24,7 +26,9 @@ const ChatTextbox: React.FC<ChatTextboxProps> = ({messageSent}) => {
 
 	return (
 		<div className='chatTextbox'>
-			<IonInput value={messageToSend} onIonInput={e => setMessageToSend(e.target.value)} placeholder='Enter your message...'></IonInput>
+			<IonItem>
+				<IonTextarea value={messageToSend} onIonInput={e => setMessageToSend(e.target.value)} placeholder='Enter your message...'></IonTextarea>
+			</IonItem>
 			<IonButton onClick={() => processMessage()}>
 				<IonIcon icon={send}></IonIcon>
 			</IonButton>
