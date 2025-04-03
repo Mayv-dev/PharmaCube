@@ -106,7 +106,7 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
 			<IonContent className="ion-padding">
 			<div className='webBody'>
 				<div className='regimeReturn'>
-                  <IonButton routerLink='/regimes/' color="light">
+                  <IonButton routerLink='/regimes/' routerDirection='root' color="light">
                     <IonIcon icon={arrowBack}></IonIcon>
                     <IonText>Back to Regime Home</IonText>
                   </IonButton>

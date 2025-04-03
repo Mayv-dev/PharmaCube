@@ -161,14 +161,14 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
         <div className='webBody'>
           {passedInfo == null ?
               <div className='regimeReturn'>
-                  <IonButton routerLink='/regimes/' color="light">
+                  <IonButton routerLink='/regimes/' routerDirection='root' color="light">
                     <IonIcon icon={arrowBack}></IonIcon>
                     <IonText>Back to Regime Home</IonText>
                   </IonButton>
               </div>
             :
             <div className='regimeReturn'>
-              <IonButton routerLink='/regimes/view' onClick={e => passedInfo = null} className='regimeReturn' color="light">
+              <IonButton routerLink='/regimes/view' routerDirection='root' onClick={e => passedInfo = null} className='regimeReturn' color="light">
                 <IonIcon icon={arrowBack}></IonIcon>
                 <IonText>Back to Regime View</IonText>
               </IonButton>

@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { boolean } from 'yup';
 
 import { profanity } from '@2toad/profanity';
-
+import "../../styles/Chat Subpage/PatientChat.css"
 type ChatTextboxProps = {
 	messageSent:any; // could use this to send the go-ahead to update the state above (e.g. the new chat bubble from your message)
 }
@@ -23,7 +23,7 @@ const ChatTextbox: React.FC<ChatTextboxProps> = ({messageSent}) => {
 	const processMessage = () => messageToSend.length == 0 || profanity.exists(messageToSend) ? alert("Is there profanity in your message? Please edit your message and try sending again") : messageSent(messageToSend);
 
 	return (
-		<div>
+		<div className='chatTextbox'>
 			<IonInput value={messageToSend} onIonInput={e => setMessageToSend(e.target.value)} placeholder='Enter your message...'></IonInput>
 			<IonButton onClick={() => processMessage()}>
 				<IonIcon icon={send}></IonIcon>
