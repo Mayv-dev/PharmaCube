@@ -96,6 +96,8 @@ const App: React.FC = () => {
   // This solution is adapted from previous attempts at getting sqlite working from https://www.youtube.com/watch?v=tixvx5nsJO8&t=1130s
   if (platform != "web") {OneSignalInit();}
 
+	const [isNavBarTop, setIsNavBarTop] = useState(true)
+
 	const [pollState, setPollState] = useState(true)
 	const [getPatientChatStatus, setGetPatientChatStatus] = useState(true)
   const [notificationList, setNotificationList] = useState<Notification[]>([{
@@ -174,6 +176,10 @@ const App: React.FC = () => {
 		  }
   }
 
+  const navBarChange = (value:boolean) => {
+    setIsNavBarTop(value)
+  }
+
   return (
     <IonApp>
       <IonReactRouter>
@@ -228,7 +234,7 @@ const App: React.FC = () => {
             </Route>
 
             <Route exact path="/settings">
-              <Settings />
+              <Settings isNavBarTop={isNavBarTop} navBarChange={navBarChange}/>
             </Route>
 
             <Route exact path="/faqs">
@@ -241,7 +247,7 @@ const App: React.FC = () => {
           </IonRouterOutlet >
 
           <UpperToolbar passedNotificationList={notificationList} />
-          <LowerToolbar />
+          <LowerToolbar isNavBarTop={isNavBarTop}/>
 
         </IonTabs >
       </IonReactRouter >

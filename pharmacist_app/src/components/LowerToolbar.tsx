@@ -7,9 +7,13 @@ import {
 import { medkit, chatbubbleOutline, calendarOutline } from 'ionicons/icons';
 import '../styles/LowerToolbar.css';
 
-const LowerToolbar: React.FC = () => {
+type props = {
+	isNavBarTop:boolean;
+}
+
+const LowerToolbar: React.FC<props> = ({isNavBarTop}) => {
 	return (
-		<IonTabBar className='tabBarSecondary' slot="top">
+		<IonTabBar className='tabBarSecondary' slot={isNavBarTop ? "top" : "bottom"}>
 			<IonTabButton tab="regimes" href="/regimes">
 				<IonIcon icon={medkit} />
 				<IonLabel>Regimes</IonLabel>
