@@ -1,7 +1,11 @@
 import { IonButton, IonContent, IonItem, IonLabel, IonPage, IonSelect, IonSelectOption, IonText } from '@ionic/react';
 import '../styles/Settings.css';
 
-const Settings: React.FC = () => (
+type props = {
+  isNavBarTop:boolean
+  navBarChange:any
+}
+const Settings: React.FC<props> = ({isNavBarTop, navBarChange}) => (
   <IonPage>
 
     <IonContent className="ion-padding">
@@ -17,8 +21,9 @@ const Settings: React.FC = () => (
         <IonText>Your device's current theme automatically sets the app theme to DARK</IonText>
 
         <IonItem>
-          <IonSelect label="Navbar position:">
-            <IonSelectOption>Top</IonSelectOption>
+          <IonSelect value={isNavBarTop} onIonChange={e => navBarChange(e.target.value)} label="Navbar position:">
+            <IonSelectOption value={true}>Top</IonSelectOption>
+            <IonSelectOption value={false}>Bottom</IonSelectOption>
           </IonSelect>
         </IonItem>
       </div>
