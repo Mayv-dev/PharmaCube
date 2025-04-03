@@ -16,13 +16,13 @@ const Regimes = () => {
 			<IonContent className="ion-padding">
 				<div className='webBody'>
 					<div className='regimeButtonLayout'>
-							<IonButton routerLink="/regimes/create" expand="block" className='regimeButtonSizing' color="light">
+							<IonButton routerLink="/regimes/create" routerDirection='root' expand="block" className='regimeButtonSizing' color="light">
 								<div className='regimeButtonInternals'>
 									<IonIcon icon={add} size='large'></IonIcon>
 									<IonText>Create Regime For Patient</IonText>
 								</div>
 							</IonButton>
-							<IonButton routerLink="/regimes/view" expand="block" className='regimeButtonSizing' color="light">
+							<IonButton routerLink="/regimes/view" routerDirection='root' expand="block" className='regimeButtonSizing' color="light">
 							<div className='regimeButtonInternals'>
 								<IonIcon icon={search} size='large'></IonIcon>
 								<IonText>View Existing Patient Regimes</IonText>

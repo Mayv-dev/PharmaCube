@@ -99,13 +99,15 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus}) => 
 		<IonPage>
 			<IonContent className="ion-padding">
 			<div className='webBody'>
-				<IonRouterLink routerLink='/chat'>
-					<IonButton expand="block" className='ScheduleButtons' color="light">
+				<div className='patientChatTopSection'>
+					<IonButton expand="block" routerLink='/chat' routerDirection='root' className='ScheduleButtons' color="light">
 						Back to Chat Menu
 					</IonButton>
-				</IonRouterLink>
 				<p>Selected patient: {patientName}</p>
-				{ patientChat?.messages.map(message => <ChatBubble passedPharmacistId={pharmacistId} passedPatientId={patientId} passedMessage={message}></ChatBubble>)}
+				</div>
+				<div className={"chatBubbleContainer"}>
+					{ patientChat?.messages.map(message => <ChatBubble passedPharmacistId={pharmacistId} passedPatientId={patientId} passedMessage={message}></ChatBubble>)}
+				</div>
 				<ChatTextbox messageSent={messageSent}></ChatTextbox>
 			</div>
 				</IonContent>

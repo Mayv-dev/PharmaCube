@@ -90,9 +90,9 @@ const UpperToolbar: React.FC<UpperToolbarProps> = ({passedNotificationList}) => 
 							<img width="13%" src='https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'></img>
 							<p>Hello, Henry!</p>
 						</div>
-						<IonButton className={"menuOptionButton"} href='/account'>My Account</IonButton> 
-						<IonButton className={"menuOptionButton"} href='/faqs'>FAQs</IonButton>
-						<IonButton className={"menuOptionButton"} href='/settings'>Settings</IonButton> 
+						<IonButton className={"menuOptionButton"} routerLink='/account' routerDirection='root'>My Account</IonButton> 
+						<IonButton className={"menuOptionButton"} routerLink='/faqs' routerDirection='root'>FAQs</IonButton>
+						<IonButton className={"menuOptionButton"} routerLink='/settings' routerDirection='root'>Settings</IonButton> 
 						<IonButton color={"danger"}>Log Out</IonButton>
 					</div>
 				</IonContent>

@@ -96,7 +96,7 @@ const App: React.FC = () => {
   // This solution is adapted from previous attempts at getting sqlite working from https://www.youtube.com/watch?v=tixvx5nsJO8&t=1130s
   if (platform != "web") {OneSignalInit();}
 
-	const [isNavBarTop, setIsNavBarTop] = useState(true)
+	const [isNavBarTop, setIsNavBarTop] = useState(false)
 
 	const [pollState, setPollState] = useState(true)
 	const [getPatientChatStatus, setGetPatientChatStatus] = useState(true)
