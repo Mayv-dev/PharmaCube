@@ -48,5 +48,18 @@
 }
 
 .chatTextbox {
+	display: flex;
+	margin-top: 10px;
+	flex-direction: row;
 	height: 10%;
+}
+
+.chatTextbox ion-item {
+	width: 90%;
+	color: white;
+	padding: 2px;
+}
+
+.chatTextbox ion-button {
+	width: 10%;
 }
