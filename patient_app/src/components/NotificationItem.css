@@ -1,40 +1,109 @@
-.notificationItemContainer {
-	color: hsl(0, 0%, 11%);
-	border-radius: 3px;
-	border: 1px solid;
-	width: 30%;
-	font-size: 24px;
-	text-align: center;
-	margin: 5px auto auto auto;
+/* Notification Item Styles */
+.notification-card {
+	margin: 12px 16px;
+	border-radius: 12px;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+	transition: all 0.2s ease;
+	overflow: hidden;
+  }
+  
+  .notification-card:active {
+	transform: scale(0.98);
+	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .notification-card.dark {
+	background: var(--ion-color-dark);
+  }
+  
+  .notification-card.dark .content-text,
+  .notification-card.dark .notification-message {
+	color: var(--ion-color-light);
+  }
+  
+  .notification-card.dark .timestamp {
+	color: var(--ion-color-medium);
+  }
+  
+  .notification-item {
+	--background: transparent;
+	--padding-start: 16px;
+	--padding-end: 16px;
+	--inner-padding-end: 0;
+  }
+  
+  .urgency-indicator {
+	width: 48px;
+	height: 48px;
+	border-radius: 12px;
 	display: flex;
-	min-width: 300px;
 	align-items: center;
-	height: 8%;
-	min-height: 70px;
-}
-
-.highNotification {
-	background-color: red;
-}
-
-.mediumNotification {
-	background-color: yellow;
-}
-
-.lowNotification {
-	background-color: green;
-}
-
-.timeContainer {
-	width: 20%;
-	min-width: 80px;
-	border-right: 1px solid black;
-	margin: 0;
-}
-
-.contentContainer {
-	width: 80%;
-	min-width: 200px;
-	margin: 0 0 0 2%;
-	text-align: left;
-}
+	justify-content: center;
+	margin-right: 12px;
+  }
+  
+  .urgency-icon {
+	font-size: 24px;
+  }
+  
+  .notification-content {
+	margin: 8px 0;
+  }
+  
+  .content-text {
+	font-size: 1rem;
+	font-weight: 600;
+	margin: 0 0 4px 0;
+	line-height: 1.4;
+	color: var(--ion-color-dark);
+  }
+  
+  .notification-message {
+	font-size: 0.9rem;
+	color: var(--ion-color-medium);
+	margin: 0 0 8px 0;
+	line-height: 1.4;
+  }
+  
+  .notification-meta {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 8px;
+  }
+  
+  .timestamp {
+	font-size: 0.8rem;
+	display: flex;
+	align-items: center;
+	color: var(--ion-color-medium);
+  }
+  
+  .time-icon {
+	font-size: 0.9rem;
+	margin-right: 4px;
+  }
+  
+  .urgency-badge {
+	font-size: 0.7rem;
+	font-weight: 500;
+	padding: 4px 8px;
+	text-transform: capitalize;
+  }
+  
+  .medication-chip {
+	font-size: 0.75rem;
+	height: 24px;
+  }
+  
+  /* Responsive Design */
+  @media (min-width: 768px) {
+	.notification-card {
+	  margin: 16px 24px;
+	}
+	
+	.content-text {
+	  font-size: 1.1rem;
+	}
+  }

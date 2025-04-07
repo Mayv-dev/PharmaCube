@@ -1,72 +1,185 @@
-import './ExploreContainer.css';
+import React from 'react';
+import { 
+  IonCard, 
+  IonItem, 
+  IonLabel, 
+  IonNote, 
+  IonBadge,
+  IonIcon,
+  IonButton,
+  IonChip
+} from '@ionic/react';
+import { 
+  timeOutline,
+  warningOutline,
+  alertCircleOutline,
+  notificationsOutline,
+  pillOutline,
+  checkmarkCircleOutline,
+  closeCircleOutline
+} from 'ionicons/icons';
+import withSettings from '../composables/withSettings';
+import { SettingsContextType } from '../composables/SettingsContext';
 import './NotificationItem.css';
-import withSettings from '../composables/withSettings'; // Import the HOC
-import { SettingsContextType } from '../composables/SettingsContext'; // Import the settings type
 
-function dayConvert(day: number): string {
-  let stringDay = "";
-
-  switch (day) {
-    case 0: {
-      stringDay = "Monday";
-      break;
-    }
-    case 1: {
-      stringDay = "Tuesday";
-      break;
-    }
-    case 2: {
-      stringDay = "Wednesday";
-      break;
-    }
-    case 3: {
-      stringDay = "Thursday";
-      break;
-    }
-    case 4: {
-      stringDay = "Friday";
-      break;
-    }
-    case 5: {
-      stringDay = "Saturday";
-      break;
-    }
-    case 6: {
-      stringDay = "Sunday";
-      break;
-    }
-  }
-
-  return stringDay;
+enum Urgency {
+  LOW = 'low',
+  MEDIUM = 'medium',
+  HIGH = 'high'
 }
 
-enum urgency {
-  LOW, MEDIUM, HIGH
+interface Medication {
+  name: string;
+  dosage: string;
 }
 
 interface NotificationItemProps {
-  id: number;
-  content: string;
+  id: string;
+  title: string;
+  message: string;
   timestamp: string;
-  urgencyPassed: urgency;
-  settings: SettingsContextType; // Add settings to the props interface
+  type: 'medication' | 'reminder' | 'alert';
+  status: 'pending' | 'completed' | 'missed';
+  urgency: Urgency;
+  medication?: Medication;
+  settings: SettingsContextType;
+  onMarkAsRead?: (id: string) => void;
 }
 
-const NotificationItem: React.FC<NotificationItemProps> = ({ id, content, timestamp, urgencyPassed, settings }) => {
-  const { theme } = settings; // Use settings in the component
+const NotificationItem: React.FC<NotificationItemProps> = ({ 
+  id,
+  title,
+  message,
+  timestamp,
+  type,
+  status,
+  urgency,
+  medication,
+  settings,
+  onMarkAsRead
+}) => {
+  const { theme } = settings;
 
-  let nameOfClass: string;
+  const getUrgencyStyle = () => {
+    switch (urgency) {
+      case Urgency.HIGH:
+        return {
+          icon: alertCircleOutline,
+          color: 'danger',
+          bgColor: 'rgba(var(--ion-color-danger-rgb), 0.1)',
+          text: 'High'
+        };
+      case Urgency.MEDIUM:
+        return {
+          icon: warningOutline,
+          color: 'warning',
+          bgColor: 'rgba(var(--ion-color-warning-rgb), 0.1)',
+          text: 'Medium'
+        };
+      case Urgency.LOW:
+        return {
+          icon: notificationsOutline,
+          color: 'success',
+          bgColor: 'rgba(var(--ion-color-success-rgb), 0.1)',
+          text: 'Low'
+        };
+      default:
+        return {
+          icon: notificationsOutline,
+          color: 'medium',
+          bgColor: 'rgba(var(--ion-color-medium-rgb), 0.1)',
+          text: 'Unknown'
+        };
+    }
+  };
 
-  if (urgencyPassed == urgency.LOW) nameOfClass = "notificationItemContainer lowNotification";
-  else if (urgencyPassed == urgency.MEDIUM) nameOfClass = "notificationItemContainer mediumNotification";
-  else nameOfClass = "notificationItemContainer highNotification";
+  const getTypeIcon = () => {
+    switch (type) {
+      case 'medication': return pillOutline;
+      case 'reminder': return notificationsOutline;
+      case 'alert': return alertCircleOutline;
+      default: return notificationsOutline;
+    }
+  };
+
+  const urgencyStyle = getUrgencyStyle();
+
+  const formatTime = (timestamp: string) => {
+    const date = new Date(timestamp);
+    return date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  };
+
+  const formatDate = (timestamp: string) => {
+    const date = new Date(timestamp);
+    return date.toLocaleDateString([], {month: 'short', day: 'numeric'});
+  };
+
+  const handleMarkAsRead = () => {
+    if (onMarkAsRead) {
+      onMarkAsRead(id);
+    }
+  };
 
   return (
-    <div key={id} className={`${nameOfClass} ${theme}`}> {/* Apply theme */}
-      <p className='timeContainer'>{timestamp.substring(11, 16)}</p>
-      <p className='contentContainer'>{content}</p>
-    </div>
+    <IonCard className={`notification-card ${theme}`}>
+      <IonItem 
+        lines="none" 
+        className="notification-item"
+        button
+        detail={false}
+      >
+        <div 
+          slot="start" 
+          className="urgency-indicator"
+          style={{ backgroundColor: urgencyStyle.bgColor }}
+        >
+          <IonIcon 
+            icon={getTypeIcon()} 
+            color={urgencyStyle.color}
+            className="urgency-icon"
+          />
+        </div>
+
+        <IonLabel className="notification-content">
+          <h3 className="content-text">{title}</h3>
+          <p className="notification-message">{message}</p>
+          <div className="notification-meta">
+            <IonNote className="timestamp">
+              <IonIcon icon={timeOutline} className="time-icon" />
+              {formatTime(timestamp)} • {formatDate(timestamp)}
+            </IonNote>
+            {medication && (
+              <IonChip color="tertiary" className="medication-chip">
+                {medication.name} • {medication.dosage}
+              </IonChip>
+            )}
+            <IonBadge 
+              color={urgencyStyle.color}
+              className="urgency-badge"
+            >
+              {urgencyStyle.text}
+            </IonBadge>
+          </div>
+        </IonLabel>
+
+        {status === 'pending' ? (
+          <IonButton 
+            slot="end" 
+            size="small"
+            onClick={handleMarkAsRead}
+          >
+            Mark Done
+          </IonButton>
+        ) : (
+          <IonIcon 
+            slot="end"
+            icon={status === 'completed' ? checkmarkCircleOutline : closeCircleOutline}
+            color={status === 'completed' ? 'success' : 'danger'}
+          />
+        )}
+      </IonItem>
+    </IonCard>
   );
 };
 
-export default withSettings(NotificationItem); // Wrap the component with the HOC
+export default withSettings(NotificationItem);

@@ -1,0 +1,221 @@
+/* Notification Page Styles */
+.notification-header {
+    --background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-secondary) 100%);
+  }
+  
+  .notification-header ion-toolbar {
+    --background: transparent;
+    --color: white;
+  }
+  
+  .notification-header ion-segment {
+    --background: transparent;
+    --color: rgba(255, 255, 255, 0.6);
+    --color-checked: white;
+    padding: 0 16px 8px;
+  }
+  
+  .notification-header ion-segment-button {
+    --indicator-color: transparent;
+    --border-width: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+    min-width: auto;
+    margin: 0 12px;
+    font-weight: 500;
+    position: relative;
+  }
+  
+  .notification-header ion-segment-button::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .notification-header ion-segment-button.segment-button-checked::after {
+    opacity: 1;
+  }
+  
+  .unread-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    font-size: 10px;
+    padding: 2px 4px;
+  }
+  
+  /* Content Styles */
+  .notification-content {
+    --background: #f8f9fa;
+  }
+  
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70vh;
+    text-align: center;
+    padding: 0 24px;
+  }
+  
+  .empty-icon {
+    font-size: 72px;
+    color: var(--ion-color-medium);
+    margin-bottom: 16px;
+    opacity: 0.3;
+  }
+  
+  .empty-text h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--ion-color-dark);
+    margin-bottom: 8px;
+  }
+  
+  .empty-text p {
+    font-size: 0.95rem;
+    color: var(--ion-color-medium);
+    margin: 0;
+  }
+  
+  /* Notification List */
+  .notification-list {
+    background: transparent;
+    padding: 8px;
+  }
+  
+  .notification-item {
+    --background: white;
+    --border-radius: 12px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .notification-item:active {
+    transform: scale(0.98);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .notification-item.completed {
+    opacity: 0.8;
+  }
+  
+  .notification-item.missed {
+    --background: rgba(var(--ion-color-danger-rgb), 0.05);
+  }
+  
+  /* Notification Content */
+  .notification-avatar {
+    width: 48px;
+    height: 48px;
+    margin-right: 12px;
+  }
+  
+  .notification-icon-container {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(var(--ion-color-primary-rgb), 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+  }
+  
+  .notification-icon {
+    font-size: 24px;
+    color: var(--ion-color-primary);
+  }
+  
+  .notification-title {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 4px;
+    color: var(--ion-color-dark);
+  }
+  
+  .notification-message {
+    font-size: 0.9rem;
+    color: var(--ion-color-medium);
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+  
+  .notification-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  
+  .notification-time {
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    color: var(--ion-color-medium);
+  }
+  
+  .notification-time ion-icon {
+    font-size: 0.9rem;
+    margin-right: 4px;
+  }
+  
+  /* Chips */
+  ion-chip {
+    height: 24px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  
+  .schedule-chip {
+    background: rgba(var(--ion-color-primary-rgb), 0.1);
+    color: var(--ion-color-primary);
+  }
+  
+  .medication-chip {
+    background: rgba(var(--ion-color-tertiary-rgb), 0.1);
+    color: var(--ion-color-tertiary);
+  }
+  
+  /* Action Button */
+  .action-button {
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --border-radius: 20px;
+    height: 32px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  
+  .status-icon {
+    font-size: 24px;
+  }
+  
+  /* Responsive Design */
+  @media (min-width: 768px) {
+    .notification-list {
+      padding: 16px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .notification-item {
+      --padding-start: 16px;
+      --padding-end: 16px;
+    }
+    
+    .notification-title {
+      font-size: 1.1rem;
+    }
+  }
