@@ -1,5 +1,5 @@
 import MotorController, time
-import schedule_handler
+import smart_pill_organiser.Code.Schedules.schedule_handler as schedule_handler
 
 motorcontroller = MotorController.MotorController()
 sh = schedule_handler.Schedule_Handler()
