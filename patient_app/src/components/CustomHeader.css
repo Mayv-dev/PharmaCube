@@ -2,7 +2,7 @@
 .custom-header {
   width: 100%;
   z-index: 1000;
-  background: linear-gradient(135deg, #99f7db, #1e90b3);
+  background: linear-gradient(135deg, #91dfa9, #2ae999);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   height: 80px;
