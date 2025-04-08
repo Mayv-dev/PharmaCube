@@ -32,7 +32,10 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ id,content, timesta
 					:
 					<IonIcon className={"notificationIcon"} icon={checkmark}></IonIcon>
 			}
-			<p className='timeContainer'>{timestamp.substring(11,16)}</p>
+			<div>
+				<p className='timeContainer'>{timestamp.substring(0,10)}</p>
+				<p className='timeContainer'>{timestamp.substring(11,16)}</p>
+			</div>
 			<p className='contentContainer'>{content}</p>
 		</div>
 	);

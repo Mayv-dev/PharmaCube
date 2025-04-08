@@ -30,6 +30,7 @@ type AddRegimeProps = {
 }
 
 const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
+  const [addState, setAddState] = useState<number>(1);
   const [patientList, setPatientList] = useState<any[]>([]);
   const [pharmacistId, setPharmacistId] = useState<number>(1);
 
@@ -155,38 +156,51 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
     alert('Details confirmed and submitted!');
   };
 
+  useEffect(() => {
+    if(patientName.length == 0) setAddState(1);
+    else if (information.length == 0 ||  compartment == 0) setAddState(2);
+    else if (dateInfo.getDate() <= currentDate.getDate() || timeOffset == 0 || timeOfDay == -1 )setAddState(3);
+    else setAddState(4);
+    console.log(patientName, information, compartment, dateInfo, timeOfDay, timeOffset,instructions)
+  }
+  ,[patientName, information, compartment, dateInfo,timeOfDay,timeOffset,instructions])
+
   return (
     <IonPage>
       <IonContent className="ion-padding">
         <div className='webBody'>
-          {passedInfo == null ?
-              <div className='regimeReturn'>
-                  <IonButton routerLink='/regimes/' routerDirection='root' color="light">
+          {addState == 1 ? 
+              passedInfo == null ?
+              <>
+              <IonItem>
+
+                  <IonSelect label='Patient' interface="popover" placeholder='Choose a patient' onIonChange={e => {
+                    setPatientId(e.target.value.id)
+                    setPatientName(e.target.value.name)
+                  }}>
+                    {patientList.map(patient => <IonSelectOption value={patient}>{patient.name}</IonSelectOption>)}
+                  </IonSelect>
+
+                </IonItem>
+                  <div className='regimeReturn'>
+                      <IonButton routerLink='/regimes/' routerDirection='root' color="light">
+                        <IonIcon icon={arrowBack}></IonIcon>
+                        <IonText>Back to Regime Home</IonText>
+                      </IonButton>
+                  </div>
+                  </>
+                :
+                <div className='regimeReturn'>
+                  <IonButton routerLink='/regimes/view' routerDirection='root' onClick={e => passedInfo = null} className='regimeReturn' color="light">
                     <IonIcon icon={arrowBack}></IonIcon>
-                    <IonText>Back to Regime Home</IonText>
+                    <IonText>Back to Regime View</IonText>
                   </IonButton>
-              </div>
-            :
-            <div className='regimeReturn'>
-              <IonButton routerLink='/regimes/view' routerDirection='root' onClick={e => passedInfo = null} className='regimeReturn' color="light">
-                <IonIcon icon={arrowBack}></IonIcon>
-                <IonText>Back to Regime View</IonText>
-              </IonButton>
-            </div>
-            }
-          {passedInfo == null ?
-            <IonItem>
+                </div>
+                : null
+    }
 
-              <IonSelect label='Patient' interface="popover" placeholder='Choose a patient' onIonChange={e => {
-                setPatientId(e.target.value.id)
-                setPatientName(e.target.value.name)
-              }}>
-                {patientList.map(patient => <IonSelectOption value={patient}>{patient.name}</IonSelectOption>)}
-              </IonSelect>
-
-            </IonItem>
-            : null}
-
+    {addState == 2 ?
+      <>
           <p className="sectionHeading">What is {patientName == "" ? "the patient" : patientName} taking?</p>
           <div className='formGroup'>
             <IonItem>
@@ -203,7 +217,12 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
               </IonSelect>
             </IonItem>
           </div>
+          </>
+          :
+          null}
 
+{addState == 3 ?
+    <>
           <p className="sectionHeading">When should {patientName == "" ? "the patient" : patientName} take it?</p>
           <div className='formGroup'>
             <IonItem>
@@ -218,15 +237,6 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
                   setDateInfo(dateData)
                 }
               }} presentation="date"></IonDatetime>
-              {/* <IonSelect value={day} onIonInput={e => setDay(e.target.value)}>
-              <IonSelectOption value={1}>Monday</IonSelectOption>
-              <IonSelectOption value={2}>Tuesday</IonSelectOption>
-              <IonSelectOption value={3}>Wednesday</IonSelectOption>
-              <IonSelectOption value={4}>Thursday</IonSelectOption>
-              <IonSelectOption value={5}>Friday</IonSelectOption>
-              <IonSelectOption value={6}>Saturday</IonSelectOption>
-              <IonSelectOption value={7}>Sunday</IonSelectOption>
-            </IonSelect> */}
             </IonItem>
 
             <IonItem>
@@ -241,7 +251,11 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
             <IonItem>
               <IonInput label='Hours before repeat:' type='number' value={timeOffset} onIonInput={e => setTimeOffset(e.target.value)}></IonInput>
             </IonItem>
-          </div>
+          </div></>:null}
+
+
+          {addState == 4 ? 
+          <>
           <p className="sectionHeading">Please provide instructions that {patientName == "" ? "the patient" : patientName} must follow.</p>
           <div className='formGroup'>
 
@@ -249,7 +263,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
               <IonTextarea labelPlacement="fixed" label='Instructions:' value={instructions} onIonInput={e => setInstructions(e.target.value)}></IonTextarea>
             </IonItem>
           </div>
-
+          </>:null}
 
           <IonButton expand="full" color="primary" className="submit-button" onClick={handleSubmit}>
             Submit

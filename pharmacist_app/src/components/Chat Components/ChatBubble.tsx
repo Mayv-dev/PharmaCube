@@ -1,13 +1,19 @@
 import { TextToSpeech } from '@capacitor-community/text-to-speech';
 import {
 	IonButton,
+	IonContent,
+	IonHeader,
 	IonIcon,
 	IonLabel,
+	IonModal,
 	IonTabBar,
-	IonTabButton
+	IonTabButton,
+	IonText,
+	IonTitle,
+	IonToolbar
 } from '@ionic/react';
 import { Message } from 'api types/types';
-import { musicalNotes } from 'ionicons/icons';
+import { ellipsisVerticalCircle, musicalNotes } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 
 import "../../styles/ChatBubble.css"
@@ -23,6 +29,7 @@ type ChatBubbleProps = {
 const ChatBubble: React.FC<ChatBubbleProps> = ({passedMessage, passedPharmacistId ,passedPatientId}) => {
 	const [message, setMessage] = useState<string>("")
 	const [datetimeOfMessage, setDatetimeOfMessage] = useState<string>("")
+	const [showModal, setShowModal] = useState(false);
 
 	useEffect(() =>{
 			setMessage(passedMessage.message_body);
@@ -44,11 +51,12 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({passedMessage, passedPharmacistI
 	  };
 
 	return (
+		<>
 		<div className={passedMessage.sender_id == passedPharmacistId ? "pharmacistBubble":"patientBubble"}>
 			{
 				passedMessage.sender_id == passedPharmacistId ? null : <div className='bubbleMisc'>
-					<IonButton onClick={() => speak()}>
-						<IonIcon icon={musicalNotes}></IonIcon>
+					<IonButton onClick={() => setShowModal(true)}>
+						<IonIcon icon={ellipsisVerticalCircle}></IonIcon>
 					</IonButton>
 					<p className='bubbleTimestamp'>{""+datetimeOfMessage.substring(0,4)+"/"+datetimeOfMessage.substring(5,7)+"/"+datetimeOfMessage.substring(8,10)+" "+datetimeOfMessage.substring(11,16)}</p>
 				</div>
@@ -56,8 +64,8 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({passedMessage, passedPharmacistI
 			<p className='bubbleMessage'>{message}</p>
 			{
 				passedMessage.sender_id != passedPharmacistId ? null : <div className='bubbleMisc'>
-					<IonButton onClick={() => speak()}>
-						<IonIcon icon={musicalNotes}></IonIcon>
+					<IonButton onClick={() => setShowModal(true)}>
+						<IonIcon icon={ellipsisVerticalCircle}></IonIcon>
 					</IonButton>
 					<p className='bubbleTimestamp'>{datetimeOfMessage.substring(0,4)+"/"+datetimeOfMessage.substring(5,7)+"/"+datetimeOfMessage.substring(8,10)}</p>
 					<p className='bubbleTimestamp'>{datetimeOfMessage.substring(11,16)}</p>
@@ -65,6 +73,21 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({passedMessage, passedPharmacistI
 			}
 			
 		</div>
+		<IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
+		<IonButton expand="full" color="medium" className="cancel-button" onClick={() => setShowModal(false)}>
+			Close
+		</IonButton>
+		<IonHeader>
+			<IonTitle>{passedMessage.sender_id == passedPharmacistId ? "You: ":passedMessage.sender_id+": "} {passedMessage.message_body}</IonTitle>
+		</IonHeader>
+		<IonContent className="ion-padding">
+			<IonButton onClick={() => speak()}>
+				<IonText>Read Out Loud </IonText>
+				<IonIcon icon={musicalNotes}></IonIcon>
+			</IonButton>
+		</IonContent>
+	</IonModal>
+	</>
 	);
 };
 
