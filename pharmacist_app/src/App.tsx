@@ -63,6 +63,7 @@ import axios from 'axios';
 import {NativeAudio} from '@capacitor-community/native-audio'
 import { Capacitor } from '@capacitor/core';
 import React from 'react';
+import { TextToSpeech } from '@capacitor-community/text-to-speech';
 
 // the royalty free sound used to demonstrate the notification comes from RasoolAsaad at: https://pixabay.com/users/rasoolasaad-47313572/
 NativeAudio.preload({
@@ -98,6 +99,7 @@ const App: React.FC = () => {
 
 	const [isNavBarTop, setIsNavBarTop] = useState(false)
 
+
 	const [pollState, setPollState] = useState(true)
 	const [getPatientChatStatus, setGetPatientChatStatus] = useState(true)
   const [notificationList, setNotificationList] = useState<Notification[]>([{
@@ -118,11 +120,28 @@ const App: React.FC = () => {
 			timestamp: "2025-01-06T23:00:19+00:00",
 			urgency: 0
 		}]);
-  const [pharmacistId, setPharmacistId] = useState<number>(0); // TODO: Set to actual pharmacist when notification route is established and working
+    const [notifsBefore, setNotifsBefore] = useState<number>(notificationList.length)
+    const [unreadNotifs, setUnreadNotifs] = useState<number>(0)
+
+
+
+  const [pharmacistId, setPharmacistId] = useState<number>(1); // TODO: Set to actual pharmacist when notification route is established and working
 
 
   const [modifyRegimeInfo, setModifyRegimeInfo] = useState(null);
   const testRootMessage = (regime: any) => setModifyRegimeInfo(regime)
+
+  const speak = async (message:string) => {
+    await TextToSpeech.speak({
+      text: message,
+      lang: 'en-US',
+      rate: 1.0,
+      pitch: 1.0,
+      volume: 1.0,
+      category: 'ambient',
+      queueStrategy: 1
+    });
+    };
 
   useEffect(() => {
     generateToken()
@@ -132,18 +151,24 @@ const App: React.FC = () => {
       if(payload.notification?.body != undefined){
         const updatedNotificationList = notificationList;
         updatedNotificationList.push({id:0,content:payload.notification.body, urgency:1, timestamp: new Date(Date.now()).toISOString()});
-        setNotificationList(updatedNotificationList);
-        NativeAudio.play({
-          assetId: 'notify'
-        });
+        setNotificationList(updatedNotificationList.sort((a:Notification,b:Notification) => Date.parse(b.timestamp) - Date.parse(a.timestamp)));
+        speak(payload.notification.body)
       }
     })
   },[])
 
   useEffect(() => {
     if(window.location.href.endsWith("chat/patient")) setGetPatientChatStatus(!getPatientChatStatus)
-    if(pharmacistId != 0) fetchNotifications().then(res => res == "Network Error" || res == "Request failed with status code 404" ? console.log("Server connection has failed in App.tsx with the following error message: ", res):setNotificationList(res))
-    setTimeout(() => {			
+    if(pharmacistId != 0) fetchNotifications().then(res => res == "Network Error" || res == "Request failed with status code 404" ? console.log("Server connection has failed in App.tsx with the following error message: ", res):
+    setNotificationList(res)
+  )
+  setNotificationList(notificationList.sort((a:Notification,b:Notification) => Date.parse(b.timestamp) - Date.parse(a.timestamp)))
+  setNotifsBefore(notificationList.length)
+  if (notificationList.length > notifsBefore) {
+    setUnreadNotifs(unreadNotifs+1)
+    setNotifsBefore(notificationList.length)
+  }
+  setTimeout(() => {			
       setPollState(!pollState);
     }, 5000);
   },[pollState])
@@ -176,9 +201,9 @@ const App: React.FC = () => {
 		  }
   }
 
-  const navBarChange = (value:boolean) => {
-    setIsNavBarTop(value)
-  }
+  const navBarChange = (value:boolean) =>  setIsNavBarTop(value)
+
+  const resetUnreadNotifs = () => setUnreadNotifs(0)
 
   return (
     <IonApp>
@@ -246,7 +271,7 @@ const App: React.FC = () => {
             </Route>
           </IonRouterOutlet >
 
-          <UpperToolbar passedNotificationList={notificationList} />
+          <UpperToolbar passedNotificationList={notificationList} unreadNotifs={unreadNotifs} resetUnreadNotifs={resetUnreadNotifs}/>
           <LowerToolbar isNavBarTop={isNavBarTop}/>
 
         </IonTabs >

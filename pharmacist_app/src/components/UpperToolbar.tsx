@@ -62,10 +62,12 @@ async function getMockData() {
 }
 
 type UpperToolbarProps = {
-	passedNotificationList:Notification[]
+	passedNotificationList:Notification[],
+	unreadNotifs:number,
+	resetUnreadNotifs:any
 }
 
-const UpperToolbar: React.FC<UpperToolbarProps> = ({passedNotificationList}) => {
+const UpperToolbar: React.FC<UpperToolbarProps> = ({passedNotificationList, unreadNotifs, resetUnreadNotifs}) => {
 	
 	return (
 		<>
@@ -74,9 +76,12 @@ const UpperToolbar: React.FC<UpperToolbarProps> = ({passedNotificationList}) => 
 					<IonIcon icon={menu} aria-hidden="true" />
 					<IonLabel>Menu</IonLabel>
 				</IonTabButton>
-				<IonTabButton tab="notifications" onClick={openNotificationMenu}>
+				<IonTabButton tab="notifications" onClick={ e => {
+					openNotificationMenu(); 
+					resetUnreadNotifs();
+					;}}>
 					<IonIcon icon={notifications} aria-hidden="true" />
-					<IonLabel>Notifications</IonLabel>
+					<IonLabel>Notifications {unreadNotifs == 0 ? null:<span className={"notificationBadge"}>{unreadNotifs}</span>}</IonLabel>
 				</IonTabButton>
 			</IonTabBar>
 
@@ -106,20 +111,6 @@ const UpperToolbar: React.FC<UpperToolbarProps> = ({passedNotificationList}) => 
 							<IonText>Close Menu</IonText>
 						</IonButton>
 						<div className='rowOfSelects'>
-							{/* <IonItem>
-								<IonSelect label="Filter By:">
-									<IonSelectOption>None</IonSelectOption>
-									<IonSelectOption>High Priority</IonSelectOption>
-									<IonSelectOption>Medium Priority</IonSelectOption>
-									<IonSelectOption>Low Priority</IonSelectOption>
-								</IonSelect>
-							</IonItem>
-							<IonItem>
-								<IonSelect label="Sort By:">
-									<IonSelectOption>Most Recent</IonSelectOption>
-									<IonSelectOption>Highest Priority</IonSelectOption>
-								</IonSelect>
-							</IonItem> */}
 						</div>
 					{passedNotificationList?.map(notification => <NotificationItem id={notification.id} content={notification.content} timestamp={notification.timestamp} urgencyPassed={notification.urgency} />)}
 				</div>
