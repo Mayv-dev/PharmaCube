@@ -19,22 +19,28 @@ import {
   IonRouterLink,
   IonText,
   IonIcon,
+  IonRoute,
+  useIonRouter,
+  
 } from '@ionic/react';
 import '../../styles/Regime Subpages/AddRegime.css';
 import LowerToolbar from '../../components/LowerToolbar';
 import { RegimeItem } from 'api types/types';
 import { date } from 'yup';
 import { arrowBack } from 'ionicons/icons';
+import { IonReactRouter } from '@ionic/react-router';
 type AddRegimeProps = {
   passedInfo: any
 }
 
 const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
+  const router = useIonRouter()
+
   const [addState, setAddState] = useState<number>(1);
   const [patientList, setPatientList] = useState<any[]>([]);
   const [pharmacistId, setPharmacistId] = useState<number>(1);
 
-
+  
   const [patientId, setPatientId] = useState<number>(1);
   const [patientName, setPatientName] = useState('');
 
@@ -44,7 +50,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
 
   const [dateInfo, setDateInfo] = useState<Date>(new Date());
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
-  const [timeOfDay, setTimeOfDay] = useState<number>(-1);
+  const [timeOfDay, setTimeOfDay] = useState<number>(0);
   const [timeOffset, setTimeOffset] = useState<number>(0);
 
   const [instructions, setInstructions] = useState('');
@@ -154,17 +160,49 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
     sendToMockable(addedRegime)
 
     alert('Details confirmed and submitted!');
+    
+    setPatientId(0)
+    setPatientName("")
+    setInformation("")
+    setCompartment(0)
+    setDateInfo(currentDate)
+    setTimeOfDay(0)
+    setTimeOffset(0)
+    setInstructions("")
+    setAddState(1)
+    router.push("/regimes/view")
   };
 
   useEffect(() => {
-    if(patientName.length == 0) setAddState(1);
-    else if (information.length == 0 ||  compartment == 0) setAddState(2);
-    else if (dateInfo.getDate() <= currentDate.getDate() || timeOffset == 0 || timeOfDay == -1 )setAddState(3);
-    else setAddState(4);
     console.log(patientName, information, compartment, dateInfo, timeOfDay, timeOffset,instructions)
   }
   ,[patientName, information, compartment, dateInfo,timeOfDay,timeOffset,instructions])
 
+  const handleBackClick = () => {
+    handleBackData()
+    setAddState(addState-1)
+  }
+  const handleForwardClick = () => {
+    setAddState(addState+1)
+  } 
+  const handleBackData = () => {
+    switch(addState) {
+      case 4:
+        setInstructions("")
+        case 3:
+          setDateInfo(currentDate)
+          setTimeOfDay(0)
+          setTimeOffset(0)
+          case 2:
+            setPatientId(0)
+            setPatientName("")
+            setInformation("")
+            setCompartment(0)
+            default:
+              console.log("An unexpected error occurd in the handleBackData() swtich statement")
+              break;
+    }
+  }
   return (
     <IonPage>
       <IonContent className="ion-padding">
@@ -188,6 +226,10 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
                         <IonText>Back to Regime Home</IonText>
                       </IonButton>
                   </div>
+                  
+          <IonButton expand="full" color={patientName != "" ? "primary":'gray'} className="submit-button" onClick={e => patientName != "" ? handleForwardClick():null}>
+            Next
+          </IonButton>
                   </>
                 :
                 <div className='regimeReturn'>
@@ -217,6 +259,12 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
               </IonSelect>
             </IonItem>
           </div>
+          <IonButton expand="full" color="primary" className="submit-button" onClick={e => handleBackClick()}>
+            Back
+          </IonButton>
+          <IonButton expand="full" color={information != "" ? "primary":'gray'} className="submit-button" onClick={e => information != "" ?  handleForwardClick():null}>
+            Next
+          </IonButton>
           </>
           :
           null}
@@ -251,7 +299,14 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
             <IonItem>
               <IonInput label='Hours before repeat:' type='number' value={timeOffset} onIonInput={e => setTimeOffset(e.target.value)}></IonInput>
             </IonItem>
-          </div></>:null}
+          </div>
+          <IonButton expand="full" color="primary" className="submit-button" onClick={e => handleBackClick()}>
+            Back
+          </IonButton>
+          <IonButton expand="full" color={dateInfo > currentDate && timeOfDay != 0 ? "primary":'gray'} className="submit-button" onClick={e => dateInfo > currentDate && timeOfDay != 0 ? handleForwardClick():null}>
+            Next
+          </IonButton>
+          </>:null}
 
 
           {addState == 4 ? 
@@ -263,11 +318,15 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
               <IonTextarea labelPlacement="fixed" label='Instructions:' value={instructions} onIonInput={e => setInstructions(e.target.value)}></IonTextarea>
             </IonItem>
           </div>
-          </>:null}
-
-          <IonButton expand="full" color="primary" className="submit-button" onClick={handleSubmit}>
+          <IonButton expand="full" color="primary" className="submit-button" onClick={e => handleBackClick()}>
+            Back
+          </IonButton>
+          <IonButton expand="full" color={instructions != "" ? "primary":'gray'} className="submit-button" onClick={e => instructions != "" ? handleSubmit() : null}>
             Submit
           </IonButton>
+          </>:null}
+
+          
         </div>
         <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
           <IonHeader>

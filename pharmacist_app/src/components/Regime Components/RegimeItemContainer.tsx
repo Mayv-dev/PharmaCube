@@ -1,6 +1,6 @@
 import { RegimeItem } from 'api types/types';
 import '../../styles/RegimeItemContainer.css';
-import { IonButton, IonIcon, IonList, IonItem, IonLabel } from '@ionic/react';
+import { IonButton, IonIcon, IonList, IonItem, IonLabel, useIonRouter } from '@ionic/react';
 import { createOutline, trashOutline } from "ionicons/icons";
 
 function handleDate(date:number):string {
@@ -51,13 +51,14 @@ type ContainerProps = {
 
 const RegimeItemContainer: React.FC<ContainerProps> = ({regime, deleteItem, modifyItem}) => 
 {
+	const router = useIonRouter()
 	return(
 		<div key={regime.id} className='regimeItemContainer'>
 			<div className='regimeItemContainerText'>
 				
 			<IonList className='listElement'>
       <IonItem>
-        <IonLabel><span className='regimeInfoField'>Compartment:</span> <p>{regime.compartment_id == 0 ? "No compartment, indicated by 0" : regime.compartment_id}</p></IonLabel>
+        <IonLabel><span className='regimeInfoField'>Compartment:</span> <p>{regime.compartment_id == 0 ? "None (out-of-box medication)" : regime.compartment_id}</p></IonLabel>
       </IonItem>
       <IonItem>
         <IonLabel><span className='regimeInfoField'>Information:</span> <p>{regime.information}</p></IonLabel>
