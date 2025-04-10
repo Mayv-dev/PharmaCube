@@ -84,3 +84,7 @@
 	display: flex;
 	flex-direction: column;
 }
+
+.instructionSeparator {
+	margin-top: 1%;
+}

@@ -267,7 +267,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
               <>
               <IonItem>
 
-                  <IonSelect label='Patient' interface="popover" placeholder='Choose a patient' onIonChange={e => {
+                  <IonSelect label='Patient' interface="popover" placeholder='Please make a selection here' onIonChange={e => {
                     setPatientId(e.target.value.id)
                     setPatientName(e.target.value.name)
                   }}>
@@ -301,7 +301,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
           <p className="sectionHeading">What is {patientName == "" ? "the patient" : patientName} taking?</p>
           <div className='formGroup'>
             <IonItem>
-              <IonTextarea labelPlacement="fixed" label="Information:" value={information} onIonInput={e => setInformation(e.target.value)}></IonTextarea>
+              <IonTextarea labelPlacement="fixed" label="Medications" value={information} counter={true} maxlength={500} onIonInput={e => setInformation(e.target.value)}></IonTextarea>
             </IonItem>
             <IonImg className="visualBoxRepresenter" src={compartmentImgSrc}></IonImg>
             <IonItem>
@@ -323,7 +323,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
           <p className="sectionHeading">When should {patientName == "" ? "the patient" : patientName} take it?</p>
           <div className='formGroup'>
             <IonItem>
-              <IonLabel position="fixed">Date:</IonLabel>
+              <IonLabel position="fixed">Date</IonLabel>
               <IonDatetime onIonChange={e => {
                 const dateData: Date = typeof e.target.value == "string" ? new Date(e.target.value) : new Date(-1);
                 const currDate: Date = new Date();
@@ -372,13 +372,20 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
                 }}>{inst.instruction}</IonCheckbox></IonItem>)}
             </div>
 
-            <IonItem>
-              <IonTextarea labelPlacement="fixed" label='Other:' value={otherInstructions} onInput={e => {
-                changeInstructionList(e.target.value);
-                }}></IonTextarea>
-            </IonItem>
+            <div className='instructionSeparator'>
+              <IonItem>
+                <IonTextarea labelPlacement="fixed" label='Other Notes' counter={true} maxlength={500} value={otherInstructions} onInput={e => {
+                  changeInstructionList(e.target.value);
+                  }}></IonTextarea>
+              </IonItem>
+            </div>
 
-            <p>{instructions}</p>
+            <div className='instructionSeparator'>
+              <IonItem>
+                <IonTitle>Complete Instructions:</IonTitle>
+                <p>{instructions}</p>
+              </IonItem>
+            </div>
           </div>
           <IonButton expand="full" color="primary" className="submit-button" onClick={e => handleBackClick()}>
             Back
@@ -409,10 +416,10 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
                 <p><strong>Patient:</strong> {patientName}</p>
               </div>
               <div className='alignRegimeReview'>
-                <p><strong>Information:</strong> </p><p>{information}</p>
+                <p><strong>Medications:</strong> </p><p>{information}</p>
               </div>
               <div className='alignRegimeReview'>
-                <p><strong>Compartment:</strong> {compartment == undefined ? "Medication not stored in compartment" : compartment}</p> 
+                <p><strong>Compartment:</strong> {compartment == 0 ? "None in use" : compartment}</p> 
               </div>
               <div className='alignRegimeReview'>
                 <p><strong>Date:</strong> {dayConvert(dateInfo.getDay())}, {handleDate(dateInfo.getDate())} {monthConvert(dateInfo.getMonth() + 1)}</p>
