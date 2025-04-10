@@ -22,11 +22,11 @@
 	justify-content: center;
 }
 
-.calendarDate, .currentCalendarDate {
+.calendarDate, .calendarRow .currentCalendarDate {
   cursor:pointer;
 }
 
-.calendarDate:hover, .currentCalendarDate:hover {
+.calendarDate:hover, .calendarRow .currentCalendarDate:hover {
   border: 6px solid var(--element-hover-highlight-color);
   border-radius: 3px;
 }

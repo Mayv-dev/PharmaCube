@@ -21,6 +21,8 @@ import {
   IonIcon,
   IonRoute,
   useIonRouter,
+  IonImg,
+  IonRange,
   
 } from '@ionic/react';
 import '../../styles/Regime Subpages/AddRegime.css';
@@ -47,6 +49,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
   const [information, setInformation] = useState('');
 
   const [compartment, setCompartment] = useState<number>(0);
+  const [compartmentImgSrc, setCompartmentImgSrc] = useState<string>("../../visual compartment/No Compartment.png");
 
   const [dateInfo, setDateInfo] = useState<Date>(new Date());
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
@@ -71,6 +74,35 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
     }
     else setPatientList(getMockPatientList())
   }, [passedInfo]);
+
+  useEffect(() => {
+    switch (compartment) {
+      case 0:
+        setCompartmentImgSrc('\\visual compartment\\No Compartment.png');
+        break;
+      case 1:
+        setCompartmentImgSrc('\\visual compartment\\Compartment 1.png');
+        break;
+      case 2:
+        setCompartmentImgSrc('\\visual compartment\\Compartment 2.png');
+        break;
+      case 3:
+        setCompartmentImgSrc('\\visual compartment\\Compartment 3.png');
+        break;
+      case 4:
+        setCompartmentImgSrc('\\visual compartment\\Compartment 4.png');
+        break;
+      case 5:
+        setCompartmentImgSrc('\\visual compartment\\Compartment 5.png');
+        break;
+      case 6:
+        setCompartmentImgSrc('\\visual compartment\\Compartment 6.png');
+        break;
+      case 7:
+        setCompartmentImgSrc('\\visual compartment\\Compartment 7.png');
+        break;
+    }
+  }, [compartment]);
 
   const getMockPatientList = () => {
       return [{
@@ -189,18 +221,21 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
     switch(addState) {
       case 4:
         setInstructions("")
-        case 3:
-          setDateInfo(currentDate)
-          setTimeOfDay(0)
-          setTimeOffset(0)
-          case 2:
-            setPatientId(0)
-            setPatientName("")
-            setInformation("")
-            setCompartment(0)
-            default:
-              console.log("An unexpected error occurd in the handleBackData() swtich statement")
-              break;
+        break;
+      case 3:
+        setDateInfo(currentDate)
+        setTimeOfDay(0)
+        setTimeOffset(0)
+        break;
+      case 2:
+        setPatientId(0)
+        setPatientName("")
+        setInformation("")
+        setCompartment(0)
+        break;
+      default:
+        console.log("An unexpected error occurd in the handleBackData() swtich statement")
+        break;
     }
   }
   return (
@@ -248,15 +283,9 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
             <IonItem>
               <IonTextarea labelPlacement="fixed" label="Information:" value={information} onIonInput={e => setInformation(e.target.value)}></IonTextarea>
             </IonItem>
+            <IonImg className="visualBoxRepresenter" src={compartmentImgSrc}></IonImg>
             <IonItem>
-              <IonSelect label="Compartment:" interface="popover" value={compartment} onIonChange={e => setCompartment(e.target.value)}>
-                <IonSelectOption value={0}>Not in a compartment</IonSelectOption>
-                <IonSelectOption value={1}>Compartment 1</IonSelectOption>
-                <IonSelectOption value={2}>Compartment 2</IonSelectOption>
-                <IonSelectOption value={3}>Compartment 3</IonSelectOption>
-                <IonSelectOption value={4}>Compartment 4</IonSelectOption>
-                <IonSelectOption value={5}>Compartment 5</IonSelectOption>
-              </IonSelect>
+              <IonRange label={"Compartment"} snaps={true} ticks={true} min={0} max={7} onIonInput={e => setCompartment(e.target.value)}></IonRange>
             </IonItem>
           </div>
           <IonButton expand="full" color="primary" className="submit-button" onClick={e => handleBackClick()}>
@@ -280,6 +309,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
                 const currDate: Date = new Date();
                 if (currDate > dateData) {
                   alert("please choose a date in the future")
+                  setDateInfo(dateData)
                 }
                 else {
                   setDateInfo(dateData)
@@ -353,7 +383,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
                 <p><strong>Compartment:</strong> {compartment == undefined ? "Medication not stored in compartment" : compartment}</p> 
               </div>
               <div className='alignRegimeReview'>
-                <p><strong>Date:</strong> {dayConvert(dateInfo.getDay())}, {handleDate(dateInfo.getDay())} {monthConvert(dateInfo.getMonth() + 1)}</p>
+                <p><strong>Date:</strong> {dayConvert(dateInfo.getDay())}, {handleDate(dateInfo.getDate())} {monthConvert(dateInfo.getMonth() + 1)}</p>
               </div>
               <div className='alignRegimeReview'>
                 <p><strong>Time of Day:</strong> {timeOfDayConvert(timeOfDay)}</p>
