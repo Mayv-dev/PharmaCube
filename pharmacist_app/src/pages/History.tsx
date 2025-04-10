@@ -1,19 +1,20 @@
-import { IonContent, IonItem, IonPage, IonSelect, IonSelectOption} from '@ionic/react';
+import { IonButton, IonContent, IonIcon, IonItem, IonPage, IonSelect, IonSelectOption} from '@ionic/react';
 import '../styles/Settings.css';
 import '../styles/History.css';
 import { useEffect, useState } from 'react';
 
 // Used this as my library and reference for my calendar work https://www.npmjs.com/package/typescript-calendar-date
-import { CalendarDate, calendarDateFromJsDateObject, numberOfDaysInMonth } from 'typescript-calendar-date';
+import { addDays, addMonths, CalendarDate, calendarDateFromJsDateObject, numberOfDaysInMonth } from 'typescript-calendar-date';
 import Calendar from '../components/History Components/Calendar';
 import { PatientAdherenceRecord } from 'api types/types';
 import axios from 'axios';
 import CalendarDateSquare from 'components/History Components/CalendarDateSquare';
+import { arrowBackOutline, arrowForward, arrowForwardOutline } from 'ionicons/icons';
 
 
 const History: React.FC = () => {
-	const [date, setDate] = useState(calendarDateFromJsDateObject(new Date(Date.now())))
-	const [dateNow, setDateNow] = useState(calendarDateFromJsDateObject(new Date(Date.now())))
+	const [date, setDate] = useState<CalendarDate>(calendarDateFromJsDateObject(new Date(Date.now())))
+	const [dateNow, setDateNow] = useState<CalendarDate>(calendarDateFromJsDateObject(new Date(Date.now())))
 	const [dateList, setDateList] = useState<any[]>([])
 
 	const [patientHistoricalDosesList, setPatientHistoricalDosesList] = useState<PatientAdherenceRecord[]>([])
@@ -73,11 +74,42 @@ const History: React.FC = () => {
 	  useEffect(() => {
 		setDateList(getDateRange({ year: date.year, month: date.month, day: 1 }, { year: date.year, month: date.month, day: numberOfDaysInMonth(date)})) 
 		setPatientList(getMockPatientList)
-	},[]);
+	},[date, ]);
 
 	useEffect(() => {
 		patientId != undefined ? getHistoryFromServer().then(setPatientHistoricalDosesList) : null;
 	},[patientId]);
+
+	function convertMonthName(monthString: string): string {
+		switch (monthString) {
+			case "jan": 
+				return "January";
+			case "feb": 
+				return "February";
+			case "mar": 
+				return "March";
+			case "apr": 
+				return "April";
+			case "may": 
+				return "May";
+			case "jun": 
+				return "June";
+			case "jul": 
+				return "July";
+			case "aug": 
+				return "August";
+			case "sep": 
+				return "September";
+			case "oct": 
+				return "October";
+			case "nov": 
+				return "November";
+			case "dec": 
+				return "December";
+			default:
+				return "";
+		}
+	}
 
   return(
   <IonPage>
@@ -91,7 +123,11 @@ const History: React.FC = () => {
 			{patientId == undefined ? <p>Select a patient to view their history</p> : 
 				<div className='calendarLayout'>
 					<div className='history'>
-						<p>Calendar</p>
+						<div className='calendarScrollerBar'>
+							<IonButton onClick={e => setDate(addDays(date, -31))}><IonIcon icon={arrowBackOutline}></IonIcon></IonButton>
+							<p>Calendar - {convertMonthName(date.month)} {date.year}</p>
+							<IonButton onClick={e => setDate(addDays(date, 31))}><IonIcon icon={arrowForwardOutline}></IonIcon></IonButton>
+						</div>
 						<Calendar dateNow={dateNow} dateList={dateList} history={patientHistoricalDosesList}/>
 					</div>
 					<div className='historyLegend'>

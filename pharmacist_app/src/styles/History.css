@@ -110,3 +110,16 @@
 .history {
   width: 100%;
 }
+
+.calendarScrollerBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.calendarScrollerBar p {
+  width:  45%;
+}
+
+.calendarScrollerBar ion-button {
+  width: 10%;
+}
