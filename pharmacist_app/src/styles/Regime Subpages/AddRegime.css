@@ -79,3 +79,8 @@
 	width: 40%;
 	margin: 1% auto;
 }
+
+.instructionGroup {
+	display: flex;
+	flex-direction: column;
+}

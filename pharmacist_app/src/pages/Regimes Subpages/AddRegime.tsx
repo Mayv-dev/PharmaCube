@@ -56,6 +56,8 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
   const [timeOfDay, setTimeOfDay] = useState<number>(0);
   const [timeOffset, setTimeOffset] = useState<number>(0);
 
+  const [predefinedInstructions, setPredefinedInstructions] = useState([{instruction:"Take this dose orally (take through mouth).",status:false},{instruction:"Do not drink alcohol while on this dose.",status:false},{instruction:"This dose may make you feel tired or dizzy. If this happens, not drive or operate heavy machinery.",status:false}]);
+  const [otherInstructions, setOtherInstructions] = useState('');
   const [instructions, setInstructions] = useState('');
 
   const [showModal, setShowModal] = useState(false);
@@ -238,6 +240,20 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
         break;
     }
   }
+
+  const changeInstructionList = (passedOthers?:string) => {
+    let newInstructions = ""
+    predefinedInstructions.map(inst => inst.status == true ? newInstructions += inst.instruction + "\n":null)
+    if(passedOthers != null) {
+      setOtherInstructions(passedOthers)
+      newInstructions += passedOthers
+    }
+    else {  
+      newInstructions += otherInstructions
+    }
+    setInstructions(newInstructions)
+  } 
+
   return (
     <IonPage>
       <IonContent className="ion-padding">
@@ -343,10 +359,22 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
           <>
           <p className="sectionHeading">Please provide instructions that {patientName == "" ? "the patient" : patientName} must follow.</p>
           <div className='formGroup'>
+            <div className='instructionGroup'>
+              {predefinedInstructions.map((inst, index) => <IonItem><IonCheckbox value={inst.status} onIonChange={e => {
+                let pastPredefined = predefinedInstructions
+                pastPredefined[index].status = !pastPredefined[index].status
+                setPredefinedInstructions(pastPredefined)
+                changeInstructionList();
+                }}>{inst.instruction}</IonCheckbox></IonItem>)}
+            </div>
 
             <IonItem>
-              <IonTextarea labelPlacement="fixed" label='Instructions:' value={instructions} onIonInput={e => setInstructions(e.target.value)}></IonTextarea>
+              <IonTextarea labelPlacement="fixed" label='Other:' value={otherInstructions} onInput={e => {
+                changeInstructionList(e.target.value);
+                }}></IonTextarea>
             </IonItem>
+
+            <p>{instructions}</p>
           </div>
           <IonButton expand="full" color="primary" className="submit-button" onClick={e => handleBackClick()}>
             Back
