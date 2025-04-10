@@ -203,6 +203,8 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
     setTimeOfDay(0)
     setTimeOffset(0)
     setInstructions("")
+    setOtherInstructions("")
+    setPredefinedInstructions([{instruction:"Take this dose orally (take through mouth).",status:false},{instruction:"Do not drink alcohol while on this dose.",status:false},{instruction:"This dose may make you feel tired or dizzy. If this happens, not drive or operate heavy machinery.",status:false}]);
     setAddState(1)
     router.push("/regimes/view")
   };
@@ -222,6 +224,8 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
   const handleBackData = () => {
     switch(addState) {
       case 4:
+        setOtherInstructions("")
+        setPredefinedInstructions([{instruction:"Take this dose orally (take through mouth).",status:false},{instruction:"Do not drink alcohol while on this dose.",status:false},{instruction:"This dose may make you feel tired or dizzy. If this happens, not drive or operate heavy machinery.",status:false}]);
         setInstructions("")
         break;
       case 3:
