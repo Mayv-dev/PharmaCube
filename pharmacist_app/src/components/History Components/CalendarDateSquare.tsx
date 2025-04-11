@@ -11,9 +11,10 @@ type CalendarProps = {
 	date:CalendarDate;
 	dateNow:CalendarDate;
 	history:PatientAdherenceRecord[];
+	visibleHighlights:any;
 }
 
-const CalendarDateSquare: React.FC<CalendarProps> = ({date,dateNow,history}) => {
+const CalendarDateSquare: React.FC<CalendarProps> = ({date,dateNow,history,visibleHighlights}) => {
 	  const [showModal, setShowModal] = useState(false);
 
 	function handleDate(date:number):string {
@@ -90,27 +91,30 @@ const CalendarDateSquare: React.FC<CalendarProps> = ({date,dateNow,history}) => 
 	}
 
 	const returnTakenStatus = () => {
-		const thisDayHistory = history.filter(hist => hist.date_time_scheduled.substring(0,4) == date.year.toString() && convertMonthDigits(hist.date_time_scheduled.substring(5,7)) == date.month.toString() && hist.date_time_scheduled.substring(8,10) == date.day.toString())
+		const thisDayHistory = history.filter(hist => hist.date_time_scheduled.substring(0,4) == date.year.toString() && convertMonthDigits(hist.date_time_scheduled.substring(5,7)) == date.month.toString() && Number.parseInt(hist.date_time_scheduled.substring(8,10)) == date.day)
 		const takenList = thisDayHistory.map(hist => hist.was_taken)
 
 		if(takenList.length == 0) return "";
 
 		if(takenList.includes(false)) {
-			return takenList.includes(true) ?  "partiallyTakenDate" : "notTakenDate";
+			return takenList.includes(true) ?  
+			visibleHighlights[2].isVisible ? "partiallyTakenDate": "calendarDate" 
+			: 
+			visibleHighlights[0].isVisible ? "notTakenDate" : "calendarDate";
 		}
-		else return "takenDate"
+		else return visibleHighlights[1].isVisible ? "takenDate" : "calendarDate";
 	}
 
 
 
 	let square:any
 		if(date.day == dateNow.day && date.month == dateNow.month && date.year == dateNow.year) {
-			square = <div onClick={e => setShowModal(true)} className={'currentCalendarDate'}>
+			square = <div onClick={e => setShowModal(true)} className={visibleHighlights[3].isVisible ? 'currentCalendarDate' : "calendarDate"}>
 				{date.day}
 			</div>
 		}
 		else {
-			square= <div onClick={e => setShowModal(true)} className={date.day > dateNow.day ? "calendarDate" : "calendarDate " + returnTakenStatus()}>
+			square= <div onClick={e => setShowModal(true)} className={"calendarDate " + returnTakenStatus()}>
 				{date.day}
 				</div>
 		}
@@ -123,13 +127,13 @@ const CalendarDateSquare: React.FC<CalendarProps> = ({date,dateNow,history}) => 
 				</IonButton>
 				<IonHeader>
 				<IonToolbar>
-					<IonTitle>Confirm Submission</IonTitle>
+					<IonTitle>Dose History</IonTitle>
 				</IonToolbar>
 				</IonHeader>
 				<IonContent className="ion-padding">
 					<p>Dose overview for the {handleDate(date.day)} of {convertMonthName(date.month)} {date.year}</p>
-					{history.map(hist => hist.date_time_scheduled.substring(0,4) == date.year.toString() && convertMonthDigits(hist.date_time_scheduled.substring(5,7)) == date.month.toString() && hist.date_time_scheduled.substring(8,10) == date.day.toString() ? 
-					<DoseTakenStatus time={hist.date_time_scheduled.substring(11,16)} takenStatus={hist.was_taken}/>: null)}
+					{history.map(hist => hist.date_time_scheduled.substring(0,4) == date.year.toString() && convertMonthDigits(hist.date_time_scheduled.substring(5,7)) == date.month.toString() && Number.parseInt(hist.date_time_scheduled.substring(8,10)) == date.day ? 
+					<DoseTakenStatus time={hist.date_time_scheduled.substring(11,16)} medList={hist.information} takenStatus={hist.was_taken}/>: null)}
 				</IonContent>
 			</IonModal>
 		</>

@@ -123,3 +123,11 @@
 .calendarScrollerBar ion-button {
   width: 10%;
 }
+
+.faded {
+  opacity: 50%;
+}
+
+.historyLegendRow {
+  cursor: pointer;
+}
