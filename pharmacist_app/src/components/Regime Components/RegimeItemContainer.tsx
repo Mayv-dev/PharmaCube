@@ -52,6 +52,24 @@ type ContainerProps = {
 const RegimeItemContainer: React.FC<ContainerProps> = ({regime, deleteItem, modifyItem}) => 
 {
 	const router = useIonRouter()
+
+	const determineIcon = () => {
+		switch(regime.time_period) {
+			case 1: 
+				return '\\time of day icons\\morning_icon.png';
+				break
+			case 2: 
+				return '\\time of day icons\\afternoon_icon.png';
+				break
+			case 3: 
+				return '\\time of day icons\\evening_icon.png';
+				break
+			case 4: 
+				return '\\time of day icons\\night_icon.png';
+				break
+		}
+	}
+
 	return(
 		<div key={regime.id} className='regimeItemContainer'>
 			<div className='regimeItemContainerText'>
@@ -67,7 +85,7 @@ const RegimeItemContainer: React.FC<ContainerProps> = ({regime, deleteItem, modi
         <IonLabel><span className='regimeInfoField'>Instructions:</span> <p>{regime.instructions}</p></IonLabel>
       </IonItem>
       <IonItem>
-        <IonLabel><span className='regimeInfoField'>When to take:</span> <p>{handleDate(regime.date)}, {timeOfDayConvert(regime.time_period)}</p></IonLabel>
+        <IonLabel><span className='regimeInfoField'>When to take:</span> <p>{handleDate(regime.date)}, {timeOfDayConvert(regime.time_period)}</p><img src={determineIcon()} style={{width:"20%"}}></img></IonLabel>
       </IonItem>
       <IonItem>
         <IonLabel><span className='regimeInfoField'>Hours before repeat:</span> <p>{regime.time_adjustment} hours</p></IonLabel>
