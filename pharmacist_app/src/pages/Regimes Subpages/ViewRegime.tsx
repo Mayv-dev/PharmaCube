@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   IonPage,
@@ -23,12 +23,14 @@ import { arrowBack } from 'ionicons/icons';
 
 type ContainerProps = {
 	passModifyDataToApp:any
+	patientId: number
+	changePatientId: any
 }
 
-const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
+const ViewRegime: React.FC<ContainerProps> =  ({ passModifyDataToApp, patientId, changePatientId }) => {
 	const [pharmacistId, setPharmacistId] = useState<number>(1);
 
-	const [patientId, setPatientId] = useState<number>(1);
+	const [patientList, setPatientList] = useState<any[]>([]);
 	const [patientName, setPatientName] = useState('Unselected');
 	
 	const [userRegimes, setUserRegimes] = useState<RegimeItem[]>()
@@ -36,7 +38,16 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
 
 	const [showModal, setShowModal] = useState(false);
 
-  async function getMockData() {
+const getMockPatientList = () => {
+      return [{
+        "id":1,
+        "name":"Ann Murphy",
+        "patient_schedule_ids":[0,1,2,3],
+        "scheduled_regime_ids":[0,1,2,3]
+    }]
+  };
+
+  async function getMockData(patientId:number) {
 	try {
 	  const { data, status } = await axios.get(
 		`http://localhost:8080/pharmacist/${pharmacistId}/patient/${patientId}/regime`,
@@ -69,11 +80,15 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
 	setShowModal(true)
   }
 
-  const handleUserSelect = (user:string) => {
-    console.log("This should display the regimes assigned to: " + user);
-    setPatientName(user);
-    getMockData().then(setUserRegimes);
+  const handleUserSelect = (id:number) => {
+	changePatientId(id)
+	getMockData(id).then(setUserRegimes);
   }
+
+  useEffect(() => {
+    setPatientList(getMockPatientList());
+	if(patientId != 0) getMockData(patientId).then(setUserRegimes);
+  }, [])
 
   const deleteRegimeItem = async () => {
 	console.log("deleting regime... ", deleteRegimeId)
@@ -87,7 +102,7 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
 		  }
 		);
 	
-		getMockData().then(setUserRegimes);
+		getMockData(patientId).then(setUserRegimes);
 		return data;
 	
 	  } catch (error) {
@@ -113,16 +128,16 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
               </div>
 				<IonItem>
 
-				<IonSelect interface="popover" label="Patient" placeholder='Choose a patient' onIonChange={e => handleUserSelect(e.target.value)}>
-					<IonSelectOption>Ann Murphy</IonSelectOption>
+				<IonSelect value={patientId} interface="popover" label="Patient" placeholder='Choose a patient' onIonChange={e => handleUserSelect(e.target.value)}>
+					{patientList.map(patient => <IonSelectOption value={patient.id}>{patient.name}</IonSelectOption>)}
 				</IonSelect>
 				</IonItem>
 			{
-				patientName == "Unselected" ? null :
+				patientId == 0 || userRegimes == undefined ? null :
 					<div className='doseViewGrid'>
 						{/*declaring an object that is passed entirely to the component with ...regime was a solution recieved from the answer of CPHPython 
 						at https://stackoverflow.com/questions/48240449/type-is-not-assignable-to-type-intrinsicattributes-intrinsicclassattribu*/}
-						{userRegimes?.map(regime => <RegimeItemContainer regime={regime} deleteItem={confirmDeletion} modifyItem={modifyFromApp} />)}
+						{userRegimes.map(regime => <RegimeItemContainer regime={regime} deleteItem={confirmDeletion} modifyItem={modifyFromApp} />)}
 					</div>
 			}
 
