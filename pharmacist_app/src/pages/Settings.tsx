@@ -4,8 +4,11 @@ import '../styles/Settings.css';
 type props = {
   isNavBarTop:boolean
   navBarChange:any
+  
+  isTTSOn:boolean
+  ttsChange:any
 }
-const Settings: React.FC<props> = ({isNavBarTop, navBarChange}) => (
+const Settings: React.FC<props> = ({isNavBarTop, navBarChange, isTTSOn, ttsChange}) => (
   <IonPage>
 
     <IonContent className="ion-padding">
@@ -13,12 +16,11 @@ const Settings: React.FC<props> = ({isNavBarTop, navBarChange}) => (
         <IonButton>Reset to defaults</IonButton>
 
         <IonItem>
-          <IonSelect label="App Theme:">
-            <IonSelectOption>Auto (Device Selected)</IonSelectOption>
+          <IonSelect label="Notification Audio Type:" value={isTTSOn} onIonChange={e => ttsChange(e.target.value)}>
+            <IonSelectOption value={true}>Text To Speech</IonSelectOption>
+            <IonSelectOption value={false}>Beep</IonSelectOption>
           </IonSelect>
         </IonItem>
-
-        <IonText>Your device's current theme automatically sets the app theme to DARK</IonText>
 
         <IonItem>
           <IonSelect value={isNavBarTop} onIonChange={e => navBarChange(e.target.value)} label="Navbar position:">

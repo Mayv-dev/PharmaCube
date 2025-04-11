@@ -131,6 +131,7 @@ const App: React.FC = () => {
   const [modifyRegimeInfo, setModifyRegimeInfo] = useState(null);
   const testRootMessage = (regime: any) => setModifyRegimeInfo(regime)
 
+  const [isTTSOn, setIsTTSOn] = useState<boolean>(true);
   const speak = async (message:string) => {
     await TextToSpeech.speak({
       text: message,
@@ -143,6 +144,16 @@ const App: React.FC = () => {
     });
     };
 
+    const notify = (payloadBody:string) => {
+      console.log(isTTSOn)
+      if (isTTSOn){
+       speak(payloadBody);
+      }
+      else {
+        NativeAudio.play({assetId: 'notify'});
+      }
+    }
+
   useEffect(() => {
     generateToken()
     onMessage(messaging, (payload) => {
@@ -152,10 +163,10 @@ const App: React.FC = () => {
         const updatedNotificationList = notificationList;
         updatedNotificationList.push({id:0,content:payload.notification.body, urgency:1, timestamp: new Date(Date.now()).toISOString()});
         setNotificationList(updatedNotificationList.sort((a:Notification,b:Notification) => Date.parse(b.timestamp) - Date.parse(a.timestamp)));
-        speak(payload.notification.body)
+        notify(payload.notification.body)
       }
     })
-  },[])
+  },[isTTSOn,])
 
   useEffect(() => {
     if(window.location.href.endsWith("chat/patient")) setGetPatientChatStatus(!getPatientChatStatus)
@@ -202,6 +213,7 @@ const App: React.FC = () => {
   }
 
   const navBarChange = (value:boolean) =>  setIsNavBarTop(value)
+  const ttsChange = (value:boolean) =>  setIsTTSOn(value)
 
   const resetUnreadNotifs = () => setUnreadNotifs(0)
 
@@ -259,7 +271,7 @@ const App: React.FC = () => {
             </Route>
 
             <Route exact path="/settings">
-              <Settings isNavBarTop={isNavBarTop} navBarChange={navBarChange}/>
+              <Settings isNavBarTop={isNavBarTop} navBarChange={navBarChange} isTTSOn={isTTSOn} ttsChange={ttsChange}/>
             </Route>
 
             <Route exact path="/faqs">
