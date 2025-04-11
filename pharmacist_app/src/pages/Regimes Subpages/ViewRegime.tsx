@@ -119,13 +119,11 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
 				</IonItem>
 			{
 				patientName == "Unselected" ? null :
-				<>
-					<ul>
+					<div className='doseViewGrid'>
 						{/*declaring an object that is passed entirely to the component with ...regime was a solution recieved from the answer of CPHPython 
 						at https://stackoverflow.com/questions/48240449/type-is-not-assignable-to-type-intrinsicattributes-intrinsicclassattribu*/}
 						{userRegimes?.map(regime => <RegimeItemContainer regime={regime} deleteItem={confirmDeletion} modifyItem={modifyFromApp} />)}
-					</ul>
-				</>
+					</div>
 			}
 
 
