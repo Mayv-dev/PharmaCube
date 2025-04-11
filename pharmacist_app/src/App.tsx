@@ -125,8 +125,8 @@ const App: React.FC = () => {
 
 
 
-  const [pharmacistId, setPharmacistId] = useState<number>(1); // TODO: Set to actual pharmacist when notification route is established and working
-
+  const [pharmacistId, setPharmacistId] = useState<number>(1);
+  const [patientId, setPatientId] = useState<number>(0); 
 
   const [modifyRegimeInfo, setModifyRegimeInfo] = useState(null);
   const testRootMessage = (regime: any) => setModifyRegimeInfo(regime)
@@ -217,6 +217,10 @@ const App: React.FC = () => {
 
   const resetUnreadNotifs = () => setUnreadNotifs(0)
 
+  const changePatientId = (id:number) => {
+    setPatientId(id)
+  }
+
   return (
     <IonApp>
       <IonReactRouter>
@@ -236,14 +240,14 @@ const App: React.FC = () => {
               <Regimes />
             </Route>
             <Route exact path="/regimes/create">
-              <AddRegime passedInfo={null} />
+              <AddRegime patientId={patientId} changePatientId={changePatientId} passedInfo={null} />
             </Route>
             <Route exact path="/regimes/modify">
-              <AddRegime passedInfo={modifyRegimeInfo} />
+              <AddRegime patientId={patientId} changePatientId={changePatientId} passedInfo={modifyRegimeInfo} />
             </Route>
 
             <Route exact path="/regimes/view">
-              <ViewRegime passModifyDataToApp={testRootMessage} />
+              <ViewRegime patientId={patientId} changePatientId={changePatientId} passModifyDataToApp={testRootMessage} />
             </Route>
 
 
@@ -252,7 +256,7 @@ const App: React.FC = () => {
             </Route>
 
             <Route exact path="/history">
-              <History />
+              <History patientId={patientId} changePatientId={changePatientId} />
             </Route>
 
             <Route exact path="/menu">

@@ -33,9 +33,11 @@ import { arrowBack } from 'ionicons/icons';
 import { IonReactRouter } from '@ionic/react-router';
 type AddRegimeProps = {
   passedInfo: any
+  patientId: number
+  changePatientId: any
 }
 
-const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
+const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePatientId }) => {
   const router = useIonRouter()
 
   const [addState, setAddState] = useState<number>(1);
@@ -43,7 +45,6 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
   const [pharmacistId, setPharmacistId] = useState<number>(1);
 
   
-  const [patientId, setPatientId] = useState<number>(1);
   const [patientName, setPatientName] = useState('');
 
   const [information, setInformation] = useState('');
@@ -65,7 +66,6 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
   useEffect(() => {
     if (passedInfo != null) {
       console.log(passedInfo)
-      setPatientId(passedInfo.patient_id)
       setPatientName("Aaron Murphy")
       setInformation(passedInfo.information)
       setCompartment(passedInfo.compartment_id)
@@ -74,7 +74,9 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
       setTimeOffset(passedInfo.time_adjustment)
       setInstructions(passedInfo.instructions)
     }
-    else setPatientList(getMockPatientList())
+    else {
+      setPatientList(getMockPatientList())
+    }
   }, [passedInfo]);
 
   useEffect(() => {
@@ -195,7 +197,6 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
 
     alert('Details confirmed and submitted!');
     
-    setPatientId(0)
     setPatientName("")
     setInformation("")
     setCompartment(0)
@@ -234,7 +235,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
         setTimeOffset(0)
         break;
       case 2:
-        setPatientId(0)
+        changePatientId(0)
         setPatientName("")
         setInformation("")
         setCompartment(0)
@@ -267,11 +268,11 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
               <>
               <IonItem>
 
-                  <IonSelect label='Patient' interface="popover" placeholder='Please make a selection here' onIonChange={e => {
-                    setPatientId(e.target.value.id)
-                    setPatientName(e.target.value.name)
+                  <IonSelect value={patientId} label='Patient' interface="popover" placeholder='Please make a selection here' onIonChange={e => {
+                    changePatientId(e.target.value)
+                    setPatientName(patientList.find(patient => patient.id == e.target.value).name)
                   }}>
-                    {patientList.map(patient => <IonSelectOption value={patient}>{patient.name}</IonSelectOption>)}
+                    {patientList.map(patient => <IonSelectOption value={patient.id}>{patient.name}</IonSelectOption>)}
                   </IonSelect>
 
                 </IonItem>
@@ -282,7 +283,15 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
                       </IonButton>
                   </div>
                   
-          <IonButton expand="full" color={patientName != "" ? "primary":'gray'} className="submit-button" onClick={e => patientName != "" ? handleForwardClick():null}>
+          <IonButton expand="full" color={patientId != 0 ? "primary":'gray'} className="submit-button" onClick={e => 
+          {
+            if(patientId != 0)
+              {
+                setPatientName(patientList.find(patient => patient.id == patientId).name)
+                handleForwardClick();
+              }
+            }
+          }>
             Next
           </IonButton>
                   </>
@@ -298,7 +307,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
 
     {addState == 2 ?
       <>
-          <p className="sectionHeading">What is {patientName == "" ? "the patient" : patientName} taking?</p>
+          <p className="sectionHeading">What is {patientList.find(patient => patient.id == patientId).name} taking?</p>
           <div className='formGroup'>
             <IonItem>
               <IonTextarea labelPlacement="fixed" label="Medications" value={information} counter={true} maxlength={500} onIonInput={e => setInformation(e.target.value)}></IonTextarea>
@@ -320,7 +329,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
 
 {addState == 3 ?
     <>
-          <p className="sectionHeading">When should {patientName == "" ? "the patient" : patientName} take it?</p>
+          <p className="sectionHeading">When should {patientList.find(patient => patient.id == patientId).name} take it?</p>
           <div className='formGroup'>
             <IonItem>
               <IonLabel position="fixed">Date</IonLabel>
@@ -361,7 +370,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo }) => {
 
           {addState == 4 ? 
           <>
-          <p className="sectionHeading">Please provide instructions that {patientName == "" ? "the patient" : patientName} must follow.</p>
+          <p className="sectionHeading">Please provide instructions that {patientList.find(patient => patient.id == patientId).name} must follow.</p>
           <div className='formGroup'>
             <div className='instructionGroup'>
               {predefinedInstructions.map((inst, index) => <IonItem><IonCheckbox value={inst.status} onIonChange={e => {
