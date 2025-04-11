@@ -9,7 +9,7 @@ import Calendar from '../components/History Components/Calendar';
 import { PatientAdherenceRecord } from 'api types/types';
 import axios from 'axios';
 import CalendarDateSquare from 'components/History Components/CalendarDateSquare';
-import { arrowBackOutline, arrowForward, arrowForwardOutline } from 'ionicons/icons';
+import { arrowBackOutline, arrowForward, arrowForwardOutline, map } from 'ionicons/icons';
 
 
 const History: React.FC = () => {
@@ -21,6 +21,8 @@ const History: React.FC = () => {
 
 	const [patientId, setPatientId] = useState(undefined)
 	const [patientList, setPatientList] = useState<any[]>([])
+
+	const [highlightToggle, setHighlightToggle] = useState<{highlightType:string, isVisible:boolean}[]>([{highlightType:"No Doses Taken", isVisible:true}, {highlightType:"All Doses Taken", isVisible:true},{highlightType:"Only Some Doses Have Been Taken", isVisible:true},{highlightType:"Current Day", isVisible:true}])
 
 	
 	const getDateRange = (from: CalendarDate, to: CalendarDate):any[] =>  {
@@ -37,14 +39,14 @@ const History: React.FC = () => {
 	const getHistoryFromServer = async () => {
 		try {
 		  const { data, status } = await axios.get(
-			`http://localhost:8080/patient/${patientId}/history`,
+			`http://localhost:8080/pharmacist/1/patient/${patientId}/history`,
 			{
 			  headers: {
 				Accept: 'application/json'
 			  },
 			  // Got help with handling a 302 return on history GET request with https://stackoverflow.com/questions/67623396/how-to-make-axios-not-to-throw-an-exception-when-http-302-is-encountered-but-re
 			  validateStatus: function (status) {
-                return status == 302;
+                return status == 302 || status == 200;
             }
 			},
 		  );
@@ -111,6 +113,11 @@ const History: React.FC = () => {
 		}
 	}
 
+	const handleToggleSwitch = (passedHighlight:string) => {
+		let newHighlightToggle = highlightToggle.map(h => h.highlightType == passedHighlight ? {highlightType:h.highlightType, isVisible:!h.isVisible} : h)
+		setHighlightToggle(newHighlightToggle)
+	}
+
   return(
   <IonPage>
 	<IonContent className="ion-padding">
@@ -128,24 +135,24 @@ const History: React.FC = () => {
 							<p>Calendar - {convertMonthName(date.month)} {date.year}</p>
 							<IonButton onClick={e => setDate(addDays(date, 31))}><IonIcon icon={arrowForwardOutline}></IonIcon></IonButton>
 						</div>
-						<Calendar dateNow={dateNow} dateList={dateList} history={patientHistoricalDosesList}/>
+						<Calendar dateNow={dateNow} dateList={dateList} history={patientHistoricalDosesList} visibleHighlights={highlightToggle}/>
 					</div>
 					<div className='historyLegend'>
 						<p>Legend</p>
-						<div className='historyLegendRow'>
-							<div className={'legendCalendarDate notTakenDate'}></div> 
+						<div className={highlightToggle[0].isVisible ? 'historyLegendRow' : 'historyLegendRow faded'} onClick={e => handleToggleSwitch("No Doses Taken")}>
+							<div className={'legendCalendarDate notTakenDate'} ></div> 
 							<p>No doses taken</p>
 						</div>
-						<div className='historyLegendRow'>
-							<div className={'legendCalendarDate takenDate'}></div>
+						<div className={highlightToggle[1].isVisible ? 'historyLegendRow' : 'historyLegendRow faded'} onClick={e => handleToggleSwitch("All Doses Taken")}>
+							<div className={'legendCalendarDate takenDate'}  ></div>
 							<p>All doses taken</p>
 						</div>
-						<div className='historyLegendRow'>
-							<div className={'legendCalendarDate partiallyTakenDate'}></div>
+						<div className={highlightToggle[2].isVisible ? 'historyLegendRow' : 'historyLegendRow faded'} onClick={e => handleToggleSwitch("Only Some Doses Have Been Taken")}>
+							<div className={'legendCalendarDate partiallyTakenDate'} ></div>
 							<p>Only some doses have been taken</p>
 						</div>
-						<div className='historyLegendRow'>
-							<div className={'legendCalendarDate currentCalendarDate'}></div>
+						<div className={highlightToggle[3].isVisible ? 'historyLegendRow' : 'historyLegendRow faded'} onClick={e => handleToggleSwitch("Current Day")}>
+							<div className={'legendCalendarDate currentCalendarDate'} ></div>
 							<p>Current day</p>
 						</div>
 					</div>
