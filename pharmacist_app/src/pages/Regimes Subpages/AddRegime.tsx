@@ -44,21 +44,28 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
   const [patientList, setPatientList] = useState<any[]>([]);
   const [pharmacistId, setPharmacistId] = useState<number>(1);
 
-  
+  const [isPatientIdValid, setIsPatientIdValid] = useState(true);
   const [patientName, setPatientName] = useState('');
 
+  const [isInformationValid, setIsInformationValid] = useState(true);
   const [information, setInformation] = useState('');
 
   const [compartment, setCompartment] = useState<number>(0);
   const [compartmentImgSrc, setCompartmentImgSrc] = useState<string>("../../visual compartment/No Compartment.png");
 
+  const [isDateInfoValid, setIsDateInfoValid] = useState(true);
   const [dateInfo, setDateInfo] = useState<Date>(new Date());
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
+
+  const [isTimeOfDayValid, setIsTimeOfDayValid] = useState(true);
   const [timeOfDay, setTimeOfDay] = useState<number>(0);
+  const [isTimeOffsetValid, setIsTimeOffsetValid] = useState(true);
   const [timeOffset, setTimeOffset] = useState<number>(0);
 
   const [predefinedInstructions, setPredefinedInstructions] = useState([{instruction:"Take this dose orally (take through mouth).",status:false},{instruction:"Do not drink alcohol while on this dose.",status:false},{instruction:"This dose may make you feel tired or dizzy. If this happens, not drive or operate heavy machinery.",status:false}]);
   const [otherInstructions, setOtherInstructions] = useState('');
+
+  const [areInstructionsValid, setAreInstructionsValid] = useState(true);
   const [instructions, setInstructions] = useState('');
 
   const [showModal, setShowModal] = useState(false);
@@ -259,6 +266,29 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
     setInstructions(newInstructions)
   } 
 
+  const helperPatientChoice = (hasPassed:boolean) => {
+    console.log("Activate helper for patient choice")
+    setIsPatientIdValid(patientId != 0)
+  }
+
+  const helperToTake = (hasPassed:boolean) => {
+    console.log("Activate helper for to take")
+    setIsInformationValid(information.length != 0)
+  }
+
+  const helperWhenTaken = (hasPassed:boolean) => {
+    console.log("Activate helper for when taken")
+    const currDate: Date = new Date();
+    setIsDateInfoValid(currDate < dateInfo)
+    setIsTimeOfDayValid(timeOfDay != 0)
+    setIsTimeOffsetValid(timeOffset >= 0 && timeOffset <= 23)
+  }
+
+  const helperInstructions = (hasPassed:boolean) => {
+    console.log("Activate helper for instructions")
+    setAreInstructionsValid(false)
+  }
+
   return (
     <IonPage>
       <IonContent className="ion-padding">
@@ -268,9 +298,10 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
               <>
               <IonItem>
 
-                  <IonSelect value={patientId} label='Patient' interface="popover" placeholder='Please make a selection here' onIonChange={e => {
+                  <IonSelect className={isPatientIdValid ? "" : "invalidInput"}value={patientId} label='Patient' interface="popover" placeholder='Please make a selection here' onIonChange={e => {
                     changePatientId(e.target.value)
                     setPatientName(patientList.find(patient => patient.id == e.target.value).name)
+                    setIsPatientIdValid(true)
                   }}>
                     {patientList.map(patient => <IonSelectOption value={patient.id}>{patient.name}</IonSelectOption>)}
                   </IonSelect>
@@ -284,11 +315,15 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
                   </div>
                   
           <IonButton expand="full" color={patientId != 0 ? "primary":'gray'} className="submit-button" onClick={e => 
-          {
-            if(patientId != 0)
+            {
+              if(patientId != 0)
               {
                 setPatientName(patientList.find(patient => patient.id == patientId).name)
                 handleForwardClick();
+                helperPatientChoice(true);
+              }
+              else {
+                helperPatientChoice(false);
               }
             }
           }>
@@ -310,7 +345,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
           <p className="sectionHeading">What is {patientList.find(patient => patient.id == patientId).name} taking?</p>
           <div className='formGroup'>
             <IonItem>
-              <IonTextarea labelPlacement="fixed" label="Medications" value={information} counter={true} maxlength={500} onIonInput={e => setInformation(e.target.value)}></IonTextarea>
+              <IonTextarea className={isInformationValid ? "" : "invalidInput"} labelPlacement="fixed" label="Medications" value={information} counter={true} maxlength={500} onIonInput={e => {setInformation(e.target.value); setIsInformationValid(true)}}></IonTextarea>
             </IonItem>
             <IonImg className="visualBoxRepresenter" src={compartmentImgSrc}></IonImg>
             <IonItem>
@@ -320,7 +355,14 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
           <IonButton expand="full" color="primary" className="submit-button" onClick={e => handleBackClick()}>
             Back
           </IonButton>
-          <IonButton expand="full" color={information != "" ? "primary":'gray'} className="submit-button" onClick={e => information != "" ?  handleForwardClick():null}>
+          <IonButton expand="full" color={information != "" ? "primary":'gray'} className="submit-button" onClick={e => {
+              if(information != "") {
+                handleForwardClick()
+              }
+              else helperToTake(false)
+            }
+          }
+          >
             Next
           </IonButton>
           </>
@@ -333,21 +375,23 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
           <div className='formGroup'>
             <IonItem>
               <IonLabel position="fixed">Date</IonLabel>
-              <IonDatetime onIonChange={e => {
+              <IonDatetime className={isDateInfoValid ? "" : "invalidInput"} onIonChange={e => {
                 const dateData: Date = typeof e.target.value == "string" ? new Date(e.target.value) : new Date(-1);
                 const currDate: Date = new Date();
                 if (currDate > dateData) {
                   alert("please choose a date in the future")
                   setDateInfo(dateData)
+                  setIsDateInfoValid(false)
                 }
                 else {
                   setDateInfo(dateData)
+                  setIsDateInfoValid(true)
                 }
               }} presentation="date"></IonDatetime>
             </IonItem>
 
             <IonItem>
-              <IonSelect label="Time of Day:" interface="popover" value={timeOfDay} onIonChange={e => setTimeOfDay(e.target.value)}>
+              <IonSelect className={isTimeOfDayValid ? "" : "invalidInput"} label="Time of Day:" interface="popover" value={timeOfDay} onIonChange={e => {setTimeOfDay(e.target.value);setIsTimeOfDayValid(true)}}>
                 <IonSelectOption value={1}>Morning</IonSelectOption>
                 <IonSelectOption value={2}>Afternoon</IonSelectOption>
                 <IonSelectOption value={3}>Evening</IonSelectOption>
@@ -356,13 +400,16 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
             </IonItem>
 
             <IonItem>
-              <IonInput label='Hours before repeat:' type='number' value={timeOffset} onIonInput={e => setTimeOffset(e.target.value)}></IonInput>
+              <IonInput className={isTimeOffsetValid ? "" : "invalidInput"} label='Hours before repeat:' min={0} max={23} onIonBlur={e => {if(e.target.value < 0 || timeOffset == "") setTimeOffset(0); else if (e.target.value > 23) setTimeOffset(23); else if(e.target.value % 1 != 0) setTimeOffset(e.target.value - (e.target.value % 1))}} type='number' value={timeOffset} onIonInput={e => setTimeOffset(e.target.value)}></IonInput>
             </IonItem>
           </div>
           <IonButton expand="full" color="primary" className="submit-button" onClick={e => handleBackClick()}>
             Back
           </IonButton>
-          <IonButton expand="full" color={dateInfo > currentDate && timeOfDay != 0 ? "primary":'gray'} className="submit-button" onClick={e => dateInfo > currentDate && timeOfDay != 0 ? handleForwardClick():null}>
+          <IonButton expand="full" color={dateInfo > currentDate && timeOfDay != 0 ? "primary":'gray'} className="submit-button" onClick={e => { if(dateInfo > currentDate && timeOfDay != 0 && timeOffset >= 0 && timeOffset <= 23) {
+            handleForwardClick()
+          }
+          else {helperWhenTaken(false)} }}>
             Next
           </IonButton>
           </>:null}
@@ -378,6 +425,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
                 pastPredefined[index].status = !pastPredefined[index].status
                 setPredefinedInstructions(pastPredefined)
                 changeInstructionList();
+                setAreInstructionsValid(true)
                 }}>{inst.instruction}</IonCheckbox></IonItem>)}
             </div>
 
@@ -385,21 +433,30 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
               <IonItem>
                 <IonTextarea labelPlacement="fixed" label='Other Notes' counter={true} maxlength={500} value={otherInstructions} onInput={e => {
                   changeInstructionList(e.target.value);
+                  setAreInstructionsValid(true)
                   }}></IonTextarea>
               </IonItem>
             </div>
 
             <div className='instructionSeparator'>
               <IonItem>
-                <IonTitle>Complete Instructions:</IonTitle>
-                <p>{instructions}</p>
+                <IonTitle className={areInstructionsValid ? "" : "invalidInput"}>Complete Instructions:</IonTitle>
+                <p className={areInstructionsValid ? "" : "invalidInput"}>{instructions}</p>
               </IonItem>
             </div>
           </div>
           <IonButton expand="full" color="primary" className="submit-button" onClick={e => handleBackClick()}>
             Back
           </IonButton>
-          <IonButton expand="full" color={instructions != "" ? "primary":'gray'} className="submit-button" onClick={e => instructions != "" ? handleSubmit() : null}>
+          <IonButton expand="full" color={instructions != "" ? "primary":'gray'} className="submit-button" onClick={e => {
+              if (instructions != "") {
+                handleSubmit()
+              }
+              else {
+                helperInstructions(false)
+              }
+            }
+          }>
             Submit
           </IonButton>
           </>:null}
