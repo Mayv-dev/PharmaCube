@@ -1,7 +1,7 @@
 import { RegimeItem } from 'api types/types';
 import '../../styles/RegimeItemContainer.css';
 import { IonButton, IonIcon, IonList, IonItem, IonLabel, useIonRouter } from '@ionic/react';
-import { createOutline, trashOutline } from "ionicons/icons";
+import { createOutline, moon, partlySunny, sunny, time, trashOutline } from "ionicons/icons";
 
 function handleDate(date:number):string {
 	let stringDay = "";
@@ -56,16 +56,16 @@ const RegimeItemContainer: React.FC<ContainerProps> = ({regime, deleteItem, modi
 	const determineIcon = () => {
 		switch(regime.time_period) {
 			case 1: 
-				return '\\time of day icons\\morning_icon.png';
+				return sunny;
 				break
 			case 2: 
-				return '\\time of day icons\\afternoon_icon.png';
+				return partlySunny;
 				break
 			case 3: 
-				return '\\time of day icons\\evening_icon.png';
+				return time;
 				break
 			case 4: 
-				return '\\time of day icons\\night_icon.png';
+				return moon;
 				break
 		}
 	}
@@ -85,7 +85,7 @@ const RegimeItemContainer: React.FC<ContainerProps> = ({regime, deleteItem, modi
         <IonLabel><span className='regimeInfoField'>Instructions:</span> <p>{regime.instructions}</p></IonLabel>
       </IonItem>
       <IonItem>
-        <IonLabel><span className='regimeInfoField'>When to take:</span> <p>{handleDate(regime.date)}, {timeOfDayConvert(regime.time_period)}</p><img src={determineIcon()} style={{width:"20%"}}></img></IonLabel>
+        <IonLabel><span className='regimeInfoField'>When to take:</span> <p>{handleDate(regime.date)}, {timeOfDayConvert(regime.time_period)}</p><IonIcon icon={determineIcon()}></IonIcon></IonLabel>
       </IonItem>
       <IonItem>
         <IonLabel><span className='regimeInfoField'>Hours before repeat:</span> <p>{regime.time_adjustment} hours</p></IonLabel>
