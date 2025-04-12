@@ -1,0 +1,56 @@
+/* MainPage.css */
+.main-page-content {
+    --background: #f5f5f5;
+    text-align: center;
+  }
+  
+  .welcome-section {
+    padding: 20px 0 30px;
+  }
+  
+  .welcome-section h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .welcome-section p {
+    color: #666;
+    font-size: 16px;
+  }
+  
+  .menu-grid {
+    padding: 0 15px;
+  }
+  
+  .menu-card {
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    background: white;
+  }
+  
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  
+  .card-content ion-icon {
+    color: #3880ff;
+    margin-bottom: 10px;
+  }
+  
+  .card-content h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+  }

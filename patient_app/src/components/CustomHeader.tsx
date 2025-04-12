@@ -2,9 +2,14 @@ import React from 'react';
 import { IonHeader, IonToolbar, IonTitle, useIonRouter } from '@ionic/react';
 import './CustomHeader.css';
 
-const CustomHeader: React.FC = () => {
+interface CustomHeaderProps {
+  title: string;
+}
+
+const CustomHeader: React.FC<CustomHeaderProps> = ({ title }) => {
   const router = useIonRouter();
 
+  // Optional: Keep your dynamic title logic if you want
   const getPageTitle = () => {
     const path = router.routeInfo.pathname;
     switch (path) {
@@ -23,7 +28,7 @@ const CustomHeader: React.FC = () => {
       case '/ChatPage':
         return 'AI Helper';
       default:
-        return 'AI Helper'; 
+        return title; // Use the passed title prop as fallback
     }
   };
 

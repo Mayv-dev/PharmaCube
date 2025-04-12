@@ -11,6 +11,7 @@ import {
   IonContent,
   IonInput,
   IonButton,
+  IonPage,
   setupIonicReact,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
@@ -19,7 +20,8 @@ import {
   medical,
   notificationsOutline,
   settingsOutline,
-  chatbubbleOutline
+  chatbubbleOutline,
+  homeOutline
 } from 'ionicons/icons';
 
 import SchedulePage from './pages/SchedulePage';
@@ -29,6 +31,7 @@ import NotificationPage from './pages/NotificationPage';
 import MedicationPage from './pages/MedicationsPage';
 import SettingsPage from './pages/SettingsPage';
 import ChatPage from './pages/ChatPage';
+import MainPage from './pages/MainPage';
 
 import { ColorblindProvider } from './colorBlindContext';
 import { SettingsProvider, useSettings } from './composables/SettingsContext';
@@ -158,6 +161,9 @@ const App: React.FC = () => {
               {tabBarPosition === 'bottom' && <CustomHeader />}
 
               <IonRouterOutlet>
+                <Route exact path="/MainPage">
+                  <MainPage />
+                </Route>
                 <Route exact path="/SchedulePage">
                   <SchedulePage />
                 </Route>
@@ -180,11 +186,15 @@ const App: React.FC = () => {
                   <ChatPage />
                 </Route>
                 <Route exact path="/">
-                  <Redirect to="/SchedulePage" />
+                  <Redirect to="/MainPage" />
                 </Route>
               </IonRouterOutlet>
 
               <IonTabBar slot={tabBarPosition}>
+                <IonTabButton tab="MainPage" href="/MainPage">
+                  <IonIcon icon={homeOutline} />
+                  <IonLabel>Home</IonLabel>
+                </IonTabButton>
                 <IonTabButton tab="SchedulePage" href="/SchedulePage">
                   <IonIcon icon={calendarOutline} />
                   <IonLabel>Schedule</IonLabel>
