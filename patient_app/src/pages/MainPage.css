@@ -1,56 +1,87 @@
 /* MainPage.css */
+:root {
+  --ion-safe-area-top: 0;
+  --ion-safe-area-bottom: 0;
+}
+
 .main-page-content {
-    --background: #f5f5f5;
-    text-align: center;
-  }
-  
-  .welcome-section {
-    padding: 20px 0 30px;
-  }
-  
-  .welcome-section h1 {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .welcome-section p {
-    color: #666;
-    font-size: 16px;
-  }
-  
-  .menu-grid {
-    padding: 0 15px;
-  }
-  
-  .menu-card {
-    height: 150px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 10px;
-    background: white;
-  }
-  
-  .card-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-  }
-  
-  .card-content ion-icon {
-    color: #3880ff;
-    margin-bottom: 10px;
-  }
-  
-  .card-content h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 500;
-    color: #333;
-  }
+  --background: #f8fafc;
+  --ion-toolbar-background: transparent;
+}
+
+.app-container {
+  padding: 20px 16px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.welcome-section {
+  padding: 10px 0 25px;
+  text-align: left;
+}
+
+.welcome-section h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.welcome-section p {
+  color: #64748b;
+  font-size: 16px;
+  margin: 0;
+}
+
+.menu-grid {
+  padding: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.menu-card {
+  height: 160px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  margin: 8px;
+  background: white;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: none;
+  background-color: var(--card-bg-color);
+}
+
+.menu-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.menu-card:active {
+  transform: scale(0.98);
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.card-icon-container {
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  background-color: var(--card-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0
