@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-  IonCard,
   IonContent,
-  IonHeader,
   IonIcon,
-  IonPage,
-  IonTitle,
-  IonToolbar,
   IonGrid,
   IonRow,
   IonCol,
@@ -15,17 +10,34 @@ import {
   IonDatetime,
   IonButton,
   IonList,
+  IonCard,
+  IonCardContent,
+  IonBadge,
+  IonPage,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
+  IonChip,
+  IonNote,
+  IonSkeletonText,
 } from '@ionic/react';
-import { timeOutline, calendarOutline, calendar, checkmarkCircle, closeCircle } from 'ionicons/icons';
-import { useColorblindFilter } from '../../colorBlindContext'; 
+import { timeOutline, calendarOutline, calendar, checkmarkCircle, closeCircle, chevronBack, alertCircle, informationCircle } from 'ionicons/icons';
+import { useColorblindFilter } from '../../colorBlindContext';
+import { useHistory } from 'react-router-dom';
 import './ScheduleViewPage.css';
 import axios from 'axios';
 
 const ScheduleViewPage: React.FC = () => {
+  console.log('ScheduleViewPage component rendered');
+  
   const { filter } = useColorblindFilter();
+  const history = useHistory();
+  const [loading, setLoading] = useState(true);
 
   const [medicationStatus, setMedicationStatus] = useState<{ [key: string]: { taken: boolean, missingDoseHandling?: string } }>({});
   const [scheduleData, setScheduleData] = useState<any[]>([]);
+  const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString());
 
   const handleMedicationStatus = (date: string, taken: boolean, missingDoseHandling?: string) => {
     setMedicationStatus(prevStatus => ({
@@ -34,103 +46,205 @@ const ScheduleViewPage: React.FC = () => {
     }));
   };
 
-  // ✅ Load mock schedule data on page load
   useEffect(() => {
-    axios.get("http://localhost:8080/patient/1/mock_schedule")
-      .then(res => {
-        setScheduleData(res.data);
-        console.log("Fetched mock schedule:", res.data);
-      })
-      .catch(err => {
-        console.error("Error fetching schedule data:", err);
-      });
+    console.log('ScheduleViewPage useEffect running');
+    setLoading(true);
+    try {
+      axios.get("http://localhost:8080/patient/1/mock_schedule")
+        .then(res => {
+          console.log("API response received:", res.data);
+          setScheduleData(res.data);
+          setLoading(false);
+        })
+        .catch(err => {
+          console.error("Error fetching schedule data:", err);
+          setScheduleData([
+            { id: 1, day: 1, hour: 8, minute: 30, time_period: 1, taken: false, medications: [] },
+            { id: 2, day: 1, hour: 13, minute: 0, time_period: 2, taken: true, medications: [] }
+          ]);
+          setLoading(false);
+        });
+    } catch (error) {
+      console.error("Error in useEffect:", error);
+      setLoading(false);
+    }
   }, []);
+
+  const getStatusColor = (taken: boolean) => {
+    return taken ? 'success' : 'danger';
+  };
+
+  const getStatusText = (taken: boolean) => {
+    return taken ? 'Taken' : 'Not Taken';
+  };
+
+  const formatTime = (hour: number, minute: number) => {
+    return `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
+  };
 
   return (
     <IonPage className={filter}>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Schedule View</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+      <IonContent className="schedule-view-content">
+        <div className="app-container">
+          <div className="welcome-section">
+            <div className="welcome-content">
+              <h1>Medication Schedule</h1>
+              <p>Track and manage your daily medications</p>
+              <div className="status-summary">
+                <IonChip color="success" className="status-chip">
+                  <IonIcon icon={checkmarkCircle} />
+                  <IonLabel>3 Taken</IonLabel>
+                </IonChip>
+                <IonChip color="danger" className="status-chip">
+                  <IonIcon icon={closeCircle} />
+                  <IonLabel>1 Missed</IonLabel>
+                </IonChip>
+                <IonChip color="warning" className="status-chip">
+                  <IonIcon icon={alertCircle} />
+                  <IonLabel>2 Upcoming</IonLabel>
+                </IonChip>
+              </div>
+            </div>
+            <div className="welcome-decoration"></div>
+          </div>
 
-      <IonContent fullscreen className="ion-padding content">
-        {/* Calendar Component */}
-        <IonDatetime
-          displayFormat="MM/DD/YYYY"
-          placeholder="Select Date"
-          className="calendar"
-          onIonChange={(e) => console.log(e.detail.value)}
-        ></IonDatetime>
+          <div className="schedule-section">
+            <IonCard className="calendar-card">
+              <IonCardContent>
+                <IonDatetime
+                  presentation="date"
+                  value={selectedDate}
+                  onIonChange={(e) => setSelectedDate(e.detail.value as string)}
+                  className="calendar"
+                ></IonDatetime>
+              </IonCardContent>
+            </IonCard>
 
-        {/* Medication Status Buttons */}
-        <IonGrid>
-          <IonRow>
-            <IonCol>
+            <div className="status-buttons">
               <IonButton
-                expand="block"
-                color="success"
-                onClick={() => handleMedicationStatus(new Date().toISOString().split('T')[0], true)}
+                className="status-button taken"
+                onClick={() => handleMedicationStatus(selectedDate.split('T')[0], true)}
               >
-                <IonIcon icon={checkmarkCircle} slot="start" />
-                Taken
+                <IonIcon icon={checkmarkCircle} />
+                <span>Mark as Taken</span>
               </IonButton>
-            </IonCol>
-            <IonCol>
               <IonButton
-                expand="block"
-                color="danger"
-                onClick={() => handleMedicationStatus(new Date().toISOString().split('T')[0], false, "Handling information")}
+                className="status-button not-taken"
+                onClick={() => handleMedicationStatus(selectedDate.split('T')[0], false, "Handling information")}
               >
-                <IonIcon icon={closeCircle} slot="start" />
-                Not Taken
+                <IonIcon icon={closeCircle} />
+                <span>Mark as Not Taken</span>
               </IonButton>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
+            </div>
 
-        {/* Display Schedule from Backend */}
-        <IonList>
-          {scheduleData.map((item) => (
-            <IonItem key={item.id}>
-              <IonLabel>
-                🕒 {item.hour.toString().padStart(2, "0")}:{item.minute.toString().padStart(2, "0")}<br />
-                🗓 Day: {item.day}<br />
-                💊 Medications:
-                {item.medications && item.medications.length > 0 ? (
-                  <ul>
-                    {item.medications.map((med: any) => (
-                      <li key={med.id}>{med.name} - {med.amount}</li>
-                    ))}
-                  </ul>
+            <div className="schedule-list">
+              <div className="section-header">
+                <h2>Today's Schedule</h2>
+                <IonNote>Select a medication to mark its status</IonNote>
+              </div>
+              <IonList>
+                {loading ? (
+                  // Loading skeletons
+                  Array(3).fill(0).map((_, index) => (
+                    <IonItem key={index} className="schedule-item">
+                      <div className="schedule-item-content">
+                        <IonSkeletonText animated style={{ width: '60%' }} />
+                        <IonSkeletonText animated style={{ width: '40%' }} />
+                        <IonSkeletonText animated style={{ width: '80%' }} />
+                      </div>
+                    </IonItem>
+                  ))
+                ) : scheduleData.length > 0 ? (
+                  scheduleData.map((item) => (
+                    <IonItem key={item.id} className="schedule-item" button detail={false}>
+                      <div className="schedule-item-content">
+                        <div className="schedule-time">
+                          <IonIcon icon={timeOutline} />
+                          <span>{formatTime(item.hour, item.minute)}</span>
+                        </div>
+                        <div className="schedule-day">
+                          <IonIcon icon={calendarOutline} />
+                          <span>Day {item.day}</span>
+                        </div>
+                        {item.medications && item.medications.length > 0 ? (
+                          <div className="medications-list">
+                            <ul>
+                              {item.medications.map((med: any) => (
+                                <li key={med.id}>
+                                  <span className="medication-name">{med.name}</span>
+                                  <span>{med.amount}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ) : (
+                          <p className="no-medications">No medications scheduled</p>
+                        )}
+                      </div>
+                      <div className="schedule-status">
+                        <IonIcon
+                          icon={item.taken ? checkmarkCircle : closeCircle}
+                          className={item.taken ? "status-taken" : "status-not-taken"}
+                        />
+                        <span className={`status-text ${item.taken ? "taken" : "not-taken"}`}>
+                          {getStatusText(item.taken)}
+                        </span>
+                      </div>
+                    </IonItem>
+                  ))
                 ) : (
-                  <p>None</p>
+                  <IonItem>
+                    <IonLabel>
+                      <div className="empty-state">
+                        <IonIcon icon={informationCircle} />
+                        <p>No schedule data available</p>
+                      </div>
+                    </IonLabel>
+                  </IonItem>
                 )}
-              </IonLabel>
-              <IonIcon
-                icon={item.taken ? checkmarkCircle : closeCircle}
-                color={item.taken ? "success" : "danger"}
-              />
-            </IonItem>
-          ))}
-        </IonList>
+              </IonList>
+            </div>
 
-        {/* Medication Status History */}
-        <IonList>
-          {Object.entries(medicationStatus).map(([date, status]) => (
-            <IonItem key={date}>
-              <IonLabel>
-                {new Date(date).toLocaleDateString()}: {status.taken ? 'Taken' : 'Not Taken'}
-                {status.missingDoseHandling && <p>{status.missingDoseHandling}</p>}
-              </IonLabel>
-              <IonIcon icon={status.taken ? checkmarkCircle : closeCircle} color={status.taken ? 'success' : 'danger'} />
-            </IonItem>
-          ))}
-        </IonList>
-
-        {/* Large Schedule Icon */}
-        <div className="center-icon-container">
-          <IonIcon icon={calendar} className="center-icon" />
+            <div className="status-history">
+              <div className="section-header">
+                <h2>Status History</h2>
+                <IonNote>Your medication history for the past week</IonNote>
+              </div>
+              <IonList>
+                {Object.entries(medicationStatus).length > 0 ? (
+                  Object.entries(medicationStatus).map(([date, status]) => (
+                    <IonItem key={date} className="history-item" button detail={false}>
+                      <div className="history-content">
+                        <div className="history-date">
+                          <IonIcon icon={calendar} />
+                          <span>{new Date(date).toLocaleDateString()}</span>
+                        </div>
+                        <span className={`status-text ${status.taken ? "taken" : "not-taken"}`}>
+                          {getStatusText(status.taken)}
+                        </span>
+                        {status.missingDoseHandling && (
+                          <p className="handling-info">{status.missingDoseHandling}</p>
+                        )}
+                      </div>
+                      <IonIcon
+                        icon={status.taken ? checkmarkCircle : closeCircle}
+                        className={status.taken ? "status-taken" : "status-not-taken"}
+                      />
+                    </IonItem>
+                  ))
+                ) : (
+                  <IonItem>
+                    <IonLabel>
+                      <div className="empty-state">
+                        <IonIcon icon={informationCircle} />
+                        <p>No status history available</p>
+                      </div>
+                    </IonLabel>
+                  </IonItem>
+                )}
+              </IonList>
+            </div>
+          </div>
         </div>
       </IonContent>
     </IonPage>

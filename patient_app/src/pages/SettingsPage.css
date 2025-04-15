@@ -8,97 +8,178 @@
   top: auto;
 }
 
-
+.settings-content {
+  --background: var(--app-background);
+}
 
 .settings-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: var(--ion-color-light);
-  background-image: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-secondary));
-  background-size: cover;
-  background-position: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.settings-form {
-  width: 90%;
-  max-width: 400px;
-  padding: 30px;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 15px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  animation: fadeIn 0.5s ease-in-out;
-  margin: auto;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.welcome-section {
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  color: var(--ion-color-primary-contrast);
+  box-shadow: 0 4px 6px var(--app-shadow);
 }
 
-.settings-title {
-  text-align: center;
+.welcome-section h1 {
   font-size: 28px;
-  font-weight: bold;
-  color: var(--ion-color-primary);
-  margin-bottom: 25px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
 }
 
-.settings-input {
-  margin-bottom: 20px;
-  --background: rgba(255, 255, 255, 0.9);
-  --color: var(--ion-color-dark);
-  --padding-start: 20px;
-  --padding-end: 20px;
-  border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+.welcome-section p {
+  font-size: 16px;
+  margin: 0;
+  opacity: 0.9;
 }
 
-.settings-input:focus-within {
-  border-color: var(--ion-color-primary);
-  box-shadow: 0 0 8px rgba(var(--ion-color-primary-rgb), 0.2);
+.welcome-decoration {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+  border-radius: 50%;
+  transform: translate(30%, -30%);
 }
 
-.settings-button {
-  margin-top: 20px;
-  --background: var(--ion-color-primary);
-  --color: var(--ion-color-light);
-  --border-radius: 10px;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
+.settings-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
 }
 
-.settings-button:hover {
-  --background: var(--ion-color-primary-shade);
+.settings-card {
+  background: var(--app-surface);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 4px var(--app-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.settings-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(var(--ion-color-primary-rgb), 0.3);
+  box-shadow: 0 4px 8px var(--app-shadow);
 }
 
-.toggle-button {
-  margin-top: 15px;
-  --color: var(--ion-color-medium);
+.settings-card h2 {
+  color: var(--app-text);
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings-card ion-icon {
+  color: var(--ion-color-primary);
+}
+
+ion-list {
+  background: transparent;
+  padding: 0;
+}
+
+ion-item {
+  --background: transparent;
+  --border-color: var(--app-border);
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 8px;
+}
+
+ion-item::part(native) {
+  padding: 12px 0;
+}
+
+ion-label {
+  color: var(--app-text);
+}
+
+ion-label h3 {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 0 4px 0;
+}
+
+ion-label p {
   font-size: 14px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  color: var(--app-text-secondary);
+  margin: 0;
 }
 
-.toggle-button:hover {
-  --color: var(--ion-color-primary);
-  text-decoration: underline;
+ion-toggle {
+  --background: var(--app-border);
+  --background-checked: var(--ion-color-primary);
+  --handle-background: var(--app-surface);
+  --handle-background-checked: var(--ion-color-primary-contrast);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
+ion-select {
+  --placeholder-color: var(--app-text-secondary);
+  --placeholder-opacity: 1;
+}
+
+/* Dark mode specific adjustments */
+.dark .settings-card {
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+}
+
+.dark ion-item {
+  --border-color: var(--app-border);
+}
+
+.dark ion-toggle {
+  --background: var(--app-border);
+  --handle-background: var(--app-surface);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .settings-container {
+    padding: 16px;
   }
-  to {
-    opacity: 1;
+
+  .welcome-section {
+    padding: 20px;
   }
+
+  .welcome-section h1 {
+    font-size: 24px;
+  }
+
+  .welcome-section p {
+    font-size: 14px;
+  }
+
+  .settings-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Animation for settings changes */
+@keyframes settingsChange {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.settings-card.changed {
+  animation: settingsChange 0.3s ease;
 }

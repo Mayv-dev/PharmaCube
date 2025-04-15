@@ -5,7 +5,6 @@ import {
   IonHeader,
   IonIcon,
   IonPage,
-  IonRouterLink,
   IonTitle,
   IonToolbar,
   IonGrid,
@@ -13,24 +12,30 @@ import {
   IonCol,
   IonItem,
   IonLabel,
-  IonSelect,
-  IonSelectOption,
+  IonButton,
 } from '@ionic/react';
 import { timeOutline, calendarOutline } from 'ionicons/icons';
 import { useColorblindFilter } from '../colorBlindContext';
+import { useHistory } from 'react-router-dom';
 import './SchedulePage.css';
 import calendarImage from '../Picture2.png';
 
 const SchedulePage: React.FC = () => {
   const { filter } = useColorblindFilter();
+  const history = useHistory();
+
+  const handleViewSchedule = () => {
+    console.log('View Schedule button clicked');
+    history.push('/schedule/view');
+  };
+
+  const handleEditSchedule = () => {
+    console.log('Edit Schedule button clicked');
+    history.push('/schedule/edit');
+  };
 
   return (
     <IonPage className={filter}>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Schedule</IonTitle>
-        </IonToolbar>
-      </IonHeader>
       <IonContent fullscreen className="ion-padding content">
         <div className="center-icon-container">
           <img src={calendarImage} alt="Calendar" className="center-icon" />
@@ -40,23 +45,23 @@ const SchedulePage: React.FC = () => {
           <IonRow className="label-row">
             <IonCol size="6">
               <IonItem lines="none" className="card-item">
-                <IonRouterLink routerLink="/ScheduleAddModifyPage" className="card-link">
+                <div className="card-link" onClick={handleEditSchedule}>
                   <div className="card-item-button">
                     <IonIcon icon={timeOutline} slot="start" />
                     <IonLabel className="card-label">Edit Schedule</IonLabel>
                   </div>
-                </IonRouterLink>
+                </div>
               </IonItem>
             </IonCol>
 
             <IonCol size="6">
               <IonItem lines="none" className="card-item">
-                <IonRouterLink routerLink="/ScheduleViewPage" className="card-link">
+                <div className="card-link" onClick={handleViewSchedule}>
                   <div className="card-item-button">
                     <IonIcon icon={calendarOutline} slot="start" />
                     <IonLabel className="card-label">View Schedule</IonLabel>
                   </div>
-                </IonRouterLink>
+                </div>
               </IonItem>
             </IonCol>
           </IonRow>

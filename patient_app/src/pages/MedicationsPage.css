@@ -1,6 +1,6 @@
 /* General Styles */
 .content {
-  background-color: #f4f4f4;
+  background-color: var(--app-background);
   padding: 16px;
 }
 
@@ -8,12 +8,16 @@
 .welcome-section {
   text-align: center;
   margin-bottom: 24px;
+  background: var(--app-surface);
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .welcome-title {
   font-size: 2rem;
   font-weight: bold;
-  color: #333;
+  color: var(--app-text);
   margin-bottom: 16px;
 }
 
@@ -28,18 +32,20 @@
   text-align: center;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: var(--app-surface);
+  padding: 16px;
 }
 
 .stat-card h2 {
   font-size: 2rem;
   font-weight: bold;
-  color: #333;
+  color: var(--app-text);
   margin-bottom: 8px;
 }
 
 .stat-card p {
   font-size: 1rem;
-  color: #666;
+  color: var(--app-text-secondary);
 }
 
 /* Medications Section */
@@ -50,7 +56,7 @@
 .section-title {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #333;
+  color: var(--app-text);
   margin-bottom: 16px;
 }
 
@@ -62,7 +68,12 @@
   margin-bottom: 16px;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background: #fff;
+  background: var(--app-surface);
+  transition: transform 0.2s ease-in-out;
+}
+
+.medication-item:hover {
+  transform: translateY(-2px);
 }
 
 .medication-image {
@@ -73,7 +84,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f0f0f0;
+  background-color: var(--app-surface-secondary);
 }
 
 .medication-image img {
@@ -89,13 +100,13 @@
 .medication-details h2 {
   font-size: 1.25rem;
   font-weight: bold;
-  color: #333;
+  color: var(--app-text);
   margin-bottom: 8px;
 }
 
 .medication-details p {
   font-size: 1rem;
-  color: #666;
+  color: var(--app-text-secondary);
   margin: 4px 0;
 }
 
@@ -106,10 +117,37 @@
 /* Add Medication Modal */
 .modal-content {
   padding: 16px;
+  background: var(--app-background);
 }
 
 /* Toast */
 ion-toast {
-  --background: #4caf50;
-  --color: #fff;
+  --background: var(--ion-color-success);
+  --color: var(--ion-color-success-contrast);
+}
+
+/* Dark Mode Styles */
+@media (prefers-color-scheme: dark) {
+  .content {
+    background-color: var(--app-background);
+  }
+
+  .welcome-section {
+    background: var(--app-surface);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .stat-card {
+    background: var(--app-surface);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .medication-item {
+    background: var(--app-surface);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .medication-image {
+    background-color: var(--app-surface-secondary);
+  }
 }

@@ -1,52 +1,129 @@
 import React from 'react';
-import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonCard, IonCardContent } from '@ionic/react';
+import { 
+  IonContent, 
+  IonGrid, 
+  IonRow, 
+  IonCol, 
+  IonCard, 
+  IonCardContent, 
+  IonIcon,
+  IonBadge,
+  IonPage
+} from '@ionic/react';
 import { useHistory } from 'react-router-dom';
-import { calendar, notifications, flask, settings } from 'ionicons/icons'; // Using filled variants
+import { 
+  calendar, 
+  notifications, 
+  flask, 
+  settings,
+  chevronForward
+} from 'ionicons/icons';
 import './MainPage.css';
+import calendarImage from '../Picture2.png';
 
 const MainPage: React.FC = () => {
   const history = useHistory();
 
+  // This would typically come from your app's state management
+  const getBadgeCount = (type: string) => {
+    switch(type) {
+      case 'schedule':
+        // Example: Return actual count of upcoming medications
+        return 0;
+      case 'notifications':
+        // Example: Return actual count of unread notifications
+        return 0;
+      default:
+        return 0;
+    }
+  };
+
   const menuItems = [
-    { title: 'Schedule', icon: calendar, path: '/SchedulePage', color: '#FF6B6B', bgColor: '#FFF0F0' },
-    { title: 'Notifications', icon: notifications, path: '/NotificationsPage', color: '#4ECDC4', bgColor: '#F0FDFA' },
-    { title: 'Medication', icon: flask, path: '/MedicationsPage', color: '#45B7D1', bgColor: '#F0F9FF' },
-    { title: 'Settings', icon: settings, path: '/SettingsPage', color: '#A78BFA', bgColor: '#F5F3FF' }
+    { 
+      title: 'Schedule', 
+      icon: calendar, 
+      path: '/schedule', 
+      color: '#00A878', 
+      bgColor: '#F5F5F5',
+      description: 'Manage your medication schedule',
+      type: 'schedule'
+    },
+    { 
+      title: 'Notifications', 
+      icon: notifications, 
+      path: '/notifications', 
+      color: '#00A878', 
+      bgColor: '#F5F5F5',
+      description: 'View your alerts and reminders',
+      type: 'notifications'
+    },
+    { 
+      title: 'Medication', 
+      icon: flask, 
+      path: '/medications', 
+      color: '#00A878', 
+      bgColor: '#F5F5F5',
+      description: 'Track your medications',
+      type: 'medication'
+    },
+    { 
+      title: 'Settings', 
+      icon: settings, 
+      path: '/settings', 
+      color: '#00A878', 
+      bgColor: '#F5F5F5',
+      description: 'Customize your app preferences',
+      type: 'settings'
+    }
   ];
 
   return (
     <IonPage>
       <IonContent className="main-page-content" fullscreen>
         <div className="app-container">
-          <div className="welcome-section">
-            <h1>Welcome to PharmaCube</h1>
-            <p>Your personal healthcare companion</p>
+          <div className="background-logo">
+            <img src={calendarImage} alt="Oro Logo" className="center-icon" />
           </div>
-
-          <IonGrid className="menu-grid">
-            <IonRow>
-              {menuItems.map((item, index) => (
-                <IonCol size="6" key={index}>
-                  <IonCard 
-                    className="menu-card" 
-                    button 
-                    onClick={() => history.push(item.path)}
-                    style={{ 
-                      '--card-color': item.color,
-                      '--card-bg-color': item.bgColor
-                    }}
-                  >
-                    <IonCardContent className="card-content">
-                      <div className="card-icon-container">
-                        <ion-icon icon={item.icon} className="card-icon"></ion-icon>
-                      </div>
-                      <h3>{item.title}</h3>
-                    </IonCardContent>
-                  </IonCard>
-                </IonCol>
-              ))}
-            </IonRow>
-          </IonGrid>
+          <div className="content-container">
+            <div className="menu-section">
+              <h2 className="section-title">Quick Access</h2>
+              <IonGrid className="menu-grid">
+                <IonRow>
+                  {menuItems.map((item, index) => {
+                    const badgeCount = getBadgeCount(item.type);
+                    return (
+                      <IonCol size="12" sizeMd="6" key={index}>
+                        <IonCard 
+                          className="menu-card" 
+                          button 
+                          onClick={() => history.push(item.path)}
+                          style={{ 
+                            '--card-bg-color': item.bgColor
+                          }}
+                        >
+                          <IonCardContent className="card-content">
+                            <div className="card-icon-container">
+                              <IonIcon icon={item.icon} className="card-icon" />
+                              {badgeCount > 0 && (
+                                <IonBadge color="danger" className="card-badge">
+                                  {badgeCount}
+                                </IonBadge>
+                              )}
+                            </div>
+                            <div className="card-text-content">
+                              <h3>{item.title}</h3>
+                              <p className="card-description">{item.description}</p>
+                            </div>
+                            <IonIcon icon={chevronForward} className="card-arrow" />
+                          </IonCardContent>
+                        </IonCard>
+                      </IonCol>
+                    );
+                  })}
+                </IonRow>
+              </IonGrid>
+            </div>
+          </div>
         </div>
       </IonContent>
     </IonPage>

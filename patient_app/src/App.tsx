@@ -28,7 +28,7 @@ import SchedulePage from './pages/SchedulePage';
 import ScheduleViewPage from './pages/Schedule Subpages/ScheduleViewPage';
 import ScheduleAddModifyPage from './pages/Schedule Subpages/ScheduleAddModifyPage';
 import NotificationPage from './pages/NotificationPage';
-import MedicationPage from './pages/MedicationsPage';
+import MedicationsPage from './pages/MedicationsPage';
 import SettingsPage from './pages/SettingsPage';
 import ChatPage from './pages/ChatPage';
 import MainPage from './pages/MainPage';
@@ -51,106 +51,28 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 import './theme/variables.css';
 
-import CustomHeader from './components/CustomHeader';
-
 setupIonicReact();
 
 const App: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [isRegistering, setIsRegistering] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const { tabBarPosition } = useSettings();
 
   useEffect(() => {
-    const checkUserSession = async () => {
-      const storedUser = await getItem('user');
-      setIsAuthenticated(storedUser ? true : false);
+    const checkAuth = async () => {
+      const token = await getItem('token');
+      if (token) {
+        setIsAuthenticated(true);
+      }
     };
-    checkUserSession();
+    checkAuth();
   }, []);
 
-  const handleRegister = async () => {
-    await registerUser(username, password);
-    alert('Account registered successfully! You can now log in.');
-    setIsRegistering(false);
-  };
-
-  const handleLogin = async () => {
-    const isValid = await verifyUser(username, password);
-    if (isValid) {
-      await setItem('user', { username });
-      setIsAuthenticated(true);
-    } else {
-      alert('Invalid username or password');
-    }
-  };
-
   const handleLogout = async () => {
-    await removeItem('user');
+    await removeItem('token');
     setIsAuthenticated(false);
   };
-
-  if (isAuthenticated === null) {
-    return <IonApp>Loading...</IonApp>;
-  }
-
-  if (!isAuthenticated) {
-    return (
-      <IonApp>
-        <IonContent className="login-container">
-          <div className="login-form">
-            <img
-              src="src/Adobe Express - file.png"
-              alt="Logo"
-              className="login-image"
-            />
-            <h2 className="login-title">{isRegistering ? 'Register' : 'Login'}</h2>
-            <IonInput
-              className="login-input"
-              placeholder="Username"
-              value={username}
-              onIonChange={(e) => setUsername(e.detail.value!)}
-            />
-            <IonInput
-              className="login-input"
-              type="password"
-              placeholder="Password"
-              value={password}
-              onIonChange={(e) => setPassword(e.detail.value!)}
-            />
-            {isRegistering ? (
-              <>
-                <IonButton className="login-button" onClick={handleRegister}>
-                  Register
-                </IonButton>
-                <IonButton
-                  className="toggle-button"
-                  fill="clear"
-                  onClick={() => setIsRegistering(false)}
-                >
-                  Back to Login
-                </IonButton>
-              </>
-            ) : (
-              <>
-                <IonButton className="login-button" onClick={handleLogin}>
-                  Login
-                </IonButton>
-                <IonButton
-                  className="toggle-button"
-                  fill="clear"
-                  onClick={() => setIsRegistering(true)}
-                >
-                  Create an Account
-                </IonButton>
-              </>
-            )}
-          </div>
-        </IonContent>
-      </IonApp>
-    );
-  }
 
   return (
     <ColorblindProvider>
@@ -158,66 +80,62 @@ const App: React.FC = () => {
         <IonApp>
           <IonReactRouter>
             <IonTabs>
-              {tabBarPosition === 'bottom' && <CustomHeader />}
-
               <IonRouterOutlet>
-                <Route exact path="/MainPage">
+                <Route exact path="/main">
                   <MainPage />
                 </Route>
-                <Route exact path="/SchedulePage">
+                <Route exact path="/schedule">
                   <SchedulePage />
                 </Route>
-                <Route exact path="/ScheduleViewPage">
+                <Route exact path="/schedule/view">
                   <ScheduleViewPage />
                 </Route>
-                <Route path="/ScheduleAddModifyPage">
+                <Route exact path="/schedule/edit">
                   <ScheduleAddModifyPage />
                 </Route>
-                <Route path="/NotificationsPage">
+                <Route exact path="/notifications">
                   <NotificationPage />
                 </Route>
-                <Route path="/MedicationsPage">
-                  <MedicationPage />
+                <Route exact path="/medications">
+                  <MedicationsPage />
                 </Route>
-                <Route path="/SettingsPage">
-                  <SettingsPage />
-                </Route>
-                <Route path="/ChatPage">
+                <Route exact path="/chat">
                   <ChatPage />
                 </Route>
+                <Route exact path="/settings">
+                  <SettingsPage />
+                </Route>
                 <Route exact path="/">
-                  <Redirect to="/MainPage" />
+                  <Redirect to="/main" />
                 </Route>
               </IonRouterOutlet>
 
               <IonTabBar slot={tabBarPosition}>
-                <IonTabButton tab="MainPage" href="/MainPage">
+                <IonTabButton tab="main" href="/main">
                   <IonIcon icon={homeOutline} />
                   <IonLabel>Home</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab="SchedulePage" href="/SchedulePage">
+                <IonTabButton tab="schedule" href="/schedule">
                   <IonIcon icon={calendarOutline} />
                   <IonLabel>Schedule</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab="NotificationsPage" href="/NotificationsPage">
+                <IonTabButton tab="notifications" href="/notifications">
                   <IonIcon icon={notificationsOutline} />
                   <IonLabel>Notifications</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab="MedicationsPage" href="/MedicationsPage">
+                <IonTabButton tab="medications" href="/medications">
                   <IonIcon icon={medical} />
                   <IonLabel>Medication</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab="ChatPage" href="/ChatPage">
+                <IonTabButton tab="chat" href="/chat">
                   <IonIcon icon={chatbubbleOutline} />
                   <IonLabel>AI Chat</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab="SettingsPage" href="/SettingsPage">
+                <IonTabButton tab="settings" href="/settings">
                   <IonIcon icon={settingsOutline} />
                   <IonLabel>Settings</IonLabel>
                 </IonTabButton>
               </IonTabBar>
-
-              {tabBarPosition === 'top' && <CustomHeader />}
             </IonTabs>
           </IonReactRouter>
 

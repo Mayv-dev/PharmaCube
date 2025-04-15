@@ -13,23 +13,53 @@
   --ion-text-color: #000000;
 
   --schedule-background-color: #f4f4f4;
+  
+  /* Custom variables for consistent theming */
+  --app-background: #f6fff3;
+  --app-surface: #ffffff;
+  --app-surface-hover: #f0fdf4;
+  --app-text: #000000;
+  --app-text-secondary: #64748b;
+  --app-border: rgba(0, 0, 0, 0.1);
+  --app-shadow: rgba(0, 0, 0, 0.1);
+  --app-card-bg: #ffffff;
+  --app-card-border: rgba(0, 0, 0, 0.05);
+  --app-card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --app-card-hover-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+  --app-gradient-start: rgba(255, 255, 255, 0.95);
+  --app-gradient-end: rgba(255, 255, 255, 0.85);
 }
 
 .dark {
-  --ion-color-primary: #ffffff;
-  --ion-color-primary-rgb: 255, 255, 255;
+  --ion-color-primary: #4ed1a5;
+  --ion-color-primary-rgb: 78, 209, 165;
   --ion-color-primary-contrast: #000000;
   --ion-color-primary-contrast-rgb: 0, 0, 0;
-  --ion-color-primary-shade: #e0e0e0;
-  --ion-color-primary-tint: #ffffff;
+  --ion-color-primary-shade: #45b891;
+  --ion-color-primary-tint: #60d6ae;
 
-  --ion-background-color: #000000;
-  --ion-toolbar-background: #1a1a1a;
-  --ion-toolbar-color: #ffffff;
-  --ion-item-background: #1a1a1a;
-  --ion-text-color: #ffffff;
+  --ion-background-color: #0f172a;
+  --ion-toolbar-background: #1e293b;
+  --ion-toolbar-color: #4ed1a5;
+  --ion-item-background: #1e293b;
+  --ion-text-color: #f8fafc;
 
-  --schedule-background-color: #000000;
+  --schedule-background-color: #0f172a;
+  
+  /* Custom variables for consistent dark theme */
+  --app-background: #0f172a;
+  --app-surface: #1e293b;
+  --app-surface-hover: #334155;
+  --app-text: #f8fafc;
+  --app-text-secondary: #94a3b8;
+  --app-border: rgba(255, 255, 255, 0.1);
+  --app-shadow: rgba(0, 0, 0, 0.3);
+  --app-card-bg: #1e293b;
+  --app-card-border: rgba(255, 255, 255, 0.05);
+  --app-card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --app-card-hover-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
+  --app-gradient-start: rgba(30, 41, 59, 0.95);
+  --app-gradient-end: rgba(30, 41, 59, 0.85);
 }
 
 body, h1, h2, h3, h4, h5, h6, p, ion-label, ion-title, ion-button, ion-item, ion-input, ion-select, ion-text {

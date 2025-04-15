@@ -31,7 +31,7 @@ import { usePhotoGallery } from './usePhotoGallery';
 import './MedicationsPage.css';
 import { Medication } from '../api types/types';
 
-const MedicationPage: React.FC = () => {
+const MedicationsPage: React.FC = () => {
   const [medications, setMedications] = useState<Medication[]>([]);
   const [name, setName] = useState<string>('');
   const [amount, setAmount] = useState<string>('');
@@ -91,12 +91,6 @@ const MedicationPage: React.FC = () => {
 
   return (
     <IonPage className={filter}>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Medications</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-
       <IonContent fullscreen className="ion-padding content">
         <div className="welcome-section">
           <h1 className="welcome-title">Welcome Back!</h1>
@@ -205,4 +199,4 @@ const MedicationPage: React.FC = () => {
   );
 };
 
-export default MedicationPage;
+export default MedicationsPage;

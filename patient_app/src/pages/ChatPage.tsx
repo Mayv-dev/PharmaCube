@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import {
   IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonContent,
   IonInput,
   IonButton,
@@ -65,11 +62,6 @@ const ChatPage: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>AI Chat</IonTitle>
-        </IonToolbar>
-      </IonHeader>
       <IonContent>
         <IonList>
           {messages.map((msg, i) => (

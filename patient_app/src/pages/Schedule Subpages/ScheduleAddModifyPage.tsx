@@ -17,11 +17,32 @@ import {
   IonModal,
   IonToast,
   IonCheckbox,
+  IonButtons,
+  IonCard,
+  IonCardContent,
+  IonNote,
+  IonChip,
+  IonSkeletonText,
+  IonBadge,
 } from "@ionic/react";
-import { trashOutline, createOutline, checkmarkOutline, closeOutline, timeOutline, checkmarkCircle, closeCircle } from "ionicons/icons";
+import { 
+  trashOutline, 
+  createOutline, 
+  checkmarkOutline, 
+  closeOutline, 
+  timeOutline, 
+  checkmarkCircle, 
+  closeCircle, 
+  chevronBack, 
+  calendarOutline,
+  addCircleOutline,
+  alertCircle,
+  informationCircle
+} from "ionicons/icons";
 import axios from "axios";
 import { ScheduleData, Medication } from "../../api types/types";
 import { useColorblindFilter } from "../../colorBlindContext";
+import { useHistory } from "react-router-dom";
 import "./ScheduleAddModifyPage.css";
 import { getWeekdayName } from "../../helper functions/getWeekdayName";
 
@@ -51,7 +72,9 @@ const ScheduleAddModifyPage: React.FC = () => {
   const [selectedMedications, setSelectedMedications] = useState<Medication[]>([]);
   const [medications, setMedications] = useState<Medication[]>([]);
   const [currentTimePeriod, setCurrentTimePeriod] = useState<number>(-1);
+  const [loading, setLoading] = useState<boolean>(true);
   const { filter } = useColorblindFilter();
+  const history = useHistory();
 
   useEffect(() => {
     loadSchedule(selectedDay);
@@ -59,6 +82,7 @@ const ScheduleAddModifyPage: React.FC = () => {
   }, [selectedDay]);
 
   async function loadSchedule(day: number) {
+    setLoading(true);
     try {
       // Mock data - replace with your actual API call
       const mockData: ScheduleData[] = [
@@ -82,8 +106,10 @@ const ScheduleAddModifyPage: React.FC = () => {
         };
       });
       setSchedule(scheduleWithDefaults);
+      setLoading(false);
     } catch (error) {
       console.error("Error loading schedule:", error);
+      setLoading(false);
     }
   }
 
@@ -195,157 +221,222 @@ const ScheduleAddModifyPage: React.FC = () => {
 
   return (
     <IonPage className={filter}>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Add/Modify Schedule</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+      <IonContent className="schedule-add-modify-content">
+        <div className="app-container">
+          <div className="welcome-section">
+            <div className="welcome-content">
+              <div className="back-button" onClick={() => history.push('/SchedulePage')}>
+                <IonIcon icon={chevronBack} />
+                <span>Back to Schedule</span>
+              </div>
+              <h1>Schedule Management</h1>
+              <p>Add and modify your medication schedule</p>
+              <div className="day-selector">
+                {daysOfWeek.map((day) => (
+                  <IonChip 
+                    key={day} 
+                    className={selectedDay === day ? "selected-day-chip" : "day-chip"}
+                    onClick={() => setSelectedDay(day)}
+                  >
+                    <IonIcon icon={calendarOutline} />
+                    <IonLabel>{getWeekdayName(day)?.substring(0, 3)}</IonLabel>
+                  </IonChip>
+                ))}
+              </div>
+            </div>
+            <div className="welcome-decoration"></div>
+          </div>
 
-      <IonContent fullscreen className="ion-padding content">
-        <IonGrid>
-          <IonRow className="day-row">
-            {daysOfWeek.map((day) => (
-              <IonCol key={day} size="1" className={selectedDay === day ? "selected-day" : "day-col"}>
-                <IonButton
-                  fill="solid"
-                  color={selectedDay === day ? "primary" : "light"}
-                  expand="block"
-                  onClick={() => setSelectedDay(day)}
-                  className="day-button"
-                >
-                  {getWeekdayName(day)?.substring(0, 2)}
-                </IonButton>
-              </IonCol>
-            ))}
-          </IonRow>
-        </IonGrid>
+          <div className="schedule-section">
+            <div className="section-header">
+              <h2>Time Schedule</h2>
+              <IonNote>Set medication times for {getWeekdayName(selectedDay)}</IonNote>
+            </div>
 
-        <IonList className="schedule-list">
-          {schedule.map((item) => (
-            <IonItem key={item.time_period} className="schedule-item">
-              {editedId === item.time_period ? (
-                <>
-                  <IonInput
-                    type="number"
-                    value={editHours}
-                    onIonChange={(e) => setEditHours(e.detail.value || "")}
-                    placeholder={timePadding(item.hour)}
-                    className="time-input"
-                    min="0"
-                    max="23"
-                  />
-                  :
-                  <IonInput
-                    type="number"
-                    value={editMinutes}
-                    onIonChange={(e) => setEditMinutes(e.detail.value || "")}
-                    placeholder={timePadding(item.minute)}
-                    className="time-input"
-                    min="0"
-                    max="59"
-                  />
-                  <IonButton slot="end" className="confirm-edit-button" onClick={() => updateTime(item.time_period)}>
-                    <IonIcon icon={checkmarkOutline} />
-                  </IonButton>
-                  <IonButton slot="end" className="cancel-edit-button" onClick={() => setEditedId(-1)}>
-                    <IonIcon icon={closeOutline} />
-                  </IonButton>
-                </>
-              ) : (
-                <>
-                  <IonLabel className="schedule-label">
-                    <IonIcon icon={timeOutline} className="time-icon" />
-                    {timeOfDayMap[item.time_period]}: {timePadding(item.hour)}:{timePadding(item.minute)}
-                    {item.medications && item.medications.length > 0 && (
-                      <div className="medications-list">
-                        {item.medications.map((medication) => (
-                          <div key={medication.id} className="medication-item">
-                            <small>{medication.name} - {medication.amount}</small>
+            <IonCard className="schedule-card">
+              <IonCardContent>
+                {loading ? (
+                  // Loading skeletons
+                  Array(4).fill(0).map((_, index) => (
+                    <div key={index} className="schedule-item-skeleton">
+                      <IonSkeletonText animated style={{ width: '60%' }} />
+                      <IonSkeletonText animated style={{ width: '40%' }} />
+                    </div>
+                  ))
+                ) : (
+                  <IonList className="schedule-list">
+                    {schedule.map((item) => (
+                      <IonItem key={item.time_period} className="schedule-item" button detail={false}>
+                        {editedId === item.time_period ? (
+                          <div className="edit-time-container">
+                            <div className="time-input-group">
+                              <IonInput
+                                type="number"
+                                value={editHours}
+                                onIonChange={(e) => setEditHours(e.detail.value || "")}
+                                placeholder={timePadding(item.hour)}
+                                className="time-input"
+                                min="0"
+                                max="23"
+                              />
+                              <span className="time-separator">:</span>
+                              <IonInput
+                                type="number"
+                                value={editMinutes}
+                                onIonChange={(e) => setEditMinutes(e.detail.value || "")}
+                                placeholder={timePadding(item.minute)}
+                                className="time-input"
+                                min="0"
+                                max="59"
+                              />
+                            </div>
+                            <div className="edit-actions">
+                              <IonButton fill="clear" className="confirm-edit-button" onClick={() => updateTime(item.time_period)}>
+                                <IonIcon icon={checkmarkOutline} />
+                              </IonButton>
+                              <IonButton fill="clear" className="cancel-edit-button" onClick={() => setEditedId(-1)}>
+                                <IonIcon icon={closeOutline} />
+                              </IonButton>
+                            </div>
                           </div>
-                        ))}
-                      </div>
-                    )}
-                  </IonLabel>
-                  <IonButton slot="end" onClick={() => handleAddMedications(item.time_period)}>
-                    Add Medications
-                  </IonButton>
-                  <IonButton 
-                    slot="end" 
-                    className="edit-button" 
-                    onClick={() => { 
-                      setEditedId(item.time_period); 
-                      setEditHours(item.hour.toString());
-                      setEditMinutes(item.minute.toString());
-                    }}
-                  >
-                    <IonIcon icon={createOutline} />
-                  </IonButton>
-                  {item.id !== -1 && (
-                    <IonButton 
-                      slot="end" 
-                      className="delete-button" 
-                      onClick={() => { 
-                        setDeleteScheduleId(item.id); 
-                        setShowModal(true); 
-                      }}
-                    >
-                      <IonIcon icon={trashOutline} />
-                    </IonButton>
-                  )}
-                  <IonButton
-                    slot="end"
-                    color={item.taken ? 'success' : 'danger'}
-                    onClick={() => handleMedicationStatus(item.time_period, !item.taken)}
-                  >
-                    <IonIcon icon={item.taken ? checkmarkCircle : closeCircle} />
-                  </IonButton>
-                </>
-              )}
-            </IonItem>
-          ))}
-        </IonList>
+                        ) : (
+                          <>
+                            <div className="schedule-item-content">
+                              <div className="time-period">
+                                <IonIcon icon={timeOutline} className="time-icon" />
+                                <div className="time-details">
+                                  <h3>{timeOfDayMap[item.time_period]}</h3>
+                                  <p className="time">{timePadding(item.hour)}:{timePadding(item.minute)}</p>
+                                </div>
+                              </div>
+                              {item.medications && item.medications.length > 0 ? (
+                                <div className="medications-list">
+                                  {item.medications.map((medication) => (
+                                    <div key={medication.id} className="medication-item">
+                                      <IonChip color="primary" className="medication-chip">
+                                        <IonLabel>{medication.name} - {medication.amount}</IonLabel>
+                                      </IonChip>
+                                    </div>
+                                  ))}
+                                </div>
+                              ) : (
+                                <div className="no-medications">
+                                  <IonIcon icon={informationCircle} />
+                                  <p>No medications scheduled</p>
+                                </div>
+                              )}
+                            </div>
+                            <div className="schedule-actions">
+                              <IonButton fill="clear" className="add-medication-button" onClick={() => handleAddMedications(item.time_period)}>
+                                <IonIcon icon={addCircleOutline} />
+                                <span>Add</span>
+                              </IonButton>
+                              <IonButton fill="clear" className="edit-button" onClick={() => { 
+                                setEditedId(item.time_period); 
+                                setEditHours(item.hour.toString());
+                                setEditMinutes(item.minute.toString());
+                              }}>
+                                <IonIcon icon={createOutline} />
+                              </IonButton>
+                              {item.id !== -1 && (
+                                <IonButton fill="clear" className="delete-button" onClick={() => { 
+                                  setDeleteScheduleId(item.id); 
+                                  setShowModal(true); 
+                                }}>
+                                  <IonIcon icon={trashOutline} />
+                                </IonButton>
+                              )}
+                              <IonButton
+                                fill="clear"
+                                className={`status-button ${item.taken ? "taken" : "not-taken"}`}
+                                onClick={() => handleMedicationStatus(item.time_period, !item.taken)}
+                              >
+                                <IonIcon icon={item.taken ? checkmarkCircle : closeCircle} />
+                              </IonButton>
+                            </div>
+                          </>
+                        )}
+                      </IonItem>
+                    ))}
+                  </IonList>
+                )}
+              </IonCardContent>
+            </IonCard>
+          </div>
+        </div>
 
-        <IonModal isOpen={showAddMedicationModal} onDidDismiss={() => setShowAddMedicationModal(false)}>
-          <IonHeader>
+        <IonModal isOpen={showAddMedicationModal} onDidDismiss={() => setShowAddMedicationModal(false)} className="medication-modal">
+          <IonHeader className="ion-no-border">
             <IonToolbar>
+              <IonButtons slot="start">
+                <IonButton fill="clear" onClick={() => setShowAddMedicationModal(false)}>
+                  <IonIcon slot="icon-only" icon={chevronBack} />
+                </IonButton>
+              </IonButtons>
               <IonTitle>Add Medications</IonTitle>
             </IonToolbar>
           </IonHeader>
           <IonContent>
-            <IonList>
-              {medications.map((medication) => (
-                <IonItem key={medication.id}>
-                  <IonLabel>{medication.name} - {medication.amount}</IonLabel>
-                  <IonCheckbox
-                    checked={selectedMedications.some(med => med.id === medication.id)}
-                    onIonChange={() => handleMedicationSelection(medication)}
-                  />
-                </IonItem>
-              ))}
-            </IonList>
-            <IonButton expand="block" onClick={saveMedicationsToSchedule}>
-              Save Medications
-            </IonButton>
+            <div className="modal-container">
+              <div className="section-header">
+                <h2>Select Medications</h2>
+                <IonNote>Choose medications for {timeOfDayMap[currentTimePeriod]}</IonNote>
+              </div>
+              <IonList className="medication-selection-list">
+                {medications.length > 0 ? (
+                  medications.map((medication) => (
+                    <IonItem key={medication.id} button detail={false} className="medication-selection-item">
+                      <IonLabel>
+                        <h3>{medication.name}</h3>
+                        <p>{medication.amount}</p>
+                      </IonLabel>
+                      <IonCheckbox
+                        checked={selectedMedications.some(med => med.id === medication.id)}
+                        onIonChange={() => handleMedicationSelection(medication)}
+                      />
+                    </IonItem>
+                  ))
+                ) : (
+                  <div className="empty-state">
+                    <IonIcon icon={informationCircle} />
+                    <p>No medications available</p>
+                  </div>
+                )}
+              </IonList>
+              <div className="modal-actions">
+                <IonButton expand="block" className="save-button" onClick={saveMedicationsToSchedule}>
+                  Save Medications
+                </IonButton>
+              </div>
+            </div>
           </IonContent>
         </IonModal>
 
-        <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
-          <IonHeader>
+        <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)} className="delete-modal">
+          <IonHeader className="ion-no-border">
             <IonToolbar>
               <IonTitle>Confirm Deletion</IonTitle>
             </IonToolbar>
           </IonHeader>
-          <IonContent className="ion-padding">
-            <p>Are you sure you want to delete this schedule item?</p>
-            <IonButton expand="block" color="danger" onClick={() => {
-              deleteTime(deleteScheduleId);
-              setShowModal(false);
-            }}>
-              Delete
-            </IonButton>
-            <IonButton expand="block" color="light" onClick={() => setShowModal(false)}>
-              Cancel
-            </IonButton>
+          <IonContent>
+            <div className="modal-container">
+              <div className="delete-confirmation">
+                <IonIcon icon={alertCircle} className="alert-icon" />
+                <h2>Delete Schedule Item</h2>
+                <p>Are you sure you want to delete this schedule item? This action cannot be undone.</p>
+              </div>
+              <div className="modal-actions">
+                <IonButton expand="block" color="danger" className="delete-button" onClick={() => {
+                  deleteTime(deleteScheduleId);
+                  setShowModal(false);
+                }}>
+                  Delete
+                </IonButton>
+                <IonButton expand="block" fill="outline" className="cancel-button" onClick={() => setShowModal(false)}>
+                  Cancel
+                </IonButton>
+              </div>
+            </div>
           </IonContent>
         </IonModal>
 
@@ -354,6 +445,8 @@ const ScheduleAddModifyPage: React.FC = () => {
           onDidDismiss={() => setShowToast(false)}
           message={toastMessage}
           duration={2000}
+          position="bottom"
+          color="success"
         />
       </IonContent>
     </IonPage>
