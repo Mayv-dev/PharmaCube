@@ -37,6 +37,7 @@ func main() {
 
 	routes.AddPharmacistRoutes(server)
 	routes.PatientRoutes(server)
+	routes.ChatRoutes(server)
 
 	server.Run()
 }

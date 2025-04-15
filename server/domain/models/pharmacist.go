@@ -11,4 +11,5 @@ type Pharmacist struct {
 	PharmacyAddress3 string    `json:"pharmacy_address_3"`
 	PharmacyPostCode string    `json:"postcode"`
 	Patients         []Patient `json:"patients"`
+	Chats            []Chat    `json:"chats"`
 }
