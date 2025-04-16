@@ -31,6 +31,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  font-weight: bold;
+}
+
+.regimeButtonInternals ion-icon {
+  height: 30%;
+  width: 30%;
 }
 
 .regimeButtonLayout {
