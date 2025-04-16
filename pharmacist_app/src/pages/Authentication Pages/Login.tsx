@@ -9,8 +9,8 @@ import { useHistory } from 'react-router';
 import axios from 'axios';
 
 const Login: React.FC = () => {
-	const [email, setEmail] = useState("liammurphy86@gmail.com");
-	const [password, setPassword] = useState("pharmalord420");
+	const [email, setEmail] = useState(import.meta.env.VITE_TESTER_EMAIL);
+	const [password, setPassword] = useState(import.meta.env.VITE_TESTER_PASSWORD);
 	const history = useHistory();
 
 	const handleLogin = async () => {
