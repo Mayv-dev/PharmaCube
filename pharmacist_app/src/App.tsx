@@ -36,7 +36,6 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import AddRegime from './pages/Regimes Subpages/AddRegime';
 import ViewRegime from './pages/Regimes Subpages/ViewRegime';
-import Notifications from './pages/Notifications';
 import LowerToolbar from './components/LowerToolbar';
 import UpperToolbar, { Notification, openHamburgerMenu, openNotificationMenu } from './components/UpperToolbar';
 import Account from './pages/Account';
@@ -100,24 +99,7 @@ const App: React.FC = () => {
 
 	const [pollState, setPollState] = useState(true)
 	const [getPatientChatStatus, setGetPatientChatStatus] = useState(true)
-  const [notificationList, setNotificationList] = useState<Notification[]>([{
-			id: 1,
-			content: "Take your Wednesday morning medication from compartment 2",
-			timestamp: "2025-01-06T09:00:19+00:00",
-			urgency: 1
-		},
-		{
-			id: 1,
-			content: "Urgent message from your patient Aaron Murphy",
-			timestamp: "2025-01-06T06:00:19+00:00",
-			urgency: 2
-		},
-		{
-			id: 1,
-			content: "Take your Wednesday Night medication from compartment 5",
-			timestamp: "2025-01-06T23:00:19+00:00",
-			urgency: 0
-		}]);
+  const [notificationList, setNotificationList] = useState<Notification[]>([]);
     const [notifsBefore, setNotifsBefore] = useState<number>(notificationList.length)
     const [unreadNotifs, setUnreadNotifs] = useState<number>(0)
 
@@ -248,10 +230,6 @@ const App: React.FC = () => {
               <ViewRegime patientId={patientId} changePatientId={changePatientId} passModifyDataToApp={testRootMessage} />
             </Route>
 
-
-            <Route exact path="/notifications">
-              <Notifications />
-            </Route>
 
             <Route exact path="/history">
               <History patientId={patientId} changePatientId={changePatientId} />
