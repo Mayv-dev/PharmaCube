@@ -37,20 +37,19 @@ export type Notification = {
 	urgency: urgency
 }
 
-async function getMockData() {
+async function getAccount() {
 	try {
 		const { data, status } = await axios.get(
-			'http://demo3553220.mockable.io/notification',
+			`http://localhost:8080/pharmacist/1`,
 			{
 				headers: {
 					Accept: 'application/json'
 				},
 			},
 		);
-
 		return data;
-
-	} catch (error) {
+	}
+	catch (error) {
 		if (axios.isAxiosError(error)) {
 			console.log('error message: ', error.message);
 			return error.message;
@@ -59,7 +58,7 @@ async function getMockData() {
 			return 'An unexpected error occurred';
 		}
 	}
-}
+};
 
 type UpperToolbarProps = {
 	passedNotificationList:Notification[],
@@ -68,7 +67,12 @@ type UpperToolbarProps = {
 }
 
 const UpperToolbar: React.FC<UpperToolbarProps> = ({passedNotificationList, unreadNotifs, resetUnreadNotifs}) => {
-	
+	const [name, setName] = useState("Pharmacist")
+	useEffect(() => {
+		getAccount().then(res => {
+			setName(res.name.substring(0, res.name.indexOf(" ")))
+		})
+	},[])
 	return (
 		<>
 			<IonTabBar className='tabBarPrimary' slot="top">
@@ -93,10 +97,9 @@ const UpperToolbar: React.FC<UpperToolbarProps> = ({passedNotificationList, unre
 						<IonIcon icon={arrowBack}></IonIcon>
 					</IonButton>						<div className='pharmacistMenuGreeting'>
 							<img width="13%" src='https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'></img>
-							<p>Hello, Henry!</p>
+							<p>Hello, {name}!</p>
 						</div>
-						<IonButton className={"menuOptionButton"} routerLink='/account' routerDirection='root'>My Account</IonButton> 
-						<IonButton className={"menuOptionButton"} routerLink='/faqs' routerDirection='root'>FAQs</IonButton>
+						<IonButton className={"menuOptionButton"} routerLink='/account' routerDirection='root'>My Account</IonButton>
 						<IonButton className={"menuOptionButton"} routerLink='/settings' routerDirection='root'>Settings</IonButton> 
 						<IonButton color={"danger"}>Log Out</IonButton>
 					</div>

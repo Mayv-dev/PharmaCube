@@ -37,11 +37,9 @@ import './theme/variables.css';
 import AddRegime from './pages/Regimes Subpages/AddRegime';
 import ViewRegime from './pages/Regimes Subpages/ViewRegime';
 import Notifications from './pages/Notifications';
-import Menu from './pages/Menu';
 import LowerToolbar from './components/LowerToolbar';
 import UpperToolbar, { Notification, openHamburgerMenu, openNotificationMenu } from './components/UpperToolbar';
 import Account from './pages/Account';
-import FAQs from './pages/FAQs';
 import PatientChat from './pages/Chat Subpage/PatientChat';
 import Login from './pages/Authentication Pages/Login';
 import Register from './pages/Authentication Pages/Register';
@@ -259,10 +257,6 @@ const App: React.FC = () => {
               <History patientId={patientId} changePatientId={changePatientId} />
             </Route>
 
-            <Route exact path="/menu">
-              <Menu />
-            </Route>
-
             <Route exact path="/chat">
               <Chat />
             </Route>
@@ -276,10 +270,6 @@ const App: React.FC = () => {
 
             <Route exact path="/settings">
               <Settings isNavBarTop={isNavBarTop} navBarChange={navBarChange} isTTSOn={isTTSOn} ttsChange={ttsChange}/>
-            </Route>
-
-            <Route exact path="/faqs">
-              <FAQs />
             </Route>
 
             <Route exact path="/">
