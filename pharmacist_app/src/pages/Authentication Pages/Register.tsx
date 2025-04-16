@@ -11,10 +11,10 @@ import axios from 'axios';
 
 
 const Register: React.FC = () => {
-	const [name, setName] = useState("Liam Murphy");
-	const [email, setEmail] = useState("liammurphy86@gmail.com");
-	const [password, setPassword] = useState("pharmalord420");
-	const [confirmPassword, setConfirmPassword] = useState("pharmalord420");
+	const [name, setName] = useState(import.meta.env.VITE_TESTER_NAME);
+	const [email, setEmail] = useState(import.meta.env.VITE_TESTER_EMAIL);
+	const [password, setPassword] = useState(import.meta.env.VITE_TESTER_PASSWORD);
+	const [confirmPassword, setConfirmPassword] = useState(import.meta.env.VITE_TESTER_PASSWORD);
 	const [pharmacy_name, setPharmacyName] = useState("Allcare Pharmacy");
 	const [pharmacy_address_1, setAddressLine1] = useState("Carlingford");
 	const [pharmacy_address_2, setAddressLine2] = useState("Dundalk");
