@@ -13,7 +13,7 @@ const Settings: React.FC<props> = ({isNavBarTop, navBarChange, isTTSOn, ttsChang
 
     <IonContent className="ion-padding">
       <div className='webBody'>
-        <IonButton>Reset to defaults</IonButton>
+        <IonButton onClick={e => {ttsChange(true); navBarChange(true)}}>Reset to defaults</IonButton>
 
         <IonItem>
           <IonSelect label="Notification Audio Type:" value={isTTSOn} onIonChange={e => ttsChange(e.target.value)}>
