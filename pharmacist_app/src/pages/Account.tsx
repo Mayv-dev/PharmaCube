@@ -1,6 +1,6 @@
 import { IonContent, IonModal, IonInput, IonSelect, IonSelectOption, IonPage, IonItem, IonButton, IonIcon } from '@ionic/react';
 import '../styles/Accounts.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import LinkedPatientDeleteConfirmation from '../components/Delete Confirmation Component/LinkedPatientDeleteConfirmation';
 
 // Referenced yup from https://www.npmjs.com/package/yup
@@ -32,6 +32,42 @@ const Account: React.FC = () => {
 
 
 	const history = useHistory();
+
+	useEffect(() => {
+		getAccount().then(res => {
+			setName(res.name)
+			setEmail(res.email)
+			setPassword(res.password)
+			setPharmacy_name(res.pharmacy_name)
+			setAddressLine1(res.pharmacy_address_1)
+			setAddressLine2(res.pharmacy_address_2)
+			setAddressLine3(res.pharmacy_address_3)
+			setPostcode(res.postcode)
+		})
+	},[])
+
+	async function getAccount() {
+		try {
+			const { data, status } = await axios.get(
+				`http://localhost:8080/pharmacist/1`,
+				{
+					headers: {
+						Accept: 'application/json'
+					},
+				},
+			);
+			return data;
+		}
+		catch (error) {
+			if (axios.isAxiosError(error)) {
+				console.log('error message: ', error.message);
+				return error.message;
+			} else {
+				console.log('unexpected error: ', error);
+				return 'An unexpected error occurred';
+			}
+		}
+	};
 
 	async function modifyAccount(addedPharmacist: PharmacistAccountDetailModify) {
 		try {
@@ -126,36 +162,36 @@ const Account: React.FC = () => {
 				<div className='webBody'>
 					<p>Your Details</p>
 					<IonItem>
-						<IonInput onIonChange={e => setName(e.target.value)} label='Your Name'></IonInput>
+						<IonInput value={name} onIonChange={e => setName(e.target.value)} label='Your Name'></IonInput>
 					</IonItem>
 
 					<IonItem>
-						<IonInput onIonChange={e => setEmail(e.target.value)} type="email" label='Email'></IonInput>
+						<IonInput value={email} onIonChange={e => setEmail(e.target.value)} type="email" label='Email'></IonInput>
 					</IonItem>
 
 					<IonItem>
-						<IonInput onIonChange={e => setPassword(e.target.value)} type="password" label='Password'></IonInput>
+						<IonInput value={password} onIonChange={e => setPassword(e.target.value)} type="password" label='Password'></IonInput>
 					</IonItem>
 
 					<p>Your Pharmacy Details</p>
 					<IonItem>
-						<IonInput onIonChange={e => setPharmacy_name(e.target.value)} label='Pharmacy Name'></IonInput>
+						<IonInput value={pharmacy_name} onIonChange={e => setPharmacy_name(e.target.value)} label='Pharmacy Name'></IonInput>
 					</IonItem>
 
 					<IonItem>
-						<IonInput onIonChange={e => setAddressLine1(e.target.value)} label='Address Line 1'></IonInput>
+						<IonInput value={pharmacy_address_1} onIonChange={e => setAddressLine1(e.target.value)} label='Address Line 1'></IonInput>
 					</IonItem>
 
 					<IonItem>
-						<IonInput onIonChange={e => setAddressLine2(e.target.value)} label='Address Line 2'></IonInput>
+						<IonInput value={pharmacy_address_2} onIonChange={e => setAddressLine2(e.target.value)} label='Address Line 2'></IonInput>
 					</IonItem>
 
 					<IonItem>
-						<IonInput onIonChange={e => setAddressLine3(e.target.value)} label='Address Line 3'></IonInput>
+						<IonInput value={pharmacy_address_3} onIonChange={e => setAddressLine3(e.target.value)} label='Address Line 3'></IonInput>
 					</IonItem>
 
 					<IonItem>
-						<IonInput onIonChange={e => setPostcode(e.target.value)} label='Postal Code'></IonInput>
+						<IonInput value={postcode} onIonChange={e => setPostcode(e.target.value)} label='Postal Code'></IonInput>
 					</IonItem>
 
 					<IonButton onClick={e => handleModification()}>Modify Details</IonButton>
@@ -178,7 +214,7 @@ const Account: React.FC = () => {
 					<p className='headingText'>Adding a new patient? Have them scan the code below with the app.</p>
 
 					<div className='imageContainer'>
-						<img className="qrImg" src="https://qr.io/qr-svg/M5L6UF.svg?1740700782050"></img>
+						<img className="qrImg" src="/qr/qr.png"></img>
 					</div>
 				</div>
 			</IonContent>
