@@ -23,13 +23,14 @@ import {
   useIonRouter,
   IonImg,
   IonRange,
+  IonPopover,
   
 } from '@ionic/react';
 import '../../styles/Regime Subpages/AddRegime.css';
 import LowerToolbar from '../../components/LowerToolbar';
 import { RegimeItem } from 'api types/types';
 import { date } from 'yup';
-import { arrowBack } from 'ionicons/icons';
+import { arrowBack, informationCircleOutline } from 'ionicons/icons';
 import { IonReactRouter } from '@ionic/react-router';
 type AddRegimeProps = {
   passedInfo: any
@@ -346,11 +347,27 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
           <div className='formGroup'>
             <IonItem>
               <IonTextarea className={isInformationValid ? "" : "invalidInput"} labelPlacement="fixed" label="Medications" value={information} counter={true} maxlength={500} onIonInput={e => {setInformation(e.target.value); setIsInformationValid(true)}}></IonTextarea>
+              <IonIcon className='helpIcon' id="medication-info" icon={informationCircleOutline}></IonIcon>
+              <IonPopover trigger="medication-info" triggerAction="click">
+                <IonContent class="ion-padding">
+                  <p>Fill in the medications of your dose here.</p>
+                  <p>This is usually the medication names paired with their dosages, but you may fill it at your own discretion.</p>
+                  </IonContent>
+              </IonPopover>
             </IonItem>
-            <IonImg className="visualBoxRepresenter" src={compartmentImgSrc}></IonImg>
             <IonItem>
               <IonRange label={"Compartment"} snaps={true} ticks={true} min={0} max={7} onIonInput={e => setCompartment(e.target.value)}></IonRange>
+              <IonIcon className='helpIcon' id="compartment-info" icon={informationCircleOutline}></IonIcon>
+              <IonPopover trigger="compartment-info" triggerAction="click">
+                <IonContent class="ion-padding">
+                  <p>Choose what part of the box you will fill the dose into here.</p>
+                  <p>If the medication is too big for the box, you can choose not to use a compartment (No compartments should be highlighted yellow).</p>
+                  <p>The physical box's compartments are labelled by number, and match the selected compartment numbers of this screen. The black compartment on screen refers to the default position with no compartment or number.</p>
+                  </IonContent>
+              </IonPopover>
             </IonItem>
+            <IonImg className="visualBoxRepresenter" src={compartmentImgSrc}></IonImg>
+            
           </div>
           <IonButton expand="full" color="primary" className="submit-button" onClick={e => handleBackClick()}>
             Back
@@ -388,6 +405,13 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
                   setIsDateInfoValid(true)
                 }
               }} presentation="date"></IonDatetime>
+              <IonIcon className='helpIcon' id="date-info" icon={informationCircleOutline}></IonIcon>
+              <IonPopover trigger="date-info" triggerAction="click">
+                <IonContent class="ion-padding">
+                  <p>Select the date where the dose must be taken.</p>
+                  <p>This must be a date in the future.</p>
+                  </IonContent>
+              </IonPopover>
             </IonItem>
 
             <IonItem>
@@ -397,10 +421,24 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
                 <IonSelectOption value={3}>Evening</IonSelectOption>
                 <IonSelectOption value={4}>Night</IonSelectOption>
               </IonSelect>
+              <IonIcon className='helpIcon' id="time-of-day-info" icon={informationCircleOutline}></IonIcon>
+              <IonPopover trigger="time-of-day-info" triggerAction="click">
+                <IonContent class="ion-padding">
+                  <p>Select which of the four parts of the day the dose should be taken at.</p>
+                  <p>The patient should set when they are available for this dose on their schedule.</p>
+                  </IonContent>
+              </IonPopover>
             </IonItem>
 
             <IonItem>
               <IonInput className={isTimeOffsetValid ? "" : "invalidInput"} label='Hours before repeat:' min={0} max={23} onIonBlur={e => {if(e.target.value < 0 || timeOffset == "") setTimeOffset(0); else if (e.target.value > 23) setTimeOffset(23); else if(e.target.value % 1 != 0) setTimeOffset(e.target.value - (e.target.value % 1))}} type='number' value={timeOffset} onIonInput={e => setTimeOffset(e.target.value)}></IonInput>
+              <IonIcon className='helpIcon' id="time-offset-info" icon={informationCircleOutline}></IonIcon>
+              <IonPopover trigger="time-offset-info" triggerAction="click">
+                <IonContent class="ion-padding">
+                  <p>If the dose needs to be repeated a short time later, this sets how many hours after the original dose that the dose will be triggered again.</p>
+                  <p>By default, this is set to 0, so that the dose will only happen once.</p>
+                  </IonContent>
+              </IonPopover>
             </IonItem>
           </div>
           <IonButton expand="full" color="primary" className="submit-button" onClick={e => handleBackClick()}>
@@ -435,6 +473,13 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
                   changeInstructionList(e.target.value);
                   setAreInstructionsValid(true)
                   }}></IonTextarea>
+                    <IonIcon className='helpIcon' id="other-notes-info" icon={informationCircleOutline}></IonIcon>
+                  <IonPopover trigger="other-notes-info" triggerAction="click">
+                    <IonContent class="ion-padding">
+                      <p>Fill in any instructions not listed above here.</p>
+                      <p>You can separate instructions onto different lines.</p>
+                      </IonContent>
+                  </IonPopover>
               </IonItem>
             </div>
 
