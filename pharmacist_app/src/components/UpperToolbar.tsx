@@ -7,7 +7,8 @@ import {
 	IonMenu,
 	IonButton,
 	IonItem,
-	IonText
+	IonText,
+	IonImg
 } from '@ionic/react';
 import { arrowBack, arrowForward, menu, notifications } from 'ionicons/icons';
 import '../styles/LowerToolbar.css';
@@ -72,6 +73,11 @@ const UpperToolbar: React.FC<UpperToolbarProps> = ({pharmacistName, passedNotifi
 					<IonIcon icon={menu} aria-hidden="true" />
 					<IonLabel>Menu</IonLabel>
 				</IonTabButton>
+				<IonTabButton className='topOroLogo'>
+					<IonImg src='..\ORO logo v2 bg-removed.png'>
+					</IonImg>
+				</IonTabButton>
+					
 				<IonTabButton tab="notifications" onClick={ e => {
 					openNotificationMenu(); 
 					resetUnreadNotifs();
