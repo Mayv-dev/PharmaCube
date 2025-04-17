@@ -58,3 +58,12 @@
 	margin-left: 0;
 	margin-right: auto;
 }
+
+.bubbleMiscIcon {
+	color: black;
+	cursor: pointer;
+}
+
+.bubbleMiscIcon:hover {
+	color: var(--element-hover-highlight-color);
+}

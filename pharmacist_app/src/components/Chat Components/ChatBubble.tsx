@@ -53,12 +53,12 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({passedMessage, passedPharmacistI
 				passedMessage.sender_id != passedPharmacistId ? <div className='bubbleMisc'>
 				<p className='bubbleTimestamp'>{datetimeOfMessage.substring(0,4)+"/"+datetimeOfMessage.substring(5,7)+"/"+datetimeOfMessage.substring(8,10)}</p>
 				<p className='bubbleTimestamp'>{datetimeOfMessage.substring(11,16)}</p>
-			</div> : <IonIcon onClick={() => setShowModal(true)} icon={ellipsisVerticalCircle}></IonIcon>
+			</div> : <IonIcon className={"bubbleMiscIcon"} onClick={() => setShowModal(true)} icon={ellipsisVerticalCircle}></IonIcon>
 			}
 			<p className='bubbleMessage'>{message}</p>
 			{
 				passedMessage.sender_id != passedPharmacistId ? 
-				<IonIcon onClick={() => setShowModal(true)} icon={ellipsisVerticalCircle}></IonIcon>
+				<IonIcon className={"bubbleMiscIcon"} onClick={() => setShowModal(true)} icon={ellipsisVerticalCircle}></IonIcon>
 			 : <div className='bubbleMisc'>
 					<p className='bubbleTimestamp'>{datetimeOfMessage.substring(0,4)+"/"+datetimeOfMessage.substring(5,7)+"/"+datetimeOfMessage.substring(8,10)}</p>
 					<p className='bubbleTimestamp'>{datetimeOfMessage.substring(11,16)}</p>
