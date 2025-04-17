@@ -139,15 +139,15 @@ const History: React.FC = () => {
 					<div className='historyLegend'>
 						<p>Legend</p>
 						<div className={highlightToggle[0].isVisible ? 'historyLegendRow' : 'historyLegendRow faded'} onClick={e => handleToggleSwitch("No Doses Taken")}>
-							<div className={'legendCalendarDate notTakenDate'} ></div> 
+							<div className={'legendCalendarDate ' + (date.month == "mar" ? "march_notTakenDate": date.month == "feb" ? "february_notTakenDate" : "notTakenDate")} ></div> 
 							<p>No doses taken</p>
 						</div>
 						<div className={highlightToggle[1].isVisible ? 'historyLegendRow' : 'historyLegendRow faded'} onClick={e => handleToggleSwitch("All Doses Taken")}>
-							<div className={'legendCalendarDate takenDate'}  ></div>
+							<div className={'legendCalendarDate ' + (date.month == "mar" ? "march_takenDate": date.month == "feb" ?  "february_takenDate" : "takenDate")}  ></div>
 							<p>All doses taken</p>
 						</div>
 						<div className={highlightToggle[2].isVisible ? 'historyLegendRow' : 'historyLegendRow faded'} onClick={e => handleToggleSwitch("Only Some Doses Have Been Taken")}>
-							<div className={'legendCalendarDate partiallyTakenDate'} ></div>
+							<div className={'legendCalendarDate '  + (date.month == "mar" ? "march_partiallyTakenDate": date.month == "feb" ? "february_partiallyTakenDate" : "partiallyTakenDate")} ></div>
 							<p>Only some doses have been taken</p>
 						</div>
 						<div className={highlightToggle[3].isVisible ? 'historyLegendRow' : 'historyLegendRow faded'} onClick={e => handleToggleSwitch("Current Day")}>
