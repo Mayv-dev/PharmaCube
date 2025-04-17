@@ -8,7 +8,7 @@ import { addDays, CalendarDate, calendarDateFromJsDateObject, numberOfDaysInMont
 import Calendar from '../components/History Components/Calendar';
 import { PatientAdherenceRecord } from 'api types/types';
 import axios from 'axios';
-import { arrowBackOutline, arrowForward, arrowForwardOutline, map } from 'ionicons/icons';
+import { arrowBackOutline, arrowForwardOutline } from 'ionicons/icons';
 
 
 const History: React.FC = () => {
