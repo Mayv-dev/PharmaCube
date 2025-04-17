@@ -77,6 +77,51 @@
   );
 }
 
+.march_takenDate, .february_takenDate {
+	background-color: #4a4a1d;
+}
+
+.march_notTakenDate {
+    background-color: #474700;
+}
+.march_partiallyTakenDate {
+	background: linear-gradient(
+    to bottom,
+    #4a4a1d 0%,
+    #4a4a1d 50%,
+    #474700 50%,
+    #474700 100%
+  );
+}
+
+.february_notTakenDate {
+	background: linear-gradient(
+    to bottom,
+    #474700 0%,
+    #474700 20%,
+    black 20%,
+    black 30%,
+    #474700 30%,
+    #474700 70%,
+    black 70%,
+    black 80%,
+    #474700 80%,
+    #474700 100%
+  );
+
+}
+.february_partiallyTakenDate {
+	background: linear-gradient(
+    to bottom,
+    #4a4a1d 0%,
+    #4a4a1d 45%,
+    black 45%,
+    black 55%,
+    #474700 55%,
+    #474700 100%
+  );
+}
+
 .calendarLayout {
   display: flex;
   flex-direction: row;

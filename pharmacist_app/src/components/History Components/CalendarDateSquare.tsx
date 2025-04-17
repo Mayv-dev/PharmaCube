@@ -97,11 +97,11 @@ const CalendarDateSquare: React.FC<CalendarProps> = ({date,dateNow,history,visib
 
 		if(takenList.includes(false)) {
 			return takenList.includes(true) ?  
-			visibleHighlights[2].isVisible ? "partiallyTakenDate": "calendarDate" 
+			visibleHighlights[2].isVisible ? (date.month == "mar" ? "march_partiallyTakenDate": date.month == "feb" ? "february_partiallyTakenDate" : "partiallyTakenDate") : "calendarDate" 
 			: 
-			visibleHighlights[0].isVisible ? "notTakenDate" : "calendarDate";
+			visibleHighlights[0].isVisible ? (date.month == "mar" ? "march_notTakenDate": date.month == "feb" ? "february_notTakenDate" : "notTakenDate") : "calendarDate";
 		}
-		else return visibleHighlights[1].isVisible ? "takenDate" : "calendarDate";
+		else return visibleHighlights[1].isVisible ? (date.month == "mar" ? "march_takenDate": date.month == "feb" ?  "february_takenDate" : "takenDate") : "calendarDate";
 	}
 
 
