@@ -7,11 +7,16 @@ import { string, ValidationError } from 'yup';
 import { useHistory } from 'react-router';
 
 import axios from 'axios';
+type loginProps = {
+	loggedInAccount:any
+}
 
-const Login: React.FC = () => {
+const Login: React.FC<loginProps> = ({loggedInAccount}) => {
 	const [email, setEmail] = useState(import.meta.env.VITE_TESTER_EMAIL);
 	const [password, setPassword] = useState(import.meta.env.VITE_TESTER_PASSWORD);
 	const history = useHistory();
+
+	
 
 	const handleLogin = async () => {
 		try {
@@ -37,6 +42,7 @@ const Login: React.FC = () => {
 					if(status == 200) {
 						// Found "history" solution to login/register prevention at https://stackoverflow.com/questions/70237476/react-link-async-await-does-not-wait-code-block
 						history.push("/regimes")
+						loggedInAccount(data)
 					}
 				}
 				catch (e) {
