@@ -61,18 +61,14 @@ async function getAccount() {
 };
 
 type UpperToolbarProps = {
+	pharmacistName:string,
 	passedNotificationList:Notification[],
 	unreadNotifs:number,
 	resetUnreadNotifs:any
 }
 
-const UpperToolbar: React.FC<UpperToolbarProps> = ({passedNotificationList, unreadNotifs, resetUnreadNotifs}) => {
-	const [name, setName] = useState("Pharmacist")
-	useEffect(() => {
-		getAccount().then(res => {
-			setName(res.name.substring(0, res.name.indexOf(" ")))
-		})
-	},[])
+const UpperToolbar: React.FC<UpperToolbarProps> = ({pharmacistName, passedNotificationList, unreadNotifs, resetUnreadNotifs}) => {
+	
 	return (
 		<>
 			<IonTabBar className='tabBarPrimary' slot="top">
@@ -97,7 +93,7 @@ const UpperToolbar: React.FC<UpperToolbarProps> = ({passedNotificationList, unre
 						<IonIcon icon={arrowBack}></IonIcon>
 					</IonButton>						<div className='pharmacistMenuGreeting'>
 							<img width="13%" src='https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'></img>
-							<p>Hello, {name}!</p>
+							<p>Hello, {pharmacistName != null ? pharmacistName.indexOf(" ") != -1 ? pharmacistName.substring(0, pharmacistName.indexOf(" ")) : pharmacistName : "Pharmacist"}!</p>
 						</div>
 						<IonButton className={"menuOptionButton"} routerLink='/account' routerDirection='root'>My Account</IonButton>
 						<IonButton className={"menuOptionButton"} routerLink='/settings' routerDirection='root'>Settings</IonButton> 

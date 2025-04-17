@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route, useHistory } from 'react-router-dom';
 import {
   IonApp,
-  IonIcon,
-  IonLabel,
   IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
   IonTabs,
-  setupIonicReact
+  setupIonicReact,
+  useIonRouter
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Regimes from './pages/Regimes'; // Medications Tab
@@ -61,6 +58,7 @@ import {NativeAudio} from '@capacitor-community/native-audio'
 import { Capacitor } from '@capacitor/core';
 import React from 'react';
 import { TextToSpeech } from '@capacitor-community/text-to-speech';
+import { PharmacistAccount } from 'api types/types';
 
 // the royalty free sound used to demonstrate the notification comes from RasoolAsaad at: https://pixabay.com/users/rasoolasaad-47313572/
 NativeAudio.preload({
@@ -104,8 +102,8 @@ const App: React.FC = () => {
     const [unreadNotifs, setUnreadNotifs] = useState<number>(0)
 
 
-
   const [pharmacistId, setPharmacistId] = useState<number>(1);
+  const [pharmacistDetails, setPharmacistDetails] = useState<any|null>(null);
   const [patientId, setPatientId] = useState<number>(0); 
 
   const [modifyRegimeInfo, setModifyRegimeInfo] = useState(null);
@@ -202,6 +200,10 @@ const App: React.FC = () => {
     setPatientId(id)
   }
 
+  const getLoginAccountDetails = (account:any) => {
+    setPharmacistDetails(account)
+  }
+
   return (
     <IonApp>
       <IonReactRouter>
@@ -211,7 +213,7 @@ const App: React.FC = () => {
           <IonRouterOutlet id="main-content">
 
             <Route exact path="/login">
-              <Login />
+              <Login loggedInAccount={getLoginAccountDetails}/>
             </Route>
             <Route exact path="/register">
               <Register />
@@ -256,7 +258,7 @@ const App: React.FC = () => {
             </Route>
           </IonRouterOutlet >
 
-          <UpperToolbar passedNotificationList={notificationList} unreadNotifs={unreadNotifs} resetUnreadNotifs={resetUnreadNotifs}/>
+          <UpperToolbar pharmacistName={pharmacistDetails?.name} passedNotificationList={notificationList} unreadNotifs={unreadNotifs} resetUnreadNotifs={resetUnreadNotifs}/>
           <LowerToolbar isNavBarTop={isNavBarTop}/>
 
         </IonTabs >
