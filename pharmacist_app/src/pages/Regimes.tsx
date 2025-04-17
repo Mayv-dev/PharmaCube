@@ -2,7 +2,6 @@ import {
   IonPage,
   IonContent,
   IonButton,
-  IonRouterLink,
   IonIcon,
   IonText
 } from '@ionic/react';

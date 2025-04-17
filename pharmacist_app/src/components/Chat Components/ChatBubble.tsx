@@ -4,13 +4,9 @@ import {
 	IonContent,
 	IonHeader,
 	IonIcon,
-	IonLabel,
 	IonModal,
-	IonTabBar,
-	IonTabButton,
 	IonText,
-	IonTitle,
-	IonToolbar
+	IonTitle
 } from '@ionic/react';
 import { Message } from 'api types/types';
 import { ellipsisVerticalCircle, musicalNotes } from 'ionicons/icons';

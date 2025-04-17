@@ -1,4 +1,4 @@
-import { IonButton, IonContent, IonItem, IonLabel, IonPage, IonSelect, IonSelectOption, IonText } from '@ionic/react';
+import { IonButton, IonContent, IonItem, IonPage, IonSelect, IonSelectOption } from '@ionic/react';
 import '../styles/Settings.css';
 
 type props = {
@@ -13,7 +13,7 @@ const Settings: React.FC<props> = ({isNavBarTop, navBarChange, isTTSOn, ttsChang
 
     <IonContent className="ion-padding">
       <div className='webBody'>
-        <IonButton onClick={e => {ttsChange(true); navBarChange(true)}}>Reset to defaults</IonButton>
+        <IonButton onClick={e => {ttsChange(true); navBarChange(false)}}>Reset to defaults</IonButton>
 
         <IonItem>
           <IonSelect label="Notification Audio Type:" value={isTTSOn} onIonChange={e => ttsChange(e.target.value)}>

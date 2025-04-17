@@ -1,8 +1,5 @@
 import '../../styles/Settings.css';
 import '../../styles/DoseSquare.css';
-import { CalendarDate } from 'typescript-calendar-date';
-import CalendarDateSquare from './CalendarDateSquare';
-import { IonItem } from '@ionic/react';
 type CalendarProps = {
 	time:string
 	takenStatus:boolean;

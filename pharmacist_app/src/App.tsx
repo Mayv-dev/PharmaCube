@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Redirect, Route, useHistory } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
   IonRouterOutlet,
   IonTabs,
   setupIonicReact,
-  useIonRouter
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Regimes from './pages/Regimes'; // Medications Tab
@@ -34,7 +33,7 @@ import './theme/variables.css';
 import AddRegime from './pages/Regimes Subpages/AddRegime';
 import ViewRegime from './pages/Regimes Subpages/ViewRegime';
 import LowerToolbar from './components/LowerToolbar';
-import UpperToolbar, { Notification, openHamburgerMenu, openNotificationMenu } from './components/UpperToolbar';
+import UpperToolbar, { Notification } from './components/UpperToolbar';
 import Account from './pages/Account';
 import PatientChat from './pages/Chat Subpage/PatientChat';
 import Login from './pages/Authentication Pages/Login';
@@ -58,7 +57,6 @@ import {NativeAudio} from '@capacitor-community/native-audio'
 import { Capacitor } from '@capacitor/core';
 import React from 'react';
 import { TextToSpeech } from '@capacitor-community/text-to-speech';
-import { PharmacistAccount } from 'api types/types';
 
 // the royalty free sound used to demonstrate the notification comes from RasoolAsaad at: https://pixabay.com/users/rasoolasaad-47313572/
 NativeAudio.preload({

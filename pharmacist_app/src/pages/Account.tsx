@@ -1,4 +1,4 @@
-import { IonContent, IonModal, IonInput, IonSelect, IonSelectOption, IonPage, IonItem, IonButton, IonIcon } from '@ionic/react';
+import { IonContent, IonModal, IonInput, IonPage, IonItem, IonButton, IonIcon } from '@ionic/react';
 import '../styles/Accounts.css';
 import { useEffect, useState } from 'react';
 import LinkedPatientDeleteConfirmation from '../components/Delete Confirmation Component/LinkedPatientDeleteConfirmation';
@@ -11,7 +11,7 @@ import { PharmacistAccountDetailModify } from '../api types/types';
 
 import axios from 'axios';
 import DeletePharmacistAccountConfirmation from '../components/Delete Confirmation Component/DeletePharmacistAccountConfirmation';
-import { trash, trashBin } from 'ionicons/icons';
+import { trash } from 'ionicons/icons';
 
 const Account: React.FC = () => {
 	const [isInEditMode, setIsInEditMode] = useState<Boolean>(false)

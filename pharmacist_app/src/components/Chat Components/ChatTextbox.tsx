@@ -1,16 +1,11 @@
 import {
 	IonButton,
 	IonIcon,
-	IonInput,
 	IonItem,
-	IonLabel,
-	IonTabBar,
-	IonTabButton,
 	IonTextarea
 } from '@ionic/react';
-import { musicalNotes, send } from 'ionicons/icons';
+import { send } from 'ionicons/icons';
 import { useState } from 'react';
-import { boolean } from 'yup';
 
 import { profanity } from '@2toad/profanity';
 import "../../styles/Chat Subpage/PatientChat.css"

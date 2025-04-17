@@ -1,4 +1,3 @@
-import { IonContent, IonPage} from '@ionic/react';
 import '../../styles/Settings.css';
 import { CalendarDate } from 'typescript-calendar-date';
 import CalendarRow from './CalendarRow';

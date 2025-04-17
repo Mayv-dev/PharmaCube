@@ -1,9 +1,9 @@
-import { IonButton, IonContent, IonInput, IonItem, IonPage, IonRouterLink, IonText } from '@ionic/react';
+import { IonButton, IonContent, IonInput, IonItem, IonPage, IonRouterLink } from '@ionic/react';
 import '../../styles/Regime Subpages/AddRegime.css';
 import { useState } from 'react';
 
 // Referenced yup from https://www.npmjs.com/package/yup
-import { string, ValidationError } from 'yup';
+import { string } from 'yup';
 import { useHistory } from 'react-router';
 
 import axios from 'axios';

@@ -1,37 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import {
-  IonPage,
-  IonContent,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonButton,
-  IonItem,
-  IonLabel,
-  IonInput,
-  IonModal,
-  IonCheckbox,
-  IonSelect,
-  IonSelectOption,
-  IonTextarea,
-  IonDatetime,
-  IonRouterLink,
-  IonText,
-  IonIcon,
-  IonRoute,
-  useIonRouter,
-  IonImg,
-  IonRange,
-  IonPopover,
-  
-} from '@ionic/react';
+import { IonPage, IonContent, IonHeader, IonToolbar, IonTitle, IonButton, IonItem, IonLabel, IonInput, IonModal, IonCheckbox, IonSelect, IonSelectOption, IonTextarea, IonDatetime, IonText, IonIcon, useIonRouter, IonImg, IonRange, IonPopover} from '@ionic/react';
 import '../../styles/Regime Subpages/AddRegime.css';
-import LowerToolbar from '../../components/LowerToolbar';
 import { RegimeItem } from 'api types/types';
-import { date } from 'yup';
 import { arrowBack, informationCircleOutline } from 'ionicons/icons';
-import { IonReactRouter } from '@ionic/react-router';
 type AddRegimeProps = {
   passedInfo: any
   patientId: number

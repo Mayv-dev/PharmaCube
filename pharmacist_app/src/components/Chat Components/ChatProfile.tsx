@@ -1,11 +1,3 @@
-import {
-	IonButton,
-	IonIcon,
-	IonLabel,
-	IonTabBar,
-	IonTabButton
-} from '@ionic/react';
-import { musicalNotes } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 
 type ChatProfileProps = {

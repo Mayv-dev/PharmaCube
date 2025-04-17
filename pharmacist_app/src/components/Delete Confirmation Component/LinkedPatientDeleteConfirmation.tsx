@@ -1,5 +1,5 @@
 //import ExploreContainer from '../components/ExploreContainer'; 
-import { IonModal, IonToolbar, IonTitle, IonHeader, IonContent, IonButton, IonInput, IonItem } from '@ionic/react';
+import { IonToolbar, IonTitle, IonHeader, IonContent, IonButton, IonInput } from '@ionic/react';
 import { useState } from 'react';
 import "../../styles/Accounts.css"
 type popupInfo = {
