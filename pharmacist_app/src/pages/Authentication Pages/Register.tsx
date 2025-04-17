@@ -94,10 +94,6 @@ const Register: React.FC = () => {
 		<IonPage>
 			<IonContent className="ion-padding">
 				<div className='webBody'>
-					<div className='oroLogo'>
-						<img width="100%" src="..\ORO logo v2 bg-removed.png" />
-					</div>
-
 					<p className='authenticationPageHeading'>Registration</p>
 
 					<p>Your Details</p>
@@ -157,7 +153,7 @@ const Register: React.FC = () => {
 
 					<IonButton onClick={e => handleRegistration()}>Register</IonButton>
 
-					<IonRouterLink routerLink='/login'>
+					<IonRouterLink routerLink='/login' routerDirection={"none"}>
 						<IonButton>Log In Instead</IonButton>
 					</IonRouterLink>
 

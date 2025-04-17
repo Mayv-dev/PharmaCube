@@ -99,3 +99,5 @@
 		width: 40%;
 	}
   }
+
+  .topOroLogo {--color-selected:var(--ion-tab-bar-background);}

@@ -59,10 +59,6 @@ const Login: React.FC<loginProps> = ({loggedInAccount}) => {
 		<IonPage>
 			<IonContent className="ion-padding">
 				<div className='webBody'>
-					<div className='oroLogo'>
-						<img width="100%" src="..\ORO logo v2 bg-removed.png" />
-					</div>
-
 					<p className='authenticationPageHeading'>Log In</p>
 
 					<IonItem>
@@ -75,7 +71,7 @@ const Login: React.FC<loginProps> = ({loggedInAccount}) => {
 
 					<IonButton onClick={e => handleLogin()}>Log In</IonButton>
 
-					<IonRouterLink routerLink='/register'>
+					<IonRouterLink routerLink='/register' routerDirection={"none"}>
 						<IonButton>Sign Up Instead</IonButton>
 					</IonRouterLink>
 
