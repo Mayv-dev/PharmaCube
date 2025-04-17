@@ -50,19 +50,16 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({passedMessage, passedPharmacistI
 		<>
 		<div className={passedMessage.sender_id == passedPharmacistId ? "pharmacistBubble":"patientBubble"}>
 			{
-				passedMessage.sender_id == passedPharmacistId ? null : <div className='bubbleMisc'>
-					<IonButton onClick={() => setShowModal(true)}>
-						<IonIcon icon={ellipsisVerticalCircle}></IonIcon>
-					</IonButton>
-					<p className='bubbleTimestamp'>{""+datetimeOfMessage.substring(0,4)+"/"+datetimeOfMessage.substring(5,7)+"/"+datetimeOfMessage.substring(8,10)+" "+datetimeOfMessage.substring(11,16)}</p>
-				</div>
+				passedMessage.sender_id != passedPharmacistId ? <div className='bubbleMisc'>
+				<p className='bubbleTimestamp'>{datetimeOfMessage.substring(0,4)+"/"+datetimeOfMessage.substring(5,7)+"/"+datetimeOfMessage.substring(8,10)}</p>
+				<p className='bubbleTimestamp'>{datetimeOfMessage.substring(11,16)}</p>
+			</div> : <IonIcon onClick={() => setShowModal(true)} icon={ellipsisVerticalCircle}></IonIcon>
 			}
 			<p className='bubbleMessage'>{message}</p>
 			{
-				passedMessage.sender_id != passedPharmacistId ? null : <div className='bubbleMisc'>
-					<IonButton onClick={() => setShowModal(true)}>
-						<IonIcon icon={ellipsisVerticalCircle}></IonIcon>
-					</IonButton>
+				passedMessage.sender_id != passedPharmacistId ? 
+				<IonIcon onClick={() => setShowModal(true)} icon={ellipsisVerticalCircle}></IonIcon>
+			 : <div className='bubbleMisc'>
 					<p className='bubbleTimestamp'>{datetimeOfMessage.substring(0,4)+"/"+datetimeOfMessage.substring(5,7)+"/"+datetimeOfMessage.substring(8,10)}</p>
 					<p className='bubbleTimestamp'>{datetimeOfMessage.substring(11,16)}</p>
 				</div>
