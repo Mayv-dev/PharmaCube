@@ -23,17 +23,24 @@
 
 .quick-stats {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   gap: 16px;
+  margin-top: 16px;
 }
 
 .stat-card {
   flex: 1;
+  max-width: 300px;
   text-align: center;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background: var(--app-surface);
   padding: 16px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
 }
 
 .stat-card h2 {
@@ -48,6 +55,48 @@
   color: var(--app-text-secondary);
 }
 
+/* Search Section */
+.search-section {
+  margin-bottom: 24px;
+}
+
+.search-bar {
+  margin-bottom: 16px;
+  --background: var(--app-surface);
+  --border-radius: 12px;
+  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Error Message */
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--ion-color-danger-light);
+  color: var(--ion-color-danger);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.error-message ion-icon {
+  font-size: 1.2rem;
+}
+
+/* Loading Container */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  gap: 16px;
+}
+
+.loading-container p {
+  color: var(--ion-color-medium);
+}
+
 /* Medications Section */
 .medications-section {
   margin-top: 16px;
@@ -60,16 +109,13 @@
   margin-bottom: 16px;
 }
 
-.medication-list {
-  background: transparent;
-}
-
 .medication-item {
   margin-bottom: 16px;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background: var(--app-surface);
   transition: transform 0.2s ease-in-out;
+  overflow: hidden;
 }
 
 .medication-item:hover {
@@ -78,9 +124,8 @@
 
 .medication-image {
   width: 100%;
-  height: 400px;
+  height: 200px;
   overflow: hidden;
-  border-radius: 12px 12px 0 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -110,14 +155,77 @@
   margin: 4px 0;
 }
 
-.delete-button {
+.medication-actions {
+  display: flex;
+  justify-content: flex-end;
   margin-top: 8px;
 }
 
-/* Add Medication Modal */
-.modal-content {
-  padding: 16px;
-  background: var(--app-background);
+.delete-button {
+  --padding-start: 8px;
+  --padding-end: 8px;
+}
+
+/* Modal Styles */
+.photo-section {
+  margin-top: 16px;
+}
+
+.photo-preview {
+  margin-top: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+  max-height: 200px;
+}
+
+.photo-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-required-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--ion-color-warning-light);
+  color: var(--ion-color-warning);
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.photo-required-message ion-icon {
+  font-size: 1.2rem;
+}
+
+/* Responsive Grid */
+@media (max-width: 768px) {
+  .quick-stats {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .stat-card {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.medication-item {
+  animation: fadeIn 0.3s ease-out;
 }
 
 /* Toast */

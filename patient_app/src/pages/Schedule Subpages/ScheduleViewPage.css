@@ -35,6 +35,22 @@
   --padding-end: 0;
 }
 
+ion-header {
+  --background: transparent;
+  --ion-toolbar-background: transparent;
+  --ion-toolbar-border-color: transparent;
+  --ion-toolbar-color: var(--oro-green-dark);
+  --ion-title-color: var(--oro-green-dark);
+  --ion-title-font-weight: 600;
+  --ion-title-font-size: 20px;
+}
+
+ion-toolbar {
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  --min-height: 56px;
+}
+
 .app-container {
   padding: 24px;
   min-height: 100vh;
@@ -54,20 +70,32 @@
   position: relative;
   padding: 40px 32px;
   text-align: left;
-  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
   border-radius: var(--welcome-section-radius);
   overflow: hidden;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1), 0 5px 15px -5px rgba(0, 0, 0, 0.05);
-  margin-top: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  color: var(--ion-color-primary-contrast);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
 }
 
 .welcome-content {
   position: relative;
   z-index: 2;
   max-width: 600px;
+}
+
+.welcome-content h1 {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: var(--ion-color-primary-contrast);
+}
+
+.welcome-content p {
+  font-size: 16px;
+  margin: 0;
+  opacity: 0.9;
+  color: var(--ion-color-primary-contrast);
 }
 
 .status-summary {
@@ -78,8 +106,8 @@
 }
 
 .status-chip {
-  --background: var(--oro-green-bg);
-  --color: var(--oro-green);
+  --background: rgba(255, 255, 255, 0.2);
+  --color: var(--ion-color-primary-contrast);
   --border-radius: var(--chip-border-radius);
   --padding-start: var(--chip-padding);
   --padding-end: var(--chip-padding);
@@ -92,7 +120,7 @@
 }
 
 .status-chip:hover {
-  --background: var(--oro-green-bg-hover);
+  --background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
 }
 
@@ -100,98 +128,25 @@
   font-size: var(--chip-icon-size);
 }
 
-.welcome-section h1 {
-  font-size: 32px;
-  font-weight: 800;
-  margin-bottom: 12px;
-  background: linear-gradient(135deg, var(--oro-green) 0%, var(--oro-green-dark) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: -0.5px;
-  line-height: 1.2;
-}
-
-.welcome-section p {
-  color: #64748b;
-  font-size: 18px;
-  margin: 0;
-  font-weight: 500;
-  line-height: 1.5;
-  max-width: 90%;
-}
-
 .welcome-decoration {
   position: absolute;
   top: 0;
   right: 0;
-  width: 180px;
-  height: 180px;
-  background: linear-gradient(135deg, rgba(0, 168, 120, 0.15) 0%, rgba(0, 168, 120, 0.05) 100%);
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
   border-radius: 50%;
-  transform: translate(25%, -25%);
-  z-index: 1;
-  filter: blur(8px);
-}
-
-.back-button {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-  cursor: pointer;
-  color: var(--ion-color-medium);
-}
-
-.back-button ion-icon {
-  margin-right: 8px;
-  font-size: 20px;
-}
-
-h2 {
-  font-size: 20px;
-  font-weight: bold;
-  margin: 20px 0 10px;
-}
-
-.status-buttons {
-  display: flex;
-  gap: 16px;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 600px;
-}
-
-.text-success {
-  color: var(--ion-color-success);
-}
-
-.text-danger {
-  color: var(--ion-color-danger);
-}
-
-ion-card {
-  margin: 20px 0;
-}
-
-ion-list {
-  margin-bottom: 20px;
-}
-
-ion-item {
-  --padding-start: 16px;
-  --padding-end: 16px;
-  --padding-top: 12px;
-  --padding-bottom: 12px;
-}
-
-ion-item ion-icon {
-  font-size: 24px;
+  transform: translate(30%, -30%);
 }
 
 /* Schedule Section */
 .schedule-section {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+  background: white;
+  border-radius: var(--card-border-radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  margin-bottom: 24px;
+  padding: var(--card-padding);
 }
 
 .section-header {
@@ -202,7 +157,7 @@ ion-item ion-icon {
 }
 
 .section-header h2 {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: #1e293b;
   margin: 0;
@@ -216,15 +171,9 @@ ion-item ion-icon {
 .calendar-card {
   background: white;
   border-radius: var(--card-border-radius);
-  box-shadow: var(--card-hover-shadow);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  transition: all 0.3s ease;
-}
-
-.calendar-card:hover {
-  transform: var(--card-hover-transform);
-  box-shadow: var(--card-hover-shadow);
+  margin-bottom: 24px;
 }
 
 .calendar {
@@ -237,6 +186,12 @@ ion-item ion-icon {
   --padding: 16px;
 }
 
+.status-buttons {
+  display: flex;
+  gap: 16px;
+  margin: 24px 0;
+}
+
 .status-button {
   --background: var(--oro-green-bg);
   --color: var(--oro-green);
@@ -245,6 +200,7 @@ ion-item ion-icon {
   --padding-end: 16px;
   font-weight: 500;
   transition: all 0.3s ease;
+  flex: 1;
 }
 
 .status-button:hover {
@@ -264,25 +220,22 @@ ion-item ion-icon {
 
 .status-button ion-icon {
   font-size: 20px;
+  margin-right: 8px;
 }
 
-.schedule-list, .status-history {
-  background: white;
-  border-radius: var(--card-border-radius);
-  box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.12), 0 4px 12px -4px rgba(0, 0, 0, 0.06);
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.8);
+.schedule-list {
+  background: transparent;
 }
 
-.schedule-item, .history-item {
-  --padding-start: 24px;
-  --padding-end: 24px;
-  --padding-top: 16px;
-  --padding-bottom: 16px;
+.schedule-item {
   --background: white;
-  --border-color: rgba(0, 0, 0, 0.05);
-  --background-hover: rgba(0, 0, 0, 0.02);
-  --background-activated: rgba(0, 0, 0, 0.04);
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  --border-radius: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
 }
 
@@ -291,14 +244,14 @@ ion-item ion-icon {
   transform: translateY(-2px);
 }
 
-.schedule-item-content, .history-content {
+.schedule-item-content {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   flex: 1;
 }
 
-.schedule-time, .schedule-day, .history-date {
+.schedule-time, .schedule-day {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -306,12 +259,9 @@ ion-item ion-icon {
   font-size: 14px;
 }
 
-.schedule-time ion-icon, .schedule-day ion-icon, .history-date ion-icon {
-  font-size: 16px;
-}
-
 .schedule-time ion-icon,
 .schedule-day ion-icon {
+  font-size: 16px;
   color: var(--oro-green);
 }
 
@@ -344,9 +294,12 @@ ion-item ion-icon {
   color: #94a3b8;
   font-size: 14px;
   font-style: italic;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.schedule-status, .history-status {
+.schedule-status {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -375,12 +328,7 @@ ion-item ion-icon {
   color: var(--ion-color-danger);
 }
 
-.handling-info {
-  color: #64748b;
-  font-size: 14px;
-  margin: 4px 0 0 0;
-}
-
+/* Empty State */
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -402,103 +350,25 @@ ion-item ion-icon {
   margin: 0;
 }
 
-/* Responsive Design */
-@media (min-width: 768px) {
-  .app-container {
-    padding: 32px;
-    gap: 40px;
-  }
-
-  .welcome-section {
-    padding: 48px 40px;
-    margin-top: 12px;
-  }
-
-  .welcome-decoration {
-    width: 240px;
-    height: 240px;
-  }
-
-  .welcome-section h1 {
-    font-size: 36px;
-  }
-
-  .welcome-section p {
-    font-size: 20px;
-  }
-
-  .status-buttons {
-    gap: 24px;
-  }
-
-  .status-button {
-    --padding-top: 20px;
-    --padding-bottom: 20px;
-    font-size: 18px;
-  }
-
-  .section-header h2 {
-    font-size: 24px;
-  }
-
-  .schedule-item, .history-item {
-    --padding-start: 32px;
-    --padding-end: 32px;
-    --padding-top: 20px;
-    --padding-bottom: 20px;
-  }
-
-  .schedule-time, .schedule-day, .history-date {
-    font-size: 16px;
-  }
-
-  .schedule-time ion-icon, .schedule-day ion-icon, .history-date ion-icon {
-    font-size: 18px;
-  }
-
-  .medication-name {
-    font-size: 16px;
-  }
-
-  .status-taken, .status-not-taken {
-    font-size: 28px;
-  }
-}
-
-/* Dark mode support */
+/* Dark Mode */
 @media (prefers-color-scheme: dark) {
   .schedule-view-content {
     --background: #0f172a;
   }
 
   .welcome-section {
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.85) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3), 0 5px 15px -5px rgba(0, 0, 0, 0.2);
-  }
-
-  .welcome-section h1 {
-    background: linear-gradient(135deg, var(--oro-green-light) 0%, var(--oro-green) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .welcome-section p {
-    color: #94a3b8;
+    background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   }
 
   .welcome-decoration {
-    background: linear-gradient(135deg, rgba(0, 168, 120, 0.15) 0%, rgba(0, 168, 120, 0.05) 100%);
-    opacity: 0.8;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
   }
 
-  .calendar-card, .schedule-list, .status-history {
+  .schedule-section,
+  .calendar-card {
     background: rgba(15, 23, 42, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .calendar {
-    --color: #f8fafc;
   }
 
   .section-header h2 {
@@ -509,20 +379,14 @@ ion-item ion-icon {
     color: #94a3b8;
   }
 
-  .schedule-item, .history-item {
+  .schedule-item {
     --background: rgba(15, 23, 42, 0.6);
     --border-color: rgba(255, 255, 255, 0.1);
-    --background-hover: rgba(255, 255, 255, 0.05);
-    --background-activated: rgba(255, 255, 255, 0.08);
   }
 
-  .schedule-time, .schedule-day, .history-date {
+  .schedule-time,
+  .schedule-day {
     color: #94a3b8;
-  }
-
-  .schedule-time ion-icon,
-  .schedule-day ion-icon {
-    color: var(--oro-green-light);
   }
 
   .medication-name {
@@ -531,23 +395,6 @@ ion-item ion-icon {
 
   .no-medications {
     color: #94a3b8;
-  }
-
-  .handling-info {
-    color: #94a3b8;
-  }
-
-  .schedule-item:hover {
-    --background: var(--oro-green-bg);
-  }
-
-  .status-chip {
-    --background: rgba(15, 23, 42, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .status-chip ion-label {
-    color: #f8fafc;
   }
 
   .status-button {
@@ -574,23 +421,62 @@ ion-item ion-icon {
     color: var(--oro-green-light);
   }
 
-  .status-not-taken {
-    color: var(--ion-color-danger);
-  }
-
-  .status-text.taken {
-    color: var(--oro-green-light);
-  }
-
-  .status-text.not-taken {
-    color: var(--ion-color-danger);
-  }
-
-  .empty-state ion-icon {
-    color: #94a3b8;
-  }
-
+  .empty-state ion-icon,
   .empty-state p {
     color: #94a3b8;
+  }
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .app-container {
+    padding: 32px;
+  }
+
+  .welcome-section {
+    padding: 48px 40px;
+  }
+
+  .welcome-content h1 {
+    font-size: 32px;
+  }
+
+  .welcome-content p {
+    font-size: 18px;
+  }
+
+  .status-buttons {
+    gap: 24px;
+  }
+
+  .status-button {
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+    font-size: 16px;
+  }
+
+  .section-header h2 {
+    font-size: 20px;
+  }
+
+  .schedule-item {
+    --padding-start: 24px;
+    --padding-end: 24px;
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+  }
+
+  .schedule-time,
+  .schedule-day {
+    font-size: 16px;
+  }
+
+  .medication-name {
+    font-size: 16px;
+  }
+
+  .status-taken,
+  .status-not-taken {
+    font-size: 28px;
   }
 }

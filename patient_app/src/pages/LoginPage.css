@@ -1,0 +1,54 @@
+.login-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.login-header h1 {
+  font-size: 24px;
+  color: var(--ion-color-primary);
+  margin-bottom: 10px;
+}
+
+.login-form ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 15px;
+}
+
+.login-form ion-input {
+  --padding-start: 10px;
+}
+
+.login-button {
+  margin-top: 20px;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.error-message {
+  color: var(--ion-color-danger);
+  font-size: 14px;
+  margin-top: 5px;
+  padding: 0 16px;
+}
+
+.password-toggle {
+  cursor: pointer;
+  padding: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .login-container {
+    padding: 10px;
+  }
+} 

@@ -88,7 +88,6 @@ const ScheduleViewPage: React.FC = () => {
         <div className="app-container">
           <div className="welcome-section">
             <div className="welcome-content">
-              <h1>Medication Schedule</h1>
               <p>Track and manage your daily medications</p>
               <div className="status-summary">
                 <IonChip color="success" className="status-chip">

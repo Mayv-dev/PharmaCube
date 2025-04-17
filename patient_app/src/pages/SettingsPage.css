@@ -25,18 +25,37 @@
   margin-bottom: 24px;
   color: var(--ion-color-primary-contrast);
   box-shadow: 0 4px 6px var(--app-shadow);
+  position: relative;
+  overflow: hidden;
 }
 
-.welcome-section h1 {
+/* Dark mode specific welcome section */
+:root.dark .welcome-section {
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.welcome-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.welcome-content h1 {
   font-size: 28px;
   font-weight: 600;
-  margin: 0 0 8px 0;
+  margin: 0;
+  color: var(--ion-color-primary-contrast);
 }
 
-.welcome-section p {
+.welcome-content p {
   font-size: 16px;
   margin: 0;
   opacity: 0.9;
+  color: var(--ion-color-primary-contrast);
 }
 
 .welcome-decoration {
@@ -48,6 +67,11 @@
   background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
   border-radius: 50%;
   transform: translate(30%, -30%);
+}
+
+/* Dark mode specific decoration */
+:root.dark .welcome-decoration {
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
 }
 
 .settings-section {

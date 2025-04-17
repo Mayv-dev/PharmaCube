@@ -3,55 +3,108 @@
   --background: var(--app-background);
 }
 
-/* Header Styles */
-.notification-header {
-  background: linear-gradient(135deg, var(--app-gradient-start) 0%, var(--app-gradient-end) 100%);
+.notification-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.welcome-section {
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
   border-radius: 16px;
   padding: 24px;
   margin-bottom: 24px;
-  color: var(--app-text);
-  box-shadow: var(--app-card-shadow);
-  border: 1px solid var(--app-card-border);
+  color: var(--ion-color-primary-contrast);
+  box-shadow: 0 4px 6px var(--app-shadow);
+  position: relative;
+  overflow: hidden;
 }
 
-.header-content {
-  margin-bottom: 4px;
+/* Dark mode specific welcome section */
+:root.dark .welcome-section {
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.welcome-content {
+  position: relative;
+  z-index: 1;
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
 }
 
-.header-content h1 {
-  font-size: 32px;
-  font-weight: 700;
+.welcome-content h1 {
+  font-size: 28px;
+  font-weight: 600;
   margin: 0;
   color: var(--ion-color-primary-contrast);
-  letter-spacing: -0.5px;
-  line-height: 1;
 }
 
-.header-content p {
-  font-size: 24px;
-  opacity: 0.9;
+.welcome-content p {
+  font-size: 16px;
   margin: 0;
+  opacity: 0.9;
+  display: flex;
+  align-items: center;
   color: var(--ion-color-primary-contrast);
-  line-height: 1.1;
+}
+
+.welcome-section p ion-icon {
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+.welcome-decoration {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+  border-radius: 50%;
+  transform: translate(30%, -30%);
+}
+
+/* Dark mode specific decoration */
+:root.dark .welcome-decoration {
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
 }
 
 .header-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 4px;
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 1;
 }
 
 .header-actions ion-button {
-  --padding-start: 6px;
-  --padding-end: 6px;
-  --padding-top: 2px;
-  --padding-bottom: 2px;
-  font-size: 12px;
-  height: 24px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  --border-radius: 20px;
+  --background: rgba(255, 255, 255, 0.2);
+  --background-hover: rgba(255, 255, 255, 0.3);
+  --background-activated: rgba(255, 255, 255, 0.4);
+  --color: var(--ion-color-primary-contrast);
+  font-size: 14px;
+  font-weight: 500;
+  height: auto;
   margin: 0;
+  text-transform: none;
+}
+
+/* Dark mode specific header actions */
+:root.dark .header-actions ion-button {
+  --background: rgba(255, 255, 255, 0.25);
+  --background-hover: rgba(255, 255, 255, 0.35);
+  --background-activated: rgba(255, 255, 255, 0.45);
+}
+
+.header-actions ion-button ion-icon {
+  margin-right: 6px;
 }
 
 /* Filter Styles */
@@ -336,6 +389,12 @@ ion-toast {
 
   .notification-header {
     background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
+    color: var(--ion-color-primary-contrast);
+  }
+
+  .header-content h1,
+  .header-content p {
+    color: var(--ion-color-primary-contrast);
   }
 
   .notification-card {
@@ -364,5 +423,11 @@ ion-toast {
 
   .empty-state p {
     color: var(--ion-color-medium);
+  }
+
+  .header-actions ion-button {
+    --background: rgba(255, 255, 255, 0.15);
+    --background-hover: rgba(255, 255, 255, 0.25);
+    --background-activated: rgba(255, 255, 255, 0.35);
   }
 }

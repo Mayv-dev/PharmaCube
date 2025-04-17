@@ -1,0 +1,63 @@
+.register-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.register-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.register-header h1 {
+  font-size: 24px;
+  color: var(--ion-color-primary);
+  margin-bottom: 10px;
+}
+
+.register-form ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 15px;
+}
+
+.register-form ion-input {
+  --padding-start: 10px;
+}
+
+.register-button {
+  margin-top: 20px;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.error-message {
+  color: var(--ion-color-danger);
+  font-size: 14px;
+  margin-top: 5px;
+  padding: 0 16px;
+}
+
+.password-toggle {
+  cursor: pointer;
+  padding: 10px;
+}
+
+/* Form validation styles */
+.valid-input {
+  --highlight-background: var(--ion-color-success);
+}
+
+.invalid-input {
+  --highlight-background: var(--ion-color-danger);
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .register-container {
+    padding: 10px;
+  }
+} 

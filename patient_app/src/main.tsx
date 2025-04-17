@@ -11,29 +11,51 @@ import {
 } from "@capacitor-community/sqlite";
 import { JeepSqlite } from "jeep-sqlite/dist/components/jeep-sqlite";
 
+const initializeWebStore = async () => {
+  try {
+    const platform = Capacitor.getPlatform();
+    if (platform === "web") {
+      // Define custom element if not already defined
+      if (!customElements.get('jeep-sqlite')) {
+        customElements.define("jeep-sqlite", JeepSqlite);
+      }
+
+      // Wait for custom element to be defined
+      await customElements.whenDefined("jeep-sqlite");
+
+      // Create a placeholder div for the SQLite element
+      const sqliteDiv = document.createElement('div');
+      sqliteDiv.id = 'sqlite-container';
+      document.body.appendChild(sqliteDiv);
+
+      // Create and configure the jeep-sqlite element
+      const jeepSqlite = document.createElement('jeep-sqlite');
+      sqliteDiv.appendChild(jeepSqlite);
+
+      // Initialize SQLite connection
+      const sqlite = new SQLiteConnection(CapacitorSQLite);
+      try {
+        await sqlite.initWebStore();
+        console.log('SQLite web store initialized successfully');
+        return sqlite;
+      } catch (err) {
+        console.error('Error initializing SQLite web store:', err);
+        throw err;
+      }
+    }
+    return null;
+  } catch (e) {
+    console.error('Error in SQLite initialization:', e);
+    throw e;
+  }
+};
 
 window.addEventListener("DOMContentLoaded", async () => {
   try {
-    const platform = Capacitor.getPlatform();
+    // Initialize SQLite for web platform
+    await initializeWebStore();
 
-
-    // WEB SPECIFIC FUNCTIONALITY
-    if (platform === "web") {
-      const sqlite = new SQLiteConnection(CapacitorSQLite);
-      // Create the 'jeep-sqlite' Stencil component
-      customElements.define("jeep-sqlite", JeepSqlite);
-
-      const jeepSqliteEl = document.createElement("jeep-sqlite");
-
-      document.body.appendChild(jeepSqliteEl);
-      await customElements.whenDefined("jeep-sqlite");
-      console.log(`after customElements.whenDefined`);
-
-      // Initialize the Web store
-      await sqlite.initWebStore();
-      console.log(`after initWebStore`);
-    }
-
+    // Render the React application
     const container = document.getElementById("root");
     const root = createRoot(container!);
     root.render(
@@ -42,6 +64,6 @@ window.addEventListener("DOMContentLoaded", async () => {
       </React.StrictMode>
     );
   } catch (e) {
-    console.log(e);
+    console.error('Error in main initialization:', e);
   }
 });

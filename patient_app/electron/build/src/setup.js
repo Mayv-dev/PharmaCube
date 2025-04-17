@@ -195,11 +195,14 @@ exports.ElectronCapacitorApp = ElectronCapacitorApp;
 function setupContentSecurityPolicy(customScheme) {
     electron_2.session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
         callback({
-            responseHeaders: Object.assign(Object.assign({}, details.responseHeaders), { 'Content-Security-Policy': [
+            responseHeaders: Object.assign(Object.assign({}, details.responseHeaders), { 
+                'Content-Security-Policy': [
                     electron_is_dev_1.default
-                        ? `default-src ${customScheme}://* 'unsafe-inline' devtools://* 'unsafe-eval' data:`
-                        : `default-src ${customScheme}://* 'unsafe-inline' data:`,
-                ] }),
+                        ? `default-src 'self' ${customScheme}://* 'unsafe-inline' 'unsafe-eval' data: blob: chrome-extension: chrome:; script-src 'self' 'unsafe-inline' 'unsafe-eval' chrome: chrome-extension:; style-src 'self' 'unsafe-inline' chrome: chrome-extension:; connect-src 'self' ${customScheme}://* ws: wss: chrome-extension://* data: blob:; worker-src 'self' blob: ${customScheme}://*;`
+                        : `default-src 'self' ${customScheme}://* 'unsafe-inline' data: blob: chrome-extension:; script-src 'self' 'unsafe-inline' chrome-extension:; style-src 'self' 'unsafe-inline' chrome-extension:; connect-src 'self' ${customScheme}://* chrome-extension://* data: blob:; worker-src 'self' blob: ${customScheme}://*;`
+                ],
+                'Access-Control-Allow-Origin': ['*']
+            }),
         });
     });
 }

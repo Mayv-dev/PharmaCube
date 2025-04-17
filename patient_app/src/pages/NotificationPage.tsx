@@ -198,7 +198,7 @@ const NotificationPage: React.FC = () => {
     switch (status) {
       case 'completed': return checkmarkCircleOutline;
       case 'missed': return closeCircleOutline;
-      default: return null;
+      default: return undefined;
     }
   };
 
@@ -230,100 +230,106 @@ const NotificationPage: React.FC = () => {
   return (
     <IonPage>
       <IonContent className="notification-content">
-        <div className="notification-header">
-          <div className="header-content">
-            <h1>Notifications</h1>
-            <p>{unreadCount} unread notifications</p>
+        <div className="notification-container">
+          <div className="welcome-section">
+            <div className="welcome-content">
+              <h1>Notifications</h1>
+              <p>
+                <IonIcon icon={notificationsOutline} />
+                {unreadCount} unread notifications
+              </p>
+            </div>
+            <div className="welcome-decoration"></div>
+            <div className="header-actions">
+              <IonButton fill="clear" onClick={markAllAsRead}>
+                <IonIcon slot="start" icon={checkmarkDoneOutline} />
+                Mark all as read
+              </IonButton>
+            </div>
           </div>
-          <div className="header-actions">
-            <IonButton fill="clear" onClick={markAllAsRead}>
-              <IonIcon slot="start" icon={checkmarkDoneOutline} />
-              Mark all as read
-            </IonButton>
+
+          <div className="notification-filters">
+            <IonSegment value={activeTab} onIonChange={e => setActiveTab(e.detail.value as 'upcoming' | 'history')}>
+              <IonSegmentButton value="upcoming">
+                <IonLabel>Upcoming</IonLabel>
+              </IonSegmentButton>
+              <IonSegmentButton value="history">
+                <IonLabel>History</IonLabel>
+              </IonSegmentButton>
+            </IonSegment>
           </div>
-        </div>
 
-        <div className="notification-filters">
-          <IonSegment value={activeTab} onIonChange={e => setActiveTab(e.detail.value as 'upcoming' | 'history')}>
-            <IonSegmentButton value="upcoming">
-              <IonLabel>Upcoming</IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="history">
-              <IonLabel>History</IonLabel>
-            </IonSegmentButton>
-          </IonSegment>
-        </div>
-
-        <div className="notification-list">
-          {filteredNotifications.length > 0 ? (
-            filteredNotifications.map((notification) => (
-              <IonCard 
-                key={notification.id}
-                className={`notification-card ${notification.status} ${notification.priority || ''}`}
-              >
-                <IonCardContent>
-                  <div className="notification-header-row">
-                    <div className="notification-icon-container">
-                      <IonIcon icon={getNotificationIcon(notification.type)} className="notification-icon" />
-                      {notification.priority && (
-                        <IonBadge color={getPriorityColor(notification.priority)} className="priority-badge">
-                          {notification.priority}
-                        </IonBadge>
+          <div className="notification-list">
+            {filteredNotifications.length > 0 ? (
+              filteredNotifications.map((notification) => (
+                <IonCard 
+                  key={notification.id}
+                  className={`notification-card ${notification.status} ${notification.priority || ''}`}
+                >
+                  <IonCardContent>
+                    <div className="notification-header-row">
+                      <div className="notification-icon-container">
+                        <IonIcon icon={getNotificationIcon(notification.type)} className="notification-icon" />
+                        {notification.priority && (
+                          <IonBadge color={getPriorityColor(notification.priority)} className="priority-badge">
+                            {notification.priority}
+                          </IonBadge>
+                        )}
+                      </div>
+                      <div className="notification-title-container">
+                        <h2>{notification.title}</h2>
+                        <p>{notification.message}</p>
+                      </div>
+                      {notification.status === 'pending' ? (
+                        <IonButton 
+                          fill="clear" 
+                          color="primary"
+                          className="action-button"
+                          onClick={() => markAsRead(notification.id)}
+                        >
+                          <IonIcon icon={checkmarkCircleOutline} />
+                        </IonButton>
+                      ) : (
+                        <IonIcon 
+                          icon={getStatusIcon(notification.status) || notificationsOutline} 
+                          color={getStatusColor(notification.status)}
+                          className="status-icon"
+                        />
                       )}
                     </div>
-                    <div className="notification-title-container">
-                      <h2>{notification.title}</h2>
-                      <p>{notification.message}</p>
-                    </div>
-                    {notification.status === 'pending' ? (
-                      <IonButton 
-                        fill="clear" 
-                        color="primary"
-                        className="action-button"
-                        onClick={() => markAsRead(notification.id)}
-                      >
-                        <IonIcon icon={checkmarkCircleOutline} />
-                      </IonButton>
-                    ) : (
-                      <IonIcon 
-                        icon={getStatusIcon(notification.status)} 
-                        color={getStatusColor(notification.status)}
-                        className="status-icon"
-                      />
-                    )}
-                  </div>
 
-                  <div className="notification-details">
-                    <div className="notification-time">
-                      <IonIcon icon={timeOutline} />
-                      <span>{notification.timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} • {notification.timestamp.toLocaleDateString([], {month: 'short', day: 'numeric'})}</span>
-                    </div>
-                    {notification.schedule && (
-                      <IonChip color="medium" className="schedule-chip">
+                    <div className="notification-details">
+                      <div className="notification-time">
                         <IonIcon icon={timeOutline} />
-                        <IonLabel>{notification.schedule.time}</IonLabel>
-                        {notification.schedule.days.length < 7 && (
-                          <span> • {notification.schedule.days.join(', ')}</span>
-                        )}
-                      </IonChip>
-                    )}
-                    {notification.medication && (
-                      <IonChip color="tertiary" className="medication-chip">
-                        <IonIcon icon={medicalOutline} />
-                        <IonLabel>{notification.medication.name} • {notification.medication.dosage}</IonLabel>
-                      </IonChip>
-                    )}
-                  </div>
-                </IonCardContent>
-              </IonCard>
-            ))
-          ) : (
-            <div className="empty-state">
-              <IonIcon icon={notificationsOutline} className="empty-icon" />
-              <h3>No notifications</h3>
-              <p>You're all caught up!</p>
-            </div>
-          )}
+                        <span>{notification.timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} • {notification.timestamp.toLocaleDateString([], {month: 'short', day: 'numeric'})}</span>
+                      </div>
+                      {notification.schedule && (
+                        <IonChip color="medium" className="schedule-chip">
+                          <IonIcon icon={timeOutline} />
+                          <IonLabel>{notification.schedule.time}</IonLabel>
+                          {notification.schedule.days.length < 7 && (
+                            <span> • {notification.schedule.days.join(', ')}</span>
+                          )}
+                        </IonChip>
+                      )}
+                      {notification.medication && (
+                        <IonChip color="tertiary" className="medication-chip">
+                          <IonIcon icon={medicalOutline} />
+                          <IonLabel>{notification.medication.name} • {notification.medication.dosage}</IonLabel>
+                        </IonChip>
+                      )}
+                    </div>
+                  </IonCardContent>
+                </IonCard>
+              ))
+            ) : (
+              <div className="empty-state">
+                <IonIcon icon={notificationsOutline} className="empty-icon" />
+                <h3>No notifications</h3>
+                <p>You're all caught up!</p>
+              </div>
+            )}
+          </div>
         </div>
 
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
