@@ -4,16 +4,24 @@
 	flex-direction: row;
 	border: 1px solid black;
 	width: 80%;
+	aspect-ratio: 50/1;
 	margin-bottom: 3%;
 	justify-content: space-between;
+	align-items: center;
+}
+
+.pharmacistBubble ion-button, .patientBubble ion-button {
+	width: 5%;
+	aspect-ratio: 1/1;
 }
 
 .bubbleMessage {
-	width:75%
+	width:75%;
+	height: auto;
+	margin:0%;
 }
 
 .bubbleMisc {
-	width: 20%;
 	display: flex;
 	flex-direction: column;
 }

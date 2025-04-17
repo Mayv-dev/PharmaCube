@@ -43,15 +43,11 @@
 	padding: 10px;
 }
 
-.patientChatTopSection {
-	height: 15%;
-}
 
 .chatTextbox {
 	display: flex;
 	margin-top: 10px;
 	flex-direction: row;
-	height: 10%;
 }
 
 .chatTextbox ion-item {
