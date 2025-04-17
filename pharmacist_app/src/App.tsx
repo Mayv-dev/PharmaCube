@@ -138,12 +138,13 @@ const App: React.FC = () => {
     generateToken()
     onMessage(messaging, (payload) => {
       console.log("notification: ", payload);
-      console.log(payload.notification?.body)
+      let notification = {body:""}
+      notification = typeof payload.notification?.body == "string" ? JSON.parse(payload.notification?.body):{body:""}
       if(payload.notification?.body != undefined){
         const updatedNotificationList = notificationList;
-        updatedNotificationList.push({id:0,content:payload.notification.body, urgency:1, timestamp: new Date(Date.now()).toISOString()});
+        updatedNotificationList.push({id:0,content:payload.notification?.body, urgency:1, timestamp: new Date(Date.now()).toISOString()});
         setNotificationList(updatedNotificationList.sort((a:Notification,b:Notification) => Date.parse(b.timestamp) - Date.parse(a.timestamp)));
-        notify(payload.notification.body)
+        notify(notification["body"])
       }
     })
   },[isTTSOn,])

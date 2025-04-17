@@ -115,7 +115,7 @@ const UpperToolbar: React.FC<UpperToolbarProps> = ({passedNotificationList, unre
 						</IonButton>
 						<div className='rowOfSelects'>
 						</div>
-					{passedNotificationList.length > 0 ? passedNotificationList?.map(notification => <NotificationItem id={notification.id} content={notification.content} timestamp={notification.timestamp} urgencyPassed={notification.urgency} />): <IonItem>You have no notifications</IonItem>}
+					{passedNotificationList.length > 0 ? passedNotificationList?.map(notification => <NotificationItem id={notification.id} content={notification.content} timestamp={notification.timestamp} urgencyPassed={notification.urgency} minimize={menuController.close} />): <IonItem>You have no notifications</IonItem>}
 				</div>
 				</IonContent>
 			</IonMenu>
