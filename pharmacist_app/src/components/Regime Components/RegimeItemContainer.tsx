@@ -51,8 +51,7 @@ type ContainerProps = {
 
 const RegimeItemContainer: React.FC<ContainerProps> = ({regime, deleteItem, modifyItem}) => 
 {
-	const router = useIonRouter()
-
+	
 	const determineIcon = () => {
 		switch(regime.time_period) {
 			case 1: 

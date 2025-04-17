@@ -1,5 +1,3 @@
-import { number, string } from "yup";
-
 export type RegimeItem = {
     id: number;
     compartment_id: number; 

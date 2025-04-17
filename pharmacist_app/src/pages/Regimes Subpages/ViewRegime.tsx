@@ -29,7 +29,6 @@ const ViewRegime: React.FC<ContainerProps> =  ({ passModifyDataToApp, patientId,
 	const [pharmacistId, setPharmacistId] = useState<number>(1);
 
 	const [patientList, setPatientList] = useState<any[]>([]);
-	const [patientName, setPatientName] = useState('Unselected');
 	
 	const [userRegimes, setUserRegimes] = useState<RegimeItem[]>()
 	const [deleteRegimeId, setDeleteRegimeId] = useState<number>(-1);
