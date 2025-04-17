@@ -2,7 +2,6 @@ import { IonButton, IonContent, IonHeader, IonModal, IonTitle, IonToolbar } from
 import '../../styles/Settings.css';
 import '../../styles/DoseSquare.css';
 import { CalendarDate } from 'typescript-calendar-date';
-import { square } from 'ionicons/icons';
 import { useState } from 'react';
 import DoseTakenStatus from './DoseTakenStatus';
 import { PatientAdherenceRecord } from 'api types/types';

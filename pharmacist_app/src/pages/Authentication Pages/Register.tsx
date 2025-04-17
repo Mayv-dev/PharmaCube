@@ -1,4 +1,4 @@
-import { IonButton, IonContent, IonInput, IonItem, IonPage, IonRouterLink, IonText } from '@ionic/react';
+import { IonButton, IonContent, IonInput, IonItem, IonPage, IonRouterLink } from '@ionic/react';
 import '../../styles/Regime Subpages/AddRegime.css';
 import { useState } from 'react';
 

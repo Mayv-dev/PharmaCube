@@ -1,8 +1,7 @@
-import { IonIcon, IonText, useIonRouter } from '@ionic/react';
+import { IonIcon, useIonRouter } from '@ionic/react';
 import './ExploreContainer.css';
 import './NotificationItem.css';
 import { alert, checkmark, warning } from 'ionicons/icons';
-import { useHistory } from 'react-router';
 
 enum urgency {
 	LOW, MEDIUM, HIGH

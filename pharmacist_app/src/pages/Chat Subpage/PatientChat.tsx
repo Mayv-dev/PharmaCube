@@ -3,19 +3,10 @@ import axios from 'axios';
 import {
   IonPage,
   IonContent,
-  IonSelect,
-  IonSelectOption,
   IonButton,
-  IonHeader,
-  IonModal,
-  IonTitle,
-  IonToolbar,
-  IonRouterLink,
 } from '@ionic/react';
 import '../../styles/Chat Subpage/PatientChat.css';
-import LowerToolbar from '../../components/LowerToolbar';
-import { Chat, RegimeItem } from 'api types/types';
-import RegimeItemContainer from '../../components/Regime Components/RegimeItemContainer';
+import { Chat } from 'api types/types';
 import ChatBubble from '../../components/Chat Components/ChatBubble';
 import ChatTextbox from '../../components/Chat Components/ChatTextbox';
 

@@ -7,16 +7,12 @@ import {
 	IonMenu,
 	IonButton,
 	IonItem,
-	IonSelect,
-	IonSelectOption,
-	IonRouterLink,
 	IonText
 } from '@ionic/react';
-import { arrowBack, arrowDownRightBoxOutline, arrowForward, handRight, handRightSharp, menu, notifications } from 'ionicons/icons';
+import { arrowBack, arrowForward, menu, notifications } from 'ionicons/icons';
 import '../styles/LowerToolbar.css';
 import axios from 'axios';
 import { menuController } from '@ionic/core/components';
-import { useEffect, useState } from 'react';
 import NotificationItem from './NotificationItem';
 
 export async function openHamburgerMenu() {

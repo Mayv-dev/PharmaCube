@@ -10,13 +10,11 @@ import {
   IonModal,
   IonTitle,
   IonToolbar,
-  IonRouterLink,
   IonIcon,
   IonText,
   IonItem,
 } from '@ionic/react';
 import '../../styles/Regime Subpages/ViewRegime.css';
-import LowerToolbar from '../../components/LowerToolbar';
 import { RegimeItem } from 'api types/types';
 import RegimeItemContainer from '../../components/Regime Components/RegimeItemContainer';
 import { arrowBack } from 'ionicons/icons';

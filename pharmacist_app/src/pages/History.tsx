@@ -4,11 +4,10 @@ import '../styles/History.css';
 import { useEffect, useState } from 'react';
 
 // Used this as my library and reference for my calendar work https://www.npmjs.com/package/typescript-calendar-date
-import { addDays, addMonths, CalendarDate, calendarDateFromJsDateObject, numberOfDaysInMonth } from 'typescript-calendar-date';
+import { addDays, CalendarDate, calendarDateFromJsDateObject, numberOfDaysInMonth } from 'typescript-calendar-date';
 import Calendar from '../components/History Components/Calendar';
 import { PatientAdherenceRecord } from 'api types/types';
 import axios from 'axios';
-import CalendarDateSquare from 'components/History Components/CalendarDateSquare';
 import { arrowBackOutline, arrowForward, arrowForwardOutline, map } from 'ionicons/icons';
 
 
