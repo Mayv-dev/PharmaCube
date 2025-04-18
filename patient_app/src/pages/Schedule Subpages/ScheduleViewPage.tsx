@@ -31,7 +31,7 @@ import axios from 'axios';
 const ScheduleViewPage: React.FC = () => {
   console.log('ScheduleViewPage component rendered');
   
-  const { filter } = useColorblindFilter();
+  const { filter, isDarkMode } = useColorblindFilter();
   const history = useHistory();
   const [loading, setLoading] = useState(true);
 
@@ -83,7 +83,7 @@ const ScheduleViewPage: React.FC = () => {
   };
 
   return (
-    <IonPage className={filter}>
+    <IonPage className={`${filter}${isDarkMode ? ' dark' : ''}`}>
       <IonContent className="schedule-view-content">
         <div className="app-container">
           <div className="welcome-section">

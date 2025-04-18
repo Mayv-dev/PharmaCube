@@ -24,10 +24,33 @@
   --oro-green-dark: #008C63;
   --oro-green-bg: rgba(0, 168, 120, 0.1);
   --oro-green-bg-hover: rgba(0, 168, 120, 0.2);
+
+  /* Theme Colors - Light Mode */
+  --app-background: #f8fafc;
+  --app-surface: #ffffff;
+  --app-text: #0f172a;
+  --app-text-secondary: #475569;
+  --app-border: rgba(0, 0, 0, 0.1);
+  --app-shadow: rgba(0, 0, 0, 0.1);
+  --app-accent: #10b981;
+  --app-accent-light: #34d399;
+  --app-error: #ef4444;
+  --app-success: #22c55e;
+  --app-warning: #f59e0b;
+}
+
+/* Dark Mode Variables */
+:root.dark {
+  --app-background: #0f172a;
+  --app-surface: #1e293b;
+  --app-text: #f8fafc;
+  --app-text-secondary: #94a3b8;
+  --app-border: rgba(255, 255, 255, 0.1);
+  --app-shadow: rgba(0, 0, 0, 0.3);
 }
 
 .schedule-view-content {
-  --background: #F0FDF4;
+  --background: var(--app-background);
   --ion-toolbar-background: transparent;
   --padding-top: 0;
   --padding-bottom: 0;
@@ -63,6 +86,8 @@ ion-toolbar {
   padding-bottom: max(24px, env(safe-area-inset-bottom));
   padding-left: max(24px, env(safe-area-inset-left));
   padding-right: max(24px, env(safe-area-inset-right));
+  background-color: var(--app-background);
+  color: var(--app-text);
 }
 
 /* Welcome Section */
@@ -74,8 +99,9 @@ ion-toolbar {
   border-radius: var(--welcome-section-radius);
   overflow: hidden;
   color: var(--ion-color-primary-contrast);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px var(--app-shadow);
   margin-bottom: 24px;
+  background-color: var(--app-surface);
 }
 
 .welcome-content {
@@ -88,14 +114,14 @@ ion-toolbar {
   font-size: 28px;
   font-weight: 600;
   margin: 0 0 8px 0;
-  color: var(--ion-color-primary-contrast);
+  color: var(--app-text);
 }
 
 .welcome-content p {
   font-size: 16px;
   margin: 0;
   opacity: 0.9;
-  color: var(--ion-color-primary-contrast);
+  color: var(--app-text-secondary);
 }
 
 .status-summary {
@@ -141,12 +167,13 @@ ion-toolbar {
 
 /* Schedule Section */
 .schedule-section {
-  background: white;
+  background: var(--app-surface);
   border-radius: var(--card-border-radius);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px var(--app-shadow);
   overflow: hidden;
   margin-bottom: 24px;
   padding: var(--card-padding);
+  border: 1px solid var(--app-border);
 }
 
 .section-header {
@@ -154,26 +181,29 @@ ion-toolbar {
   flex-direction: column;
   gap: var(--section-header-gap);
   margin: var(--section-header-margin);
+  padding: 16px 24px;
 }
 
 .section-header h2 {
-  font-size: 18px;
-  font-weight: 700;
-  color: #1e293b;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--app-text);
   margin: 0;
 }
 
 .section-header ion-note {
-  color: #64748b;
+  color: var(--app-text-secondary);
   font-size: 14px;
+  opacity: 0.8;
 }
 
 .calendar-card {
-  background: white;
+  background: var(--app-surface);
   border-radius: var(--card-border-radius);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px var(--app-shadow);
   overflow: hidden;
   margin-bottom: 24px;
+  border: 1px solid var(--app-border);
 }
 
 .calendar {
@@ -181,9 +211,20 @@ ion-toolbar {
   max-width: 400px;
   margin: 0 auto;
   --background: transparent;
-  --color: #1e293b;
+  --color: var(--oro-green);
   --border-radius: 16px;
   --padding: 16px;
+  --ion-color-step-200: var(--oro-green);
+  --ion-text-color: var(--oro-green);
+  --ion-color-primary: var(--oro-green);
+  --ion-color-primary-contrast: var(--oro-green);
+  --highlight-color: var(--oro-green);
+  --highlight-color-focused: var(--oro-green-light);
+  --highlight-color-invalid: var(--app-error);
+}
+
+.calendar ion-datetime {
+  color: var(--oro-green);
 }
 
 .status-buttons {
@@ -225,44 +266,40 @@ ion-toolbar {
 
 .schedule-list {
   background: transparent;
+  padding: 0;
 }
 
 .schedule-item {
-  --background: white;
-  --padding-start: 16px;
-  --padding-end: 16px;
-  --padding-top: 12px;
-  --padding-bottom: 12px;
-  --border-radius: 12px;
+  --background: var(--app-surface);
+  --border-color: transparent;
+  --padding-start: 24px;
+  --padding-end: 24px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  --border-radius: 16px;
   margin-bottom: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
+  box-shadow: none;
+  border: none;
+  background-color: rgba(30, 41, 59, 0.8);
 }
 
-.schedule-item:hover {
-  --background: var(--oro-green-bg);
-  transform: translateY(-2px);
-}
-
-.schedule-item-content {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  flex: 1;
-}
-
-.schedule-time, .schedule-day {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #64748b;
-  font-size: 14px;
-}
-
-.schedule-time ion-icon,
-.schedule-day ion-icon {
-  font-size: 16px;
+.schedule-time {
+  font-size: 18px;
+  font-weight: 500;
   color: var(--oro-green);
+  margin-bottom: 8px;
+}
+
+.schedule-day {
+  font-size: 14px;
+  color: var(--app-text-secondary);
+  margin-bottom: 12px;
+}
+
+.medication-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--app-text);
 }
 
 .medications-list {
@@ -285,13 +322,8 @@ ion-toolbar {
   gap: 12px;
 }
 
-.medication-name {
-  color: var(--oro-green-dark);
-  font-weight: 500;
-}
-
 .no-medications {
-  color: #94a3b8;
+  color: var(--app-text-secondary);
   font-size: 14px;
   font-style: italic;
   display: flex;
@@ -425,6 +457,20 @@ ion-toolbar {
   .empty-state p {
     color: #94a3b8;
   }
+
+  .calendar {
+    --background: var(--app-surface);
+    --color: var(--oro-green-light);
+    --ion-color-step-200: var(--oro-green-light);
+    --ion-text-color: var(--oro-green-light);
+    --highlight-background: var(--oro-green-bg);
+    --highlight-color: var(--oro-green-light);
+    --highlight-color-focused: var(--oro-green);
+  }
+
+  .calendar ion-datetime {
+    color: var(--oro-green-light);
+  }
 }
 
 /* Responsive Design */
@@ -479,4 +525,18 @@ ion-toolbar {
   .status-not-taken {
     font-size: 28px;
   }
+}
+
+/* Dark mode adjustments */
+:root.dark .section-header h2 {
+  color: var(--app-text);
+}
+
+:root.dark .section-header ion-note {
+  color: var(--app-text-secondary);
+}
+
+:root.dark .schedule-item {
+  --background: rgba(30, 41, 59, 0.8);
+  border: none;
 }

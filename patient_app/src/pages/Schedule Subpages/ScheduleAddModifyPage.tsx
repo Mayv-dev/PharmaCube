@@ -41,6 +41,7 @@ import { useColorblindFilter } from "../../colorBlindContext";
 import { useHistory } from "react-router-dom";
 import "./ScheduleAddModifyPage.css";
 import { getWeekdayName } from "../../helper functions/getWeekdayName";
+import '../../daltonization.css';
 
 const daysOfWeek = [1, 2, 3, 4, 5, 6, 7];
 const timeOfDayMap: { [key: number]: string } = {
@@ -69,7 +70,7 @@ const ScheduleAddModifyPage: React.FC = () => {
   const [medications, setMedications] = useState<Medication[]>([]);
   const [currentTimePeriod, setCurrentTimePeriod] = useState<number>(-1);
   const [loading, setLoading] = useState<boolean>(true);
-  const { filter } = useColorblindFilter();
+  const { daltonization } = useColorblindFilter();
   const history = useHistory();
 
   useEffect(() => {
@@ -224,7 +225,7 @@ const ScheduleAddModifyPage: React.FC = () => {
   };
 
   return (
-    <IonPage className={filter}>
+    <IonPage className={`${daltonization} daltonization-active`}>
       <IonContent className="schedule-add-modify-content">
         <div className="app-container">
           <div className="welcome-section">
@@ -242,14 +243,14 @@ const ScheduleAddModifyPage: React.FC = () => {
 
             <div className="day-selector">
               {daysOfWeek.map((day) => (
-                <IonChip 
+                <div 
                   key={day} 
                   className={selectedDay === day ? "selected-day-chip" : "day-chip"}
                   onClick={() => setSelectedDay(day)}
                 >
                   <IonIcon icon={calendarOutline} />
-                  <IonLabel>{getWeekdayName(day)?.substring(0, 3)}</IonLabel>
-                </IonChip>
+                  <IonLabel>{getWeekdayName(day)}</IonLabel>
+                </div>
               ))}
             </div>
 
@@ -356,7 +357,7 @@ const ScheduleAddModifyPage: React.FC = () => {
           <IonHeader className="ion-no-border">
             <IonToolbar>
               <IonButtons slot="start">
-                <IonButton fill="clear" onClick={() => setShowAddMedicationModal(false)}>
+                <IonButton onClick={() => setShowAddMedicationModal(false)}>
                   <IonIcon slot="icon-only" icon={chevronBack} />
                 </IonButton>
               </IonButtons>
@@ -369,27 +370,30 @@ const ScheduleAddModifyPage: React.FC = () => {
                 <h2>Select Medications</h2>
                 <IonNote>Choose medications for {timeOfDayMap[currentTimePeriod]}</IonNote>
               </div>
-              <IonList className="medication-selection-list">
-                {medications.length > 0 ? (
-                  medications.map((medication) => (
+              
+              {medications.length > 0 ? (
+                <IonList className="medication-selection-list">
+                  {medications.map((medication) => (
                     <IonItem key={medication.id} button detail={false} className="medication-selection-item">
                       <IonLabel>
                         <h3>{medication.name}</h3>
                         <p>{medication.amount}</p>
                       </IonLabel>
                       <IonCheckbox
+                        slot="end"
                         checked={selectedMedications.some(med => med.id === medication.id)}
                         onIonChange={() => handleMedicationSelection(medication)}
                       />
                     </IonItem>
-                  ))
-                ) : (
-                  <div className="empty-state">
-                    <IonIcon icon={informationCircle} />
-                    <p>No medications available</p>
-                  </div>
-                )}
-              </IonList>
+                  ))}
+                </IonList>
+              ) : (
+                <div className="empty-state">
+                  <IonIcon icon={informationCircle} />
+                  <p>No medications available</p>
+                </div>
+              )}
+              
               <div className="modal-actions">
                 <IonButton expand="block" className="save-button" onClick={saveMedicationsToSchedule}>
                   Save Medications

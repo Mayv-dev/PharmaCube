@@ -19,9 +19,10 @@ import { useColorblindFilter } from '../colorBlindContext';
 import { useHistory } from 'react-router-dom';
 import './SchedulePage.css';
 import calendarImage from '../Picture2.png';
+import '../daltonization.css';
 
 const SchedulePage: React.FC = () => {
-  const { filter } = useColorblindFilter();
+  const { daltonization } = useColorblindFilter();
   const history = useHistory();
 
   const handleViewSchedule = () => {
@@ -35,7 +36,7 @@ const SchedulePage: React.FC = () => {
   };
 
   return (
-    <IonPage className={filter}>
+    <IonPage className={`${daltonization} daltonization-active`}>
       <IonContent fullscreen className="ion-padding content">
         <div className="center-icon-container">
           <img src={calendarImage} alt="Calendar" className="center-icon" />

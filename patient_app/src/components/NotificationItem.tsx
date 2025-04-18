@@ -14,7 +14,7 @@ import {
   warningOutline,
   alertCircleOutline,
   notificationsOutline,
-  pillOutline,
+  medicalOutline,
   checkmarkCircleOutline,
   closeCircleOutline
 } from 'ionicons/icons';
@@ -95,7 +95,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
 
   const getTypeIcon = () => {
     switch (type) {
-      case 'medication': return pillOutline;
+      case 'medication': return medicalOutline;
       case 'reminder': return notificationsOutline;
       case 'alert': return alertCircleOutline;
       default: return notificationsOutline;

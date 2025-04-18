@@ -1,0 +1,31 @@
+/* Daltonization filters for different types of colorblindness */
+
+/* Protanopia Daltonization - Enhances red-green distinction */
+.protanopia-daltonization {
+  filter: sepia(0.3) saturate(1.5) hue-rotate(320deg);
+}
+
+/* Deuteranopia Daltonization - Enhances red-green distinction */
+.deuteranopia-daltonization {
+  filter: sepia(0.3) saturate(1.5) hue-rotate(40deg);
+}
+
+/* Tritanopia Daltonization - Enhances blue-yellow distinction */
+.tritanopia-daltonization {
+  filter: sepia(0.3) saturate(1.5) hue-rotate(180deg);
+}
+
+/* General Daltonization - Enhances overall color distinction */
+.general-daltonization {
+  filter: saturate(1.5) contrast(1.2);
+}
+
+/* Apply daltonization to all elements within the page */
+.daltonization-active {
+  transition: filter 0.3s ease-in-out;
+}
+
+/* Ensure text remains readable */
+.daltonization-active * {
+  transition: color 0.3s ease-in-out;
+} 

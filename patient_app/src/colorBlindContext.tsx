@@ -1,8 +1,8 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 
 type ColorblindContextType = {
-  filter: string;
-  setFilter: (filter: string) => void;
+  daltonization: string;
+  setDaltonization: (type: string) => void;
   isDarkMode: boolean;
   toggleDarkMode: () => void;
 };
@@ -10,7 +10,7 @@ type ColorblindContextType = {
 const ColorblindContext = createContext<ColorblindContextType | undefined>(undefined);
 
 export const ColorblindProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [filter, setFilter] = useState<string>('');
+  const [daltonization, setDaltonization] = useState<string>('');
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   const toggleDarkMode = () => {
@@ -19,7 +19,7 @@ export const ColorblindProvider: React.FC<{ children: ReactNode }> = ({ children
   };
 
   return (
-    <ColorblindContext.Provider value={{ filter, setFilter, isDarkMode, toggleDarkMode }}>
+    <ColorblindContext.Provider value={{ daltonization, setDaltonization, isDarkMode, toggleDarkMode }}>
       {children}
     </ColorblindContext.Provider>
   );

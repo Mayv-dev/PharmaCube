@@ -50,6 +50,7 @@ import { useColorblindFilter } from '../colorBlindContext';
 import { usePhotoGallery } from './usePhotoGallery';
 import './MedicationsPage.css';
 import { Medication } from '../api types/types';
+import '../daltonization.css';
 
 const MedicationsPage: React.FC = () => {
   const [medications, setMedications] = useState<Medication[]>([]);
@@ -63,7 +64,7 @@ const MedicationsPage: React.FC = () => {
   const [searchText, setSearchText] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const { filter } = useColorblindFilter();
+  const { daltonization } = useColorblindFilter();
   const { takePhoto, photos } = usePhotoGallery();
 
   useEffect(() => {
@@ -165,7 +166,7 @@ const MedicationsPage: React.FC = () => {
   );
 
   return (
-    <IonPage className={filter}>
+    <IonPage className={`${daltonization} daltonization-active`}>
       <IonContent fullscreen className="ion-padding content">
         <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
           <IonRefresherContent

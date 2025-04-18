@@ -82,17 +82,36 @@
   --transition-fast: 0.2s ease;
   --transition-normal: 0.3s ease;
   --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+  /* Theme Colors - Light Mode */
+  --app-background: #F0FDF4;
+  --app-surface: #ffffff;
+  --app-text: #1e293b;
+  --app-text-secondary: #64748b;
+  --app-border: rgba(0, 0, 0, 0.08);
+  --app-shadow: rgba(0, 0, 0, 0.08);
+}
+
+/* Dark Mode Overrides */
+:root.dark {
+  --app-background: #0f172a;
+  --app-surface: #1e293b;
+  --app-text: #f8fafc;
+  --app-text-secondary: #94a3b8;
+  --app-border: rgba(255, 255, 255, 0.1);
+  --app-shadow: rgba(0, 0, 0, 0.3);
 }
 
 /* Layout */
 .schedule-add-modify-content {
-  --background: #F0FDF4;
+  --background: var(--app-background);
   --ion-toolbar-background: transparent;
   --padding-top: 0;
   --padding-bottom: 0;
   --padding-start: 0;
   --padding-end: 0;
   font-family: var(--font-family);
+  background-color: var(--app-background);
 }
 
 .app-container {
@@ -107,6 +126,7 @@
   padding-bottom: max(24px, env(safe-area-inset-bottom));
   padding-left: max(24px, env(safe-area-inset-left));
   padding-right: max(24px, env(safe-area-inset-right));
+  background-color: var(--app-background);
 }
 
 /* Welcome Section */
@@ -118,7 +138,7 @@
   border-radius: var(--welcome-section-radius);
   overflow: hidden;
   color: var(--ion-color-primary-contrast);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px var(--app-shadow);
   margin-bottom: 24px;
 }
 
@@ -153,73 +173,90 @@
   transform: translate(30%, -30%);
 }
 
+/* Dark mode specific welcome section */
+:root.dark .welcome-section {
+  background: linear-gradient(135deg, rgba(30,41,59,0.95) 0%, rgba(30,41,59,0.85) 100%);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--app-border);
+}
+
+/* Dark mode specific decoration */
+:root.dark .welcome-decoration {
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
+}
+
 /* Day Selector */
 .day-selector {
-  display: flex;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
   gap: 8px;
   margin: 24px 0;
-  justify-content: flex-start;
-  padding: 0;
-  max-width: 100%;
-  overflow-x: auto;
+  padding: 4px;
+  width: 100%;
 }
 
 .day-chip,
-.day-chip.selected {
-  --background: rgba(255, 255, 255, 0.2);
-  --color: var(--ion-color-primary-contrast);
-  --border-radius: var(--chip-border-radius);
-  --padding-start: 16px;
-  --padding-end: 16px;
-  font-size: 20px !important;
-  font-weight: 600 !important;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  min-width: 130px;
-  min-height: 52px;
-  text-align: center;
-  margin: 0;
-  flex-shrink: 0;
+.selected-day-chip {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.day-chip ion-label,
-.day-chip.selected ion-label,
-.day-selector ion-chip ion-label {
-  font-size: 20px !important;
-  font-weight: 600 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  transform: none !important;
+  padding: 8px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  height: 44px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  min-width: 0;
 }
 
 .day-chip ion-icon,
-.day-chip.selected ion-icon {
-  font-size: 20px;
-  margin-right: 8px;
+.selected-day-chip ion-icon {
+  font-size: 18px;
+  margin-right: 6px;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.day-chip ion-label,
+.selected-day-chip ion-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
 }
 
 .day-chip:hover {
-  --background: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
+  background: #f8fafc;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-.day-chip.selected {
-  --background: var(--oro-green);
-  --color: white;
+.selected-day-chip {
+  background: var(--oro-green);
+  border-color: var(--oro-green);
+}
+
+.selected-day-chip ion-icon {
+  color: white;
+}
+
+.selected-day-chip ion-label {
+  color: white;
 }
 
 /* Schedule Section */
 .schedule-section {
-  background: white;
+  background: var(--app-surface);
   border-radius: var(--card-border-radius);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-  margin-bottom: 24px;
   padding: var(--card-padding);
+  box-shadow: 0 2px 4px var(--app-shadow);
+  border: 1px solid var(--app-border);
 }
 
 .section-header {
@@ -232,12 +269,12 @@
 .section-header h2 {
   font-size: 18px;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--app-text);
   margin: 0;
 }
 
 .section-header ion-note {
-  color: #64748b;
+  color: var(--app-text-secondary);
   font-size: 14px;
 }
 
@@ -251,11 +288,12 @@
   align-items: center;
   gap: 16px;
   padding: 16px;
-  background: white;
+  background: var(--app-surface);
   border-radius: var(--card-border-radius);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   margin-bottom: 16px;
   transition: all 0.3s ease;
+  border: 1px solid var(--app-border);
 }
 
 .time-slot:hover {
@@ -281,7 +319,7 @@
 
 .time-slot-time {
   font-weight: 600;
-  color: #1e293b;
+  color: var(--app-text);
   font-size: 16px;
 }
 
@@ -358,65 +396,6 @@
   color: var(--empty-state-text-color);
   font-size: 16px;
   margin: 0;
-}
-
-/* Dark Mode */
-@media (prefers-color-scheme: dark) {
-  .schedule-add-modify-content {
-    --background: #0f172a;
-  }
-
-  .welcome-section {
-    background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  }
-
-  .welcome-decoration {
-    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
-  }
-
-  .schedule-section {
-    background: rgba(15, 23, 42, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .section-header h2 {
-    color: #f8fafc;
-  }
-
-  .section-header ion-note {
-    color: #94a3b8;
-  }
-
-  .time-slot {
-    background: rgba(15, 23, 42, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .time-slot-time {
-    color: #f8fafc;
-  }
-
-  .medication-chip {
-    --background: rgba(15, 23, 42, 0.6);
-    --color: var(--oro-green-light);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .add-time-button {
-    --background: rgba(15, 23, 42, 0.6);
-    --color: var(--oro-green-light);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .add-time-button:hover {
-    --background: var(--oro-green-bg);
-  }
-
-  .empty-state ion-icon,
-  .empty-state p {
-    color: #94a3b8;
-  }
 }
 
 /* Responsive Design */
@@ -785,132 +764,287 @@ ion-title {
   font-size: 16px;
 }
 
-/* Dark Mode */
+/* Medication Modal Styles */
+.medication-modal {
+  --height: 80%;
+  --width: 90%;
+  --max-width: 600px;
+  --border-radius: 20px;
+}
+
+.medication-modal ion-header {
+  background: white;
+}
+
+.medication-modal ion-toolbar {
+  --background: white;
+  --color: #1e293b;
+  --border-color: transparent;
+  padding: 16px;
+}
+
+.medication-modal .modal-container {
+  padding: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.medication-selection-list {
+  flex: 1;
+  overflow-y: auto;
+  background: transparent;
+}
+
+.medication-selection-item {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  --background: white;
+  --border-radius: 12px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.medication-selection-item ion-label {
+  white-space: normal;
+  overflow: visible;
+}
+
+.medication-selection-item ion-label h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.medication-selection-item ion-label p {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.medication-selection-item ion-checkbox {
+  --size: 22px;
+  --checkbox-background: white;
+  --checkbox-background-checked: var(--oro-green);
+  --border-color: #cbd5e1;
+  --border-color-checked: var(--oro-green);
+  --checkmark-color: white;
+  --border-radius: 6px;
+  margin: 0 0 0 16px;
+}
+
+.modal-actions {
+  padding: 16px;
+  background: white;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.save-button {
+  --background: var(--oro-green);
+  --color: white;
+  --border-radius: 12px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.empty-state {
+  padding: 40px 20px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 16px;
+  margin: 20px 0;
+}
+
+.empty-state ion-icon {
+  font-size: 48px;
+  color: #94a3b8;
+  margin-bottom: 16px;
+}
+
+.empty-state p {
+  font-size: 16px;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Dark mode adjustments for medication modal */
 @media (prefers-color-scheme: dark) {
-  ion-header {
-    --background: var(--oro-green-dark);
-    --ion-toolbar-background: var(--oro-green-dark);
+  .medication-modal ion-header,
+  .medication-modal ion-toolbar {
+    --background: #1e293b;
+    --color: white;
   }
 
-  .schedule-add-modify-content {
-    --background: #0f172a;
-  }
-
-  .app-container {
-    background: #0f172a;
-  }
-
-  .day-selector {
-    background: rgba(255, 255, 255, 0.05);
-    border-bottom-color: rgba(255, 255, 255, 0.1);
-  }
-
-  .time-schedule-section {
-    background: rgba(255, 255, 255, 0.05);
-  }
-
-  .section-header {
-    border-bottom-color: rgba(255, 255, 255, 0.1);
-  }
-
-  .section-header h2 {
-    color: #f8fafc;
-  }
-
-  .time-item {
-    background: rgba(255, 255, 255, 0.05);
+  .medication-selection-item {
+    --background: #1e293b;
     border-color: rgba(255, 255, 255, 0.1);
   }
 
-  .time-item:hover {
-    border-color: var(--oro-green);
-    background: rgba(255, 255, 255, 0.08);
-  }
-
-  .time-period {
+  .medication-selection-item ion-label h3 {
     color: #f8fafc;
   }
 
-  .time-value {
+  .medication-selection-item ion-label p {
     color: #94a3b8;
   }
 
-  .action-button {
-    color: #94a3b8;
+  .medication-selection-item ion-checkbox {
+    --checkbox-background: #2d3748;
+    --border-color: #475569;
   }
 
-  .action-button:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #f8fafc;
+  .modal-actions {
+    background: #1e293b;
+    border-top-color: rgba(255, 255, 255, 0.1);
   }
 
-  .no-medications {
+  .empty-state {
     background: rgba(255, 255, 255, 0.05);
-    color: #94a3b8;
   }
 }
 
-/* Responsive Design */
-@media (min-width: 768px) {
-  .time-schedule-section {
-    margin: 24px;
-  }
+.schedule-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+}
 
-  .time-item {
-    padding: 20px;
-  }
+.schedule-item-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex: 1;
+}
 
-  .time-icon {
-    width: 48px;
-    height: 48px;
-  }
+.time-period {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 140px;
+  justify-content: flex-start;
+}
 
-  .time-icon ion-icon {
-    font-size: 24px;
+.time-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--oro-green-bg);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.time-icon ion-icon {
+  font-size: 20px;
+  color: var(--oro-green);
+}
+
+.time-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.time-details h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+  text-align: left;
+}
+
+.time-details p.time {
+  font-size: 17px;
+  font-weight: 500;
+  color: #475569;
+  margin: 0;
+  text-align: left;
+}
+
+.medications-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1;
+  padding: 0 12px;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.medication-chip {
+  --background: var(--oro-green-bg);
+  --color: var(--oro-green);
+  height: 32px;
+  font-size: 16px;
+  font-weight: 500;
+  --padding-start: 12px;
+  --padding-end: 12px;
+}
+
+.schedule-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.schedule-actions ion-button {
+  --padding-start: 12px;
+  --padding-end: 12px;
+  height: 40px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.schedule-actions ion-button ion-icon {
+  font-size: 20px;
+}
+
+.no-medications {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 6px;
+  margin: 0;
+}
+
+.no-medications ion-icon {
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .schedule-item-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
 
   .time-period {
-    font-size: 18px;
+    min-width: 0;
   }
 
-  .time-value {
-    font-size: 15px;
-  }
-
-  .action-button {
-    width: 40px;
-    height: 40px;
-  }
-
-  .action-button ion-icon {
-    font-size: 20px;
-  }
-}
-
-/* Accessibility */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    transition: none !important;
-    animation: none !important;
-  }
-}
-
-.action-button:focus-visible {
-  outline: 3px solid var(--focus-ring-color);
-  outline-offset: 2px;
-}
-
-/* High Contrast Mode */
-@media (forced-colors: active) {
-  .time-item {
-    border: 1px solid CanvasText;
-  }
-
-  .action-button {
-    border: 1px solid CanvasText;
-  }
-
-  .day-chip {
-    border: 1px solid CanvasText;
+  .medications-list {
+    padding: 0;
+    width: 100%;
   }
 }

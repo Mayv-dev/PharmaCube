@@ -30,6 +30,7 @@ import {
 import { useColorblindFilter } from '../colorBlindContext';
 import { useSettings } from '../composables/SettingsContext';
 import './SettingsPage.css';
+import '../daltonization.css';
 
 type FontSize = 'small' | 'medium' | 'large';
 
@@ -39,7 +40,7 @@ const SettingsPage: React.FC = () => {
   const [accentColor, setAccentColor] = useState<string>('#66d6c3');
   const [appLayout, setAppLayout] = useState<string>('list');
 
-  const { filter, setFilter, isDarkMode, toggleDarkMode } = useColorblindFilter();
+  const { daltonization, setDaltonization, isDarkMode, toggleDarkMode } = useColorblindFilter();
   const { tabBarPosition, setTabBarPosition, theme, setTheme } = useSettings();
 
   const handleFontSizeChange = (size: FontSize) => {
@@ -74,7 +75,7 @@ const SettingsPage: React.FC = () => {
   };
 
   return (
-    <IonPage className={filter}>
+    <IonPage className={`${daltonization} daltonization-active`}>
       <IonContent className="settings-content">
         <div className="settings-container">
           <div className="welcome-section">
@@ -182,16 +183,16 @@ const SettingsPage: React.FC = () => {
                 <IonList className="settings-list">
                   <IonItem className="settings-item">
                     <IonIcon icon={eyeOutline} slot="start" />
-                    <IonLabel>Colorblind Filter</IonLabel>
+                    <IonLabel>Color Enhancement</IonLabel>
                     <IonSelect
-                      value={filter}
-                      onIonChange={(e) => setFilter(e.detail.value)}
+                      value={daltonization}
+                      onIonChange={(e) => setDaltonization(e.detail.value)}
                     >
                       <IonSelectOption value="">None</IonSelectOption>
-                      <IonSelectOption value="protanopia-filter">Protanopia</IonSelectOption>
-                      <IonSelectOption value="deuteranopia-filter">Deuteranopia</IonSelectOption>
-                      <IonSelectOption value="tritanopia-filter">Tritanopia</IonSelectOption>
-                      <IonSelectOption value="achromatopsia-filter">Achromatopsia</IonSelectOption>
+                      <IonSelectOption value="protanopia-daltonization">Protanopia Enhancement</IonSelectOption>
+                      <IonSelectOption value="deuteranopia-daltonization">Deuteranopia Enhancement</IonSelectOption>
+                      <IonSelectOption value="tritanopia-daltonization">Tritanopia Enhancement</IonSelectOption>
+                      <IonSelectOption value="general-daltonization">General Color Enhancement</IonSelectOption>
                     </IonSelect>
                   </IonItem>
                 </IonList>
