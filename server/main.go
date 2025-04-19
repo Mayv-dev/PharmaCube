@@ -23,6 +23,8 @@ func main() {
 		&models.PatientSchedule{},
 		&models.PatientScheduledRegime{},
 		&models.PatientAdherenceRecord{},
+		&models.Chat{},
+		&models.Message{},
 	)
 
 	//mockdata()
