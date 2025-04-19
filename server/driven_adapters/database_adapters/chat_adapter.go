@@ -27,17 +27,22 @@ func AddMessage(message models.Message) error {
 func GetMessages(userId uint, chatId uint) ([]models.Message, error) {
 	dbAdapter := GromDbAdapter()
 	var chat models.Chat
+	var messages []models.Message
 
 	result := dbAdapter.First(&chat, chatId)
 	if result.Error != nil {
 		return nil, result.Error
 	}
 
-	if userId != chat.PatientID || userId != chat.PharmacistID {
-		return nil, fmt.Errorf("Not chat member")
+	result = dbAdapter.Where("chat_id = ?", chatId).Find(&messages)
+	if result.Error != nil {
+		return nil, result.Error
 	}
 
-	return chat.Messages, nil
+	if userId != chat.PatientID && userId != chat.PharmacistID {
+		return nil, fmt.Errorf("Not chat member")
+	}
+	return messages, nil
 }
 
 func CreateChat(chat models.Chat) (models.Chat, error) {
