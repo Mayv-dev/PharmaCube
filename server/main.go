@@ -27,8 +27,6 @@ func main() {
 		&models.Message{},
 	)
 
-	//mockdata()
-
 	server := gin.Default()
 
 	log.SetOutput(gin.DefaultWriter)
@@ -42,23 +40,4 @@ func main() {
 	routes.ChatRoutes(server)
 
 	server.Run()
-}
-
-func mockdata() {
-	patient := models.Patient{
-		Name:             "TestPatient",
-		ScheduleTimes:    []models.PatientSchedule{},
-		ScheduledRegimes: []models.PatientScheduledRegime{},
-		AdherenceRecord:  []models.PatientAdherenceRecord{},
-	}
-
-	pharmacist := models.Pharmacist{
-		Name:     "TestPharmacy",
-		Patients: []models.Patient{patient},
-	}
-
-	result := DbAdapter.Create(&pharmacist)
-	if result.Error != nil {
-		log.Println(result.Error.Error())
-	}
 }
