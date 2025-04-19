@@ -13,6 +13,9 @@ import {
   IonButton,
   IonPage,
   setupIonicReact,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import {
@@ -74,6 +77,45 @@ const App: React.FC = () => {
     setIsAuthenticated(false);
   };
 
+  if (!isAuthenticated) {
+    return (
+      <IonApp>
+        <IonPage>
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle>Login</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent className="ion-padding">
+            <div className="login-container">
+              <IonInput
+                placeholder="Username"
+                value={username}
+                onIonChange={e => setUsername(e.detail.value!)}
+                className="ion-margin-bottom"
+              />
+              <IonInput
+                type="password"
+                placeholder="Password"
+                value={password}
+                onIonChange={e => setPassword(e.detail.value!)}
+                className="ion-margin-bottom"
+              />
+              <IonButton expand="block" onClick={async () => {
+                const success = await verifyUser(username, password);
+                if (success) {
+                  setIsAuthenticated(true);
+                }
+              }}>
+                Login
+              </IonButton>
+            </div>
+          </IonContent>
+        </IonPage>
+      </IonApp>
+    );
+  }
+
   return (
     <ColorblindProvider>
       <SettingsProvider>
@@ -108,9 +150,12 @@ const App: React.FC = () => {
                 <Route exact path="/">
                   <Redirect to="/main" />
                 </Route>
+                <Route>
+                  <Redirect to="/main" />
+                </Route>
               </IonRouterOutlet>
 
-              <IonTabBar slot={tabBarPosition}>
+              <IonTabBar slot="bottom" className="ion-tab-bar">
                 <IonTabButton tab="main" href="/main">
                   <IonIcon icon={homeOutline} />
                   <IonLabel>Home</IonLabel>
@@ -138,25 +183,6 @@ const App: React.FC = () => {
               </IonTabBar>
             </IonTabs>
           </IonReactRouter>
-
-          <button
-            onClick={handleLogout}
-            style={{
-              position: 'fixed',
-              bottom: 80,
-              left: '50%',
-              transform: 'translateX(-50%)',
-              padding: '10px 20px',
-              fontSize: '16px',
-              borderRadius: '5px',
-              backgroundColor: '#d9534f',
-              color: 'white',
-              border: 'none',
-              cursor: 'pointer',
-            }}
-          >
-            Logout
-          </button>
         </IonApp>
       </SettingsProvider>
     </ColorblindProvider>

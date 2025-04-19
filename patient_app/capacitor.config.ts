@@ -4,10 +4,7 @@ const config: CapacitorConfig = {
   appId: 'com.pharmacube.patient',
   appName: 'Oro Patient',
   webDir: 'build',
-  bundledWebRuntime: false,
-  plugins: {
-    CapacitorFingerprintAuth: {}
-  }
+  bundledWebRuntime: false
 };
 
 export default config;
