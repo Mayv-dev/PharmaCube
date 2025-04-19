@@ -16,11 +16,6 @@ func AddMessage(message models.Message) error {
 		return result.Error
 	}
 
-	if (chat.PatientID != message.SenderID || chat.PatientID != message.ReceiverID) &&
-		(chat.PharmacistID != message.SenderID || chat.PharmacistID != message.ReceiverID) {
-		return fmt.Errorf("Chat participant IDs do not match message IDs")
-	}
-
 	result = dbAdapter.Create(&message)
 	if result.Error != nil {
 		return result.Error
