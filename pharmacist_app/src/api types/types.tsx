@@ -43,9 +43,10 @@ export type PatientAdherenceRecord = {
 }
 
 export type Message = {
-	sender_id:number;
-	time_sent:string;
-	message_body:string;
+	time_sent:string,
+    chat_id:number,
+    is_sender_patient:boolean,
+    message_body:string
 }
 
 export type Chat = {

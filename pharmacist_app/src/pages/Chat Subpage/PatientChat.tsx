@@ -21,17 +21,17 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus}) => 
 
 	const [patientId, setPatientId] = useState<number>(2);
 	const [patientName, setPatientName] = useState('Ann Murphy');
-	const [patientChat, setPatientChat] = useState<Chat>({patient_id:2, pharmacist_id:1, messages:[{sender_id:2,time_sent:"2025-03-17T15:40:57+00:00",message_body:"Are you my new pharmacist?"}, {sender_id:1,time_sent:"2025-03-17T15:40:57+00:00",message_body:"Yes, how can I help you?"}]});
+	const [patientChat, setPatientChat] = useState<Chat>({patient_id:1, pharmacist_id:1, messages:[]});
 
 	// Code for setTimeout found at w3schools.com: https://www.w3schools.com/react/react_useeffect.asp
 	useEffect(()=> {
-		getPatientChat().then(res => res == "Network Error" || res == "Request failed with status code 404" ? console.log("Server connection has failed in PatientApp.tsx with the following error message: ", res):setPatientChat(res))	
+		getPatientChat().then(res => res == "Network Error" || res == "Request failed with status code 404" ? console.log("Server connection has failed in PatientApp.tsx with the following error message: ", res):setPatientChat({patient_id:patientId, pharmacist_id:pharmacistId, messages:res}))	
 	},[passedPatientChatStatus])
 
 	const getPatientChat = async () => {
 		try {
 			const { data, status } = await axios.get(
-			  `http://localhost:8080/pharmacist/${pharmacistId}/patient/${patientId}/chat`,
+			  `http://localhost:8080/chat/1/1`,
 			  {
 				headers: {
 				  Accept: 'application/json'
@@ -52,15 +52,16 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus}) => 
 	}
 
 	const messageSent = async (message:string) => {
+		const sentMessage:Message = {
+			time_sent:new Date(Date.now()).toISOString(),
+			chat_id:1,
+			is_sender_patient:false,
+			message_body:message
+		}
 		try {
-			const sentMessage:Message = {
-				sender_id:pharmacistId,
-				time_sent:new Date(Date.now()).toISOString(),
-				message_body:message
-			}
 			console.log("post request being made...")
 			const { data, status } = await axios.post(
-				`http://demo3553220.mockable.io/pharmacist/pharmacist_id/patient/patient_id/chat`,
+				`http://localhost:8080/chat`,
 				sentMessage,
 				{
 					headers: {
@@ -95,7 +96,7 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus}) => 
 				<p>Selected patient: {patientName}</p>
 				</div>
 				<div className={"chatBubbleContainer"}>
-					{ patientChat?.messages.map(message => <ChatBubble passedPharmacistId={pharmacistId} passedPatientId={patientId} passedMessage={message}></ChatBubble>)}
+					{ patientChat.messages?.map(message => <ChatBubble passedPharmacistId={pharmacistId} passedPatientId={patientId} passedMessage={message}></ChatBubble>)}
 				</div>
 				<ChatTextbox messageSent={messageSent}></ChatTextbox>
 			</div>
