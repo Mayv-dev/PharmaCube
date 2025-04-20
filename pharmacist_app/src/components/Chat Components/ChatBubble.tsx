@@ -48,16 +48,16 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({passedMessage, passedPharmacistI
 
 	return (
 		<>
-		<div className={passedMessage.sender_id == passedPharmacistId ? "pharmacistBubble":"patientBubble"}>
+		<div className={passedMessage.is_sender_patient ? "patientBubble":"pharmacistBubble"}>
 			{
-				passedMessage.sender_id != passedPharmacistId ? <div className='bubbleMisc'>
+				passedMessage.is_sender_patient ? <div className='bubbleMisc'>
 				<p className='bubbleTimestamp'>{datetimeOfMessage.substring(0,4)+"/"+datetimeOfMessage.substring(5,7)+"/"+datetimeOfMessage.substring(8,10)}</p>
 				<p className='bubbleTimestamp'>{datetimeOfMessage.substring(11,16)}</p>
 			</div> : <IonIcon className={"bubbleMiscIcon"} onClick={() => setShowModal(true)} icon={ellipsisVerticalCircle}></IonIcon>
 			}
 			<p className='bubbleMessage'>{message}</p>
 			{
-				passedMessage.sender_id != passedPharmacistId ? 
+				passedMessage.is_sender_patient ? 
 				<IonIcon className={"bubbleMiscIcon"} onClick={() => setShowModal(true)} icon={ellipsisVerticalCircle}></IonIcon>
 			 : <div className='bubbleMisc'>
 					<p className='bubbleTimestamp'>{datetimeOfMessage.substring(0,4)+"/"+datetimeOfMessage.substring(5,7)+"/"+datetimeOfMessage.substring(8,10)}</p>
@@ -71,7 +71,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({passedMessage, passedPharmacistI
 			Close
 		</IonButton>
 		<IonHeader>
-			<IonTitle>{passedMessage.sender_id == passedPharmacistId ? "You: ":passedMessage.sender_id+": "} {passedMessage.message_body}</IonTitle>
+			<IonTitle>{passedMessage.is_sender_patient ? "Patient: ":"You: "} {passedMessage.message_body}</IonTitle>
 		</IonHeader>
 		<IonContent className="ion-padding">
 			<IonButton onClick={() => speak()}>
