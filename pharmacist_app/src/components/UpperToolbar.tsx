@@ -74,7 +74,7 @@ const UpperToolbar: React.FC<UpperToolbarProps> = ({pharmacistName, passedNotifi
 					<IonLabel>Menu</IonLabel>
 				</IonTabButton>
 				<IonTabButton className='topOroLogo'>
-					<IonImg src='..\ORO logo v2 bg-removed.png'>
+					<IonImg src='logo/ORO logo v2 bg-removed.png'>
 					</IonImg>
 				</IonTabButton>
 					
