@@ -10,9 +10,12 @@ import {
 } from '@ionic/react';
 import '../styles/Users.css';
 
+type chatProps = {
+  patientSelect:any
+}
 
-const Users: React.FC = () => {
-  const [patientList, setPatientList] = useState([{ username: "Ann Murphy" }])
+const Chat: React.FC<chatProps> = ({patientSelect}) => {
+  const [patientList, setPatientList] = useState([{ id:1, username: "Ann Murphy"},{id:2,username:"Obi Njoku"}])
   const [filteredUsers, setFilteredUsers] = useState([{}]);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -46,7 +49,7 @@ const Users: React.FC = () => {
           />
           <IonList>
             {filteredUsers.map((user: any) => (
-              <IonItem routerLink="/chat/patient" routerDirection='root' key={user.id}>
+              <IonItem routerLink="/chat/patient" onClick={e => patientSelect(user.id)} routerDirection='root' key={user.id}>
                 <IonLabel >
                   <img width="10%" src='https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'></img>
                   <h2>{user.username}</h2>
@@ -61,7 +64,7 @@ const Users: React.FC = () => {
   );
 };
 
-export default Users;
+export default Chat;
 
 
 

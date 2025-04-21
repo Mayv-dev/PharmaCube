@@ -14,24 +14,24 @@ import { Message } from 'api types/types';
 
 type PatientChatProps = {
 	passedPatientChatStatus:boolean
+	passedPatient:any
 }
 
-const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus}) => {
+const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus, passedPatient}) => {
 	const [pharmacistId, setPharmacistId] = useState<number>(1);
 
-	const [patientId, setPatientId] = useState<number>(2);
-	const [patientName, setPatientName] = useState('Ann Murphy');
-	const [patientChat, setPatientChat] = useState<Chat>({patient_id:1, pharmacist_id:1, messages:[]});
+	const [patientId, setPatientId] = useState<number>(passedPatient);
+	const [patientChat, setPatientChat] = useState<Chat>({patient_id:passedPatient, pharmacist_id:1, messages:[]});
 
 	// Code for setTimeout found at w3schools.com: https://www.w3schools.com/react/react_useeffect.asp
 	useEffect(()=> {
 		getPatientChat().then(res => res == "Network Error" || res == "Request failed with status code 404" ? console.log("Server connection has failed in PatientApp.tsx with the following error message: ", res):setPatientChat({patient_id:patientId, pharmacist_id:pharmacistId, messages:res}))	
-	},[passedPatientChatStatus])
+	},[passedPatientChatStatus, passedPatient])
 
 	const getPatientChat = async () => {
 		try {
 			const { data, status } = await axios.get(
-			  `http://localhost:8080/chat/1/1`,
+			  `http://localhost:8080/chat/1/${passedPatient}`,
 			  {
 				headers: {
 				  Accept: 'application/json'
@@ -54,7 +54,7 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus}) => 
 	const messageSent = async (message:string) => {
 		const sentMessage:Message = {
 			time_sent:new Date(Date.now()).toISOString(),
-			chat_id:1,
+			chat_id:passedPatient,
 			is_sender_patient:false,
 			message_body:message
 		}
@@ -93,7 +93,7 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus}) => 
 					<IonButton expand="block" routerLink='/chat' routerDirection='root' className='ScheduleButtons' color="light">
 						Back to Chat Menu
 					</IonButton>
-				<p>Selected patient: {patientName}</p>
+				<p>Selected patient: {passedPatient}</p>
 				</div>
 				<div className={"chatBubbleContainer"}>
 					{ patientChat.messages?.map(message => <ChatBubble passedPharmacistId={pharmacistId} passedPatientId={patientId} passedMessage={message}></ChatBubble>)}

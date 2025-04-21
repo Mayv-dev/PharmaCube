@@ -237,10 +237,10 @@ const App: React.FC = () => {
             </Route>
 
             <Route exact path="/chat">
-              <Chat />
+              <Chat patientSelect={changePatientId}/>
             </Route>
             <Route exact path="/chat/patient">
-              <PatientChat passedPatientChatStatus={getPatientChatStatus}/>
+              <PatientChat passedPatient={patientId} passedPatientChatStatus={getPatientChatStatus}/>
             </Route>
 
             <Route exact path="/account">
