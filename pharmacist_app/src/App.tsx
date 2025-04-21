@@ -42,6 +42,7 @@ import History from './pages/History';
 
 import "./styles/GlobalStyling.css"
 
+import {ChatType}  from 'api types/types';
 
 import OneSignal from 'onesignal-cordova-plugin';
 
@@ -99,6 +100,7 @@ const App: React.FC = () => {
     const [notifsBefore, setNotifsBefore] = useState<number>(notificationList.length)
     const [unreadNotifs, setUnreadNotifs] = useState<number>(0)
 
+    const [patientChat, setPatientChat] = useState<ChatType[]>([{patient_id:1, pharmacist_id:1, messages:[],unread_message_count:0},{patient_id:2, pharmacist_id:1, messages:[],unread_message_count:0}]);
 
   const [pharmacistId, setPharmacistId] = useState<number>(1);
   const [pharmacistDetails, setPharmacistDetails] = useState<any|null>(null);
@@ -145,25 +147,64 @@ const App: React.FC = () => {
     })
   },[isTTSOn,])
 
+  const updatePatientChats = () => {
+    let stuff:ChatType[] = []
+    patientChat.map(async patient => {
+      await getPatientChat(patient.patient_id).then(res => {
+        let unread_messages = patient.unread_message_count;
+        console.log(res.length > patient.messages.length)
+        console.log(res.length)
+        console.log(patient.messages.length)
+        if(res.length > patient.messages.length) unread_messages += (res.length - patient.messages.length)
+        console.log("testing"+window.location.href.endsWith("chat/patient") && patient.patient_id == patientId)
+        window.location.href.endsWith("chat/patient") && patient.patient_id == patientId ? stuff.push({patient_id:patient.patient_id, pharmacist_id:patient.pharmacist_id, messages:res, unread_message_count:0}): stuff.push({patient_id:patient.patient_id, pharmacist_id:patient.pharmacist_id, messages:res, unread_message_count:unread_messages}) 
+      })
+    })
+    setPatientChat(stuff)
+  }
+  
+  const getPatientChat = async (passedPatient:number) => {
+		try {
+			const { data, status } = await axios.get(
+			  `http://localhost:8080/chat/1/${passedPatient}`,
+			  {
+				headers: {
+				  Accept: 'application/json'
+				},
+			  },
+			);
+			return data;
+	  
+		  } catch (error) {
+			if (axios.isAxiosError(error)) {
+			  console.log('error message: ', error.message);
+			  return error.message;
+			} else {
+			  console.log('unexpected error: ', error);
+			  return 'An unexpected error occurred';
+			}
+		  }
+	}
+
   useEffect(() => {
-    if(window.location.href.endsWith("chat/patient")) setGetPatientChatStatus(!getPatientChatStatus)
     if(pharmacistId != 0) fetchNotifications().then(res => res == "Network Error" || res == "Request failed with status code 404" ? console.log("Server connection has failed in App.tsx with the following error message: ", res):
     setNotificationList(res)
   )
+  
   setNotificationList(notificationList.sort((a:Notification,b:Notification) => Date.parse(b.timestamp) - Date.parse(a.timestamp)))
   setNotifsBefore(notificationList.length)
   if (notificationList.length > notifsBefore) {
     setUnreadNotifs(unreadNotifs+1)
     setNotifsBefore(notificationList.length)
   }
+  updatePatientChats()
+
   setTimeout(() => {			
       setPollState(!pollState);
-    }, 5000);
+    }, 200);
   },[pollState])
+  
 
-  useEffect(() => {
-    // this useEffect ensures that there is no delay in the notification list being updated from firebase
-  },[notificationList])
 
   const fetchNotifications = async () => {
     try {
@@ -237,7 +278,7 @@ const App: React.FC = () => {
             </Route>
 
             <Route exact path="/chat">
-              <Chat patientSelect={changePatientId}/>
+              <Chat patientChat={patientChat} patientSelect={changePatientId}/>
             </Route>
             <Route exact path="/chat/patient">
               <PatientChat passedPatient={patientId} passedPatientChatStatus={getPatientChatStatus}/>
@@ -257,7 +298,7 @@ const App: React.FC = () => {
           </IonRouterOutlet >
 
           <UpperToolbar pharmacistName={pharmacistDetails?.name} passedNotificationList={notificationList} unreadNotifs={unreadNotifs} resetUnreadNotifs={resetUnreadNotifs}/>
-          <LowerToolbar isNavBarTop={isNavBarTop}/>
+          <LowerToolbar chatList={patientChat} isNavBarTop={isNavBarTop}/>
 
         </IonTabs >
       </IonReactRouter >

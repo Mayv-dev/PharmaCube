@@ -49,8 +49,9 @@ export type Message = {
     message_body:string
 }
 
-export type Chat = {
+export type ChatType = {
 	patient_id:number
 	pharmacist_id:number
 	messages:Message[]
+    unread_message_count:number
 }
