@@ -53,9 +53,12 @@ def test_medication_due():
     handle_due_schedule(s)
 
 def test_guided_filling():
+    confirm_pin = Pin(16, Pin.IN)
     for i in range (3, 6):
         mc = motor_controller.MotorController()
         mc.move_to_compartment(i)
+        while confirm_pin.value() == 0:
+              pass
         mc = motor_controller.MotorController()
         mc.start()
 
