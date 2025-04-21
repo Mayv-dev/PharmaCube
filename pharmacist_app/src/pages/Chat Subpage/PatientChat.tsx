@@ -6,7 +6,7 @@ import {
   IonButton,
 } from '@ionic/react';
 import '../../styles/Chat Subpage/PatientChat.css';
-import { Chat } from 'api types/types';
+import { ChatType } from 'api types/types';
 import ChatBubble from '../../components/Chat Components/ChatBubble';
 import ChatTextbox from '../../components/Chat Components/ChatTextbox';
 
@@ -21,7 +21,7 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus, pass
 	const [pharmacistId, setPharmacistId] = useState<number>(1);
 
 	const [patientId, setPatientId] = useState<number>(passedPatient);
-	const [patientChat, setPatientChat] = useState<Chat>({patient_id:passedPatient, pharmacist_id:1, messages:[]});
+	const [patientChat, setPatientChat] = useState<ChatType>({patient_id:passedPatient, pharmacist_id:1, messages:[], unread_message_count:0});
 
 	// Code for setTimeout found at w3schools.com: https://www.w3schools.com/react/react_useeffect.asp
 	useEffect(()=> {
@@ -71,7 +71,7 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus, pass
 			);
 			let updatedPatientChat = patientChat.messages
 			updatedPatientChat.push(sentMessage)
-			setPatientChat({patient_id:patientId, pharmacist_id:pharmacistId, messages:updatedPatientChat})
+			setPatientChat({patient_id:patientId, pharmacist_id:pharmacistId, messages:updatedPatientChat, unread_message_count:0})
 			return data;
 		}
 		catch (error) {
