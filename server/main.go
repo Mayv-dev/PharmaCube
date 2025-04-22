@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 	"pharmacube/server/domain/models"
 	databaseadapters "pharmacube/server/driven_adapters/database_adapters"
 	"pharmacube/server/driving_adapters/rest_api/routes"
@@ -27,7 +28,16 @@ func main() {
 		&models.Message{},
 	)
 
-	server := gin.Default()
+	if len(os.Args) > 1 && os.Args[1] == "-r" {
+		runRelease()
+	} else {
+		runDebug()
+	}
+}
+
+func runDebug() {
+	server := gin.New()
+	server.Use(gin.Logger(), gin.Recovery())
 
 	log.SetOutput(gin.DefaultWriter)
 
@@ -40,4 +50,22 @@ func main() {
 	routes.ChatRoutes(server)
 
 	server.Run()
+}
+
+func runRelease() {
+	gin.SetMode(gin.ReleaseMode)
+	server := gin.New()
+	server.Use(gin.Logger(), gin.Recovery())
+
+	log.SetOutput(gin.DefaultWriter)
+
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowAllOrigins = true
+	server.Use(cors.New(corsConfig))
+
+	routes.AddPharmacistRoutes(server)
+	routes.PatientRoutes(server)
+	routes.ChatRoutes(server)
+
+	server.RunTLS(":8080", "/etc/letsencrypt/live/oro.mayv.dev-0001/fullchain.pem", "/etc/letsencrypt/live/oro.mayv.dev-0001/privkey.pem")
 }
