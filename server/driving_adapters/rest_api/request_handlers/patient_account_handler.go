@@ -43,6 +43,7 @@ func GetPatientAccount(context *gin.Context) {
 	if err != nil {
 		log.Println(err.Error())
 		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Patient account not found"})
+		return
 	}
 
 	context.JSON(http.StatusOK, patient)
