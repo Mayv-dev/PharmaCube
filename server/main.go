@@ -30,6 +30,9 @@ func main() {
 
 	if len(os.Args) > 1 && os.Args[1] == "-r" {
 		runRelease()
+
+	} else if len(os.Args) > 1 && os.Args[1] == "-d" {
+		runDebugTLS()
 	} else {
 		runDebug()
 	}
@@ -50,6 +53,23 @@ func runDebug() {
 	routes.ChatRoutes(server)
 
 	server.Run()
+}
+
+func runDebugTLS() {
+	server := gin.New()
+	server.Use(gin.Logger(), gin.Recovery())
+
+	log.SetOutput(gin.DefaultWriter)
+
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowAllOrigins = true
+	server.Use(cors.New(corsConfig))
+
+	routes.AddPharmacistRoutes(server)
+	routes.PatientRoutes(server)
+	routes.ChatRoutes(server)
+
+	server.RunTLS(":8080", "/etc/letsencrypt/live/oro.mayv.dev-0001/fullchain.pem", "/etc/letsencrypt/live/oro.mayv.dev-0001/privkey.pem")
 }
 
 func runRelease() {
