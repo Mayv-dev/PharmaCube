@@ -18,13 +18,13 @@ func PatientRoutes(router *gin.Engine) {
 	router.PUT("/patient/:patient_id/schedule/:schedule_id", requesthandlers.ModifyPatientScheduleItem)
 	router.DELETE("/patient/:patient_id/schedule/:schedule_id", requesthandlers.DeletePatientScheduleItem)
 
-	
 	router.GET("/patient/:patient_id/mock_schedule", requesthandlers.GetMockPatientSchedule)
 
 	router.GET("/patient/:patient_id/scheduledregime", requesthandlers.GetPatientScheduledRegime)
 	router.GET("/patient/:patient_id/scheduledregime/:scheduled_regime_id", requesthandlers.GetPatientScheduledRegimeItem)
 
 	router.GET("/patient/:patient_id/history", requesthandlers.GetPatientHistroy)
+	router.POST("/patient/:patient_id/history", requesthandlers.UpdateWasTaken)
 
 	router.POST("patient", requesthandlers.AddPatientAccount)
 	router.GET("patient/:patient_id", requesthandlers.GetPatientAccount)
