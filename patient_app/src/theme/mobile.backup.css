@@ -1,0 +1,68 @@
+/* Mobile-specific styles */
+:root {
+  --ion-safe-area-top: env(safe-area-inset-top);
+  --ion-safe-area-bottom: env(safe-area-inset-bottom);
+  --ion-safe-area-left: env(safe-area-inset-left);
+  --ion-safe-area-right: env(safe-area-inset-right);
+}
+
+/* Status bar padding */
+.ion-page {
+  padding-top: var(--ion-safe-area-top);
+  padding-bottom: var(--ion-safe-area-bottom);
+  padding-left: var(--ion-safe-area-left);
+  padding-right: var(--ion-safe-area-right);
+}
+
+/* Keyboard handling */
+.keyboard-visible {
+  --keyboard-height: 0px;
+}
+
+.keyboard-visible ion-content {
+  --keyboard-offset: var(--keyboard-height);
+  margin-bottom: var(--keyboard-offset);
+}
+
+/* Mobile-specific touch handling */
+@media (hover: none) {
+  ion-button {
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    min-height: 48px;
+  }
+
+  ion-item {
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --inner-padding-end: 16px;
+  }
+
+  ion-input, ion-textarea {
+    --padding-start: 16px;
+    --padding-end: 16px;
+  }
+}
+
+/* Prevent text selection on mobile */
+@media (hover: none) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+  }
+
+  input, textarea {
+    user-select: text;
+  }
+}
+
+/* Mobile-specific scroll behavior */
+@media (hover: none) {
+  ion-content {
+    --overflow: auto;
+    overscroll-behavior: contain;
+  }
+} 

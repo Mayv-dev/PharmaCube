@@ -1,0 +1,89 @@
+.schedule-view-content {
+  --background: var(--app-background);
+  background-color: var(--app-background);
+}
+
+.schedule-view-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--app-background);
+}
+
+.schedule-view-card {
+  background: var(--app-surface);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px var(--app-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid var(--app-border);
+}
+
+.schedule-view-item {
+  background: var(--app-surface);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  padding: 16px;
+  border: 1px solid var(--app-border);
+}
+
+ion-item {
+  --background: var(--app-surface);
+  background: var(--app-surface);
+  --border-color: var(--app-border);
+  --border-width: 0;
+  border-bottom: 1px solid var(--app-border);
+}
+
+ion-item::part(native) {
+  background: var(--app-surface);
+}
+
+/* Dark mode specific adjustments */
+.dark .schedule-view-card,
+.dark .schedule-view-item {
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  box-shadow: none;
+}
+
+.dark ion-item {
+  --background: var(--app-surface);
+  background: var(--app-surface);
+  --border-color: var(--app-border);
+  border-bottom: 1px solid var(--app-border);
+}
+
+.dark ion-item::part(native) {
+  background: var(--app-surface);
+}
+
+/* Dark mode overrides */
+@media (prefers-color-scheme: dark) {
+  .schedule-view-content {
+    --background: var(--app-background);
+    background-color: var(--app-background);
+  }
+
+  .schedule-view-container {
+    background-color: var(--app-background);
+  }
+
+  .schedule-view-card,
+  .schedule-view-item {
+    background: var(--app-surface);
+    border: 1px solid var(--app-border);
+    box-shadow: none;
+  }
+
+  ion-item {
+    --background: var(--app-surface);
+    background: var(--app-surface);
+    border-bottom: 1px solid var(--app-border);
+  }
+
+  ion-item::part(native) {
+    background: var(--app-surface);
+  }
+} 

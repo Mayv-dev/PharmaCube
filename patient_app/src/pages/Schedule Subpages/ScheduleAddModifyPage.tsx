@@ -20,6 +20,9 @@ import {
   IonNote,
   IonChip,
   IonSkeletonText,
+  IonBackButton,
+  useIonViewDidEnter,
+  isPlatform
 } from "@ionic/react";
 import { 
   trashOutline, 
@@ -61,6 +64,7 @@ const ScheduleAddModifyPage: React.FC = () => {
   const [editedId, setEditedId] = useState<number>(-1);
   const [editHours, setEditHours] = useState<string>("");
   const [editMinutes, setEditMinutes] = useState<string>("");
+  const [editError, setEditError] = useState<string>("");
   const [showModal, setShowModal] = useState<boolean>(false);
   const [deleteScheduleId, setDeleteScheduleId] = useState<number>(-1);
   const [showToast, setShowToast] = useState<boolean>(false);
@@ -72,6 +76,24 @@ const ScheduleAddModifyPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const { daltonization } = useColorblindFilter();
   const history = useHistory();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(isPlatform('mobile'));
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useIonViewDidEnter(() => {
+    // Ensure proper scroll behavior on mobile
+    const content = document.querySelector('ion-content') as HTMLIonContentElement;
+    if (content) {
+      content.scrollToTop(300);
+    }
+  });
 
   useEffect(() => {
     loadSchedule(selectedDay);
@@ -130,30 +152,23 @@ const ScheduleAddModifyPage: React.FC = () => {
     const hours = parseInt(editHours, 10);
     const minutes = parseInt(editMinutes, 10);
     
-    if (isNaN(hours)) {
-      setToastMessage("Please enter valid hours (0-23)");
+    // Reset error state
+    setEditError("");
+    
+    // Validate hours
+    if (isNaN(hours) || hours < 0 || hours > 23) {
+      setEditError("Hours must be between 0 and 23");
       setShowToast(true);
       return;
     }
-  
-    if (isNaN(minutes)) {
-      setToastMessage("Please enter valid minutes (0-59)");
+    
+    // Validate minutes
+    if (isNaN(minutes) || minutes < 0 || minutes > 59) {
+      setEditError("Minutes must be between 0 and 59");
       setShowToast(true);
       return;
     }
-  
-    if (hours < 0 || hours > 23) {
-      setToastMessage("Hours must be between 0 and 23");
-      setShowToast(true);
-      return;
-    }
-  
-    if (minutes < 0 || minutes > 59) {
-      setToastMessage("Minutes must be between 0 and 59");
-      setShowToast(true);
-      return;
-    }
-  
+    
     try {
       const updatedSchedule = schedule.map(item => {
         if (item.time_period === timePeriod) {
@@ -165,14 +180,16 @@ const ScheduleAddModifyPage: React.FC = () => {
         }
         return item;
       });
-  
+    
       setSchedule(updatedSchedule);
       setEditedId(-1);
+      setEditHours("");
+      setEditMinutes("");
       setToastMessage("Time updated successfully!");
       setShowToast(true);
     } catch (error) {
       console.error("Error updating time:", error);
-      setToastMessage("Error updating time");
+      setEditError("Error updating time");
       setShowToast(true);
     }
   }
@@ -224,16 +241,63 @@ const ScheduleAddModifyPage: React.FC = () => {
     setShowAddMedicationModal(false);
   };
 
+  const handleTimeEdit = (timePeriod: number, item: ScheduleData) => {
+    setEditError("");
+    // Ensure minutes are properly padded when editing
+    const paddedMinutes = item.minute < 10 ? `0${item.minute}` : item.minute.toString();
+    setEditHours(item.hour.toString());
+    setEditMinutes(paddedMinutes);
+    setEditedId(timePeriod);
+  };
+
+  const handleTimeInput = (value: string, type: 'hours' | 'minutes') => {
+    // Remove any non-numeric characters
+    const numericValue = value.replace(/[^0-9]/g, '');
+    
+    if (type === 'hours') {
+      // For hours, only allow values between 0-23
+      const numValue = parseInt(numericValue);
+      if (numericValue === '' || (numValue >= 0 && numValue <= 23)) {
+        setEditHours(numericValue);
+      }
+    } else {
+      // For minutes, handle empty input and validate range
+      if (numericValue === '') {
+        setEditMinutes('');
+        return;
+      }
+      
+      const numValue = parseInt(numericValue);
+      if (numValue >= 0 && numValue <= 59) {
+        // Pad single digits with leading zero
+        const paddedValue = numValue < 10 ? `0${numValue}` : numValue.toString();
+        setEditMinutes(paddedValue);
+      } else if (numValue > 59) {
+        // If value is greater than 59, set to 59
+        setEditMinutes('59');
+      }
+    }
+  };
+
   return (
     <IonPage className={`${daltonization} daltonization-active`}>
+      <IonHeader className="ion-no-border">
+        <IonToolbar>
+          <IonButtons slot="start">
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+
       <IonContent className="schedule-add-modify-content">
         <div className="app-container">
-          <div className="welcome-section">
-            <div className="welcome-content">
-              <p>Set up and manage your medication schedule</p>
+          {!isMobile && (
+            <div className="welcome-section">
+              <div className="welcome-content">
+                <p>Set up and manage your medication schedule</p>
+              </div>
+              <div className="welcome-decoration"></div>
             </div>
-            <div className="welcome-decoration"></div>
-          </div>
+          )}
 
           <div className="schedule-section">
             <div className="section-header">
@@ -248,8 +312,8 @@ const ScheduleAddModifyPage: React.FC = () => {
                   className={selectedDay === day ? "selected-day-chip" : "day-chip"}
                   onClick={() => setSelectedDay(day)}
                 >
-                  <IonIcon icon={calendarOutline} />
-                  <IonLabel>{getWeekdayName(day)}</IonLabel>
+                  {!isMobile && <IonIcon icon={calendarOutline} />}
+                  <IonLabel>{isMobile ? getWeekdayName(day).slice(0, 3) : getWeekdayName(day)}</IonLabel>
                 </div>
               ))}
             </div>
@@ -271,28 +335,52 @@ const ScheduleAddModifyPage: React.FC = () => {
                           <IonInput
                             type="number"
                             value={editHours}
-                            onIonChange={(e) => setEditHours(e.detail.value || "")}
+                            onIonChange={(e) => handleTimeInput(e.detail.value || "", 'hours')}
                             placeholder={timePadding(item.hour)}
                             className="time-input"
                             min="0"
                             max="23"
+                            inputmode="numeric"
+                            pattern="[0-9]*"
                           />
                           <span className="time-separator">:</span>
                           <IonInput
                             type="number"
                             value={editMinutes}
-                            onIonChange={(e) => setEditMinutes(e.detail.value || "")}
+                            onIonChange={(e) => handleTimeInput(e.detail.value || "", 'minutes')}
                             placeholder={timePadding(item.minute)}
                             className="time-input"
                             min="0"
                             max="59"
+                            inputmode="numeric"
+                            pattern="[0-9]*"
                           />
                         </div>
-                        <div className="edit-actions">
-                          <IonButton fill="clear" className="confirm-edit-button" onClick={() => updateTime(item.time_period)}>
+                        {editError && (
+                          <IonNote color="danger" className="edit-error">
+                            {editError}
+                          </IonNote>
+                        )}
+                        <div className="edit-buttons">
+                          <IonButton 
+                            fill="clear" 
+                            className="confirm-edit-button" 
+                            onClick={() => updateTime(item.time_period)}
+                            size={isMobile ? "large" : "default"}
+                          >
                             <IonIcon icon={checkmarkOutline} />
                           </IonButton>
-                          <IonButton fill="clear" className="cancel-edit-button" onClick={() => setEditedId(-1)}>
+                          <IonButton 
+                            fill="clear" 
+                            className="cancel-edit-button" 
+                            onClick={() => {
+                              setEditedId(-1);
+                              setEditHours("");
+                              setEditMinutes("");
+                              setEditError("");
+                            }}
+                            size={isMobile ? "large" : "default"}
+                          >
                             <IonIcon icon={closeOutline} />
                           </IonButton>
                         </div>
@@ -325,21 +413,28 @@ const ScheduleAddModifyPage: React.FC = () => {
                           )}
                         </div>
                         <div className="schedule-actions">
-                          <IonButton fill="clear" className="add-medication-button" onClick={() => handleAddMedications(item.time_period)}>
+                          <IonButton 
+                            fill="clear" 
+                            className="add-medication-button" 
+                            onClick={() => handleAddMedications(item.time_period)}
+                            size={isMobile ? "large" : "default"}
+                          >
                             <IonIcon icon={addCircleOutline} />
-                            <span>Add</span>
+                            {!isMobile && <span>Add</span>}
                           </IonButton>
-                          <IonButton fill="clear" className="edit-button" onClick={() => { 
-                            setEditedId(item.time_period); 
-                            setEditHours(item.hour.toString());
-                            setEditMinutes(item.minute.toString());
-                          }}>
+                          <IonButton 
+                            fill="clear" 
+                            className="edit-button" 
+                            onClick={() => handleTimeEdit(item.time_period, item)}
+                            size={isMobile ? "large" : "default"}
+                          >
                             <IonIcon icon={createOutline} />
                           </IonButton>
                           <IonButton
                             fill="clear"
                             className={`status-button ${item.taken ? "taken" : "not-taken"}`}
                             onClick={() => handleMedicationStatus(item.time_period, !item.taken)}
+                            size={isMobile ? "large" : "default"}
                           >
                             <IonIcon icon={item.taken ? checkmarkCircle : closeCircle} />
                           </IonButton>

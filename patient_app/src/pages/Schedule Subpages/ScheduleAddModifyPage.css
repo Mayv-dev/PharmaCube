@@ -94,12 +94,22 @@
 
 /* Dark Mode Overrides */
 :root.dark {
-  --app-background: #0f172a;
-  --app-surface: #1e293b;
-  --app-text: #f8fafc;
-  --app-text-secondary: #94a3b8;
+  --app-background: #1E1E2E;
+  --app-surface: #261B30;
+  --app-text: #FFFFFF;
+  --app-text-secondary: #A1A1AA;
   --app-border: rgba(255, 255, 255, 0.1);
-  --app-shadow: rgba(0, 0, 0, 0.3);
+  --app-shadow: rgba(0, 0, 0, 0.2);
+  
+  /* Custom dark mode colors */
+  --card-bg: #261B30;
+  --card-border: rgba(255, 255, 255, 0.1);
+  --time-text: #FFFFFF;
+  --icon-bg: rgba(0, 168, 120, 0.15);
+  --schedule-item-bg: #261B30;
+  --header-bg: #1E1E2E;
+  --period-text: #FFFFFF;
+  --time-value-text: #E4E4E7;
 }
 
 /* Layout */
@@ -175,9 +185,7 @@
 
 /* Dark mode specific welcome section */
 :root.dark .welcome-section {
-  background: linear-gradient(135deg, rgba(30,41,59,0.95) 0%, rgba(30,41,59,0.85) 100%);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  border: 1px solid var(--app-border);
+  display: none;
 }
 
 /* Dark mode specific decoration */
@@ -190,9 +198,11 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 8px;
-  margin: 24px 0;
+  margin: 16px 0;
   padding: 4px;
   width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .day-chip,
@@ -770,31 +780,59 @@ ion-title {
   --width: 90%;
   --max-width: 600px;
   --border-radius: 20px;
+  --background: var(--ion-color-light);
 }
 
 .medication-modal ion-header {
-  background: white;
+  background: var(--ion-color-light);
+  border-bottom: 1px solid var(--ion-color-medium);
 }
 
 .medication-modal ion-toolbar {
-  --background: white;
-  --color: #1e293b;
+  --background: var(--ion-color-light);
+  --color: var(--ion-color-dark);
   --border-color: transparent;
   padding: 16px;
 }
 
-.medication-modal .modal-container {
+.medication-modal ion-title {
+  font-size: 1.2em;
+  font-weight: 600;
+  color: var(--ion-color-dark);
+}
+
+.modal-container {
   padding: 20px;
   height: 100%;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  background: var(--ion-color-light);
+}
+
+.section-header {
+  margin-bottom: 16px;
+}
+
+.section-header h2 {
+  font-size: 1.4em;
+  font-weight: 600;
+  color: var(--ion-color-dark);
+  margin: 0 0 8px 0;
+}
+
+.section-header ion-note {
+  font-size: 1em;
+  color: var(--ion-color-medium);
+  line-height: 1.4;
 }
 
 .medication-selection-list {
   flex: 1;
   overflow-y: auto;
   background: transparent;
+  margin: 0 -20px;
+  padding: 0 20px;
 }
 
 .medication-selection-item {
@@ -802,11 +840,16 @@ ion-title {
   --padding-end: 16px;
   --padding-top: 12px;
   --padding-bottom: 12px;
-  --background: white;
+  --background: var(--ion-color-light);
   --border-radius: 12px;
   margin-bottom: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--ion-color-medium);
+  transition: all 0.2s ease;
+}
+
+.medication-selection-item:hover {
+  border-color: var(--ion-color-primary);
+  background: rgba(var(--ion-color-primary-rgb), 0.05);
 }
 
 .medication-selection-item ion-label {
@@ -815,108 +858,141 @@ ion-title {
 }
 
 .medication-selection-item ion-label h3 {
-  font-size: 16px;
+  font-size: 1.1em;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--ion-color-dark);
   margin-bottom: 4px;
   line-height: 1.4;
 }
 
 .medication-selection-item ion-label p {
-  font-size: 14px;
-  color: #64748b;
+  font-size: 0.95em;
+  color: var(--ion-color-medium);
   line-height: 1.4;
 }
 
 .medication-selection-item ion-checkbox {
-  --size: 22px;
-  --checkbox-background: white;
-  --checkbox-background-checked: var(--oro-green);
-  --border-color: #cbd5e1;
-  --border-color-checked: var(--oro-green);
-  --checkmark-color: white;
+  --size: 24px;
+  --checkbox-background: var(--ion-color-light);
+  --checkbox-background-checked: var(--ion-color-primary);
+  --border-color: var(--ion-color-medium);
+  --border-color-checked: var(--ion-color-primary);
+  --checkmark-color: var(--ion-color-light);
   --border-radius: 6px;
   margin: 0 0 0 16px;
 }
 
 .modal-actions {
   padding: 16px;
-  background: white;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--ion-color-light);
+  border-top: 1px solid var(--ion-color-medium);
+  position: sticky;
+  bottom: 0;
 }
 
 .save-button {
-  --background: var(--oro-green);
-  --color: white;
+  --background: var(--ion-color-primary);
+  --color: var(--ion-color-light);
   --border-radius: 12px;
   --padding-top: 16px;
   --padding-bottom: 16px;
   font-weight: 600;
   margin: 0;
+  width: 100%;
 }
 
 .empty-state {
   padding: 40px 20px;
   text-align: center;
-  background: rgba(0, 0, 0, 0.02);
+  background: rgba(var(--ion-color-medium-rgb), 0.1);
   border-radius: 16px;
   margin: 20px 0;
 }
 
 .empty-state ion-icon {
   font-size: 48px;
-  color: #94a3b8;
+  color: var(--ion-color-medium);
   margin-bottom: 16px;
 }
 
 .empty-state p {
-  font-size: 16px;
-  color: #64748b;
+  font-size: 1.1em;
+  color: var(--ion-color-medium);
   margin: 0;
   line-height: 1.5;
 }
 
-/* Dark mode adjustments for medication modal */
-@media (prefers-color-scheme: dark) {
-  .medication-modal ion-header,
-  .medication-modal ion-toolbar {
-    --background: #1e293b;
-    --color: white;
-  }
+/* Dark mode adjustments */
+:root.dark .medication-modal {
+  --background: var(--ion-color-dark);
+}
 
-  .medication-selection-item {
-    --background: #1e293b;
-    border-color: rgba(255, 255, 255, 0.1);
-  }
+:root.dark .medication-modal ion-header {
+  background: var(--ion-color-dark);
+  border-bottom-color: var(--ion-color-medium);
+}
 
-  .medication-selection-item ion-label h3 {
-    color: #f8fafc;
-  }
+:root.dark .medication-modal ion-toolbar {
+  --background: var(--ion-color-dark);
+  --color: var(--ion-color-light);
+}
 
-  .medication-selection-item ion-label p {
-    color: #94a3b8;
-  }
+:root.dark .medication-modal ion-title {
+  color: var(--ion-color-light);
+}
 
-  .medication-selection-item ion-checkbox {
-    --checkbox-background: #2d3748;
-    --border-color: #475569;
-  }
+:root.dark .modal-container {
+  background: var(--ion-color-dark);
+}
 
-  .modal-actions {
-    background: #1e293b;
-    border-top-color: rgba(255, 255, 255, 0.1);
-  }
+:root.dark .section-header h2 {
+  color: var(--ion-color-light);
+}
 
-  .empty-state {
-    background: rgba(255, 255, 255, 0.05);
-  }
+:root.dark .section-header ion-note {
+  color: var(--ion-color-medium);
+}
+
+:root.dark .medication-selection-item {
+  --background: var(--ion-color-dark);
+  border-color: var(--ion-color-medium);
+}
+
+:root.dark .medication-selection-item:hover {
+  background: rgba(var(--ion-color-primary-rgb), 0.1);
+}
+
+:root.dark .medication-selection-item ion-label h3 {
+  color: var(--ion-color-light);
+}
+
+:root.dark .medication-selection-item ion-label p {
+  color: var(--ion-color-medium);
+}
+
+:root.dark .modal-actions {
+  background: var(--ion-color-dark);
+  border-top-color: var(--ion-color-medium);
+}
+
+:root.dark .empty-state {
+  background: rgba(var(--ion-color-medium-rgb), 0.1);
+}
+
+:root.dark .empty-state ion-icon {
+  color: var(--ion-color-medium);
+}
+
+:root.dark .empty-state p {
+  color: var(--ion-color-medium);
 }
 
 .schedule-item {
+  --background: var(--app-surface);
+  background-color: var(--app-surface);
   display: flex;
   align-items: center;
   padding: 12px;
-  background: white;
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-sm);
   margin-bottom: 12px;
@@ -1046,5 +1122,484 @@ ion-title {
   .medications-list {
     padding: 0;
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 16px;
+  }
+
+  .welcome-section {
+    padding: 24px 16px;
+  }
+
+  .welcome-content h1 {
+    font-size: 24px;
+  }
+
+  .welcome-content p {
+    font-size: 16px;
+  }
+
+  .schedule-item {
+    padding: 12px 8px;
+  }
+
+  .schedule-item-content {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .time-period {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .time-details h3 {
+    font-size: 18px;
+  }
+
+  .time-details p.time {
+    font-size: 15px;
+  }
+
+  .medications-list {
+    width: 100%;
+    padding: 0;
+  }
+
+  .medication-chip {
+    height: 28px;
+    font-size: 14px;
+    --padding-start: 8px;
+    --padding-end: 8px;
+  }
+
+  .schedule-actions {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .schedule-actions ion-button {
+    --padding-start: 8px;
+    --padding-end: 8px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  /* Time editing improvements for mobile */
+  .edit-time-container {
+    width: 100%;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .time-input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .time-input {
+    --padding-start: 8px;
+    --padding-end: 8px;
+    max-width: 80px;
+    font-size: 16px;
+  }
+
+  .time-separator {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .edit-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    width: 100%;
+  }
+
+  /* Modal improvements for mobile */
+  .medication-modal {
+    --height: 100%;
+    --width: 100%;
+  }
+
+  .modal-container {
+    padding: 16px;
+  }
+
+  .medication-selection-item {
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+  }
+
+  .medication-selection-item ion-label h3 {
+    font-size: 15px;
+  }
+
+  .medication-selection-item ion-label p {
+    font-size: 13px;
+  }
+
+  .no-medications {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .no-medications ion-icon {
+    font-size: 16px;
+  }
+}
+
+/* Improve touch targets for mobile */
+@media (hover: none) {
+  .schedule-actions ion-button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .day-chip,
+  .selected-day-chip {
+    min-height: 44px;
+  }
+
+  .medication-selection-item {
+    min-height: 54px;
+  }
+}
+
+/* Schedule Item Dark Mode */
+:root.dark .schedule-item {
+  background: var(--oro-green-bg);
+  border: none;
+  border-radius: 16px;
+  margin: 16px 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+:root.dark .time-details h3 {
+  color: var(--oro-green);
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  opacity: 1;
+}
+
+:root.dark .time-details p.time {
+  color: var(--oro-green-light);
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+:root.dark .no-medications {
+  background: var(--oro-green-bg);
+  color: var(--oro-green);
+  opacity: 0.8;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+:root.dark .no-medications ion-icon {
+  color: var(--oro-green);
+  opacity: 0.8;
+}
+
+:root.dark .no-medications p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--oro-green);
+}
+
+/* Day selector dark mode */
+:root.dark .day-selector {
+  padding: 8px 16px;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+:root.dark .day-chip {
+  background: var(--oro-green-bg);
+  border: none;
+  border-radius: 12px;
+  height: 40px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:root.dark .day-chip ion-label {
+  color: var(--oro-green);
+  font-weight: 500;
+  font-size: 14px !important;
+}
+
+:root.dark .selected-day-chip {
+  background: var(--oro-green);
+  border: none;
+  border-radius: 12px;
+  height: 40px;
+  padding: 0 16px;
+  box-shadow: 0 2px 8px rgba(0, 168, 120, 0.3);
+}
+
+:root.dark .selected-day-chip ion-label {
+  color: white;
+  font-weight: 600;
+  font-size: 14px !important;
+}
+
+/* Header and section titles */
+:root.dark .section-header h2 {
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+:root.dark .section-header ion-note {
+  color: var(--time-value-text);
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* Action buttons */
+:root.dark .schedule-actions ion-button {
+  --color: var(--oro-green);
+  margin: 0 4px;
+}
+
+:root.dark .schedule-actions ion-button.delete-button {
+  --color: #FF4B55;
+}
+
+:root.dark .add-medication-button {
+  --color: var(--oro-green);
+}
+
+:root.dark .status-button.taken {
+  --color: var(--oro-green);
+}
+
+:root.dark .status-button.not-taken {
+  --color: #FF4B55;
+}
+
+/* Time editing interface */
+:root.dark .edit-time-container {
+  background: var(--card-bg);
+  padding: 16px;
+  border-radius: 12px;
+  border: none;
+}
+
+:root.dark .time-input {
+  --background: rgba(255, 255, 255, 0.1);
+  --color: white;
+  --placeholder-color: rgba(255, 255, 255, 0.6);
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+}
+
+:root.dark .time-separator {
+  color: white;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+/* Modal styles */
+:root.dark .medication-modal {
+  --background: var(--app-background);
+}
+
+:root.dark .medication-modal ion-header {
+  --background: var(--header-bg);
+  border: none;
+}
+
+:root.dark .medication-modal ion-toolbar {
+  --background: var(--header-bg);
+  --color: white;
+  --border-color: transparent;
+}
+
+:root.dark .medication-selection-item {
+  --background: var(--card-bg);
+  border: none;
+  margin: 8px 16px;
+  border-radius: 12px;
+}
+
+:root.dark .medication-selection-item ion-label h3 {
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+:root.dark .medication-selection-item ion-label p {
+  color: var(--time-value-text);
+  opacity: 0.9;
+}
+
+:root.dark .modal-actions {
+  background: var(--app-background);
+  border: none;
+  padding: 16px;
+}
+
+/* List container */
+:root.dark ion-list {
+  background: transparent;
+  padding: 0;
+}
+
+:root.dark ion-item {
+  --background: transparent;
+  --border-color: transparent;
+}
+
+/* Time icon */
+:root.dark .time-icon {
+  background: var(--oro-green-bg);
+  border-radius: 12px;
+  padding: 8px;
+}
+
+:root.dark .time-icon ion-icon {
+  color: var(--oro-green);
+  font-size: 20px;
+}
+
+/* App container */
+:root.dark .app-container {
+  background-color: var(--app-background);
+  padding: 0;
+  padding-top: 16px;
+}
+
+:root.dark .schedule-add-modify-content {
+  --background: var(--app-background);
+}
+
+/* Header */
+:root.dark ion-header {
+  --background: var(--header-bg);
+  border: none;
+}
+
+:root.dark ion-toolbar {
+  --background: var(--header-bg);
+  --color: white;
+  --border-color: transparent;
+}
+
+:root.dark ion-title {
+  color: white;
+  font-weight: 600;
+}
+
+/* Toast in dark mode */
+:root.dark ion-toast {
+  --background: var(--card-bg);
+  --color: white;
+  --border-radius: 12px;
+  --box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.edit-time-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.time-input-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--ion-color-light);
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--ion-color-medium);
+  transition: all 0.2s ease;
+}
+
+.time-input-group:focus-within {
+  border-color: var(--ion-color-primary);
+  box-shadow: 0 0 0 2px rgba(var(--ion-color-primary-rgb), 0.2);
+}
+
+.time-input {
+  width: 60px;
+  text-align: center;
+  --padding-start: 8px;
+  --padding-end: 8px;
+  --background: var(--ion-color-light);
+  --border-radius: 8px;
+  font-size: 1.2em;
+  font-weight: 500;
+  --color: var(--ion-color-dark);
+}
+
+.time-input:focus {
+  --background: var(--ion-color-light);
+  --border-color: var(--ion-color-primary);
+}
+
+.time-separator {
+  font-size: 1.4em;
+  font-weight: bold;
+  color: var(--ion-color-dark);
+  margin: 0 4px;
+}
+
+.edit-error {
+  font-size: 0.9em;
+  margin-top: 8px;
+  text-align: center;
+  color: var(--ion-color-danger);
+  padding: 4px 8px;
+  background: rgba(var(--ion-color-danger-rgb), 0.1);
+  border-radius: 4px;
+}
+
+.edit-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.confirm-edit-button {
+  --color: var(--ion-color-success);
+  --background-hover: rgba(var(--ion-color-success-rgb), 0.1);
+}
+
+.cancel-edit-button {
+  --color: var(--ion-color-danger);
+  --background-hover: rgba(var(--ion-color-danger-rgb), 0.1);
+}
+
+@media (max-width: 768px) {
+  .time-input {
+    width: 50px;
+    font-size: 1.1em;
+  }
+  
+  .time-input-group {
+    padding: 8px;
+  }
+  
+  .edit-buttons {
+    gap: 8px;
   }
 }

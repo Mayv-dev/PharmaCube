@@ -14,9 +14,10 @@
 
 /* Content Background */
 .content {
-  background: var(--ion-background-color);
+  background: var(--app-background);
   padding: 20px;
   position: relative;
+  min-height: 100%;
 }
 
 /* Center Grid */
@@ -28,27 +29,40 @@
   gap: 20px;
   max-width: 800px;
   margin: 0 auto;
+  padding: 0 16px;
 }
 
-/* Center Icon - RESTORED ORIGINAL SIZE */
+/* Center Icon Container */
+.center-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 32px;
+  padding: 20px;
+}
+
+/* Center Icon */
 .center-icon {
-  font-size: 12rem;
-  color: var(--ion-color-primary);
-  margin-bottom: 20px;
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  object-fit: contain;
 }
 
 /* Label Row */
 .label-row {
   width: 100%;
-  max-width: 600px;
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 0;
 }
 
-/* Card Item - Keeping the improved button styles */
+/* Card Item */
 .card-item {
-  --background: transparent;
+  --background: var(--app-surface);
+  background-color: var(--app-surface);
   --border-radius: 12px;
   --padding-start: 0;
   --padding-end: 0;
@@ -62,32 +76,33 @@
   text-decoration: none;
 }
 
-/* Keeping the new button design */
+/* Card Button */
 .card-item-button {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--ion-color-light);
-  border: 2px solid var(--ion-color-primary);
-  border-radius: 12px;
-  padding: 25px 15px;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 16px;
+  padding: 20px;
   width: 100%;
-  height: 100%;
+  min-height: 140px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px var(--app-shadow);
 }
 
 .card-item-button:hover {
   background: var(--ion-color-primary);
   transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 8px var(--app-shadow);
+  border-color: var(--ion-color-primary);
 }
 
 .card-item-button ion-icon {
-  font-size: 3.5rem;
+  font-size: 32px;
   color: var(--ion-color-primary);
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   transition: all 0.3s ease;
 }
 
@@ -96,11 +111,13 @@
 }
 
 .card-label {
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: var(--ion-color-primary);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--app-text);
   transition: all 0.3s ease;
   text-align: center;
+  margin: 0;
+  white-space: normal;
 }
 
 .card-item-button:hover .card-label {
@@ -137,17 +154,21 @@
     font-size: 2rem;
   }
   .center-icon {
-    font-size: 8rem; /* Adjusted for smaller screens */
-    margin-bottom: 20px;
+    max-width: 160px;
+  }
+  .label-row {
+    gap: 12px;
   }
   .card-item-button {
-    padding: 20px 10px;
+    padding: 16px;
+    min-height: 120px;
   }
   .card-item-button ion-icon {
-    font-size: 3rem;
+    font-size: 28px;
+    margin-bottom: 8px;
   }
   .card-label {
-    font-size: 1.25rem;
+    font-size: 14px;
   }
 }
 
@@ -155,23 +176,29 @@
   .title {
     font-size: 1.75rem;
   }
+  .content {
+    padding: 16px;
+  }
+  .center-icon-container {
+    margin-bottom: 24px;
+    padding: 16px;
+  }
   .center-icon {
-    font-size: 6rem; /* Adjusted for mobile */
-    margin-bottom: 15px;
+    max-width: 140px;
   }
   .label-row {
-    flex-direction: column;
-    gap: 15px;
+    gap: 10px;
   }
   .card-item-button {
-    padding: 15px 10px;
+    padding: 12px;
+    min-height: 100px;
   }
   .card-item-button ion-icon {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
+    font-size: 24px;
+    margin-bottom: 6px;
   }
   .card-label {
-    font-size: 1.1rem;
+    font-size: 13px;
   }
   .filter-selector-container {
     top: 40px;
@@ -197,14 +224,6 @@
   filter: grayscale(100%);
 }
 
-/* Center Icon Container */
-.center-icon-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-
 :root {
   --ion-safe-area-top: 0;
   --ion-safe-area-bottom: 0;
@@ -217,42 +236,60 @@
   --section-gap: 32px;
   --welcome-section-radius: 32px;
   --icon-container-radius: 20px;
+  --primary-gradient: linear-gradient(135deg, #00A878 0%, #00916A 100%);
+  --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --card-hover-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark Mode Variables */
+:root.dark {
+  --app-background: #1A1125;
+  --app-surface: #261B30;
+  --app-surface-secondary: #312236;
+  --app-text: #FFFFFF;
+  --app-text-secondary: #A1A1AA;
+  --app-border: rgba(255, 255, 255, 0.1);
+  --app-shadow: rgba(0, 0, 0, 0.3);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --dark-bg-primary: #1A1125;
+  --dark-bg-secondary: #261B30;
+  --dark-card-bg: #312236;
 }
 
 .schedule-page-content {
-  --background: #f8fafc;
-  --ion-toolbar-background: transparent;
-  --padding-top: 0;
-  --padding-bottom: 0;
-  --padding-start: 0;
-  --padding-end: 0;
+  --background: var(--ion-background-color);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .app-container {
-  padding: 24px;
+  padding: 16px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   max-width: 1200px;
   margin: 0 auto;
-  gap: var(--section-gap);
-  padding-top: max(24px, env(safe-area-inset-top));
-  padding-bottom: max(24px, env(safe-area-inset-bottom));
-  padding-left: max(24px, env(safe-area-inset-left));
-  padding-right: max(24px, env(safe-area-inset-right));
+  gap: 24px;
+  padding-top: max(16px, env(safe-area-inset-top));
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
 }
 
 /* Welcome Section */
 .welcome-section {
   position: relative;
-  padding: 40px 32px;
+  padding: 24px;
   text-align: left;
   background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
-  border-radius: var(--welcome-section-radius);
+  border-radius: 16px;
   overflow: hidden;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1), 0 5px 15px -5px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   margin-top: 8px;
   border: 1px solid rgba(255, 255, 255, 0.8);
 }
@@ -267,8 +304,8 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 180px;
-  height: 180px;
+  width: 120px;
+  height: 120px;
   background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0.05) 100%);
   border-radius: 50%;
   transform: translate(25%, -25%);
@@ -277,9 +314,9 @@
 }
 
 .welcome-section h1 {
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 800;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -289,7 +326,7 @@
 
 .welcome-section p {
   color: #64748b;
-  font-size: 18px;
+  font-size: 16px;
   margin: 0;
   font-weight: 500;
   line-height: 1.5;
@@ -298,171 +335,191 @@
 
 /* Menu Section */
 .menu-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  margin-bottom: 24px;
+  padding: 8px;
 }
 
 .menu-grid {
-  padding: 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  padding: 16px;
+}
+
+.menu-row {
   gap: 16px;
 }
 
-/* Cards */
+.menu-col {
+  padding: 0;
+}
+
+ion-row {
+  margin-bottom: 24px;
+}
+
+/* Menu Card */
 .menu-card {
-  height: auto;
-  min-height: 140px;
-  border-radius: var(--card-border-radius);
-  box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.12), 0 4px 12px -4px rgba(0, 0, 0, 0.06);
-  margin: 0;
-  background: white;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: none;
   --background: transparent;
-  --border-radius: var(--card-border-radius);
+  --border-color: transparent;
   --padding-start: 0;
   --padding-end: 0;
   --inner-padding-end: 0;
-}
-
-.menu-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 100%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.menu-card:hover::before {
-  opacity: 1;
-}
-
-.menu-card:hover {
-  transform: var(--card-hover-transform);
-  box-shadow: var(--card-hover-shadow);
-}
-
-.menu-card:active {
-  transform: var(--card-active-transform);
+  margin: 0;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  border-radius: 16px;
+  background: var(--surface-light) !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--ion-color-primary);
+  overflow: hidden;
+  position: relative;
+  transform: translateZ(0);
+  will-change: transform;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .card-link {
   width: 100%;
-  text-decoration: none;
-  display: block;
+  padding: 20px;
+  background: var(--ion-card-background, #ffffff);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .card-content {
   display: flex;
   align-items: center;
+  gap: 16px;
   padding: var(--card-padding);
-  position: relative;
-  z-index: 2;
-  gap: var(--card-gap);
+  min-height: 80px;
 }
 
 .card-icon-container {
-  width: 64px;
-  height: 64px;
-  min-width: 64px;
-  border-radius: var(--icon-container-radius);
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.15), 0 4px 8px -2px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  width: 56px;
+  height: 56px;
+  background: var(--ion-color-primary);
+  border-radius: 16px;
   position: relative;
-  overflow: hidden;
-}
-
-.card-icon-container::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.menu-card:hover .card-icon-container::after {
-  opacity: 1;
-}
-
-.menu-card:hover .card-icon-container {
-  transform: scale(1.1) rotate(5deg);
+  transition: all 0.3s ease;
+  box-shadow: inset 0 0 0 1px var(--ion-color-primary);
+  flex-shrink: 0;
 }
 
 .card-icon {
-  font-size: 28px;
-  color: white;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  font-size: 24px;
+  color: var(--ion-color-primary-contrast);
+  transition: color 0.3s ease;
 }
 
 .card-text-content {
   flex: 1;
   min-width: 0;
+  transform: translateZ(0);
 }
 
-.card-content h3 {
-  font-size: 20px;
-  font-weight: 700;
-  color: #1e293b;
-  margin: 0 0 6px 0;
-  line-height: 1.2;
-  letter-spacing: -0.3px;
+.card-text-content h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 6px;
+  transition: color 0.3s ease;
 }
 
 .card-description {
-  font-size: 15px;
-  color: #64748b;
   margin: 0;
-  line-height: 1.5;
+  font-size: 15px;
+  color: var(--text-secondary-light);
+  line-height: 1.6;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
   font-weight: 500;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .menu-section {
+    padding: 16px;
+  }
+
+  .menu-card {
+    margin-bottom: 28px;
+    max-width: 320px;
+  }
+
+  ion-row {
+    margin-bottom: 28px;
+  }
+
+  .card-link {
+    padding: 24px;
+  }
+
+  .card-content {
+    min-height: 88px;
+  }
+
+  .card-icon-container {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+  }
+
+  .card-icon {
+    font-size: 28px;
+  }
+
+  .card-text-content h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  .card-description {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+}
+
+/* Active/Hover States */
+.card-link:active {
+  transform: scale(0.98);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (hover: hover) {
+  .card-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
 }
 
 /* Responsive Design */
 @media (min-width: 768px) {
   .app-container {
-    padding: 32px;
-    gap: 40px;
+    padding: 24px;
+    gap: 32px;
   }
 
   .welcome-section {
-    padding: 48px 40px;
+    padding: 32px;
     margin-top: 12px;
   }
 
   .welcome-decoration {
-    width: 240px;
-    height: 240px;
+    width: 180px;
+    height: 180px;
   }
 
   .welcome-section h1 {
-    font-size: 36px;
+    font-size: 32px;
   }
 
   .welcome-section p {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .menu-grid {
@@ -470,37 +527,38 @@
   }
 
   .menu-card {
-    min-height: 160px;
+    min-height: 140px;
   }
 
   .card-content {
-    padding: 28px;
-    gap: 24px;
+    padding: 20px;
+    gap: 20px;
   }
 
   .card-icon-container {
-    width: 72px;
-    height: 72px;
-    min-width: 72px;
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
   }
 
   .card-icon {
-    font-size: 32px;
+    font-size: 28px;
   }
 
   .card-content h3 {
-    font-size: 22px;
+    font-size: 20px;
   }
 
   .card-description {
-    font-size: 16px;
+    font-size: 15px;
   }
 }
 
 /* Dark mode support */
 @media (prefers-color-scheme: dark) {
   .schedule-page-content {
-    --background: #0f172a;
+    --background: var(--app-background);
+    background: var(--app-background);
   }
 
   .welcome-section {
@@ -532,5 +590,437 @@
 
   .menu-card {
     border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .card-item {
+    --background: var(--app-surface);
+    background-color: var(--app-surface);
+  }
+
+  .card-item-button {
+    background: var(--app-surface);
+    border-color: var(--app-border);
+    box-shadow: none;
+  }
+
+  .card-item-button:hover {
+    background: var(--ion-color-primary);
+    border-color: var(--ion-color-primary);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .card-label {
+    color: var(--app-text);
+  }
+
+  .card-item-button ion-icon {
+    color: var(--ion-color-primary);
+  }
+}
+
+/* SchedulePage.css - Dark Mode Styling */
+
+/* Dark Mode Styles */
+:root.dark .schedule-page-content {
+  --background: var(--app-background) !important;
+  background: var(--app-background) !important;
+}
+
+/* Title and Text */
+:root.dark .title {
+  color: var(--text-primary) !important;
+}
+
+:root.dark .ion-text-center.title {
+  color: var(--ion-color-primary-contrast) !important;
+}
+
+/* Filter Selector */
+:root.dark .filter-selector {
+  background: var(--ion-color-primary) !important;
+  color: var(--ion-color-primary-contrast) !important;
+  box-shadow: 0 4px 12px rgba(0, 168, 120, 0.3) !important;
+}
+
+:root.dark .filter-selector:hover {
+  background: var(--ion-color-primary-shade) !important;
+}
+
+/* Content Container */
+:root.dark .content {
+  background: var(--app-background) !important;
+}
+
+/* Label Row */
+:root.dark .label-row {
+  background: transparent !important;
+}
+
+/* Card Item Hover Effects */
+:root.dark .card-item {
+  transform: translateZ(0);
+  will-change: transform;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+:root.dark .card-item:hover {
+  transform: translateY(-2px) translateZ(0);
+}
+
+/* Mobile Touch Optimizations */
+@media (hover: none) {
+  :root.dark .card-item:active {
+    transform: scale(0.98) translateZ(0);
+    border-color: var(--ion-color-primary);
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  :root.dark .title {
+    font-size: 2rem !important;
+  }
+  
+  :root.dark .center-icon {
+    max-width: 160px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  :root.dark .title {
+    font-size: 1.75rem !important;
+  }
+  
+  :root.dark .center-icon {
+    max-width: 140px !important;
+  }
+  
+  :root.dark .filter-selector {
+    font-size: 2rem !important;
+    padding: 8px 32px !important;
+  }
+}
+
+/* Additional Dark Mode Enhancements */
+:root.dark .card-item-button {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:root.dark .card-item-button:hover {
+  transform: translateY(-2px) translateZ(0);
+}
+
+:root.dark .background-logo::after {
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--ion-color-primary) 50%,
+    transparent 100%
+  ) !important;
+}
+
+/* Ensure text visibility */
+:root.dark * {
+  color: var(--app-text) !important;
+}
+
+/* Specific exceptions for colored elements */
+:root.dark .oro-green-text {
+  color: var(--oro-green) !important;
+}
+
+:root.dark .text-secondary {
+  color: var(--app-text-secondary) !important;
+}
+
+/* ================================= */
+/* FORCEFUL OVERRIDES TO ENSURE CHANGES APPLY */
+/* ================================= */
+
+/* Sometimes Ionic styles are stubborn, so we need !important */
+:root.dark {
+  --ion-background-color: var(--app-background) !important;
+  --ion-text-color: var(--app-text) !important;
+  --ion-item-background: var(--app-surface) !important;
+  --ion-card-background: var(--app-surface) !important;
+  --ion-toolbar-background: var(--app-surface) !important;
+  --ion-tab-bar-background: var(--app-surface) !important;
+}
+
+/* Ensure all text is visible */
+:root.dark * {
+  color: var(--app-text) !important;
+}
+
+/* Specific exceptions for colored elements */
+:root.dark .oro-green-text {
+  color: var(--oro-green) !important;
+}
+
+:root.dark .text-secondary {
+  color: var(--app-text-secondary) !important;
+}
+
+/* ================================= */
+/* RESPONSIVE ADJUSTMENTS FOR DARK MODE */
+/* ================================= */
+
+@media (max-width: 768px) {
+  :root.dark .title {
+    font-size: 2rem !important;
+  }
+  
+  :root.dark .center-icon {
+    max-width: 160px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  :root.dark .title {
+    font-size: 1.75rem !important;
+  }
+  
+  :root.dark .center-icon {
+    max-width: 140px !important;
+  }
+  
+  :root.dark .filter-selector {
+    font-size: 2rem !important;
+    padding: 8px 32px !important;
+  }
+}
+
+/* Dark Mode Icon Styling */
+:root.dark .card-icon-container {
+  background: var(--ion-color-primary);
+  box-shadow: inset 0 0 0 1px var(--ion-color-primary);
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: 16px !important;
+  position: relative !important;
+  transition: all 0.3s ease !important;
+}
+
+:root.dark .card-icon {
+  font-size: 24px !important;
+  color: var(--ion-color-primary-contrast) !important;
+  transition: color 0.3s ease !important;
+}
+
+:root.dark .menu-card:hover .card-icon-container {
+  background: var(--ion-color-primary) !important;
+  box-shadow: inset 0 0 0 1px var(--ion-color-primary) !important;
+}
+
+:root.dark .menu-card:hover .card-icon {
+  color: var(--ion-color-primary-contrast) !important;
+}
+
+/* Mobile Touch Optimizations */
+@media (hover: none) {
+  .card-icon-container {
+    transition: background-color 0.2s ease !important;
+  }
+
+  .menu-card:active .card-icon-container {
+    background: var(--ion-color-primary) !important;
+    box-shadow: inset 0 0 0 1px var(--ion-color-primary) !important;
+  }
+
+  .menu-card:active .card-icon {
+    color: var(--ion-color-primary-contrast) !important;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+  .card-icon-container {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+  }
+
+  .card-icon {
+    font-size: 22px;
+  }
+
+  :root.dark .card-icon-container {
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 14px !important;
+  }
+
+  :root.dark .card-icon {
+    font-size: 22px !important;
+  }
+}
+
+/* Card Content Styling */
+.card-text-content {
+  flex: 1;
+  min-width: 0;
+  transform: translateZ(0);
+}
+
+.card-text-content h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 6px;
+  transition: color 0.3s ease;
+}
+
+.card-description {
+  margin: 0;
+  font-size: 15px;
+  color: var(--text-secondary-light);
+  line-height: 1.6;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  font-weight: 500;
+}
+
+/* Dark Mode Text Styling */
+:root.dark .card-text-content h3 {
+  color: var(--text-primary) !important;
+  margin: 0 !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  margin-bottom: 6px !important;
+  transition: color 0.3s ease !important;
+}
+
+:root.dark .card-description {
+  color: rgba(255, 255, 255, 0.85) !important;
+  margin: 0 !important;
+  font-size: 15px !important;
+  line-height: 1.6 !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  font-weight: 500 !important;
+}
+
+:root.dark .menu-card:hover .card-text-content h3 {
+  color: var(--ion-color-primary) !important;
+}
+
+/* Quick Access Cards */
+.quick-access-card {
+  background: var(--app-surface);
+  border-radius: var(--card-border-radius);
+  padding: var(--card-padding);
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+  border: 1px solid var(--app-border);
+  box-shadow: var(--shadow-sm);
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.quick-access-card:hover {
+  transform: var(--card-hover-transform);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--oro-green);
+}
+
+.quick-access-card:active {
+  transform: var(--card-active-transform);
+  box-shadow: var(--shadow-sm);
+}
+
+.quick-access-card ion-icon {
+  font-size: 24px;
+  color: var(--oro-green);
+  margin-bottom: 12px;
+}
+
+.quick-access-card ion-label h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--app-text);
+  margin: 0 0 4px 0;
+}
+
+.quick-access-card ion-label p {
+  font-size: 14px;
+  color: var(--app-text-secondary);
+  margin: 0;
+}
+
+.arrow-icon {
+  color: #94a3b8;
+  font-size: 22px;
+  transition: all 0.3s ease;
+  margin-left: 8px;
+  opacity: 0.6;
+  transform: translateZ(0);
+}
+
+.quick-access-card:hover .arrow-icon {
+  color: var(--oro-green);
+  transform: translateX(4px) translateZ(0);
+  opacity: 1;
+}
+
+/* Dark Mode Specific Styles */
+:root.dark .quick-access-card {
+  background: var(--dark-bg-secondary) !important;
+  border-color: var(--ion-color-primary);
+  box-shadow: var(--shadow-md);
+}
+
+:root.dark .quick-access-card:hover {
+  background: var(--dark-card-bg) !important;
+  border-color: var(--ion-color-primary);
+  box-shadow: 0 8px 32px var(--ion-color-primary);
+  transform: var(--card-hover-transform) translateZ(0);
+}
+
+:root.dark .quick-access-card ion-label h2 {
+  color: var(--text-primary);
+}
+
+:root.dark .quick-access-card ion-label p {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+:root.dark .arrow-icon {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+:root.dark .quick-access-card:hover .arrow-icon {
+  color: var(--ion-color-primary);
+}
+
+/* Mobile Touch Device Optimizations */
+@media (hover: none) {
+  .quick-access-card:active {
+    transform: var(--card-active-transform);
+    border-color: var(--oro-green);
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+  .quick-access-card {
+    padding: 20px;
+  }
+
+  .quick-access-card ion-label h2 {
+    font-size: 16px;
+  }
+
+  .quick-access-card ion-label p {
+    font-size: 13px;
+  }
+
+  .quick-access-card {
+    box-shadow: var(--shadow-sm);
+  }
+
+  :root.dark .quick-access-card {
+    box-shadow: var(--shadow-md);
   }
 }

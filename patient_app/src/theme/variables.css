@@ -1,11 +1,11 @@
 :root {
   /** primary **/
-  --ion-color-primary: #00A878;
-  --ion-color-primary-rgb: 0, 168, 120;
-  --ion-color-primary-contrast: #ffffff;
-  --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #00946a;
-  --ion-color-primary-tint: #1ab186;
+  --ion-color-primary: var(--accent-color);
+  --ion-color-primary-rgb: var(--accent-color-rgb);
+  --ion-color-primary-contrast: var(--accent-contrast);
+  --ion-color-primary-contrast-rgb: var(--accent-contrast-rgb);
+  --ion-color-primary-shade: var(--accent-shade);
+  --ion-color-primary-tint: var(--accent-tint);
 
   /** secondary **/
   --ion-color-secondary: #3dc2ff;
@@ -108,7 +108,7 @@
   --ion-tab-bar-background: #ffffff;
   --ion-tab-bar-border-color: #e0e0e0;
   --ion-tab-bar-color: #666666;
-  --ion-tab-bar-color-selected: #00A878;
+  --ion-tab-bar-color-selected: var(--ion-color-primary);
   --ion-tab-bar-height: 56px;
   --ion-tab-bar-padding: 8px;
 
@@ -148,25 +148,76 @@
 
   /* Dark mode overrides */
   .dark {
-    --app-background: #121212;
-    --app-text: #ffffff;
-    --app-text-secondary: #b3b3b3;
-    --app-card-bg: #1a1a1a;
-    --app-card-border: #333333;
-    --app-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    --app-card-hover-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-    --ion-tab-bar-background: #1a1a1a;
-    --ion-tab-bar-border-color: #333333;
-    --ion-tab-bar-color: #b3b3b3;
-    --ion-tab-bar-color-selected: #00A878;
-    --ion-toolbar-background: #1a1a1a;
+    --ion-background-color: #1E1E2E;
+    --ion-background-color-rgb: 30, 30, 46;
+    
+    --ion-toolbar-background: #1E1E2E;
     --ion-toolbar-color: #ffffff;
-    --ion-content-background: #121212;
-    --ion-card-background: #1a1a1a;
+    
+    --ion-content-background: #1E1E2E;
+    --ion-item-background: rgba(38, 27, 48, 0.7);
+    
+    --ion-tab-bar-background: rgba(38, 27, 48, 0.95);
+    --ion-tab-bar-border-color: rgba(255, 255, 255, 0.1);
+    --ion-tab-bar-color: rgba(255, 255, 255, 0.6);
+    --ion-tab-bar-color-selected: var(--ion-color-primary);
+    
+    --ion-card-background: rgba(38, 27, 48, 0.8);
     --ion-card-color: #ffffff;
-    --ion-input-background: #1a1a1a;
+    
+    --ion-text-color: #ffffff;
+    --ion-text-color-rgb: 255, 255, 255;
+    
+    --ion-border-color: rgba(255, 255, 255, 0.1);
+    
+    --ion-color-step-50: #1e1e1e;
+    --ion-color-step-100: #2a2a2a;
+    --ion-color-step-150: #363636;
+    --ion-color-step-200: #414141;
+    --ion-color-step-250: #4d4d4d;
+    --ion-color-step-300: #595959;
+    --ion-color-step-350: #656565;
+    --ion-color-step-400: #717171;
+    --ion-color-step-450: #7d7d7d;
+    --ion-color-step-500: #898989;
+    --ion-color-step-550: #949494;
+    --ion-color-step-600: #a0a0a0;
+    --ion-color-step-650: #acacac;
+    --ion-color-step-700: #b8b8b8;
+    --ion-color-step-750: #c4c4c4;
+    --ion-color-step-800: #d0d0d0;
+    --ion-color-step-850: #dbdbdb;
+    --ion-color-step-900: #e7e7e7;
+    --ion-color-step-950: #f3f3f3;
+
+    /* Custom app variables for dark mode */
+    --app-background: #1E1E2E;
+    --app-surface: #261B30;
+    --app-surface-secondary: #312236;
+    --app-text: #ffffff;
+    --app-text-secondary: rgba(255, 255, 255, 0.7);
+    --app-border: rgba(255, 255, 255, 0.1);
+    --app-shadow: rgba(0, 0, 0, 0.3);
+    --app-card-bg: rgba(38, 27, 48, 0.8);
+    --app-card-border: rgba(255, 255, 255, 0.1);
+    --app-card-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    
+    /* Input styles */
+    --ion-input-background: rgba(38, 27, 48, 0.8);
     --ion-input-color: #ffffff;
-    --ion-input-placeholder-color: #666666;
+    --ion-input-placeholder-color: rgba(255, 255, 255, 0.5);
+    
+    /* List styles */
+    --ion-item-background: rgba(38, 27, 48, 0.7);
+    --ion-item-border-color: rgba(255, 255, 255, 0.1);
+
+    /* Select and Toggle styles */
+    --ion-select-background: var(--app-surface-secondary);
+    --ion-select-color: #ffffff;
+    --ion-toggle-background: var(--app-surface-secondary);
+    --ion-toggle-background-checked: var(--ion-color-primary);
+    --ion-toggle-handle-background: #ffffff;
+    --ion-toggle-handle-background-checked: #ffffff;
   }
 }
 

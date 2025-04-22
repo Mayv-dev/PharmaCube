@@ -1,20 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
-  IonCard,
   IonContent,
-  IonHeader,
-  IonIcon,
   IonPage,
-  IonTitle,
-  IonToolbar,
   IonGrid,
   IonRow,
   IonCol,
-  IonItem,
+  IonCard,
+  IonIcon,
   IonLabel,
-  IonButton,
 } from '@ionic/react';
-import { timeOutline, calendarOutline } from 'ionicons/icons';
+import { timeOutline, calendarOutline, chevronForward } from 'ionicons/icons';
 import { useColorblindFilter } from '../colorBlindContext';
 import { useHistory } from 'react-router-dom';
 import './SchedulePage.css';
@@ -22,51 +17,69 @@ import calendarImage from '../Picture2.png';
 import '../daltonization.css';
 
 const SchedulePage: React.FC = () => {
-  const { daltonization } = useColorblindFilter();
+  const { daltonization, isDarkMode } = useColorblindFilter();
   const history = useHistory();
 
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
+  }, [isDarkMode]);
+
   const handleViewSchedule = () => {
-    console.log('View Schedule button clicked');
     history.push('/schedule/view');
   };
 
   const handleEditSchedule = () => {
-    console.log('Edit Schedule button clicked');
     history.push('/schedule/edit');
   };
 
   return (
     <IonPage className={`${daltonization} daltonization-active`}>
-      <IonContent fullscreen className="ion-padding content">
-        <div className="center-icon-container">
-          <img src={calendarImage} alt="Calendar" className="center-icon" />
+      <IonContent className="schedule-page-content">
+        <div className="app-container">
+          <div className="welcome-section">
+            <div className="welcome-decoration"></div>
+            <div className="welcome-content">
+              <h1>Schedule Management</h1>
+              <p>View and edit your medication schedule</p>
+            </div>
+          </div>
+
+          <div className="menu-section">
+            <IonGrid className="menu-grid">
+              <IonRow className="menu-row">
+                <IonCol size="12" sizeMd="6" className="menu-col">
+                  <IonCard className="quick-access-card" onClick={handleEditSchedule}>
+                    <div className="card-content">
+                      <IonIcon icon={timeOutline} />
+                      <IonLabel>
+                        <h2>Edit Schedule</h2>
+                        <p>Modify your medication schedule and timing</p>
+                      </IonLabel>
+                      <IonIcon icon={chevronForward} className="arrow-icon" />
+                    </div>
+                  </IonCard>
+                </IonCol>
+
+                <IonCol size="12" sizeMd="6" className="menu-col">
+                  <IonCard className="quick-access-card" onClick={handleViewSchedule}>
+                    <div className="card-content">
+                      <IonIcon icon={calendarOutline} />
+                      <IonLabel>
+                        <h2>View Schedule</h2>
+                        <p>Check your current medication schedule</p>
+                      </IonLabel>
+                      <IonIcon icon={chevronForward} className="arrow-icon" />
+                    </div>
+                  </IonCard>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+          </div>
         </div>
-
-        <IonGrid className="center-grid">
-          <IonRow className="label-row">
-            <IonCol size="6">
-              <IonItem lines="none" className="card-item">
-                <div className="card-link" onClick={handleEditSchedule}>
-                  <div className="card-item-button">
-                    <IonIcon icon={timeOutline} slot="start" />
-                    <IonLabel className="card-label">Edit Schedule</IonLabel>
-                  </div>
-                </div>
-              </IonItem>
-            </IonCol>
-
-            <IonCol size="6">
-              <IonItem lines="none" className="card-item">
-                <div className="card-link" onClick={handleViewSchedule}>
-                  <div className="card-item-button">
-                    <IonIcon icon={calendarOutline} slot="start" />
-                    <IonLabel className="card-label">View Schedule</IonLabel>
-                  </div>
-                </div>
-              </IonItem>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
       </IonContent>
     </IonPage>
   );

@@ -173,7 +173,6 @@ ion-toolbar {
   overflow: hidden;
   margin-bottom: 24px;
   padding: var(--card-padding);
-  border: 1px solid var(--app-border);
 }
 
 .section-header {
@@ -203,7 +202,6 @@ ion-toolbar {
   box-shadow: 0 4px 12px var(--app-shadow);
   overflow: hidden;
   margin-bottom: 24px;
-  border: 1px solid var(--app-border);
 }
 
 .calendar {
@@ -270,7 +268,7 @@ ion-toolbar {
 }
 
 .schedule-item {
-  --background: var(--app-surface);
+  --background: transparent;
   --border-color: transparent;
   --padding-start: 24px;
   --padding-end: 24px;
@@ -539,4 +537,5 @@ ion-toolbar {
 :root.dark .schedule-item {
   --background: rgba(30, 41, 59, 0.8);
   border: none;
+  box-shadow: none;
 }

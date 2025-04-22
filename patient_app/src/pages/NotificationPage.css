@@ -1,19 +1,21 @@
 /* Notification Page Styles */
 .notification-content {
   --background: var(--app-background);
+  background-color: var(--app-background);
 }
 
 .notification-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 12px;
+  background-color: var(--app-background);
 }
 
 .welcome-section {
   background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
   border-radius: 16px;
-  padding: 24px;
-  margin-bottom: 24px;
+  padding: 16px;
+  margin-bottom: 16px;
   color: var(--ion-color-primary-contrast);
   box-shadow: 0 4px 6px var(--app-shadow);
   position: relative;
@@ -30,20 +32,19 @@
   position: relative;
   z-index: 1;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .welcome-content h1 {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 600;
   margin: 0;
   color: var(--ion-color-primary-contrast);
 }
 
 .welcome-content p {
-  font-size: 16px;
+  font-size: 14px;
   margin: 0;
   opacity: 0.9;
   display: flex;
@@ -53,7 +54,7 @@
 
 .welcome-section p ion-icon {
   margin-right: 8px;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .welcome-decoration {
@@ -73,23 +74,22 @@
 }
 
 .header-actions {
-  position: absolute;
-  top: 24px;
-  right: 24px;
-  z-index: 1;
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .header-actions ion-button {
   --padding-start: 12px;
   --padding-end: 12px;
-  --padding-top: 8px;
-  --padding-bottom: 8px;
-  --border-radius: 20px;
+  --padding-top: 6px;
+  --padding-bottom: 6px;
+  --border-radius: 16px;
   --background: rgba(255, 255, 255, 0.2);
   --background-hover: rgba(255, 255, 255, 0.3);
   --background-activated: rgba(255, 255, 255, 0.4);
   --color: var(--ion-color-primary-contrast);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   height: auto;
   margin: 0;
@@ -109,8 +109,8 @@
 
 /* Filter Styles */
 .notification-filters {
-  padding: 0 16px;
-  margin-bottom: 16px;
+  padding: 0 8px;
+  margin: 8px 0;
 }
 
 ion-segment {
@@ -119,32 +119,34 @@ ion-segment {
   --color-checked: var(--ion-color-primary);
   --indicator-color: var(--ion-color-primary);
   border-radius: 12px;
-  padding: 4px;
+  padding: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 ion-segment-button {
-  --padding-top: 8px;
-  --padding-bottom: 8px;
-  --padding-start: 16px;
-  --padding-end: 16px;
-  min-height: 36px;
-  font-size: 14px;
+  --padding-top: 6px;
+  --padding-bottom: 6px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  min-height: 32px;
+  font-size: 13px;
   font-weight: 500;
+  text-transform: none;
 }
 
 /* Notification List */
 .notification-list {
-  padding: 0 16px;
+  padding: 0 8px;
 }
 
 .notification-card {
   background: var(--app-card-bg);
   border-radius: 12px;
-  margin: 12px 16px;
+  margin: 8px 0;
+  padding: 12px;
   box-shadow: var(--app-card-shadow);
   border: 1px solid var(--app-card-border);
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .notification-card:hover {
@@ -314,32 +316,56 @@ ion-toast {
   font-weight: 500;
 }
 
-/* Responsive Design */
+/* Media Queries */
 @media (min-width: 768px) {
-  .notification-list {
-    max-width: 800px;
-    margin: 0 auto;
+  .notification-container {
+    padding: 20px;
   }
 
-  .notification-header {
-    padding: 32px;
+  .welcome-section {
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .welcome-content {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .welcome-content h1 {
+    font-size: 28px;
+  }
+
+  .welcome-content p {
+    font-size: 16px;
+  }
+
+  .header-actions {
+    margin-top: 0;
   }
 
   .notification-filters {
-    max-width: 800px;
-    margin: 0 auto 24px;
+    padding: 0 16px;
+    margin: 16px 0;
+  }
+
+  ion-segment-button {
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    min-height: 36px;
+    font-size: 14px;
+  }
+
+  .notification-list {
+    padding: 0 16px;
   }
 
   .notification-card {
-    margin: 16px 24px;
-  }
-
-  .header-content h1 {
-    font-size: 36px;
-  }
-
-  .header-content p {
-    font-size: 26px;
+    margin: 12px 0;
+    padding: 16px;
   }
 
   .notification-title-container h2 {
@@ -384,21 +410,23 @@ ion-toast {
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
   .notification-content {
-    --background: var(--ion-background-color);
+    --background: var(--app-background);
+    background-color: var(--app-background);
+  }
+
+  .notification-card {
+    --background: var(--app-surface);
+    background-color: var(--app-surface);
   }
 
   .notification-header {
-    background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
+    background: var(--ion-color-primary);
     color: var(--ion-color-primary-contrast);
   }
 
   .header-content h1,
   .header-content p {
     color: var(--ion-color-primary-contrast);
-  }
-
-  .notification-card {
-    --background: var(--ion-item-background);
   }
 
   .notification-title-container h2 {
@@ -429,5 +457,88 @@ ion-toast {
     --background: rgba(255, 255, 255, 0.15);
     --background-hover: rgba(255, 255, 255, 0.25);
     --background-activated: rgba(255, 255, 255, 0.35);
+  }
+}
+
+/* Mobile-specific styles */
+@media (max-width: 767px) {
+  .notification-header-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .notification-icon-container {
+    width: 32px;
+    height: 32px;
+  }
+
+  .notification-icon-container ion-icon {
+    font-size: 16px;
+  }
+
+  .notification-title-container {
+    width: 100%;
+  }
+
+  .notification-title-container h2 {
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+
+  .notification-title-container p {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .notification-details {
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .notification-time {
+    font-size: 12px;
+  }
+
+  ion-chip {
+    height: 24px;
+    font-size: 12px;
+    --padding-start: 8px;
+    --padding-end: 8px;
+  }
+
+  ion-chip ion-icon {
+    font-size: 14px;
+    margin-right: 4px;
+  }
+
+  .action-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    margin: 0;
+    --padding-start: 8px;
+    --padding-end: 8px;
+  }
+
+  .action-button ion-icon {
+    font-size: 18px;
+  }
+
+  .empty-state {
+    padding: 32px 16px;
+  }
+
+  .empty-state ion-icon {
+    font-size: 48px;
+  }
+
+  .empty-state h3 {
+    font-size: 18px;
+    margin: 16px 0 8px;
+  }
+
+  .empty-state p {
+    font-size: 14px;
   }
 }

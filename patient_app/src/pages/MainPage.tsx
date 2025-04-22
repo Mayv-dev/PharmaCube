@@ -1,14 +1,13 @@
 import React from 'react';
 import { 
   IonContent, 
-  IonGrid, 
-  IonRow, 
-  IonCol, 
-  IonCard, 
-  IonCardContent, 
+  IonPage,
   IonIcon,
-  IonBadge,
-  IonPage
+  IonLabel,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonCard
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import { 
@@ -18,11 +17,13 @@ import {
   settings,
   chevronForward
 } from 'ionicons/icons';
+import { useColorblindFilter } from '../colorBlindContext';
 import './MainPage.css';
 import calendarImage from '../Picture2.png';
 
 const MainPage: React.FC = () => {
   const history = useHistory();
+  const { daltonization } = useColorblindFilter();
 
   // This would typically come from your app's state management
   const getBadgeCount = (type: string) => {
@@ -43,8 +44,6 @@ const MainPage: React.FC = () => {
       title: 'Schedule', 
       icon: calendar, 
       path: '/schedule', 
-      color: '#00A878', 
-      bgColor: '#F5F5F5',
       description: 'Manage your medication schedule',
       type: 'schedule'
     },
@@ -52,8 +51,6 @@ const MainPage: React.FC = () => {
       title: 'Notifications', 
       icon: notifications, 
       path: '/notifications', 
-      color: '#00A878', 
-      bgColor: '#F5F5F5',
       description: 'View your alerts and reminders',
       type: 'notifications'
     },
@@ -61,8 +58,6 @@ const MainPage: React.FC = () => {
       title: 'Medication', 
       icon: flask, 
       path: '/medications', 
-      color: '#00A878', 
-      bgColor: '#F5F5F5',
       description: 'Track your medications',
       type: 'medication'
     },
@@ -70,58 +65,44 @@ const MainPage: React.FC = () => {
       title: 'Settings', 
       icon: settings, 
       path: '/settings', 
-      color: '#00A878', 
-      bgColor: '#F5F5F5',
       description: 'Customize your app preferences',
       type: 'settings'
     }
   ];
 
   return (
-    <IonPage>
-      <IonContent className="main-page-content" fullscreen>
+    <IonPage className={`${daltonization} daltonization-active`}>
+      <IonContent className="main-page-content">
         <div className="app-container">
           <div className="background-logo">
             <img src={calendarImage} alt="Oro Logo" className="center-icon" />
           </div>
+          
           <div className="content-container">
-            <div className="menu-section">
-              <h2 className="section-title">Quick Access</h2>
-              <IonGrid className="menu-grid">
-                <IonRow>
-                  {menuItems.map((item, index) => {
-                    const badgeCount = getBadgeCount(item.type);
-                    return (
-                      <IonCol size="12" sizeMd="6" key={index}>
-                        <IonCard 
-                          className="menu-card" 
-                          button 
-                          onClick={() => history.push(item.path)}
-                          style={{ 
-                            '--card-bg-color': item.bgColor
-                          }}
-                        >
-                          <IonCardContent className="card-content">
-                            <div className="card-icon-container">
-                              <IonIcon icon={item.icon} className="card-icon" />
-                              {badgeCount > 0 && (
-                                <IonBadge color="danger" className="card-badge">
-                                  {badgeCount}
-                                </IonBadge>
-                              )}
-                            </div>
-                            <div className="card-text-content">
-                              <h3>{item.title}</h3>
-                              <p className="card-description">{item.description}</p>
-                            </div>
-                            <IonIcon icon={chevronForward} className="card-arrow" />
-                          </IonCardContent>
-                        </IonCard>
-                      </IonCol>
-                    );
-                  })}
-                </IonRow>
-              </IonGrid>
+            <h2 className="section-title">Quick Access</h2>
+            <div className="quick-access-grid">
+              {menuItems.map((item, index) => {
+                const badgeCount = getBadgeCount(item.type);
+                return (
+                  <IonCard 
+                    key={index}
+                    className="quick-access-card" 
+                    onClick={() => history.push(item.path)}
+                  >
+                    <div className="card-content">
+                      <IonIcon icon={item.icon} />
+                      <IonLabel>
+                        <h2>{item.title}</h2>
+                        <p>{item.description}</p>
+                      </IonLabel>
+                      {badgeCount > 0 && (
+                        <div className="badge">{badgeCount}</div>
+                      )}
+                      <IonIcon icon={chevronForward} className="arrow-icon" />
+                    </div>
+                  </IonCard>
+                );
+              })}
             </div>
           </div>
         </div>

@@ -10,12 +10,14 @@
 
 .settings-content {
   --background: var(--app-background);
+  background-color: var(--app-background);
 }
 
 .settings-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  background-color: var(--app-background);
 }
 
 .welcome-section {
@@ -45,14 +47,14 @@
 }
 
 .welcome-content h1 {
-  font-size: 28px;
+  font-size: var(--ion-font-size-h1);
   font-weight: 600;
   margin: 0;
   color: var(--ion-color-primary-contrast);
 }
 
 .welcome-content p {
-  font-size: 16px;
+  font-size: var(--ion-font-size-p);
   margin: 0;
   opacity: 0.9;
   color: var(--ion-color-primary-contrast);
@@ -96,7 +98,7 @@
 
 .settings-card h2 {
   color: var(--app-text);
-  font-size: 20px;
+  font-size: var(--ion-font-size-h2);
   font-weight: 600;
   margin: 0 0 16px 0;
   display: flex;
@@ -108,87 +110,190 @@
   color: var(--ion-color-primary);
 }
 
+/* Reset default ion-list styles */
 ion-list {
-  background: transparent;
-  padding: 0;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
+ion-list-header {
+  --background: transparent !important;
+  padding-left: 0 !important;
+}
+
+/* Fix ion-item styling */
 ion-item {
-  --background: transparent;
-  --border-color: var(--app-border);
-  --padding-start: 0;
-  --inner-padding-end: 0;
-  margin-bottom: 8px;
+  --background: var(--app-surface) !important;
+  --border-style: none !important;
+  --border-width: 0 !important;
+  --inner-border-width: 0 !important;
+  --padding-start: 0 !important;
+  --inner-padding-end: 0 !important;
+  --min-height: none !important;
+  background: var(--app-surface) !important;
+  margin-bottom: 8px !important;
+  font-size: var(--ion-font-size-list);
+  border-radius: 8px !important;
+  border: 1px solid var(--app-border) !important;
 }
 
 ion-item::part(native) {
-  padding: 12px 0;
+  padding: 12px !important;
+  background: var(--app-surface) !important;
+  border: none !important;
 }
 
-ion-label {
-  color: var(--app-text);
+/* Add this to completely remove borders and fix spacing */
+ion-item {
+  --border-width: 0 !important;
+  --inner-border-width: 0 !important;
+  border: none !important;
+  --inner-padding-end: 0 !important;
+  --padding-start: 0 !important;
 }
 
-ion-label h3 {
-  font-size: 16px;
-  font-weight: 500;
-  margin: 0 0 4px 0;
+ion-item::part(native) {
+  padding: 12px !important;
+  border: none !important;
 }
 
-ion-label p {
-  font-size: 14px;
-  color: var(--app-text-secondary);
-  margin: 0;
+/* Specifically for Android */
+.md ion-item {
+  --border-width: 0 !important;
+  --inner-border-width: 0 !important;
+  border: none !important;
 }
 
-ion-toggle {
-  --background: var(--app-border);
-  --background-checked: var(--ion-color-primary);
-  --handle-background: var(--app-surface);
-  --handle-background-checked: var(--ion-color-primary-contrast);
+/* For the settings cards */
+.settings-card {
+  border: none !important;
+  box-shadow: none !important;
 }
 
-ion-select {
-  --placeholder-color: var(--app-text-secondary);
-  --placeholder-opacity: 1;
+/* For the list container */
+.settings-list {
+  background: transparent !important;
+}
+
+/* Remove all default ionic borders */
+.item-native {
+  --border-width: 0 !important;
+  --inner-border-width: 0 !important;
+  border: none !important;
+}
+
+.item-inner {
+  --border-width: 0 !important;
+  --inner-border-width: 0 !important;
+  border: none !important;
 }
 
 /* Dark mode specific adjustments */
-.dark .settings-card {
-  background: var(--app-surface);
-  border: 1px solid var(--app-border);
+.dark .settings-card,
+:root.dark .settings-card {
+  background: var(--app-surface) !important;
+  border: 1px solid var(--app-border) !important;
+  box-shadow: none !important;
 }
 
-.dark ion-item {
-  --border-color: var(--app-border);
+.dark ion-item,
+:root.dark ion-item {
+  --background: var(--app-surface) !important;
+  background: var(--app-surface) !important;
+  border: 1px solid var(--app-border) !important;
 }
 
-.dark ion-toggle {
-  --background: var(--app-border);
-  --handle-background: var(--app-surface);
+.dark ion-item::part(native),
+:root.dark ion-item::part(native) {
+  background: var(--app-surface) !important;
+  border: none !important;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
+:root.dark .welcome-section {
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%) !important;
+  color: white !important;
+}
+
+:root.dark .welcome-content h1,
+:root.dark .welcome-content p {
+  color: white !important;
+}
+
+:root.dark ion-select,
+:root.dark ion-toggle {
+  --background: var(--app-surface-secondary) !important;
+  --color: white !important;
+}
+
+:root.dark .section-header h2 {
+  color: white !important;
+}
+
+:root.dark .section-header ion-note {
+  color: var(--app-text-secondary) !important;
+}
+
+/* Dark mode overrides */
+@media (prefers-color-scheme: dark) {
+  ion-content {
+    --background: var(--app-background) !important;
+    background: var(--app-background) !important;
+  }
+
+  .settings-content {
+    --background: var(--app-background) !important;
+    background: var(--app-background) !important;
+  }
+
   .settings-container {
-    padding: 16px;
+    background: var(--app-background) !important;
   }
 
-  .welcome-section {
-    padding: 20px;
+  .settings-card {
+    background: var(--app-surface) !important;
+    border: 1px solid var(--app-border) !important;
+    box-shadow: none !important;
   }
 
-  .welcome-section h1 {
-    font-size: 24px;
+  ion-item {
+    --background: var(--app-surface) !important;
+    background: var(--app-surface) !important;
+    border: 1px solid var(--app-border) !important;
   }
 
-  .welcome-section p {
-    font-size: 14px;
+  ion-item::part(native) {
+    background: var(--app-surface) !important;
+    border: none !important;
   }
 
-  .settings-section {
-    grid-template-columns: 1fr;
+  ion-list {
+    background: transparent !important;
   }
+}
+
+/* iOS specific fixes */
+.ios ion-item {
+  --border-width: 0 !important;
+  --inner-border-width: 0 !important;
+  --border-style: none !important;
+}
+
+.ios ion-list {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Android specific fixes */
+.md ion-item {
+  --border-width: 0 !important;
+  --inner-border-width: 0 !important;
+  --border-style: none !important;
+}
+
+.md ion-list {
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 /* Animation for settings changes */
@@ -206,4 +311,198 @@ ion-select {
 
 .settings-card.changed {
   animation: settingsChange 0.3s ease;
+}
+
+/* Data Management Section Styles */
+.settings-item ion-button {
+  margin: 0;
+  --padding-start: 8px;
+  --padding-end: 8px;
+}
+
+.settings-item ion-button[color="danger"] {
+  --color: var(--ion-color-danger);
+}
+
+.settings-item input[type="file"] {
+  display: none;
+}
+
+/* Toast Styles */
+ion-toast {
+  --background: var(--ion-color-primary);
+  --color: var(--ion-color-primary-contrast);
+  --border-radius: 8px;
+  --box-shadow: 0 2px 4px var(--app-shadow);
+  font-size: var(--ion-font-size-toast);
+}
+
+/* Alert Styles */
+ion-alert {
+  --background: var(--app-surface);
+  --backdrop-opacity: 0.5;
+  font-size: var(--ion-font-size-alert);
+}
+
+ion-alert .alert-wrapper {
+  background: var(--app-surface);
+  border-radius: 12px;
+  box-shadow: 0 4px 8px var(--app-shadow);
+}
+
+ion-alert .alert-title {
+  color: var(--app-text);
+  font-size: var(--ion-font-size-h2);
+  font-weight: 600;
+}
+
+ion-alert .alert-message {
+  color: var(--app-text-secondary);
+  font-size: var(--ion-font-size-p);
+}
+
+ion-alert .alert-button {
+  color: var(--ion-color-primary);
+  font-weight: 500;
+}
+
+ion-alert .alert-button[role="destructive"] {
+  color: var(--ion-color-danger);
+}
+
+/* Dark mode specific adjustments */
+:root.dark ion-alert .alert-wrapper {
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+}
+
+:root.dark ion-alert .alert-title {
+  color: var(--app-text);
+}
+
+:root.dark ion-alert .alert-message {
+  color: var(--app-text-secondary);
+}
+
+/* Font Size Variables */
+:root {
+  --ion-font-size: 16px;
+  --ion-font-size-h1: 28px;
+  --ion-font-size-h2: 24px;
+  --ion-font-size-h3: 20px;
+  --ion-font-size-p: 16px;
+  --ion-font-size-button: 16px;
+  --ion-font-size-list: 16px;
+  --ion-font-size-input: 16px;
+  --ion-font-size-toast: 16px;
+  --ion-font-size-alert: 16px;
+}
+
+/* Apply font sizes */
+h1 {
+  font-size: var(--ion-font-size-h1);
+}
+
+h2 {
+  font-size: var(--ion-font-size-h2);
+}
+
+h3 {
+  font-size: var(--ion-font-size-h3);
+}
+
+p {
+  font-size: var(--ion-font-size-p);
+}
+
+ion-button {
+  font-size: var(--ion-font-size-button);
+}
+
+ion-input {
+  font-size: var(--ion-font-size-input);
+}
+
+/* High Contrast Mode Styles */
+.high-contrast {
+  --ion-color-primary: #000000 !important;
+  --ion-color-primary-contrast: #ffffff !important;
+  --ion-color-primary-shade: #000000 !important;
+  --ion-color-primary-tint: #333333 !important;
+  --app-text: #000000 !important;
+  --app-text-secondary: #333333 !important;
+  --app-background: #ffffff !important;
+  --app-surface: #ffffff !important;
+  --app-border: #000000 !important;
+  --app-shadow: rgba(0, 0, 0, 0.5) !important;
+}
+
+.high-contrast .settings-card {
+  border: 2px solid var(--app-border) !important;
+  background: var(--app-surface) !important;
+}
+
+.high-contrast ion-item {
+  --border-color: var(--app-border) !important;
+  border-bottom: 2px solid var(--app-border) !important;
+}
+
+.high-contrast ion-button {
+  border: 2px solid var(--app-border) !important;
+}
+
+.high-contrast ion-toggle {
+  --background: var(--app-border) !important;
+  --background-checked: var(--ion-color-primary) !important;
+  --handle-background: var(--app-surface) !important;
+  --handle-background-checked: var(--ion-color-primary-contrast) !important;
+}
+
+.high-contrast ion-select {
+  border: 2px solid var(--app-border) !important;
+  background: var(--app-surface) !important;
+}
+
+.high-contrast .welcome-section {
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%) !important;
+  border: 2px solid var(--app-border) !important;
+}
+
+.high-contrast ion-toast {
+  --background: var(--ion-color-primary) !important;
+  --color: var(--ion-color-primary-contrast) !important;
+  border: 2px solid var(--app-border) !important;
+}
+
+.high-contrast ion-alert .alert-wrapper {
+  border: 2px solid var(--app-border) !important;
+  background: var(--app-surface) !important;
+}
+
+.high-contrast ion-alert .alert-title {
+  color: var(--app-text) !important;
+}
+
+.high-contrast ion-alert .alert-message {
+  color: var(--app-text) !important;
+}
+
+.high-contrast ion-alert .alert-button {
+  border-top: 2px solid var(--app-border) !important;
+}
+
+/* Ensure text is always visible in high contrast mode */
+.high-contrast * {
+  color: var(--app-text) !important;
+  text-shadow: none !important;
+}
+
+.high-contrast ion-icon {
+  color: var(--app-text) !important;
+}
+
+/* Improve focus visibility in high contrast mode */
+.high-contrast *:focus {
+  outline: 3px solid var(--app-border) !important;
+  outline-offset: 2px !important;
 }

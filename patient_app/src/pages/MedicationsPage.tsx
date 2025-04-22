@@ -69,6 +69,50 @@ const MedicationsPage: React.FC = () => {
 
   useEffect(() => {
     loadMedications();
+    // Add some initial hardcoded medications if none exist
+    const storedMedications = JSON.parse(localStorage.getItem('medications') || '[]');
+    if (storedMedications.length === 0) {
+      const initialMedications: Medication[] = [
+        {
+          id: 1,
+          name: 'Aspirin',
+          amount: '100mg',
+          image: 'https://placehold.co/100x100/purple/white?text=A'
+        },
+        {
+          id: 2,
+          name: 'Ibuprofen',
+          amount: '200mg',
+          image: 'https://placehold.co/100x100/blue/white?text=I'
+        },
+        {
+          id: 3,
+          name: 'Vitamin D',
+          amount: '1000IU',
+          image: 'https://placehold.co/100x100/green/white?text=V'
+        },
+        {
+          id: 4,
+          name: 'Metformin',
+          amount: '500mg',
+          image: 'https://placehold.co/100x100/red/white?text=M'
+        },
+        {
+          id: 5,
+          name: 'Lisinopril',
+          amount: '10mg',
+          image: 'https://placehold.co/100x100/orange/white?text=L'
+        },
+        {
+          id: 6,
+          name: 'Atorvastatin',
+          amount: '20mg',
+          image: 'https://placehold.co/100x100/yellow/white?text=A'
+        }
+      ];
+      localStorage.setItem('medications', JSON.stringify(initialMedications));
+      setMedications(initialMedications);
+    }
   }, []);
 
   const loadMedications = async () => {

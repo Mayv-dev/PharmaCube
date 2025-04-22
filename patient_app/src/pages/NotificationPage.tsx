@@ -36,6 +36,7 @@ import {
   filterOutline,
   searchOutline
 } from 'ionicons/icons';
+import { useColorblindFilter } from '../colorBlindContext';
 import './NotificationPage.css';
 
 type Notification = {
@@ -58,6 +59,7 @@ type Notification = {
 };
 
 const NotificationPage: React.FC = () => {
+  const { daltonization, isDarkMode } = useColorblindFilter();
   const [activeTab, setActiveTab] = useState<'upcoming' | 'history'>('upcoming');
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -160,6 +162,52 @@ const NotificationPage: React.FC = () => {
         type: 'alert',
         status: 'completed',
         priority: 'low'
+      },
+      {
+        id: '9',
+        title: 'Lab Results Available',
+        message: 'Your recent blood test results are now available',
+        timestamp: new Date(Date.now() - 604800000), // 1 week ago
+        type: 'reminder',
+        status: 'completed',
+        priority: 'medium'
+      },
+      {
+        id: '10',
+        title: 'Medication Refill Approved',
+        message: 'Your Metformin refill has been approved by your doctor',
+        timestamp: new Date(Date.now() + 432000000), // 5 days from now
+        type: 'reminder',
+        status: 'pending',
+        priority: 'medium',
+        medication: {
+          name: 'Metformin',
+          dosage: '500mg',
+          image: 'https://placehold.co/100x100/red/white?text=M'
+        }
+      },
+      {
+        id: '11',
+        title: 'Annual Checkup Reminder',
+        message: 'Your annual physical exam is scheduled for next month',
+        timestamp: new Date(Date.now() + 2592000000), // 30 days from now
+        type: 'reminder',
+        status: 'pending',
+        priority: 'low'
+      },
+      {
+        id: '12',
+        title: 'Medication Side Effect Alert',
+        message: 'Report any unusual symptoms while taking Lisinopril',
+        timestamp: new Date(Date.now() - 86400000), // Yesterday
+        type: 'alert',
+        status: 'pending',
+        priority: 'high',
+        medication: {
+          name: 'Lisinopril',
+          dosage: '10mg',
+          image: 'https://placehold.co/100x100/orange/white?text=L'
+        }
       }
     ];
 
@@ -228,28 +276,32 @@ const NotificationPage: React.FC = () => {
     );
 
   return (
-    <IonPage>
+    <IonPage className={`${daltonization} daltonization-active${isDarkMode ? ' dark' : ''}`}>
       <IonContent className="notification-content">
         <div className="notification-container">
           <div className="welcome-section">
             <div className="welcome-content">
-              <h1>Notifications</h1>
-              <p>
-                <IonIcon icon={notificationsOutline} />
-                {unreadCount} unread notifications
-              </p>
-            </div>
-            <div className="welcome-decoration"></div>
-            <div className="header-actions">
-              <IonButton fill="clear" onClick={markAllAsRead}>
-                <IonIcon slot="start" icon={checkmarkDoneOutline} />
-                Mark all as read
-              </IonButton>
+              <div className="welcome-header">
+                <h1>Notifications</h1>
+                <p>
+                  <IonIcon icon={notificationsOutline} />
+                  {unreadCount} unread notifications
+                </p>
+              </div>
+              <div className="header-actions">
+                <IonButton fill="clear" onClick={markAllAsRead}>
+                  <IonIcon slot="start" icon={checkmarkDoneOutline} />
+                  Mark all as read
+                </IonButton>
+              </div>
             </div>
           </div>
 
           <div className="notification-filters">
-            <IonSegment value={activeTab} onIonChange={e => setActiveTab(e.detail.value as 'upcoming' | 'history')}>
+            <IonSegment 
+              value={activeTab} 
+              onIonChange={e => setActiveTab(e.detail.value as 'upcoming' | 'history')}
+            >
               <IonSegmentButton value="upcoming">
                 <IonLabel>Upcoming</IonLabel>
               </IonSegmentButton>
@@ -260,83 +312,68 @@ const NotificationPage: React.FC = () => {
           </div>
 
           <div className="notification-list">
-            {filteredNotifications.length > 0 ? (
-              filteredNotifications.map((notification) => (
+            {filteredNotifications.length === 0 ? (
+              <div className="empty-state">
+                <IonIcon icon={notificationsOutline} />
+                <h3>No {activeTab} notifications</h3>
+                <p>You're all caught up!</p>
+              </div>
+            ) : (
+              filteredNotifications.map(notification => (
                 <IonCard 
-                  key={notification.id}
+                  key={notification.id} 
                   className={`notification-card ${notification.status} ${notification.priority || ''}`}
                 >
                   <IonCardContent>
                     <div className="notification-header-row">
                       <div className="notification-icon-container">
-                        <IonIcon icon={getNotificationIcon(notification.type)} className="notification-icon" />
-                        {notification.priority && (
-                          <IonBadge color={getPriorityColor(notification.priority)} className="priority-badge">
-                            {notification.priority}
-                          </IonBadge>
-                        )}
+                        <IonIcon icon={getNotificationIcon(notification.type)} />
                       </div>
                       <div className="notification-title-container">
                         <h2>{notification.title}</h2>
                         <p>{notification.message}</p>
                       </div>
-                      {notification.status === 'pending' ? (
-                        <IonButton 
-                          fill="clear" 
-                          color="primary"
+                      {notification.status === 'pending' && (
+                        <IonButton
+                          fill="clear"
                           className="action-button"
                           onClick={() => markAsRead(notification.id)}
                         >
-                          <IonIcon icon={checkmarkCircleOutline} />
+                          <IonIcon slot="icon-only" icon={checkmarkDoneOutline} />
                         </IonButton>
-                      ) : (
-                        <IonIcon 
-                          icon={getStatusIcon(notification.status) || notificationsOutline} 
-                          color={getStatusColor(notification.status)}
-                          className="status-icon"
-                        />
                       )}
                     </div>
-
                     <div className="notification-details">
                       <div className="notification-time">
                         <IonIcon icon={timeOutline} />
-                        <span>{notification.timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} • {notification.timestamp.toLocaleDateString([], {month: 'short', day: 'numeric'})}</span>
+                        <span>
+                          {new Date(notification.timestamp).toLocaleString()}
+                        </span>
                       </div>
-                      {notification.schedule && (
-                        <IonChip color="medium" className="schedule-chip">
-                          <IonIcon icon={timeOutline} />
-                          <IonLabel>{notification.schedule.time}</IonLabel>
-                          {notification.schedule.days.length < 7 && (
-                            <span> • {notification.schedule.days.join(', ')}</span>
-                          )}
+                      {notification.priority && (
+                        <IonChip color={getPriorityColor(notification.priority)}>
+                          {notification.priority.toUpperCase()}
                         </IonChip>
                       )}
                       {notification.medication && (
-                        <IonChip color="tertiary" className="medication-chip">
+                        <IonChip className="medication-chip">
                           <IonIcon icon={medicalOutline} />
-                          <IonLabel>{notification.medication.name} • {notification.medication.dosage}</IonLabel>
+                          <IonLabel>{notification.medication.name} - {notification.medication.dosage}</IonLabel>
+                        </IonChip>
+                      )}
+                      {notification.schedule && (
+                        <IonChip className="schedule-chip">
+                          <IonIcon icon={alarmOutline} />
+                          <IonLabel>{notification.schedule.time} ({notification.schedule.days.join(', ')})</IonLabel>
                         </IonChip>
                       )}
                     </div>
                   </IonCardContent>
                 </IonCard>
               ))
-            ) : (
-              <div className="empty-state">
-                <IonIcon icon={notificationsOutline} className="empty-icon" />
-                <h3>No notifications</h3>
-                <p>You're all caught up!</p>
-              </div>
             )}
           </div>
         </div>
-
-        <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton>
-            <IonIcon icon={addOutline} />
-          </IonFabButton>
-        </IonFab>
 
         <IonToast
           isOpen={showToast}

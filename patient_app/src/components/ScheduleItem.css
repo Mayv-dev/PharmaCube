@@ -16,8 +16,8 @@
   /* Card Styling */
   .card {
 	border-radius: 15px;
-	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); /* Softer shadow */
-	background: var(--ion-item-background); /* White background */
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+	background: var(--ion-item-background);
 	padding: 20px;
 	margin: 0 auto;
 	max-width: 400px; /* Limit card width for better readability */

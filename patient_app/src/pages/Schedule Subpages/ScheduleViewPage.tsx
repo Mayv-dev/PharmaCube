@@ -31,7 +31,7 @@ import axios from 'axios';
 const ScheduleViewPage: React.FC = () => {
   console.log('ScheduleViewPage component rendered');
   
-  const { filter, isDarkMode } = useColorblindFilter();
+  const { daltonization, isDarkMode } = useColorblindFilter();
   const history = useHistory();
   const [loading, setLoading] = useState(true);
 
@@ -59,8 +59,75 @@ const ScheduleViewPage: React.FC = () => {
         .catch(err => {
           console.error("Error fetching schedule data:", err);
           setScheduleData([
-            { id: 1, day: 1, hour: 8, minute: 30, time_period: 1, taken: false, medications: [] },
-            { id: 2, day: 1, hour: 13, minute: 0, time_period: 2, taken: true, medications: [] }
+            { 
+              id: 1, 
+              day: 1, 
+              hour: 8, 
+              minute: 30, 
+              time_period: 1, 
+              taken: false, 
+              medications: [
+                { id: 1, name: 'Aspirin', amount: '100mg' },
+                { id: 2, name: 'Vitamin D', amount: '1000IU' }
+              ] 
+            },
+            { 
+              id: 2, 
+              day: 1, 
+              hour: 13, 
+              minute: 0, 
+              time_period: 2, 
+              taken: true, 
+              medications: [
+                { id: 3, name: 'Metformin', amount: '500mg' }
+              ] 
+            },
+            { 
+              id: 3, 
+              day: 1, 
+              hour: 18, 
+              minute: 0, 
+              time_period: 3, 
+              taken: false, 
+              medications: [
+                { id: 4, name: 'Lisinopril', amount: '10mg' },
+                { id: 5, name: 'Atorvastatin', amount: '20mg' }
+              ] 
+            },
+            { 
+              id: 4, 
+              day: 2, 
+              hour: 8, 
+              minute: 30, 
+              time_period: 1, 
+              taken: false, 
+              medications: [
+                { id: 1, name: 'Aspirin', amount: '100mg' }
+              ] 
+            },
+            { 
+              id: 5, 
+              day: 2, 
+              hour: 13, 
+              minute: 0, 
+              time_period: 2, 
+              taken: false, 
+              medications: [
+                { id: 3, name: 'Metformin', amount: '500mg' }
+              ] 
+            },
+            { 
+              id: 6, 
+              day: 2, 
+              hour: 18, 
+              minute: 0, 
+              time_period: 3, 
+              taken: false, 
+              medications: [
+                { id: 4, name: 'Lisinopril', amount: '10mg' },
+                { id: 5, name: 'Atorvastatin', amount: '20mg' }
+              ] 
+            }
           ]);
           setLoading(false);
         });
@@ -83,7 +150,7 @@ const ScheduleViewPage: React.FC = () => {
   };
 
   return (
-    <IonPage className={`${filter}${isDarkMode ? ' dark' : ''}`}>
+    <IonPage className={`${daltonization} daltonization-active${isDarkMode ? ' dark' : ''}`}>
       <IonContent className="schedule-view-content">
         <div className="app-container">
           <div className="welcome-section">
