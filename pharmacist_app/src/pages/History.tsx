@@ -38,7 +38,7 @@ const History: React.FC = () => {
 	const getHistoryFromServer = async () => {
 		try {
 		  const { data, status } = await axios.get(
-			`http://localhost:8080/pharmacist/1/patient/${patientId}/history`,
+			`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/1/patient/${patientId}/history`,
 			{
 			  headers: {
 				Accept: 'application/json'

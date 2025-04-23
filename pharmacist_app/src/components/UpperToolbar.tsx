@@ -37,7 +37,7 @@ export type Notification = {
 async function getAccount() {
 	try {
 		const { data, status } = await axios.get(
-			`http://localhost:8080/pharmacist/1`,
+			`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/1`,
 			{
 				headers: {
 					Accept: 'application/json'
@@ -73,7 +73,7 @@ const UpperToolbar: React.FC<UpperToolbarProps> = ({pharmacistName, passedNotifi
 					<IonIcon icon={menu} aria-hidden="true" />
 					<IonLabel>Menu</IonLabel>
 				</IonTabButton>
-				<IonTabButton className='topOroLogo'>
+				<IonTabButton disabled={true} className='topOroLogo'>
 					<IonImg src='logo/ORO logo v2 bg-removed.png'>
 					</IonImg>
 				</IonTabButton>

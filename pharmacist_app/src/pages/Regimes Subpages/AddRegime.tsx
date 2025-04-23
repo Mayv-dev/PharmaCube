@@ -119,7 +119,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
       if (passedInfo == null) {
         console.log("post request being made...")
         const { data, status } = await axios.post(
-          `http://localhost:8080/pharmacist/${pharmacistId}/patient/${patientId}/regime`,
+          `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${pharmacistId}/patient/${patientId}/regime`,
           addedRegime,
           {
             headers: {
@@ -132,7 +132,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
       else {
         console.log("put request being made...")
         const { data, status } = await axios.put(
-          `http://localhost:8080/pharmacist/${pharmacistId}/patient/${patientId}/regime/${passedInfo.id}`,
+          `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${pharmacistId}/patient/${patientId}/regime/${passedInfo.id}`,
           addedRegime,
           {
             headers: {

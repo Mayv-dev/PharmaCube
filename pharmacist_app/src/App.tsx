@@ -58,6 +58,7 @@ import {NativeAudio} from '@capacitor-community/native-audio'
 import { Capacitor } from '@capacitor/core';
 import React from 'react';
 import { TextToSpeech } from '@capacitor-community/text-to-speech';
+import AppPatientDetails from 'app types/AppPatientDetails';
 
 // the royalty free sound used to demonstrate the notification comes from RasoolAsaad at: https://pixabay.com/users/rasoolasaad-47313572/
 NativeAudio.preload({
@@ -101,6 +102,7 @@ const App: React.FC = () => {
     const [unreadNotifs, setUnreadNotifs] = useState<number>(0)
 
     const [patientChat, setPatientChat] = useState<ChatType[]>([{patient_id:1, pharmacist_id:1, messages:[],unread_message_count:0},{patient_id:2, pharmacist_id:1, messages:[],unread_message_count:0}]);
+  const [patientList, setPatientList] = useState<AppPatientDetails[]>([])
 
   const [pharmacistId, setPharmacistId] = useState<number>(1);
   const [pharmacistDetails, setPharmacistDetails] = useState<any|null>(null);
@@ -166,7 +168,7 @@ const App: React.FC = () => {
   const getPatientChat = async (passedPatient:number) => {
 		try {
 			const { data, status } = await axios.get(
-			  `http://localhost:8080/chat/1/${passedPatient}`,
+			  `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/chat/1/${passedPatient}`,
 			  {
 				headers: {
 				  Accept: 'application/json'
@@ -187,9 +189,9 @@ const App: React.FC = () => {
 	}
 
   useEffect(() => {
-    if(pharmacistId != 0) fetchNotifications().then(res => res == "Network Error" || res == "Request failed with status code 404" ? console.log("Server connection has failed in App.tsx with the following error message: ", res):
-    setNotificationList(res)
-  )
+  //   if(pharmacistId != 0) fetchNotifications().then(res => res == "Network Error" || res == "Request failed with status code 404" ? console.log("Server connection has failed in App.tsx with the following error message: ", res):
+  //   setNotificationList(res)
+  // )
   
   setNotificationList(notificationList.sort((a:Notification,b:Notification) => Date.parse(b.timestamp) - Date.parse(a.timestamp)))
   setNotifsBefore(notificationList.length)
@@ -197,11 +199,11 @@ const App: React.FC = () => {
     setUnreadNotifs(unreadNotifs+1)
     setNotifsBefore(notificationList.length)
   }
-  updatePatientChats()
+  // updatePatientChats()
 
   setTimeout(() => {			
       setPollState(!pollState);
-    }, 200);
+    }, 3000);
   },[pollState])
   
 
@@ -209,7 +211,7 @@ const App: React.FC = () => {
   const fetchNotifications = async () => {
     try {
 			const { data, status } = await axios.get(
-			  `http://localhost:8080/pharmacist/${pharmacistId}/notifications`,
+			  `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${pharmacistId}/notifications`,
 			  {
 				headers: {
 				  Accept: 'application/json'

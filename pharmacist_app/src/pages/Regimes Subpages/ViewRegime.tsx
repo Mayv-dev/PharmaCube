@@ -47,7 +47,7 @@ const getMockPatientList = () => {
   async function getMockData(patientId:number) {
 	try {
 	  const { data, status } = await axios.get(
-		`http://localhost:8080/pharmacist/${pharmacistId}/patient/${patientId}/regime`,
+		`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${pharmacistId}/patient/${patientId}/regime`,
 		{
 		  headers: {
 			Accept: 'application/json'
@@ -91,7 +91,7 @@ const getMockPatientList = () => {
 	console.log("deleting regime... ", deleteRegimeId)
 	try {
 		const { data, status } = await axios.delete(
-		  `http://localhost:8080/pharmacist/${pharmacistId}/patient/${patientId}/regime/${deleteRegimeId}`,
+		  `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${pharmacistId}/patient/${patientId}/regime/${deleteRegimeId}`,
 		  {
 			headers: {
 			  Accept: 'application/json'

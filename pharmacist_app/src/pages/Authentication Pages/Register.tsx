@@ -26,7 +26,7 @@ const Register: React.FC = () => {
 		try {
 			console.log("post request being made...")
 			const { data, status } = await axios.post(
-				`http://localhost:8080/pharmacist`,
+				`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist`,
 				addedPharmacist,
 				{
 					headers: {
