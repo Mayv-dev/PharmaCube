@@ -12,7 +12,6 @@ import { PharmacistAccountDetailModify } from '../api types/types';
 import axios from 'axios';
 import DeletePharmacistAccountConfirmation from '../components/Delete Confirmation Component/DeletePharmacistAccountConfirmation';
 import { trash } from 'ionicons/icons';
-import { QRCode, ErrorCorrectLevel, QRNumber, QRAlphaNum, QR8BitByte, QRKanji } from 'qrcode-generator-ts/js';
 
 const Account: React.FC = () => {
 	const [isInEditMode, setIsInEditMode] = useState<Boolean>(false)
@@ -31,9 +30,6 @@ const Account: React.FC = () => {
 	const [pharmacy_address_3, setAddressLine3] = useState("");
 	const [postcode, setPostcode] = useState("");
 
-	const [qrCode, setQrCode] = useState<QRCode>(new QRCode());
-
-
 	const history = useHistory();
 
 	useEffect(() => {
@@ -47,7 +43,6 @@ const Account: React.FC = () => {
 			setAddressLine3(res.pharmacy_address_3)
 			setPostcode(res.postcode)
 		})
-		qrCode.addData("beans")
 	},[])
 
 	async function getAccount() {
