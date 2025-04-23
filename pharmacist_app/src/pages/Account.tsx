@@ -12,6 +12,7 @@ import { PharmacistAccountDetailModify } from '../api types/types';
 import axios from 'axios';
 import DeletePharmacistAccountConfirmation from '../components/Delete Confirmation Component/DeletePharmacistAccountConfirmation';
 import { trash } from 'ionicons/icons';
+import { QRCode, ErrorCorrectLevel, QRNumber, QRAlphaNum, QR8BitByte, QRKanji } from 'qrcode-generator-ts/js';
 
 const Account: React.FC = () => {
 	const [isInEditMode, setIsInEditMode] = useState<Boolean>(false)
@@ -30,6 +31,8 @@ const Account: React.FC = () => {
 	const [pharmacy_address_3, setAddressLine3] = useState("");
 	const [postcode, setPostcode] = useState("");
 
+	const [qrCode, setQrCode] = useState<QRCode>(new QRCode());
+
 
 	const history = useHistory();
 
@@ -44,6 +47,7 @@ const Account: React.FC = () => {
 			setAddressLine3(res.pharmacy_address_3)
 			setPostcode(res.postcode)
 		})
+		qrCode.addData("beans")
 	},[])
 
 	async function getAccount() {
@@ -214,11 +218,10 @@ const Account: React.FC = () => {
 					<p className='headingText'>Adding a new patient? Have them scan the code below with the app.</p>
 
 					<div className='imageContainer'>
-						<img className="qrImg" src="/qr/qr.png"></img>
+						<img className="qrImg" src='https://api.qrserver.com/v1/create-qr-code/?data=https://localhost:8080/pharmacist/1'></img>
 					</div>
 				</div>
 			</IonContent>
-
 
 			<IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
 				<LinkedPatientDeleteConfirmation patient_id={patientId} patient_name={patientName} setShowModal={setShowModal} deletePatient={() => setPatientList(patientList.filter(patient => patient != patientName))}></LinkedPatientDeleteConfirmation>
