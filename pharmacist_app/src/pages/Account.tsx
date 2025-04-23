@@ -48,7 +48,7 @@ const Account: React.FC = () => {
 	async function getAccount() {
 		try {
 			const { data, status } = await axios.get(
-				`http://localhost:8080/pharmacist/1`,
+				`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/1`,
 				{
 					headers: {
 						Accept: 'application/json'
@@ -72,7 +72,7 @@ const Account: React.FC = () => {
 		try {
 			console.log("put request being made...")
 			const { data, status } = await axios.put(
-				`http://localhost:8080/pharmacist/1`,
+				`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/1`,
 				addedPharmacist,
 				{
 					headers: {
@@ -97,7 +97,7 @@ const Account: React.FC = () => {
 		let pharmacistId = 2
 		try {
 			const { data, status } = await axios.delete(
-				`http://localhost:8080/pharmacist/${pharmacistId}`,
+				`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${pharmacistId}`,
 				{
 					headers: {
 						Accept: 'application/json'
@@ -213,7 +213,7 @@ const Account: React.FC = () => {
 					<p className='headingText'>Adding a new patient? Have them scan the code below with the app.</p>
 
 					<div className='imageContainer'>
-						<img className="qrImg" src='https://api.qrserver.com/v1/create-qr-code/?data=https://localhost:8080/pharmacist/1'></img>
+						<img className="qrImg" src='https://api.qrserver.com/v1/create-qr-code/?data=${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/1'></img>
 					</div>
 				</div>
 			</IonContent>

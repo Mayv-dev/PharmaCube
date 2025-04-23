@@ -32,7 +32,7 @@ const Login: React.FC<loginProps> = ({loggedInAccount}) => {
 				
 				try {
 					const { data, status } = await axios.get(
-						`http://localhost:8080/pharmacist/1`,
+						`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/1`,
 						{
 						headers: {
 							Accept: 'application/json'

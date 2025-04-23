@@ -31,7 +31,7 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus, pass
 	const getPatientChat = async () => {
 		try {
 			const { data, status } = await axios.get(
-			  `http://localhost:8080/chat/1/${passedPatient}`,
+			  `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/chat/1/${passedPatient}`,
 			  {
 				headers: {
 				  Accept: 'application/json'
@@ -61,7 +61,7 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus, pass
 		try {
 			console.log("post request being made...")
 			const { data, status } = await axios.post(
-				`http://localhost:8080/chat`,
+				`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/chat`,
 				sentMessage,
 				{
 					headers: {

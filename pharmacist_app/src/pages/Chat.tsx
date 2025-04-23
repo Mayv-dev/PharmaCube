@@ -42,7 +42,7 @@ const Chat: React.FC<chatProps> = ({patientSelect, patientChat}) => {
   async function getMockData(patientId:number) {
     try {
       const { data, status } = await axios.get(
-      `http://localhost:8080/patient/${patientId}`,
+      `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/patient/${patientId}`,
       {
         headers: {
         Accept: 'application/json'
