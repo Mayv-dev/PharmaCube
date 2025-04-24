@@ -21,6 +21,14 @@ func AddMessage(message models.Message) error {
 		return result.Error
 	}
 
+	chat.LastMessageTime = message.CreatedAt
+	chat.LastSenderIsPatient = message.IsSenderPatient
+
+	result = dbAdapter.Save(&chat)
+	if result.Error != nil {
+		return result.Error
+	}
+
 	return nil
 }
 
