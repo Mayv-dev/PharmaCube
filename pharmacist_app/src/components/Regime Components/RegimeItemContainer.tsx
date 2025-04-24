@@ -94,14 +94,14 @@ const RegimeItemContainer: React.FC<ContainerProps> = ({regime, deleteItem, modi
 				
 			</div>
 			<div className='regimeItemContainerButtons'>
-				<IonButton onClick={() => deleteItem(regime.id)} color="danger">
-				<IonIcon icon={trashOutline} />
+				<IonButton className={"regimeViewIcon"} onClick={() => deleteItem(regime.id)} color="danger">
+				<IonIcon  icon={trashOutline} />
 				</IonButton>
-				<IonButton routerLink="/regimes/modify" onClick={() => {
+				<IonButton className={"regimeViewIcon"} routerLink="/regimes/modify" onClick={() => {
 					modifyItem(regime)
 					console.log("From regimeitemcontainer. Look for dateinfo: ",regime)
 				}} color="primary">
-				<IonIcon icon={createOutline} />
+				<IonIcon  icon={createOutline} />
 				</IonButton>
 			</div>
 			

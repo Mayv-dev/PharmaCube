@@ -16,7 +16,7 @@ const LowerToolbar: React.FC<props> = ({isNavBarTop}) => {
 		<IonTabBar className='tabBarSecondary' slot={isNavBarTop ? "top" : "bottom"}>
 			<IonTabButton tab="regimes" href="/regimes">
 				<IonIcon icon={medkit} />
-				<IonLabel>Regimes</IonLabel>
+				<IonLabel>Doses</IonLabel>
 			</IonTabButton>
 			<IonTabButton tab="history" href="/history">
 				<IonIcon icon={calendarOutline} />

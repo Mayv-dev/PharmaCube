@@ -283,7 +283,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
                   <div className='regimeReturn'>
                       <IonButton routerLink='/regimes/' routerDirection='root' color="light">
                         <IonIcon icon={arrowBack}></IonIcon>
-                        <IonText>Back to Regime Home</IonText>
+                        <IonText>Back to Home Screen</IonText>
                       </IonButton>
                   </div>
                   
@@ -307,7 +307,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
                 <div className='regimeReturn'>
                   <IonButton routerLink='/regimes/view' routerDirection='root' onClick={e => passedInfo = null} className='regimeReturn' color="light">
                     <IonIcon icon={arrowBack}></IonIcon>
-                    <IonText>Back to Regime View</IonText>
+                    <IonText>Back to Dose View</IonText>
                   </IonButton>
                 </div>
                 : null
@@ -487,7 +487,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
             </IonToolbar>
           </IonHeader>
           <IonContent className="ion-padding">
-            <p className='regimeConfirm'>Are you sure you wish to create this regime?</p>
+            <p className='regimeConfirm'>Are you sure you wish to create this dose?</p>
             <IonButton expand="full" color="success" onClick={handleConfirm}>
               Yes
             </IonButton>
