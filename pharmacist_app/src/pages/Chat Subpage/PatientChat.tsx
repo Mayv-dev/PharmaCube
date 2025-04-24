@@ -25,7 +25,14 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus, pass
 
 	// Code for setTimeout found at w3schools.com: https://www.w3schools.com/react/react_useeffect.asp
 	useEffect(()=> {
-		getPatientChat().then(res => res == "Network Error" || res == "Request failed with status code 404" ? console.log("Server connection has failed in PatientApp.tsx with the following error message: ", res):setPatientChat({patient_id:patientId, pharmacist_id:pharmacistId, messages:res}))	
+		let res = getPatientChat().then(res => {
+				if(res == "Network Error") alert("Network error occured. Are you connected to the internet?")
+				else if(res == "Request failed with status code 500") {
+					axios.post(`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/chat/1/${passedPatient}`)
+				}
+				else setPatientChat({patient_id:patientId, pharmacist_id:pharmacistId, messages:res,unread_message_count:0})
+			}
+		)
 	},[passedPatientChatStatus, passedPatient])
 
 	const getPatientChat = async () => {
