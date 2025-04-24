@@ -52,14 +52,10 @@ const History: React.FC = () => {
 	
 		  return data;
 	
-		} catch (error) {
-		  if (axios.isAxiosError(error)) {
-			console.log('error message: ', error.message);
-			return error.message;
-		  } else {
-			console.log('unexpected error: ', error);
-			return 'An unexpected error occurred';
-		  }
+		} 
+		catch (e:any) {
+			if(e.code == "ERR_NETWORK") alert("Unable to connect to the server. Are you connected to the internet?")
+			if(e.code == "ERR_BAD_REQUEST") alert("This user was not found on the system. If you believe this is incorrect, contact a system administrator to validate user ID.")
 		}
 	  };
 
