@@ -113,9 +113,7 @@ const Account: React.FC = () => {
 				return 'An unexpected error occurred';
 			}
 		}
-
 		history.push("/login")
-
 	}
 
 	const handleModification = async () => {
@@ -161,41 +159,41 @@ const Account: React.FC = () => {
 				<div className='webBody'>
 					<p>Your Details</p>
 					<IonItem>
-						<IonInput value={name} onIonChange={e => setName(e.target.value)} label='Your Name'></IonInput>
+						<IonInput value={name} onIonInput={e => setName(e.target.value)} label='Your Name'></IonInput>
 					</IonItem>
 
 					<IonItem>
-						<IonInput value={email} onIonChange={e => setEmail(e.target.value)} type="email" label='Email'></IonInput>
+						<IonInput value={email} onIonInput={e => setEmail(e.target.value)} type="email" label='Email'></IonInput>
 					</IonItem>
 
 					<IonItem>
-						<IonInput value={password} onIonChange={e => setPassword(e.target.value)} type="password" label='Password'></IonInput>
+						<IonInput value={password} onIonInput={e => setPassword(e.target.value)} type="password" label='Password'></IonInput>
 					</IonItem>
 
 					<p>Your Pharmacy Details</p>
 					<IonItem>
-						<IonInput value={pharmacy_name} onIonChange={e => setPharmacy_name(e.target.value)} label='Pharmacy Name'></IonInput>
+						<IonInput value={pharmacy_name} onIonInput={e => setPharmacy_name(e.target.value)} label='Pharmacy Name'></IonInput>
 					</IonItem>
 
 					<IonItem>
-						<IonInput value={pharmacy_address_1} onIonChange={e => setAddressLine1(e.target.value)} label='Address Line 1'></IonInput>
+						<IonInput value={pharmacy_address_1} onIonInput={e => setAddressLine1(e.target.value)} label='Address Line 1'></IonInput>
 					</IonItem>
 
 					<IonItem>
-						<IonInput value={pharmacy_address_2} onIonChange={e => setAddressLine2(e.target.value)} label='Address Line 2'></IonInput>
+						<IonInput value={pharmacy_address_2} onIonInput={e => setAddressLine2(e.target.value)} label='Address Line 2'></IonInput>
 					</IonItem>
 
 					<IonItem>
-						<IonInput value={pharmacy_address_3} onIonChange={e => setAddressLine3(e.target.value)} label='Address Line 3'></IonInput>
+						<IonInput value={pharmacy_address_3} onIonInput={e => setAddressLine3(e.target.value)} label='Address Line 3'></IonInput>
 					</IonItem>
 
 					<IonItem>
-						<IonInput value={postcode} onIonChange={e => setPostcode(e.target.value)} label='Postal Code'></IonInput>
+						<IonInput value={postcode} onIonInput={e => setPostcode(e.target.value)} label='Postal Code'></IonInput>
 					</IonItem>
 
 					<IonButton onClick={e => handleModification()}>Modify Details</IonButton>
 
-					<IonButton color={"danger"} onClick={e => { setShowDeletionModal(true) }}>Delete Your Account</IonButton>
+					<IonButton color={"danger"} disabled={true} onClick={e => { setShowDeletionModal(true) }}>Delete Your Account</IonButton>
 					<p className='headingText'>Patient list</p>
 					{isInEditMode ?
 						<IonButton color="danger" onClick={e => setIsInEditMode(false)}>Stop Editing List</IonButton>
