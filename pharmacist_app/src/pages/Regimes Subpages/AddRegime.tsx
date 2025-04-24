@@ -327,6 +327,9 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
                   </IonContent>
               </IonPopover>
             </IonItem>
+
+            <IonImg className="visualBoxRepresenter" src={compartmentImgSrc}></IonImg>
+
             <IonItem>
               <IonRange label={"Compartment"} snaps={true} ticks={true} min={0} max={7} onIonInput={e => setCompartment(e.target.value)}></IonRange>
               <IonIcon className='helpIcon' id="compartment-info" icon={informationCircleOutline}></IonIcon>
@@ -338,7 +341,6 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
                   </IonContent>
               </IonPopover>
             </IonItem>
-            <IonImg className="visualBoxRepresenter" src={compartmentImgSrc}></IonImg>
             
           </div>
           <IonButton expand="full" color="primary" className="submit-button" onClick={e => handleBackClick()}>
