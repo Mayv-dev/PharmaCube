@@ -287,7 +287,7 @@ const App: React.FC = () => {
             </Route>
 
             <Route exact path="/account">
-              <Account />
+              <Account pharmacist_id={pharmacistId}/>
             </Route>
 
             <Route exact path="/settings">
