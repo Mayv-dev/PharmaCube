@@ -20,19 +20,19 @@ const Login: React.FC<loginProps> = ({loggedInAccount}) => {
 
 	const handleLogin = async () => {
 		try {
+			if (email == "") {
+				alert("Please enter an email")
+				return
+			}
 			let emailValidation = string().email().required()
 			await emailValidation.validate(email).then(result => { return result })
-			if (
-				email == "" ||
-				password == ""
-			) {
-				console.log("incorrect login")
-			}
+			if (email == "") alert("Please enter an email")
+			else if (password == "") alert("Please enter a password")
 			else {
 				
 				try {
 					const { data, status } = await axios.get(
-						`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/1`,
+						`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/4`,
 						{
 						headers: {
 							Accept: 'application/json'
@@ -45,14 +45,15 @@ const Login: React.FC<loginProps> = ({loggedInAccount}) => {
 						loggedInAccount(data)
 					}
 				}
-				catch (e) {
-					console.log("User not found")
+				catch (e:any) {
+					if(e.code == "ERR_NETWORK") alert("Unable to connect to the server. Are you connected to the internet?")
+					if(e.code == "ERR_BAD_REQUEST") alert("This user was not found on the system. If you believe this is incorrect, contact a system administrator to validate user ID.")
 				}
 				
 			}
 		}
 		catch (e) {
-			console.log("Invalid email")
+			alert("The email is incorrectly formatted. Please try again.")
 		}
 	}
 	return (
