@@ -19,4 +19,6 @@ func AddPharmacistRoutes(router *gin.Engine) {
 	router.GET("pharmacist/:pharmacist_id", requesthandlers.GetPharmacistAccount)
 	router.PUT("pharmacist/:pharmacist_id", requesthandlers.ModifyPharmacistAccount)
 	router.DELETE("pharmacist/:pharmacist_id", requesthandlers.RemovePharmacistAccount)
+
+	router.POST("pharmacist/:pharmacist_id/add_patient/:patient_id", requesthandlers.LinkAccounts)
 }
