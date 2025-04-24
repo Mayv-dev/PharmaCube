@@ -90,13 +90,13 @@ const CalendarDateSquare: React.FC<CalendarProps> = ({date,dateNow,history,visib
 	}
 
 	const returnTakenStatus = () => {
-		const thisDayHistory = history.filter(hist => hist.date_time_scheduled.substring(0,4) == date.year.toString() && convertMonthDigits(hist.date_time_scheduled.substring(5,7)) == date.month.toString() && Number.parseInt(hist.date_time_scheduled.substring(8,10)) == date.day)
-		const takenList = thisDayHistory.map(hist => hist.was_taken)
+		const thisDayHistory = history?.filter(hist => hist.date_time_scheduled.substring(0,4) == date.year.toString() && convertMonthDigits(hist.date_time_scheduled.substring(5,7)) == date.month.toString() && Number.parseInt(hist.date_time_scheduled.substring(8,10)) == date.day)
+		const takenList = thisDayHistory?.map(hist => hist.was_taken)
 
-		if(takenList.length == 0) return "";
+		if(takenList?.length == 0 || takenList == undefined) return "calendarDate";
 
-		if(takenList.includes(false)) {
-			return takenList.includes(true) ?  
+		if(takenList?.includes(false)) {
+			return takenList?.includes(true) ?  
 			visibleHighlights[2].isVisible ? (date.month == "mar" ? "march_partiallyTakenDate": date.month == "feb" ? "february_partiallyTakenDate" : "partiallyTakenDate") : "calendarDate" 
 			: 
 			visibleHighlights[0].isVisible ? (date.month == "mar" ? "march_notTakenDate": date.month == "feb" ? "february_notTakenDate" : "notTakenDate") : "calendarDate";
@@ -131,7 +131,7 @@ const CalendarDateSquare: React.FC<CalendarProps> = ({date,dateNow,history,visib
 				</IonHeader>
 				<IonContent className="ion-padding">
 					<p>Dose overview for the {handleDate(date.day)} of {convertMonthName(date.month)} {date.year}</p>
-					{history.map(hist => hist.date_time_scheduled.substring(0,4) == date.year.toString() && convertMonthDigits(hist.date_time_scheduled.substring(5,7)) == date.month.toString() && Number.parseInt(hist.date_time_scheduled.substring(8,10)) == date.day ? 
+					{history?.map(hist => hist.date_time_scheduled.substring(0,4) == date.year.toString() && convertMonthDigits(hist.date_time_scheduled.substring(5,7)) == date.month.toString() && Number.parseInt(hist.date_time_scheduled.substring(8,10)) == date.day ? 
 					<DoseTakenStatus time={hist.date_time_scheduled.substring(11,16)} medList={hist.information} takenStatus={hist.was_taken}/>: null)}
 				</IonContent>
 			</IonModal>
