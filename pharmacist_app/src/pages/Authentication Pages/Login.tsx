@@ -29,14 +29,13 @@ const Login: React.FC<loginProps> = ({loggedInAccount}) => {
 			if (email == "") alert("Please enter an email")
 			else if (password == "") alert("Please enter a password")
 			else {
-				
 				try {
 					const { data, status } = await axios.get(
-						`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/4`,
+						`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/1`,
 						{
-						headers: {
-							Accept: 'application/json'
-						},
+							headers: {
+								Accept: 'application/json'
+							},
 						},
 					);
 					if(status == 200) {
@@ -49,7 +48,6 @@ const Login: React.FC<loginProps> = ({loggedInAccount}) => {
 					if(e.code == "ERR_NETWORK") alert("Unable to connect to the server. Are you connected to the internet?")
 					if(e.code == "ERR_BAD_REQUEST") alert("This user was not found on the system. If you believe this is incorrect, contact a system administrator to validate user ID.")
 				}
-				
 			}
 		}
 		catch (e) {
