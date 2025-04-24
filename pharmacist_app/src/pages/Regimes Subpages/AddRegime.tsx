@@ -143,14 +143,9 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
         return data;
       }
     }
-    catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log('error message: ', error.message);
-        return error.message;
-      } else {
-        console.log('unexpected error: ', error);
-        return 'An unexpected error occurred';
-      }
+    catch (e:any) {
+      if(e.code == "ERR_NETWORK") alert("Unable to connect to the server. Are you connected to the internet?")
+      if(e.code == "ERR_BAD_REQUEST") alert("This user was not found on the system. If you believe this is incorrect, contact a system administrator to validate user ID.")
     }
   };
 
@@ -173,21 +168,26 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
       instructions: instructions
     }
 
-    sendToMockable(addedRegime)
-
-    alert('Details confirmed and submitted!');
+    sendToMockable(addedRegime).then(res => {
+      if(res != undefined) {
+        alert('Details confirmed and submitted!');
     
-    setPatientName("")
-    setInformation("")
-    setCompartment(0)
-    setDateInfo(currentDate)
-    setTimeOfDay(0)
-    setTimeOffset(0)
-    setInstructions("")
-    setOtherInstructions("")
-    setPredefinedInstructions([{instruction:"Take this dose orally (take through mouth).",status:false},{instruction:"Do not drink alcohol while on this dose.",status:false},{instruction:"This dose may make you feel tired or dizzy. If this happens, not drive or operate heavy machinery.",status:false}]);
-    setAddState(1)
-    router.push("/regimes/view")
+        setPatientName("")
+        setInformation("")
+        setCompartment(0)
+        setDateInfo(currentDate)
+        setTimeOfDay(0)
+        setTimeOffset(0)
+        setInstructions("")
+        setOtherInstructions("")
+        setPredefinedInstructions([{instruction:"Take this dose orally (take through mouth).",status:false},{instruction:"Do not drink alcohol while on this dose.",status:false},{instruction:"This dose may make you feel tired or dizzy. If this happens, not drive or operate heavy machinery.",status:false}]);
+        setAddState(1)
+        router.push("/regimes/view")
+      }
+      
+    })
+
+    
   };
 
   useEffect(() => {
