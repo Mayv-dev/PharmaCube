@@ -22,7 +22,7 @@ func ReadPharmacistAccount(pharmacistId uint) (models.Pharmacist, error) {
 	var pharmacist models.Pharmacist
 	dbAdapter := GromDbAdapter()
 
-	result := dbAdapter.Preload("Patients").First(&pharmacist, pharmacistId)
+	result := dbAdapter.Preload("Chats").Preload("Patients").First(&pharmacist, pharmacistId)
 	if result.Error != nil {
 		log.Println(result.Error.Error())
 		return models.Pharmacist{}, fmt.Errorf("Failed to find Pharmacist account ID %v", pharmacistId)

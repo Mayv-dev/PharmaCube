@@ -35,7 +35,7 @@ func UpdatePatientAccount(patientId uint, newAccountDetails models.Patient) (mod
 	var patient models.Patient
 	dbAdapter := GromDbAdapter()
 
-	result := dbAdapter.First(&patient, patientId)
+	result := dbAdapter.Preload("Chats").Preload("PatientSchedules").Preload("PatientRegimes").Preload("PatientScheduledRegimes").Preload("PatientAdherenceRecords").First(&patient, patientId)
 	if result.Error != nil {
 		log.Println(result.Error.Error())
 		return patient, fmt.Errorf("Failed to Find Patient account ID %v", patientId)
