@@ -13,7 +13,11 @@ import axios from 'axios';
 import DeletePharmacistAccountConfirmation from '../components/Delete Confirmation Component/DeletePharmacistAccountConfirmation';
 import { trash } from 'ionicons/icons';
 
-const Account: React.FC = () => {
+type AccountProps = {
+	pharmacist_id:number
+}
+
+const Account: React.FC<AccountProps> = ({pharmacist_id}) => {
 	const [isInEditMode, setIsInEditMode] = useState<Boolean>(false)
 	const [patientName, setPatientName] = useState("")
 	const [patientId, setPatientId] = useState(-1)
@@ -30,6 +34,8 @@ const Account: React.FC = () => {
 	const [pharmacy_address_3, setAddressLine3] = useState("");
 	const [postcode, setPostcode] = useState("");
 
+	const [qrUrl, setQrUrl] = useState(`https://api.qrserver.com/v1/create-qr-code/?data=${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${pharmacist_id}`);
+
 	const history = useHistory();
 
 	useEffect(() => {
@@ -45,10 +51,14 @@ const Account: React.FC = () => {
 		})
 	},[])
 
+	useEffect(() => {
+		setQrUrl(`https://api.qrserver.com/v1/create-qr-code/?data=${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${pharmacist_id}`)
+	},[pharmacist_id])
+
 	async function getAccount() {
 		try {
 			const { data, status } = await axios.get(
-				`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/1`,
+				`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${pharmacist_id}`,
 				{
 					headers: {
 						Accept: 'application/json'
@@ -72,7 +82,7 @@ const Account: React.FC = () => {
 		try {
 			console.log("put request being made...")
 			const { data, status } = await axios.put(
-				`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/1`,
+				`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${pharmacist_id}`,
 				addedPharmacist,
 				{
 					headers: {
@@ -94,10 +104,9 @@ const Account: React.FC = () => {
 	};
 
 	const deleteAccount = async () => {
-		let pharmacistId = 2
 		try {
 			const { data, status } = await axios.delete(
-				`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${pharmacistId}`,
+				`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${pharmacist_id}`,
 				{
 					headers: {
 						Accept: 'application/json'
@@ -211,7 +220,7 @@ const Account: React.FC = () => {
 					<p className='headingText'>Adding a new patient? Have them scan the code below with the app.</p>
 
 					<div className='imageContainer'>
-						<img className="qrImg" src='https://api.qrserver.com/v1/create-qr-code/?data=${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/1'></img>
+						<img className="qrImg" src={qrUrl}></img>
 					</div>
 				</div>
 			</IonContent>
