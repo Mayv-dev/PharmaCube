@@ -63,11 +63,11 @@ const Login: React.FC<loginProps> = ({loggedInAccount}) => {
 					<p className='authenticationPageHeading'>Log In</p>
 
 					<IonItem>
-						<IonInput onIonChange={e => setEmail(e.target.value)} value={email} type="email" label='Email'></IonInput>
+						<IonInput onIonInput={e => setEmail(e.target.value)} value={email} type="email" label='Email'></IonInput>
 					</IonItem>
 
 					<IonItem>
-						<IonInput onIonChange={e => setPassword(e.target.value)} value={password} type="password" label='Password'></IonInput>
+						<IonInput onIonInput={e => setPassword(e.target.value)} value={password} type="password" label='Password'></IonInput>
 					</IonItem>
 
 					<IonButton onClick={e => handleLogin()}>Log In</IonButton>
