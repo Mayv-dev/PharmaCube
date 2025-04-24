@@ -18,13 +18,13 @@ const Regimes = () => {
 							<IonButton routerLink="/regimes/create" routerDirection='root' expand="block" className='regimeButtonSizing' color="light">
 								<div className='regimeButtonInternals'>
 									<IonIcon icon={add} size='large'></IonIcon>
-									<IonText>Create Regime For Patient</IonText>
+									<IonText>Create a Dose for Patient</IonText>
 								</div>
 							</IonButton>
 							<IonButton routerLink="/regimes/view" routerDirection='root' expand="block" className='regimeButtonSizing' color="light">
 							<div className='regimeButtonInternals'>
 								<IonIcon icon={search} size='large'></IonIcon>
-								<IonText>View Existing Patient Regimes</IonText>
+								<IonText>View Existing Patient Doses</IonText>
 							</div>
 							</IonButton>
 					</div>

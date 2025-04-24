@@ -116,7 +116,7 @@ const getMockPatientList = () => {
 				<div className='regimeReturn'>
                   <IonButton routerLink='/regimes/' routerDirection='root' color="light">
                     <IonIcon icon={arrowBack}></IonIcon>
-                    <IonText>Back to Regime Home</IonText>
+                    <IonText>Back to Home Screen</IonText>
                   </IonButton>
               </div>
 				<IonItem>
@@ -143,7 +143,7 @@ const getMockPatientList = () => {
           </IonHeader>
           <IonContent className="ion-padding">
 		  <div className='webBody'>
-            <p>Are you sure you wish to delete this regime?</p>
+            <p>Are you sure you wish to delete this dose?</p>
             <IonButton expand="full" color="primary" onClick={() => {
 				deleteRegimeItem()
 				setShowModal(false)}}>
