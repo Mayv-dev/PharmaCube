@@ -14,9 +14,10 @@ type HistoryProps = {
 	passedPatientId:number
 	changePatientId:any
 	passedPatientList:any
+	passedPharmacistId:number
 }
 
-const History: React.FC<HistoryProps> = ({passedPatientId, changePatientId, passedPatientList}) => {
+const History: React.FC<HistoryProps> = ({passedPatientId, changePatientId, passedPatientList,passedPharmacistId}) => {
 	const [date, setDate] = useState<CalendarDate>(calendarDateFromJsDateObject(new Date(Date.now())))
 	const [dateNow, setDateNow] = useState<CalendarDate>(calendarDateFromJsDateObject(new Date(Date.now())))
 	const [dateList, setDateList] = useState<any[]>([])
@@ -40,7 +41,7 @@ const History: React.FC<HistoryProps> = ({passedPatientId, changePatientId, pass
 	const getHistoryFromServer = async () => {
 		try {
 		  const { data, status } = await axios.get(
-			`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/1/patient/${passedPatientId}/history`,
+			`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${passedPharmacistId}/patient/${passedPatientId}/history`,
 			{
 			  headers: {
 				Accept: 'application/json'

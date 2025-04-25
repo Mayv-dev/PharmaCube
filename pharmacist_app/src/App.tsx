@@ -71,7 +71,7 @@ const platform = Capacitor.getPlatform();
 
 const App: React.FC = () => {
 
-  const [pharmacistId, setPharmacistId] = useState<number>(1);
+  const [pharmacistId, setPharmacistId] = useState<number>(0);
   const [pharmacistDetails, setPharmacistDetails] = useState<any|null>(null);
 
 
@@ -263,36 +263,36 @@ const App: React.FC = () => {
           <IonRouterOutlet id="main-content">
 
             <Route exact path="/login">
-              <Login loggedInAccount={getLoginAccountDetails}/>
+              <Login setPharmacistId={setPharmacistId} loggedInAccount={setPharmacistDetails}/>
             </Route>
             <Route exact path="/register">
-              <Register />
+              <Register setPharmacistId={setPharmacistId}/>
             </Route>
 
             <Route exact path="/regimes">
               <Regimes />
             </Route>
             <Route exact path="/regimes/create">
-              <AddRegime patientId={patientId} passedPatientList={patientList} changePatientId={changePatientId} passedInfo={null} />
+              <AddRegime passedPharmacistId={pharmacistId} patientId={patientId} passedPatientList={patientList} changePatientId={changePatientId} passedInfo={null} />
             </Route>
             <Route exact path="/regimes/modify">
-              <AddRegime patientId={patientId} passedPatientList={patientList} changePatientId={changePatientId} passedInfo={modifyRegimeInfo} />
+              <AddRegime passedPharmacistId={pharmacistId} patientId={patientId} passedPatientList={patientList} changePatientId={changePatientId} passedInfo={modifyRegimeInfo} />
             </Route>
 
             <Route exact path="/regimes/view">
-              <ViewRegime patientId={patientId} passedPatientList={patientList} changePatientId={changePatientId} passModifyDataToApp={testRootMessage} />
+              <ViewRegime passedPharmacistId={pharmacistId} patientId={patientId} passedPatientList={patientList} changePatientId={changePatientId} passModifyDataToApp={testRootMessage} />
             </Route>
 
 
             <Route exact path="/history">
-              <History passedPatientList={patientList} passedPatientId={patientId} changePatientId={changePatientId} />
+              <History passedPharmacistId={pharmacistId} passedPatientList={patientList} passedPatientId={patientId} changePatientId={changePatientId} />
             </Route>
 
             <Route exact path="/chat">
               <Chat passedPatientList={patientList} patientSelect={changePatientId}/>
             </Route>
             <Route exact path="/chat/patient">
-              <PatientChat passedPatientId={patientId} passedPatientChatStatus={getPatientChatStatus}/>
+              <PatientChat passedPharmacistId={pharmacistId} passedPatientId={patientId} passedPatientChatStatus={getPatientChatStatus}/>
             </Route>
 
             <Route exact path="/account">
@@ -308,8 +308,8 @@ const App: React.FC = () => {
             </Route>
           </IonRouterOutlet >
 
-          <UpperToolbar pharmacistName={pharmacistDetails?.name} passedNotificationList={notificationList} unreadNotifs={unreadNotifs} resetUnreadNotifs={resetUnreadNotifs}/>
-          <LowerToolbar isNavBarTop={isNavBarTop}/>
+          <UpperToolbar setPharmacistId={setPharmacistId} pharmacistName={pharmacistDetails?.name} passedNotificationList={notificationList} unreadNotifs={unreadNotifs} resetUnreadNotifs={resetUnreadNotifs}/>
+          {pharmacistId != 0 ? <LowerToolbar isNavBarTop={isNavBarTop}/> : null}
 
         </IonTabs >
       </IonReactRouter >

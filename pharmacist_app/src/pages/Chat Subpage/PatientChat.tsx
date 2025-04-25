@@ -15,11 +15,10 @@ import { Message } from 'api types/types';
 type PatientChatProps = {
 	passedPatientChatStatus:boolean
 	passedPatientId:any
+	passedPharmacistId:number
 }
 
-const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus, passedPatientId}) => {
-	const [pharmacistId, setPharmacistId] = useState<number>(1);
-
+const PatientChat: React.FC<PatientChatProps> =  ({passedPharmacistId, passedPatientChatStatus, passedPatientId}) => {
 	const [patientChat, setPatientChat] = useState<any[]>([]);
 	const [pollSwitch, setPollSwitch] = useState<boolean>(false);
 
@@ -29,7 +28,7 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus, pass
 		let res = getPatientChat().then(res => {
 				if(res == "Network Error") alert("Network error occured. Are you connected to the internet?")
 				else if(res == "Request failed with status code 500") {
-					axios.post(`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/chat/1/${passedPatientId}`)
+					axios.post(`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/chat/${passedPharmacistId}/${passedPatientId}`)
 				}
 				else {
 					setPatientChat(res)
@@ -44,7 +43,7 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus, pass
 	const getPatientChat = async () => {
 		try {
 			const { data, status } = await axios.get(
-			  `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/chat/1/${passedPatientId}`,
+			  `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/chat/${passedPharmacistId}/${passedPatientId}`,
 			  {
 				headers: {
 				  Accept: 'application/json'
@@ -106,7 +105,7 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus, pass
 				<p>Selected patient: {passedPatientId}</p>
 				</div>
 				<div className={"chatBubbleContainer"}>
-					{ patientChat?.map(message => <ChatBubble passedPharmacistId={pharmacistId} passedPatientId={passedPatientId} passedMessage={message}></ChatBubble>)}
+					{ patientChat.map(message => <ChatBubble passedPharmacistId={passedPharmacistId} passedPatientId={passedPatientId} passedMessage={message}></ChatBubble>)}
 				</div>
 				<ChatTextbox messageSent={messageSent}></ChatTextbox>
 			</div>

@@ -9,15 +9,14 @@ type AddRegimeProps = {
   passedPatientList:any
   patientId: number
   changePatientId: any
-
+  passedPharmacistId:number
 }
 
-const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, passedPatientList, patientId, changePatientId }) => {
+const AddRegime: React.FC<AddRegimeProps> = ({ passedPharmacistId, passedInfo, passedPatientList, patientId, changePatientId }) => {
   const router = useIonRouter()
 
   const [addState, setAddState] = useState<number>(1);
   const [patientList, setPatientList] = useState<any[]>([]);
-  const [pharmacistId, setPharmacistId] = useState<number>(1);
 
   const [isPatientIdValid, setIsPatientIdValid] = useState(true);
   const [patientName, setPatientName] = useState('');
@@ -109,7 +108,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, passedPatientList, pa
     try {
       if (passedInfo == null) {
         const { data, status } = await axios.post(
-          `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${pharmacistId}/patient/${patientId}/regime`,
+          `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${passedPharmacistId}/patient/${patientId}/regime`,
           addedRegime,
           {
             headers: {
@@ -121,7 +120,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, passedPatientList, pa
       }
       else {
         const { data, status } = await axios.put(
-          `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${pharmacistId}/patient/${patientId}/regime/${passedInfo.id}`,
+          `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${passedPharmacistId}/patient/${patientId}/regime/${passedInfo.id}`,
           addedRegime,
           {
             headers: {
