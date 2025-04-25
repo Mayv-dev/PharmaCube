@@ -106,7 +106,6 @@ const App: React.FC = () => {
     const [notifsBefore, setNotifsBefore] = useState<number>(notificationList.length)
     const [unreadNotifs, setUnreadNotifs] = useState<number>(0)
 
-    const [patientChat, setPatientChat] = useState<ChatType[]>([{patient_id:1, pharmacist_id:1, messages:[],unread_message_count:0},{patient_id:2, pharmacist_id:1, messages:[],unread_message_count:0}]);
   const [patientList, setPatientList] = useState<AppPatientDetails[]>([])
 
 
@@ -153,21 +152,6 @@ const App: React.FC = () => {
     })
   },[isTTSOn,])
 
-  const updatePatientChats = () => {
-    let stuff:ChatType[] = []
-    patientChat.map(async patient => {
-      await getPatientChat(patient.patient_id).then(res => {
-        let unread_messages = patient.unread_message_count;
-        console.log(res.length > patient.messages.length)
-        console.log(res.length)
-        console.log(patient.messages.length)
-        if(res.length > patient.messages.length) unread_messages += (res.length - patient.messages.length)
-        console.log("testing"+window.location.href.endsWith("chat/patient") && patient.patient_id == patientId)
-        window.location.href.endsWith("chat/patient") && patient.patient_id == patientId ? stuff.push({patient_id:patient.patient_id, pharmacist_id:patient.pharmacist_id, messages:res, unread_message_count:0}): stuff.push({patient_id:patient.patient_id, pharmacist_id:patient.pharmacist_id, messages:res, unread_message_count:unread_messages}) 
-      })
-    })
-    setPatientChat(stuff)
-  }
   
   const getPatientChat = async (passedPatient:number) => {
 		try {
@@ -208,12 +192,12 @@ const App: React.FC = () => {
     setUnreadNotifs(unreadNotifs+1)
     setNotifsBefore(notificationList.length)
   }
-  // updatePatientChats()
 
   setTimeout(() => {			
       setPollState(!pollState);
     }, 3000);
   },[pollState])
+  
   
 
 
@@ -305,7 +289,7 @@ const App: React.FC = () => {
             </Route>
 
             <Route exact path="/chat">
-              <Chat passedPatientList={patientList} patientChat={patientChat} patientSelect={changePatientId}/>
+              <Chat passedPatientList={patientList} patientSelect={changePatientId}/>
             </Route>
             <Route exact path="/chat/patient">
               <PatientChat passedPatientId={patientId} passedPatientChatStatus={getPatientChatStatus}/>
@@ -325,7 +309,7 @@ const App: React.FC = () => {
           </IonRouterOutlet >
 
           <UpperToolbar pharmacistName={pharmacistDetails?.name} passedNotificationList={notificationList} unreadNotifs={unreadNotifs} resetUnreadNotifs={resetUnreadNotifs}/>
-          <LowerToolbar chatList={patientChat} isNavBarTop={isNavBarTop}/>
+          <LowerToolbar isNavBarTop={isNavBarTop}/>
 
         </IonTabs >
       </IonReactRouter >

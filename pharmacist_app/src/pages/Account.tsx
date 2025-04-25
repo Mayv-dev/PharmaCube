@@ -211,6 +211,7 @@ const Account: React.FC<AccountProps> = ({pharmacist_id, passedPatientList}) => 
 					}
 					{passedPatientList.map(patient =>
 						<div key={patient.id} className='patientContainer'>
+							{/* I use the picture from wikipedia as a stand-in for real pictures that would be stored on the server: https://commons.wikimedia.org/wiki/File:Portrait_Placeholder.png */}
 							<img className='patientImage' src='https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'></img>
 							<p className="patientContainerName">{patient.name}</p>
 							{isInEditMode ? <IonButton color={"danger"} className="deletePatientButton" onClick={e => { setShowModal(true); setPatientId(patient.id); setPatientName(patient.name) }}><IonIcon icon={trash}></IonIcon></IonButton> : null}

@@ -93,13 +93,16 @@ const UpperToolbar: React.FC<UpperToolbarProps> = ({pharmacistName, passedNotifi
 					<IonButton onClick={() => menuController.close()} className='menuBackButton'>
 						<IonText>Close Menu</IonText>
 						<IonIcon icon={arrowBack}></IonIcon>
-					</IonButton>						<div className='pharmacistMenuGreeting'>
-							<img width="13%" src='https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'></img>
-							<p>Hello, {pharmacistName != null ? pharmacistName.indexOf(" ") != -1 ? pharmacistName.substring(0, pharmacistName.indexOf(" ")) : pharmacistName : "Pharmacist"}!</p>
-						</div>
-						<IonButton className={"menuOptionButton"} routerLink='/account' routerDirection='root'>My Account</IonButton>
-						<IonButton className={"menuOptionButton"} routerLink='/settings' routerDirection='root'>Settings</IonButton> 
-						<IonButton color={"danger"}>Log Out</IonButton>
+					</IonButton>						
+
+					<div className='pharmacistMenuGreeting'>
+						{/* I use the picture from wikipedia as a stand-in for real pictures that would be stored on the server: https://commons.wikimedia.org/wiki/File:Portrait_Placeholder.png */}
+						<img width="13%" src='https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'></img>
+						<p>Hello, {pharmacistName != null ? pharmacistName.indexOf(" ") != -1 ? pharmacistName.substring(0, pharmacistName.indexOf(" ")) : pharmacistName : "Pharmacist"}!</p>
+					</div>
+					<IonButton className={"menuOptionButton"} routerLink='/account' routerDirection='root'>My Account</IonButton>
+					<IonButton className={"menuOptionButton"} routerLink='/settings' routerDirection='root'>Settings</IonButton> 
+					<IonButton color={"danger"}>Log Out</IonButton>
 					</div>
 				</IonContent>
 			</IonMenu>
