@@ -1,24 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   IonPage,
   IonContent,
   IonList,
   IonItem,
   IonLabel,
-  IonLoading,
-  IonSearchbar,
 } from '@ionic/react';
 import '../styles/Users.css';
-import { ChatType } from 'api types/types';
-import axios from 'axios';
 
 type chatProps = {
   patientSelect:any
-  patientChat:ChatType[]
   passedPatientList:any
 }
 
-const Chat: React.FC<chatProps> = ({patientSelect, patientChat, passedPatientList}) => {
+const Chat: React.FC<chatProps> = ({patientSelect, passedPatientList}) => {
 
   return (
     <IonPage>

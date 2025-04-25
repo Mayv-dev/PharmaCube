@@ -8,7 +8,6 @@ import {
 	IonText,
 	IonTitle
 } from '@ionic/react';
-import { Message } from 'api types/types';
 import { ellipsisVerticalCircle, musicalNotes } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 
