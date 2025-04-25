@@ -2,6 +2,8 @@ import { IonIcon, useIonRouter } from '@ionic/react';
 import './ExploreContainer.css';
 import './NotificationItem.css';
 import { alert, checkmark, warning } from 'ionicons/icons';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 enum urgency {
 	LOW, MEDIUM, HIGH
@@ -13,20 +15,51 @@ interface NotificationItemProps {
 	timestamp:string,
 	urgencyPassed:urgency,
 	minimize:any
+	setPatientId:any
 }
 
-const NotificationItem: React.FC<NotificationItemProps> = ({ id,content, timestamp, urgencyPassed, minimize }) => 
+const NotificationItem: React.FC<NotificationItemProps> = ({ id,content, timestamp, urgencyPassed, minimize, setPatientId }) => 
 {
-	let nameOfClass:string;
-	let body:string = JSON.parse(content)["body"]
+	const [nameOfClass, setNameOfClass] = useState<string>("")
+	const [nameOfPatient, setNameOfPatient] = useState<string>("")
+	const [body, setBody] = useState<string>()
 
-	if(urgencyPassed == urgency.LOW) nameOfClass = "notificationItemContainer lowNotification";
-	else if(urgencyPassed == urgency.MEDIUM) nameOfClass = "notificationItemContainer mediumNotification";
-	else nameOfClass = "notificationItemContainer highNotification";
+	const getPatient = async (patientId:number) => { 
+		console.log(patientId)
+		try {
+		  const { data, status } = await axios.get(
+		  `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/patient/${patientId}`,
+		  {
+			headers: {
+			Accept: 'application/json'
+			},
+		  },
+		  );
+		  
+		  return data;
+		
+		} 
+		catch (e:any) {
+		  if(e.code == "ERR_NETWORK") alert("Unable to connect to the server. Are you connected to the internet?")
+		  if(e.code == "ERR_BAD_REQUEST") alert("This user was not found on the system. If you believe this is incorrect, contact a system administrator to validate user ID.")
+		}
+	  }
+
+
+	useEffect(() => {
+		getPatient(JSON.parse(content)["patient_id"]).then(res => setBody(JSON.parse(content)["body"].replace("${patient_name}",res.name)))
+		console.log("The id after is",JSON.parse(content)["patient_id"])
+		if(urgencyPassed == urgency.LOW) setNameOfClass("notificationItemContainer lowNotification");
+		else if(urgencyPassed == urgency.MEDIUM) setNameOfClass("notificationItemContainer mediumNotification");
+		else setNameOfClass("notificationItemContainer highNotification");
+	},[content,])
+
+	
 
   const router = useIonRouter()
 	const handleRouting = () => {
 		if (JSON.parse(content)["route_to"] == "chat" && router.routeInfo.pathname != "/chat/patient") {
+			setPatientId(JSON.parse(content)["patient_id"])
 			router.push("/chat/patient", "none");
 			minimize()
 		}
