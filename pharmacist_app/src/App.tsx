@@ -105,7 +105,7 @@ const App: React.FC = () => {
 
 	const [pollState, setPollState] = useState(true)
 	const [getPatientChatStatus, setGetPatientChatStatus] = useState(true)
-  const [notificationList, setNotificationList] = useState<Notification[]>([]);
+  	const [notificationList, setNotificationList] = useState<Notification[]>([]);
     const [notifsBefore, setNotifsBefore] = useState<number>(notificationList.length)
     const [unreadNotifs, setUnreadNotifs] = useState<number>(0)
 
@@ -130,10 +130,11 @@ const App: React.FC = () => {
     });
     };
 
-    const notify = (payloadBody:string) => {
+    const notifyFirebase = (payloadBody:string) => {
       console.log(isTTSOn)
       if (isTTSOn){
-       speak(payloadBody);
+		if(payloadBody == "chat") speak("A patient has sent you a message")
+        else speak("You have recieved a notification");
       }
       else {
         NativeAudio.play({assetId: 'notify'});
@@ -142,18 +143,28 @@ const App: React.FC = () => {
 
   useEffect(() => {
     generateToken()
-    onMessage(messaging, (payload) => {
+    onMessage(messaging, payload => {
       console.log("notification: ", payload);
-      let notification = {body:""}
+      let notification = {route_to:""}
       notification = typeof payload.notification?.body == "string" ? JSON.parse(payload.notification?.body):{body:""}
-      if(payload.notification?.body != undefined){
-        const updatedNotificationList = notificationList;
-        updatedNotificationList.push({id:0,content:payload.notification?.body, urgency:1, timestamp: new Date(Date.now()).toISOString()});
-        setNotificationList(updatedNotificationList.sort((a:Notification,b:Notification) => Date.parse(b.timestamp) - Date.parse(a.timestamp)));
-        notify(notification["body"])
+      if(payload.notification?.body != undefined) {
+        let updatedNotificationList = notificationList;
+		let newNotif = payload.notification?.body
+		console.log(newNotif)
+		console.log("updatedNotificationList before: ", updatedNotificationList);
+        updatedNotificationList.push(
+			{
+				patient_id:0,
+				content:newNotif, 
+				urgency:1, 
+				timestamp: new Date(Date.now()).toISOString()
+			});
+		console.log("updatedNotificationList after: ", updatedNotificationList);
+		setNotificationList(updatedNotificationList.sort((a:Notification,b:Notification) => Date.parse(b.timestamp) - Date.parse(a.timestamp)));
+        notifyFirebase(notification["route_to"])
       }
     })
-  },[isTTSOn,])
+  },[isTTSOn])
 
   
   const getPatientChat = async (passedPatient:number) => {
@@ -357,7 +368,7 @@ const App: React.FC = () => {
             </Route>
           </IonRouterOutlet >
 
-          <UpperToolbar setPharmacistId={setPharmacistId} pharmacistName={pharmacistDetails?.name} passedNotificationList={notificationList} unreadNotifs={unreadNotifs} resetUnreadNotifs={resetUnreadNotifs}/>
+          <UpperToolbar setPatientId={setPatientId} setPharmacistId={setPharmacistId} pharmacistName={pharmacistDetails?.name} passedNotificationList={notificationList} unreadNotifs={unreadNotifs} resetUnreadNotifs={resetUnreadNotifs}/>
           {pharmacistId != 0 ? <LowerToolbar isNavBarTop={isNavBarTop}/> : null}
 
         </IonTabs >

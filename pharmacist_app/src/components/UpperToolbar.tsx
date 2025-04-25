@@ -16,6 +16,7 @@ import axios from 'axios';
 import { menuController } from '@ionic/core/components';
 import NotificationItem from './NotificationItem';
 import { useHistory } from 'react-router';
+import { useEffect, useState } from 'react';
 
 export async function openHamburgerMenu() {
 	await menuController.open('hamburger-menu');
@@ -29,7 +30,7 @@ enum urgency {
 	LOW, MEDIUM, HIGH
 }
 export type Notification = {
-	id: number,
+	patient_id: number,
 	content: string,
 	timestamp: string,
 	urgency: urgency
@@ -64,10 +65,16 @@ type UpperToolbarProps = {
 	unreadNotifs:number,
 	resetUnreadNotifs:any
 	setPharmacistId:any
+	setPatientId:any
 }
 
-const UpperToolbar: React.FC<UpperToolbarProps> = ({pharmacistName, passedNotificationList, unreadNotifs, resetUnreadNotifs,setPharmacistId}) => {
+const UpperToolbar: React.FC<UpperToolbarProps> = ({pharmacistName, passedNotificationList, unreadNotifs, resetUnreadNotifs,setPharmacistId, setPatientId}) => {
 		const history = useHistory();
+		const [notifyList, setNotifyList] = useState<Notification[]>([])
+
+		useEffect(() => {
+			setNotifyList(passedNotificationList)
+		},[passedNotificationList])
 
 	return (
 		<>
@@ -122,7 +129,7 @@ const UpperToolbar: React.FC<UpperToolbarProps> = ({pharmacistName, passedNotifi
 						</IonButton>
 						<div className='rowOfSelects'>
 						</div>
-					{passedNotificationList.length > 0 ? passedNotificationList?.map(notification => <NotificationItem id={notification.id} content={notification.content} timestamp={notification.timestamp} urgencyPassed={notification.urgency} minimize={menuController.close} />): <IonItem>You have no notifications</IonItem>}
+					{passedNotificationList.length > 0 ? passedNotificationList?.map(notification => <NotificationItem id={notification.id} content={notification.content} timestamp={notification.timestamp} urgencyPassed={notification.urgency} minimize={menuController.close} setPatientId={setPatientId} />): <IonItem>You have no notifications</IonItem>}
 				</div>
 				</IonContent>
 			</IonMenu>
