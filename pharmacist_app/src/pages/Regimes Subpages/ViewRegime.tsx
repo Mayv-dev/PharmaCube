@@ -24,10 +24,10 @@ type ContainerProps = {
 	passedPatientList:any
 	patientId: number
 	changePatientId: any
+	passedPharmacistId:number
 }
 
-const ViewRegime: React.FC<ContainerProps> =  ({ passModifyDataToApp, passedPatientList, patientId, changePatientId }) => {
-	const [pharmacistId, setPharmacistId] = useState<number>(1);
+const ViewRegime: React.FC<ContainerProps> =  ({ passedPharmacistId, passModifyDataToApp, passedPatientList, patientId, changePatientId }) => {
 	
 	const [userRegimes, setUserRegimes] = useState<RegimeItem[]>()
 	const [deleteRegimeId, setDeleteRegimeId] = useState<number>(-1);
@@ -38,7 +38,7 @@ const ViewRegime: React.FC<ContainerProps> =  ({ passModifyDataToApp, passedPati
   async function getPatientRegime() {
 	try {
 	  const { data, status } = await axios.get(
-		`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${pharmacistId}/patient/${patientId}/regime`,
+		`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${passedPharmacistId}/patient/${patientId}/regime`,
 		{
 		  headers: {
 			Accept: 'application/json'
@@ -68,7 +68,7 @@ const ViewRegime: React.FC<ContainerProps> =  ({ passModifyDataToApp, passedPati
 	console.log("deleting regime... ", deleteRegimeId)
 	try {
 		const { data, status } = await axios.delete(
-		  `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${pharmacistId}/patient/${patientId}/regime/${deleteRegimeId}`,
+		  `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${passedPharmacistId}/patient/${patientId}/regime/${deleteRegimeId}`,
 		  {
 			headers: {
 			  Accept: 'application/json'

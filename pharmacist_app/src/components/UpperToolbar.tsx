@@ -15,6 +15,7 @@ import '../styles/LowerToolbar.css';
 import axios from 'axios';
 import { menuController } from '@ionic/core/components';
 import NotificationItem from './NotificationItem';
+import { useHistory } from 'react-router';
 
 export async function openHamburgerMenu() {
 	await menuController.open('hamburger-menu');
@@ -62,10 +63,12 @@ type UpperToolbarProps = {
 	passedNotificationList:Notification[],
 	unreadNotifs:number,
 	resetUnreadNotifs:any
+	setPharmacistId:any
 }
 
-const UpperToolbar: React.FC<UpperToolbarProps> = ({pharmacistName, passedNotificationList, unreadNotifs, resetUnreadNotifs}) => {
-	
+const UpperToolbar: React.FC<UpperToolbarProps> = ({pharmacistName, passedNotificationList, unreadNotifs, resetUnreadNotifs,setPharmacistId}) => {
+		const history = useHistory();
+
 	return (
 		<>
 			<IonTabBar className='tabBarPrimary' slot="top">
@@ -102,7 +105,10 @@ const UpperToolbar: React.FC<UpperToolbarProps> = ({pharmacistName, passedNotifi
 					</div>
 					<IonButton className={"menuOptionButton"} routerLink='/account' routerDirection='root'>My Account</IonButton>
 					<IonButton className={"menuOptionButton"} routerLink='/settings' routerDirection='root'>Settings</IonButton> 
-					<IonButton color={"danger"}>Log Out</IonButton>
+					<IonButton color={"danger"} onClick={e => {
+						setPharmacistId(0)
+						history.push("/")
+					}}>Log Out</IonButton>
 					</div>
 				</IonContent>
 			</IonMenu>

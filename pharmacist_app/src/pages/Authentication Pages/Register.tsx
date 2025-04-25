@@ -9,8 +9,11 @@ import { PharmacistAccount } from 'api types/types';
 
 import axios from 'axios';
 
+type registerProps = {
+	setPharmacistId:any
+}
 
-const Register: React.FC = () => {
+const Register: React.FC<registerProps> = ({setPharmacistId}) => {
 	const [name, setName] = useState(import.meta.env.VITE_TESTER_NAME);
 	const [email, setEmail] = useState(import.meta.env.VITE_TESTER_EMAIL);
 	const [password, setPassword] = useState(import.meta.env.VITE_TESTER_PASSWORD);
@@ -22,7 +25,7 @@ const Register: React.FC = () => {
 	const [postcode, setPostcode] = useState(import.meta.env.VITE_TESTER_PHARMACY_POSTCODE);
 	const history = useHistory();
 
-	async function register(addedPharmacist: PharmacistAccount) {
+	async function createAccount(addedPharmacist: PharmacistAccount) {
 		try {
 			console.log("post request being made...")
 			const { data, status } = await axios.post(
@@ -39,6 +42,48 @@ const Register: React.FC = () => {
 		catch (e:any) {
 			if(e.code == "ERR_NETWORK") alert("Unable to connect to the server. Are you connected to the internet?")
 		}
+	};
+
+	async function register(addedPharmacist: PharmacistAccount) {
+		
+		createAccount(addedPharmacist).then(async res => {
+			await axios.post(`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/patient`,{
+				"name": "Ann Murphy",
+				"schedule_times": null,
+				"scheduled_regimes": null,
+				"adherence_record": null,
+				"pharmacist_id": res.id
+			},{
+				headers: {
+					Accept: 'application/json'
+				},
+			})
+			await axios.post(`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/patient`,{
+				"name": "Obi Njoku",
+				"schedule_times": null,
+				"scheduled_regimes": null,
+				"adherence_record": null,
+				"pharmacist_id": res.id
+			},{
+				headers: {
+					Accept: 'application/json'
+				},
+			})
+			await axios.post(`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/patient`,{
+				"name": "Paul Brady",
+				"schedule_times": null,
+				"scheduled_regimes": null,
+				"adherence_record": null,
+				"pharmacist_id": res.id
+			},{
+				headers: {
+					Accept: 'application/json'
+				},
+			})
+			setPharmacistId(res.id)
+			history.push("/regimes")
+			// Found "history" solution to login/register prevention at https://stackoverflow.com/questions/70237476/react-link-async-await-does-not-wait-code-block
+		})
 	};
 
 	const handleRegistration = async () => {
@@ -67,10 +112,7 @@ const Register: React.FC = () => {
 					pharmacy_address_3,
 					postcode,
 					patients
-				}).then(res => {
-					res == undefined ? null : history.push("/regimes")
 				})
-				// Found "history" solution to login/register prevention at https://stackoverflow.com/questions/70237476/react-link-async-await-does-not-wait-code-block
 			}
 		}
 		// Figured out how to implement Validation Error while referencing Shanmugaraja_K at https://stackoverflow.com/questions/54649465/how-to-do-try-catch-and-finally-statements-in-typescript

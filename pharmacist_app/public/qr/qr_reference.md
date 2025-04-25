@@ -1,1 +1,0 @@
-PngAAA. (2020). *Download Hd Qr Code Png Images - Blue Qr Code Png,Qr Code Png - free transparent png images - pngaaa.com* [online]. Available from: https://www.pngaaa.com/detail/636259 [accessed 16 April 2025].
