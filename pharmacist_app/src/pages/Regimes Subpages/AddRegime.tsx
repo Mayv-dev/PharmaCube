@@ -6,11 +6,13 @@ import { RegimeItem } from 'api types/types';
 import { arrowBack, informationCircleOutline } from 'ionicons/icons';
 type AddRegimeProps = {
   passedInfo: any
+  passedPatientList:any
   patientId: number
   changePatientId: any
+
 }
 
-const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePatientId }) => {
+const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, passedPatientList, patientId, changePatientId }) => {
   const router = useIonRouter()
 
   const [addState, setAddState] = useState<number>(1);
@@ -45,7 +47,6 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
 
   useEffect(() => {
     if (passedInfo != null) {
-      console.log(passedInfo)
       setPatientName("Aaron Murphy")
       setInformation(passedInfo.information)
       setCompartment(passedInfo.compartment_id)
@@ -55,7 +56,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
       setInstructions(passedInfo.instructions)
     }
     else {
-      setPatientList(getMockPatientList())
+      setPatientList(passedPatientList)
     }
   }, [passedInfo]);
 
@@ -88,17 +89,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
     }
   }, [compartment]);
 
-  const getMockPatientList = () => {
-      return [{
-        "id":1,
-        "name":"Ann Murphy",
-        "patient_schedule_ids":[0,1,2,3],
-        "scheduled_regime_ids":[0,1,2,3]
-    }]
-  };
-
   const handleSubmit = () => {
-    console.log(timeOffset)
     if (!patientName || dateInfo.valueOf() == currentDate.valueOf() || !timeOfDay || timeOfDay == -1 || !information || !instructions) {
       alert('Please fill in all fields before submitting.');
       return;
@@ -117,7 +108,6 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
   async function sendToMockable(addedRegime: RegimeItem) {
     try {
       if (passedInfo == null) {
-        console.log("post request being made...")
         const { data, status } = await axios.post(
           `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${pharmacistId}/patient/${patientId}/regime`,
           addedRegime,
@@ -130,7 +120,6 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
         return data;
       }
       else {
-        console.log("put request being made...")
         const { data, status } = await axios.put(
           `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${pharmacistId}/patient/${patientId}/regime/${passedInfo.id}`,
           addedRegime,
@@ -190,11 +179,6 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
     
   };
 
-  useEffect(() => {
-    console.log(patientName, information, compartment, dateInfo, timeOfDay, timeOffset,instructions)
-  }
-  ,[patientName, information, compartment, dateInfo,timeOfDay,timeOffset,instructions])
-
   const handleBackClick = () => {
     handleBackData()
     setAddState(addState-1)
@@ -221,7 +205,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
         setCompartment(0)
         break;
       default:
-        console.log("An unexpected error occurd in the handleBackData() swtich statement")
+        console.log("An unexpected error occured in the handleBackData() swtich statement")
         break;
     }
   }
@@ -240,17 +224,14 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
   } 
 
   const helperPatientChoice = (hasPassed:boolean) => {
-    console.log("Activate helper for patient choice")
     setIsPatientIdValid(patientId != 0)
   }
 
   const helperToTake = (hasPassed:boolean) => {
-    console.log("Activate helper for to take")
     setIsInformationValid(information.length != 0)
   }
 
   const helperWhenTaken = (hasPassed:boolean) => {
-    console.log("Activate helper for when taken")
     const currDate: Date = new Date();
     setIsDateInfoValid(currDate < dateInfo)
     setIsTimeOfDayValid(timeOfDay != 0)
@@ -258,7 +239,6 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
   }
 
   const helperInstructions = (hasPassed:boolean) => {
-    console.log("Activate helper for instructions")
     setAreInstructionsValid(false)
   }
 
@@ -276,7 +256,7 @@ const AddRegime: React.FC<AddRegimeProps> = ({ passedInfo, patientId, changePati
                     setPatientName(patientList.find(patient => patient.id == e.target.value).name)
                     setIsPatientIdValid(true)
                   }}>
-                    {patientList.map(patient => <IonSelectOption value={patient.id}>{patient.name}</IonSelectOption>)}
+                    {patientList?.map((patient) => <IonSelectOption key={patient.id} value={patient.id}>{patient.name}</IonSelectOption>)}
                   </IonSelect>
 
                 </IonItem>

@@ -21,30 +21,21 @@ import { arrowBack } from 'ionicons/icons';
 
 type ContainerProps = {
 	passModifyDataToApp:any
+	passedPatientList:any
 	patientId: number
 	changePatientId: any
 }
 
-const ViewRegime: React.FC<ContainerProps> =  ({ passModifyDataToApp, patientId, changePatientId }) => {
+const ViewRegime: React.FC<ContainerProps> =  ({ passModifyDataToApp, passedPatientList, patientId, changePatientId }) => {
 	const [pharmacistId, setPharmacistId] = useState<number>(1);
-
-	const [patientList, setPatientList] = useState<any[]>([]);
 	
 	const [userRegimes, setUserRegimes] = useState<RegimeItem[]>()
 	const [deleteRegimeId, setDeleteRegimeId] = useState<number>(-1);
 
 	const [showModal, setShowModal] = useState(false);
 
-const getMockPatientList = () => {
-      return [{
-        "id":1,
-        "name":"Ann Murphy",
-        "patient_schedule_ids":[0,1,2,3],
-        "scheduled_regime_ids":[0,1,2,3]
-    }]
-  };
 
-  async function getMockData(patientId:number) {
+  async function getPatientRegime() {
 	try {
 	  const { data, status } = await axios.get(
 		`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${pharmacistId}/patient/${patientId}/regime`,
@@ -73,16 +64,6 @@ const getMockPatientList = () => {
 	setShowModal(true)
   }
 
-  const handleUserSelect = (id:number) => {
-	changePatientId(id)
-	getMockData(id).then(setUserRegimes);
-  }
-
-  useEffect(() => {
-    setPatientList(getMockPatientList());
-	if(patientId != 0) getMockData(patientId).then(setUserRegimes);
-  }, [])
-
   const deleteRegimeItem = async () => {
 	console.log("deleting regime... ", deleteRegimeId)
 	try {
@@ -95,7 +76,7 @@ const getMockPatientList = () => {
 		  }
 		);
 	
-		getMockData(patientId).then(setUserRegimes);
+		getPatientRegime().then(setUserRegimes);
 		return data;
 	
 	  } catch (error) {
@@ -109,6 +90,10 @@ const getMockPatientList = () => {
 	  }
   }
 
+  useEffect(() => {
+		patientId != 0 ? getPatientRegime().then(setUserRegimes) : null
+	},[patientId])
+
   return (
     <IonPage>
 			<IonContent className="ion-padding">
@@ -121,8 +106,8 @@ const getMockPatientList = () => {
               </div>
 				<IonItem>
 
-				<IonSelect value={patientId} interface="popover" label="Patient" placeholder='Choose a patient' onIonChange={e => handleUserSelect(e.target.value)}>
-					{patientList.map(patient => <IonSelectOption value={patient.id}>{patient.name}</IonSelectOption>)}
+				<IonSelect value={patientId} interface="popover" label="Patient" placeholder='Choose a patient' onIonChange={e => changePatientId(e.target.value)}>
+					{passedPatientList.map(patient => <IonSelectOption key={patient.id} value={patient.id}>{patient.name}</IonSelectOption>)}
 				</IonSelect>
 				</IonItem>
 			{
@@ -130,7 +115,7 @@ const getMockPatientList = () => {
 					<div className='doseViewGrid'>
 						{/*declaring an object that is passed entirely to the component with ...regime was a solution recieved from the answer of CPHPython 
 						at https://stackoverflow.com/questions/48240449/type-is-not-assignable-to-type-intrinsicattributes-intrinsicclassattribu*/}
-						{userRegimes.map(regime => <RegimeItemContainer regime={regime} deleteItem={confirmDeletion} modifyItem={modifyFromApp} />)}
+						{userRegimes.map((regime,index) => <RegimeItemContainer key={index} regime={regime} deleteItem={confirmDeletion} modifyItem={modifyFromApp} />)}
 					</div>
 			}
 
