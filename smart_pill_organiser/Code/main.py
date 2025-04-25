@@ -3,7 +3,7 @@ import smart_pill_organiser.Code.Schedules.schedule_handler as schedule_handler
 import smart_pill_organiser.Code.Schedules.schedule as schedule
 import smart_pill_organiser.Code.Speaker.notification_service as notification_service
 import time
-from config import TEST_MODE
+from config import TEST_MODE, USER_ID
 from machine import Pin
 
 sh = schedule_handler.Schedule_Handler()
@@ -16,9 +16,8 @@ def main():
         run()
 
 def run():
-    schedule = sh.get_schedule(1)
-    for s in schedule:
-        print(s)
+    schedule = sh.get_schedule(USER_ID)
+    check_schedule(schedule)
     time.sleep(60)
 
 def check_schedule(schedule: list):
