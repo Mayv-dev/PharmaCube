@@ -131,8 +131,8 @@ const CalendarDateSquare: React.FC<CalendarProps> = ({date,dateNow,history,visib
 				</IonHeader>
 				<IonContent className="ion-padding">
 					<p>Dose overview for the {handleDate(date.day)} of {convertMonthName(date.month)} {date.year}</p>
-					{history?.map(hist => hist.date_time_scheduled.substring(0,4) == date.year.toString() && convertMonthDigits(hist.date_time_scheduled.substring(5,7)) == date.month.toString() && Number.parseInt(hist.date_time_scheduled.substring(8,10)) == date.day ? 
-					<DoseTakenStatus time={hist.date_time_scheduled.substring(11,16)} medList={hist.information} takenStatus={hist.was_taken}/>: null)}
+					{history?.map((hist, index) => hist.date_time_scheduled.substring(0,4) == date.year.toString() && convertMonthDigits(hist.date_time_scheduled.substring(5,7)) == date.month.toString() && Number.parseInt(hist.date_time_scheduled.substring(8,10)) == date.day ? 
+					<DoseTakenStatus key={index} time={hist.date_time_scheduled.substring(11,16)} medList={hist.information} takenStatus={hist.was_taken}/>: null)}
 				</IonContent>
 			</IonModal>
 		</>

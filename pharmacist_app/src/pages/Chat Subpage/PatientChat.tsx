@@ -14,31 +14,37 @@ import { Message } from 'api types/types';
 
 type PatientChatProps = {
 	passedPatientChatStatus:boolean
-	passedPatient:any
+	passedPatientId:any
 }
 
-const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus, passedPatient}) => {
+const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus, passedPatientId}) => {
 	const [pharmacistId, setPharmacistId] = useState<number>(1);
 
-	const [patientId, setPatientId] = useState<number>(passedPatient);
-	const [patientChat, setPatientChat] = useState<ChatType>({patient_id:passedPatient, pharmacist_id:1, messages:[], unread_message_count:0});
+	const [patientChat, setPatientChat] = useState<any[]>([]);
+	const [pollSwitch, setPollSwitch] = useState<boolean>(false);
+
 
 	// Code for setTimeout found at w3schools.com: https://www.w3schools.com/react/react_useeffect.asp
 	useEffect(()=> {
 		let res = getPatientChat().then(res => {
 				if(res == "Network Error") alert("Network error occured. Are you connected to the internet?")
 				else if(res == "Request failed with status code 500") {
-					axios.post(`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/chat/1/${passedPatient}`)
+					axios.post(`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/chat/1/${passedPatientId}`)
 				}
-				else setPatientChat({patient_id:patientId, pharmacist_id:pharmacistId, messages:res,unread_message_count:0})
+				else {
+					setPatientChat(res)
+				}
 			}
 		)
-	},[passedPatientChatStatus, passedPatient])
+		setTimeout(()=> {
+			setPollSwitch(!pollSwitch);
+		},1000)
+	},[passedPatientId,pollSwitch,])
 
 	const getPatientChat = async () => {
 		try {
 			const { data, status } = await axios.get(
-			  `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/chat/1/${passedPatient}`,
+			  `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/chat/1/${passedPatientId}`,
 			  {
 				headers: {
 				  Accept: 'application/json'
@@ -61,7 +67,7 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus, pass
 	const messageSent = async (message:string) => {
 		const sentMessage:Message = {
 			time_sent:new Date(Date.now()).toISOString(),
-			chat_id:passedPatient,
+			chat_id:passedPatientId,
 			is_sender_patient:false,
 			message_body:message
 		}
@@ -76,9 +82,6 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus, pass
 					},
 				},
 			);
-			let updatedPatientChat = patientChat.messages
-			updatedPatientChat.push(sentMessage)
-			setPatientChat({patient_id:patientId, pharmacist_id:pharmacistId, messages:updatedPatientChat, unread_message_count:0})
 			return data;
 		}
 		catch (error) {
@@ -100,10 +103,10 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus, pass
 					<IonButton expand="block" routerLink='/chat' routerDirection='root' className='ScheduleButtons' color="light">
 						Back to Chat Menu
 					</IonButton>
-				<p>Selected patient: {passedPatient}</p>
+				<p>Selected patient: {passedPatientId}</p>
 				</div>
 				<div className={"chatBubbleContainer"}>
-					{ patientChat.messages?.map(message => <ChatBubble passedPharmacistId={pharmacistId} passedPatientId={patientId} passedMessage={message}></ChatBubble>)}
+					{ patientChat?.map(message => <ChatBubble passedPharmacistId={pharmacistId} passedPatientId={passedPatientId} passedMessage={message}></ChatBubble>)}
 				</div>
 				<ChatTextbox messageSent={messageSent}></ChatTextbox>
 			</div>

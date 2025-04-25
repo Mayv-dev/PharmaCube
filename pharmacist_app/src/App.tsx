@@ -70,6 +70,11 @@ NativeAudio.preload({
 const platform = Capacitor.getPlatform();
 
 const App: React.FC = () => {
+
+  const [pharmacistId, setPharmacistId] = useState<number>(1);
+  const [pharmacistDetails, setPharmacistDetails] = useState<any|null>(null);
+
+
   // Retrieved from https://documentation.onesignal.com/docs/ionic-capacitor-cordova-sdk-setup
   const OneSignalInit = () => {
   // Remove this method to stop OneSignal Debugging
@@ -104,8 +109,7 @@ const App: React.FC = () => {
     const [patientChat, setPatientChat] = useState<ChatType[]>([{patient_id:1, pharmacist_id:1, messages:[],unread_message_count:0},{patient_id:2, pharmacist_id:1, messages:[],unread_message_count:0}]);
   const [patientList, setPatientList] = useState<AppPatientDetails[]>([])
 
-  const [pharmacistId, setPharmacistId] = useState<number>(1);
-  const [pharmacistDetails, setPharmacistDetails] = useState<any|null>(null);
+
   const [patientId, setPatientId] = useState<number>(0); 
 
   const [modifyRegimeInfo, setModifyRegimeInfo] = useState(null);
@@ -192,6 +196,11 @@ const App: React.FC = () => {
   //   if(pharmacistId != 0) fetchNotifications().then(res => res == "Network Error" || res == "Request failed with status code 404" ? console.log("Server connection has failed in App.tsx with the following error message: ", res):
   //   setNotificationList(res)
   // )
+  pharmacistId != 0 ? getLoginAccountDetails().then(res => {
+    setPharmacistDetails(res)
+    setPatientList(res.patients)
+  }): null
+  
   
   setNotificationList(notificationList.sort((a:Notification,b:Notification) => Date.parse(b.timestamp) - Date.parse(a.timestamp)))
   setNotifsBefore(notificationList.length)
@@ -241,8 +250,24 @@ const App: React.FC = () => {
     setPatientId(id)
   }
 
-  const getLoginAccountDetails = (account:any) => {
-    setPharmacistDetails(account)
+  const getLoginAccountDetails = async () => {
+    try {
+      const { data, status } = await axios.get(
+      `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${pharmacistId}`,
+      {
+        headers: {
+        Accept: 'application/json'
+        },
+      },
+      );
+    
+      return data;
+    
+    } 
+    catch (e:any) {
+      if(e.code == "ERR_NETWORK") alert("Unable to connect to the server. Are you connected to the internet?")
+      if(e.code == "ERR_BAD_REQUEST") alert("This user was not found on the system. If you believe this is incorrect, contact a system administrator to validate user ID.")
+    }
   }
 
   return (
@@ -264,30 +289,30 @@ const App: React.FC = () => {
               <Regimes />
             </Route>
             <Route exact path="/regimes/create">
-              <AddRegime patientId={patientId} changePatientId={changePatientId} passedInfo={null} />
+              <AddRegime patientId={patientId} passedPatientList={patientList} changePatientId={changePatientId} passedInfo={null} />
             </Route>
             <Route exact path="/regimes/modify">
-              <AddRegime patientId={patientId} changePatientId={changePatientId} passedInfo={modifyRegimeInfo} />
+              <AddRegime patientId={patientId} passedPatientList={patientList} changePatientId={changePatientId} passedInfo={modifyRegimeInfo} />
             </Route>
 
             <Route exact path="/regimes/view">
-              <ViewRegime patientId={patientId} changePatientId={changePatientId} passModifyDataToApp={testRootMessage} />
+              <ViewRegime patientId={patientId} passedPatientList={patientList} changePatientId={changePatientId} passModifyDataToApp={testRootMessage} />
             </Route>
 
 
             <Route exact path="/history">
-              <History patientId={patientId} changePatientId={changePatientId} />
+              <History passedPatientList={patientList} passedPatientId={patientId} changePatientId={changePatientId} />
             </Route>
 
             <Route exact path="/chat">
-              <Chat patientChat={patientChat} patientSelect={changePatientId}/>
+              <Chat passedPatientList={patientList} patientChat={patientChat} patientSelect={changePatientId}/>
             </Route>
             <Route exact path="/chat/patient">
-              <PatientChat passedPatient={patientId} passedPatientChatStatus={getPatientChatStatus}/>
+              <PatientChat passedPatientId={patientId} passedPatientChatStatus={getPatientChatStatus}/>
             </Route>
 
             <Route exact path="/account">
-              <Account pharmacist_id={pharmacistId}/>
+              <Account passedPatientList={patientList} pharmacist_id={pharmacistId}/>
             </Route>
 
             <Route exact path="/settings">

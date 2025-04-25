@@ -10,16 +10,18 @@ import { PatientAdherenceRecord } from 'api types/types';
 import axios from 'axios';
 import { arrowBackOutline, arrowForwardOutline } from 'ionicons/icons';
 
+type HistoryProps = {
+	passedPatientId:number
+	changePatientId:any
+	passedPatientList:any
+}
 
-const History: React.FC = () => {
+const History: React.FC<HistoryProps> = ({passedPatientId, changePatientId, passedPatientList}) => {
 	const [date, setDate] = useState<CalendarDate>(calendarDateFromJsDateObject(new Date(Date.now())))
 	const [dateNow, setDateNow] = useState<CalendarDate>(calendarDateFromJsDateObject(new Date(Date.now())))
 	const [dateList, setDateList] = useState<any[]>([])
 
 	const [patientHistoricalDosesList, setPatientHistoricalDosesList] = useState<PatientAdherenceRecord[]>([])
-
-	const [patientId, setPatientId] = useState(undefined)
-	const [patientList, setPatientList] = useState<any[]>([])
 
 	const [highlightToggle, setHighlightToggle] = useState<{highlightType:string, isVisible:boolean}[]>([{highlightType:"No Doses Taken", isVisible:true}, {highlightType:"All Doses Taken", isVisible:true},{highlightType:"Only Some Doses Have Been Taken", isVisible:true},{highlightType:"Current Day", isVisible:true}])
 
@@ -38,7 +40,7 @@ const History: React.FC = () => {
 	const getHistoryFromServer = async () => {
 		try {
 		  const { data, status } = await axios.get(
-			`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/1/patient/${patientId}/history`,
+			`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/1/patient/${passedPatientId}/history`,
 			{
 			  headers: {
 				Accept: 'application/json'
@@ -59,23 +61,13 @@ const History: React.FC = () => {
 		}
 	  };
 
-	  const getMockPatientList = () => {
-		return [{
-		  "id":1,
-		  "name":"Ann Murphy",
-		  "patient_schedule_ids":[0,1,2,3],
-		  "scheduled_regime_ids":[0,1,2,3]
-	  }]
-	};
-
 	  useEffect(() => {
 		setDateList(getDateRange({ year: date.year, month: date.month, day: 1 }, { year: date.year, month: date.month, day: numberOfDaysInMonth(date)})) 
-		setPatientList(getMockPatientList)
 	},[date, ]);
 
 	useEffect(() => {
-		patientId != undefined ? getHistoryFromServer().then(setPatientHistoricalDosesList) : null;
-	},[patientId]);
+		passedPatientId != 0 && passedPatientId != undefined? getHistoryFromServer().then(setPatientHistoricalDosesList) : null;
+	},[passedPatientId]);
 
 	function convertMonthName(monthString: string): string {
 		switch (monthString) {
@@ -118,11 +110,11 @@ const History: React.FC = () => {
 	<IonContent className="ion-padding">
 		<div className='webBody'>
 			<IonItem>
-				<IonSelect value={patientId} onIonChange={e => setPatientId(e.target.value)} label='Choose a patient'>
-					{patientList.map(patientInList => <IonSelectOption value={patientInList.id}>{patientInList.name}</IonSelectOption>)}
+				<IonSelect value={passedPatientId} onIonChange={e => changePatientId(e.target.value)} label='Choose a patient'>
+					{passedPatientList.map(patientInList => <IonSelectOption key={patientInList.id} value={patientInList.id}>{patientInList.name}</IonSelectOption>)}
 				</IonSelect>
 			</IonItem>
-			{patientId == undefined ? <p>Select a patient to view their history</p> : 
+			{passedPatientId == 0 ? <p>Select a patient to view their history</p> : 
 				<div className='calendarLayout'>
 					<div className='history'>
 						<div className='calendarScrollerBar'>

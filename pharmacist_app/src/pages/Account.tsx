@@ -15,15 +15,15 @@ import { trash } from 'ionicons/icons';
 
 type AccountProps = {
 	pharmacist_id:number
+	passedPatientList:any
 }
 
-const Account: React.FC<AccountProps> = ({pharmacist_id}) => {
+const Account: React.FC<AccountProps> = ({pharmacist_id, passedPatientList}) => {
 	const [isInEditMode, setIsInEditMode] = useState<Boolean>(false)
 	const [patientName, setPatientName] = useState("")
 	const [patientId, setPatientId] = useState(-1)
 	const [showModal, setShowModal] = useState(false)
 	const [showDeletionModal, setShowDeletionModal] = useState(false)
-	const [patientList, setPatientList] = useState(["Ann Murphy"])
 
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
@@ -209,11 +209,11 @@ const Account: React.FC<AccountProps> = ({pharmacist_id}) => {
 						:
 						<IonButton onClick={e => setIsInEditMode(true)}>Edit List</IonButton>
 					}
-					{patientList.map((patient, index) =>
-						<div className='patientContainer'>
+					{passedPatientList.map(patient =>
+						<div key={patient.id} className='patientContainer'>
 							<img className='patientImage' src='https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'></img>
-							<p className="patientContainerName">{patient}</p>
-							{isInEditMode ? <IonButton color={"danger"} className="deletePatientButton" onClick={e => { setShowModal(true); setPatientId(index); setPatientName(patient) }}><IonIcon icon={trash}></IonIcon></IonButton> : null}
+							<p className="patientContainerName">{patient.name}</p>
+							{isInEditMode ? <IonButton color={"danger"} className="deletePatientButton" onClick={e => { setShowModal(true); setPatientId(patient.id); setPatientName(patient.name) }}><IonIcon icon={trash}></IonIcon></IonButton> : null}
 						</div>
 					)}
 
@@ -226,7 +226,7 @@ const Account: React.FC<AccountProps> = ({pharmacist_id}) => {
 			</IonContent>
 
 			<IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
-				<LinkedPatientDeleteConfirmation patient_id={patientId} patient_name={patientName} setShowModal={setShowModal} deletePatient={() => setPatientList(patientList.filter(patient => patient != patientName))}></LinkedPatientDeleteConfirmation>
+				<LinkedPatientDeleteConfirmation patient_id={patientId} patient_name={patientName} setShowModal={setShowModal} deletePatient={() => console.log("deletion")}></LinkedPatientDeleteConfirmation>
 			</IonModal>
 
 			<IonModal isOpen={showDeletionModal} onDidDismiss={() => setShowDeletionModal(false)}>

@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import "../../styles/ChatBubble.css"
 
 type ChatBubbleProps = {
-	passedMessage:Message;
+	passedMessage:any;
 	passedPharmacistId:number;
 	passedPatientId:number;
 }
@@ -23,20 +23,18 @@ type ChatBubbleProps = {
 
 
 const ChatBubble: React.FC<ChatBubbleProps> = ({passedMessage, passedPharmacistId ,passedPatientId}) => {
-	const [message, setMessage] = useState<string>("")
-	const [datetimeOfMessage, setDatetimeOfMessage] = useState<string>("")
+	const [message, setMessage] = useState<any>({})
 	const [showModal, setShowModal] = useState(false);
 
 	useEffect(() =>{
-			setMessage(passedMessage.message_body);
-			setDatetimeOfMessage(passedMessage.time_sent);
+			setMessage(passedMessage);
 		}
 		,[passedMessage]
 	)
 
 	const speak = async () => {
 		await TextToSpeech.speak({
-		  text: message,
+		  text: message.message_body,
 		  lang: 'en-US',
 		  rate: 1.0,
 		  pitch: 1.0,
@@ -51,17 +49,17 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({passedMessage, passedPharmacistI
 		<div className={passedMessage.is_sender_patient ? "patientBubble":"pharmacistBubble"}>
 			{
 				passedMessage.is_sender_patient ? <div className='bubbleMisc'>
-				<p className='bubbleTimestamp'>{datetimeOfMessage.substring(0,4)+"/"+datetimeOfMessage.substring(5,7)+"/"+datetimeOfMessage.substring(8,10)}</p>
-				<p className='bubbleTimestamp'>{datetimeOfMessage.substring(11,16)}</p>
+				<p className='bubbleTimestamp'>{message.created_at?.substring(0,10)}</p>
+				<p className='bubbleTimestamp'>{message.created_at?.substring(11,16)}</p>
 			</div> : <IonIcon className={"bubbleMiscIcon"} onClick={() => setShowModal(true)} icon={ellipsisVerticalCircle}></IonIcon>
 			}
-			<p className='bubbleMessage'>{message}</p>
+			<p className='bubbleMessage'>{message.message_body}</p>
 			{
 				passedMessage.is_sender_patient ? 
 				<IonIcon className={"bubbleMiscIcon"} onClick={() => setShowModal(true)} icon={ellipsisVerticalCircle}></IonIcon>
 			 : <div className='bubbleMisc'>
-					<p className='bubbleTimestamp'>{datetimeOfMessage.substring(0,4)+"/"+datetimeOfMessage.substring(5,7)+"/"+datetimeOfMessage.substring(8,10)}</p>
-					<p className='bubbleTimestamp'>{datetimeOfMessage.substring(11,16)}</p>
+			 <p className='bubbleTimestamp'>{message.created_at?.substring(0,10)}</p>
+			 <p className='bubbleTimestamp'>{message.created_at?.substring(11,16)}</p>
 				</div>
 			}
 			
