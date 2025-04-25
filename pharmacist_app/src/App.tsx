@@ -74,6 +74,9 @@ const App: React.FC = () => {
   const [pharmacistId, setPharmacistId] = useState<number>(0);
   const [pharmacistDetails, setPharmacistDetails] = useState<any|null>(null);
 
+  const [chatUnreadCount, setChatUnreadCount] = useState<any[]>([]);
+
+
 
   // Retrieved from https://documentation.onesignal.com/docs/ionic-capacitor-cordova-sdk-setup
   const OneSignalInit = () => {
@@ -180,11 +183,57 @@ const App: React.FC = () => {
   //   if(pharmacistId != 0) fetchNotifications().then(res => res == "Network Error" || res == "Request failed with status code 404" ? console.log("Server connection has failed in App.tsx with the following error message: ", res):
   //   setNotificationList(res)
   // )
-  pharmacistId != 0 ? getLoginAccountDetails().then(res => {
+  if (pharmacistId != 0) {
+  	getLoginAccountDetails().then(res => {
     setPharmacistDetails(res)
     setPatientList(res.patients)
-  }): null
-  
+  })}
+  else {
+  	setPharmacistDetails(null)
+	setChatUnreadCount([])
+  }
+  console.log(pharmacistDetails)
+
+
+	if (chatUnreadCount.length == 0 || pharmacistId == 0) {
+		console.log("chat unread empty")
+    	let chatUnreadInitialization:any[] = []
+    	pharmacistDetails?.chats.map(chat => chatUnreadInitialization.push({
+      		patient_id:chat.id,
+      		last_message_time:chat.last_message_time,
+      		last_sender_is_patient:chat.last_sender_is_patient,
+			unread_message_count:0
+		}))
+    setChatUnreadCount(chatUnreadInitialization.filter(chat => chat.last_message_time != "0001-01-01T00:00:00Z"))
+  } 
+  else {
+    console.log("chat unread not empty")
+	let chatUnreadUpdate:any[] = []
+    	pharmacistDetails?.chats.map(chat => chatUnreadUpdate.push({
+      		patient_id:chat.id,
+      		last_message_time:chat.last_message_time,
+      		last_sender_is_patient:chat.last_sender_is_patient,
+			unread_message_count:0
+		}))
+		chatUnreadUpdate = chatUnreadUpdate.filter(chat => chat.last_message_time != "0001-01-01T00:00:00Z")
+		let chatToBeSet:any = []
+		chatUnreadUpdate.map(updatingChat => {
+			chatUnreadCount.map(currentChat => {
+				if (updatingChat.patient_id == currentChat.patient_id && new Date(updatingChat.last_message_time) > new Date(currentChat.last_message_time)) {
+					chatToBeSet.push({
+						patient_id:updatingChat.patient_id,
+						last_message_time:updatingChat.last_message_time,
+						last_sender_is_patient:updatingChat.last_sender_is_patient,
+					  	unread_message_count: updatingChat.last_sender_is_patient ? currentChat.unread_message_count+1 : 0
+					})
+				} 
+			})
+		})
+		console.log(chatToBeSet)
+		let currentChatsNotInChatToBeSet = chatUnreadCount.filter(unreadChat => chatToBeSet.find(chatToBeSet => unreadChat.patient_id == chatToBeSet.patient_id) == undefined)
+		currentChatsNotInChatToBeSet.map(addedReadChat => chatToBeSet.push(addedReadChat))
+		setChatUnreadCount(chatToBeSet)
+  }
   
   setNotificationList(notificationList.sort((a:Notification,b:Notification) => Date.parse(b.timestamp) - Date.parse(a.timestamp)))
   setNotifsBefore(notificationList.length)
@@ -289,7 +338,7 @@ const App: React.FC = () => {
             </Route>
 
             <Route exact path="/chat">
-              <Chat passedPatientList={patientList} patientSelect={changePatientId}/>
+              <Chat unreadChats={chatUnreadCount} passedPatientList={patientList} patientSelect={changePatientId}/>
             </Route>
             <Route exact path="/chat/patient">
               <PatientChat passedPharmacistId={pharmacistId} passedPatientId={patientId} passedPatientChatStatus={getPatientChatStatus}/>
