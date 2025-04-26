@@ -44,7 +44,9 @@ import "./styles/GlobalStyling.css"
 
 import {ChatType}  from 'api types/types';
 
-import OneSignal from 'onesignal-cordova-plugin';
+import OneSignal from 'react-onesignal';
+import * as OneSignalCordova from 'onesignal-cordova-plugin';
+
 
 setupIonicReact();
 // firebase notification code taken from https://www.youtube.com/watch?v=IK8x7qc9ZsA
@@ -80,20 +82,20 @@ const App: React.FC = () => {
 
   // Retrieved from https://documentation.onesignal.com/docs/ionic-capacitor-cordova-sdk-setup
   const OneSignalInit = () => {
-  // Remove this method to stop OneSignal Debugging
-  OneSignal.Debug.setLogLevel(6)
-  
-  OneSignal.initialize(import.meta.env.VITE_ONESIGNAL_APP_ID);
-  console.log(import.meta.env.VITE_ONESIGNAL_APP_ID)
+    // Remove this method to stop OneSignal Debugging
+    OneSignalCordova.default.Debug.setLogLevel(6)
+    
+    OneSignalCordova.default.initialize(import.meta.env.VITE_ONESIGNAL_APP_ID);
+    console.log(import.meta.env.VITE_ONESIGNAL_APP_ID)
 
-  OneSignal.Notifications.addEventListener('click', async (e) => {
-    let clickData = await e.notification;
-    console.log("Notification Clicked : " + clickData);
-  })
+    OneSignalCordova.default.Notifications.addEventListener('click', async (e) => {
+      let clickData = await e.notification;
+      console.log("Notification Clicked : " + clickData);
+    })
 
-  OneSignal.Notifications.requestPermission(true).then((success: Boolean) => {
-    console.log("Notification permission granted " + success);
-  })
+    OneSignalCordova.default.Notifications.requestPermission(true).then((success: Boolean) => {
+      console.log("Notification permission granted " + success);
+    })
   }
 
   // This if statement is necessary to stop mobile notification cod TypeErrors on the incompatible web version
@@ -105,9 +107,9 @@ const App: React.FC = () => {
 
 	const [pollState, setPollState] = useState(true)
 	const [getPatientChatStatus, setGetPatientChatStatus] = useState(true)
-  	const [notificationList, setNotificationList] = useState<Notification[]>([]);
-    const [notifsBefore, setNotifsBefore] = useState<number>(notificationList.length)
-    const [unreadNotifs, setUnreadNotifs] = useState<number>(0)
+  const [notificationList, setNotificationList] = useState<Notification[]>([]);
+  const [notifsBefore, setNotifsBefore] = useState<number>(notificationList.length)
+  const [unreadNotifs, setUnreadNotifs] = useState<number>(0)
 
   const [patientList, setPatientList] = useState<AppPatientDetails[]>([])
 
@@ -307,6 +309,42 @@ const App: React.FC = () => {
       if(e.code == "ERR_BAD_REQUEST") alert("This user was not found on the system. If you believe this is incorrect, contact a system administrator to validate user ID.")
     }
   }
+
+
+  useEffect(() => {
+    console.log("onesignal init")
+    // The starting code below was found at https://documentation.onesignal.com/docs/react-js-setup
+
+    // Ensure this code runs only on the client side
+    if (typeof window !== 'undefined') {
+
+      OneSignal.init({
+        appId: `${import.meta.env.VITE_ONESIGNAL_APP_ID}`,
+        // You can add other initialization options here
+        notifyButton:{enable:true},
+        // Uncomment the below line to run on localhost. See: https://documentation.onesignal.com/docs/local-testing
+        allowLocalhostAsSecureOrigin: true
+      });
+
+      OneSignal.Notifications.addEventListener('click', async (e) => {
+        let clickData = await e.notification;
+        console.log("Notification Clicked : " + clickData);
+      })
+
+      // Correct event listener for processing notifications found at https://documentation.onesignal.com/docs/device-user-model-web-sdk-mapping
+      OneSignal.Notifications.addEventListener("foregroundWillDisplay", e => {
+        const n = e.notification
+        console.log("body: ",n.title)
+        console.log("additionalData: ",n.additionalData)
+      })
+      
+      OneSignal.Notifications.requestPermission().then((success) => {
+        console.log("Notification permission granted " + success);
+      })
+
+    }
+
+  }, []);
 
   return (
     <IonApp>
