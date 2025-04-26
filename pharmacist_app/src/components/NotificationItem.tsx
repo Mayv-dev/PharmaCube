@@ -10,19 +10,19 @@ enum urgency {
 }
 
 interface NotificationItemProps {
-	id:number,
-	content:string,
+	patient_id:number,
+	body:string,
+	route_to:string,
 	timestamp:string,
 	urgencyPassed:urgency,
 	minimize:any
 	setPatientId:any
 }
 
-const NotificationItem: React.FC<NotificationItemProps> = ({ id,content, timestamp, urgencyPassed, minimize, setPatientId }) => 
+const NotificationItem: React.FC<NotificationItemProps> = ({ patient_id, body, route_to, timestamp, urgencyPassed, minimize, setPatientId }) => 
 {
 	const [nameOfClass, setNameOfClass] = useState<string>("")
-	const [nameOfPatient, setNameOfPatient] = useState<string>("")
-	const [body, setBody] = useState<string>()
+	const [patientName, setPatientName] = useState<string>("")
 
 	const getPatient = async (patientId:number) => { 
 		console.log(patientId)
@@ -47,26 +47,25 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ id,content, timesta
 
 
 	useEffect(() => {
-		getPatient(JSON.parse(content)["patient_id"]).then(res => setBody(JSON.parse(content)["body"].replace("${patient_name}",res.name)))
-		console.log("The id after is",JSON.parse(content)["patient_id"])
+		getPatient(patient_id).then(res => setPatientName(res.name))
 		if(urgencyPassed == urgency.LOW) setNameOfClass("notificationItemContainer lowNotification");
 		else if(urgencyPassed == urgency.MEDIUM) setNameOfClass("notificationItemContainer mediumNotification");
 		else setNameOfClass("notificationItemContainer highNotification");
-	},[content,])
+	},[patient_id,])  
 
 	
 
   const router = useIonRouter()
 	const handleRouting = () => {
-		if (JSON.parse(content)["route_to"] == "chat" && router.routeInfo.pathname != "/chat/patient") {
-			setPatientId(JSON.parse(content)["patient_id"])
+		if (route_to == "chat" && router.routeInfo.pathname != "/chat/patient") {
+			setPatientId(patient_id)
 			router.push("/chat/patient", "none");
 			minimize()
 		}
 	}
 
 	return (
-		<div key={id} className={nameOfClass} onClick={e => {handleRouting();}}>
+		<div key={patient_id} className={nameOfClass} onClick={e => {handleRouting();}}>
 			{urgencyPassed == urgency.HIGH ? 
 				<IonIcon className={"notificationIcon"} icon={alert}></IonIcon>
 				:
@@ -79,7 +78,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ id,content, timesta
 				<p className='timeContainer'>{timestamp.substring(0,10)}</p>
 				<p className='timeContainer'>{timestamp.substring(11,16)}</p>
 			</div>
-			<p className='contentContainer'>{body}</p>
+			<p className='contentContainer'>{body.replace("${patient_id}",patientName)}</p>
 		</div>
 	);
 }

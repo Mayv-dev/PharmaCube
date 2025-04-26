@@ -31,7 +31,8 @@ enum urgency {
 }
 export type Notification = {
 	patient_id: number,
-	content: string,
+	body: string,
+	route_to: string,
 	timestamp: string,
 	urgency: urgency
 }
@@ -129,7 +130,7 @@ const UpperToolbar: React.FC<UpperToolbarProps> = ({pharmacistName, passedNotifi
 						</IonButton>
 						<div className='rowOfSelects'>
 						</div>
-					{passedNotificationList.length > 0 ? passedNotificationList?.map(notification => <NotificationItem id={notification.id} content={notification.content} timestamp={notification.timestamp} urgencyPassed={notification.urgency} minimize={menuController.close} setPatientId={setPatientId} />): <IonItem>You have no notifications</IonItem>}
+					{passedNotificationList.length > 0 ? passedNotificationList?.map(notification => <NotificationItem patient_id={notification.patient_id} body={notification.body} route_to={notification.route_to} timestamp={notification.timestamp} urgencyPassed={notification.urgency} minimize={menuController.close} setPatientId={setPatientId} />): <IonItem>You have no notifications</IonItem>}
 				</div>
 				</IonContent>
 			</IonMenu>
