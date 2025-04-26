@@ -141,32 +141,6 @@ const App: React.FC = () => {
         NativeAudio.play({assetId: 'notify'});
       }
     }
-
-  useEffect(() => {
-    generateToken()
-    onMessage(messaging, payload => {
-      console.log("notification: ", payload);
-      let notification = {route_to:""}
-      notification = typeof payload.notification?.body == "string" ? JSON.parse(payload.notification?.body):{body:""}
-      if(payload.notification?.body != undefined) {
-        let updatedNotificationList = notificationList;
-		let newNotif = payload.notification?.body
-		console.log(newNotif)
-		console.log("updatedNotificationList before: ", updatedNotificationList);
-        updatedNotificationList.push(
-			{
-				patient_id:0,
-				content:newNotif, 
-				urgency:1, 
-				timestamp: new Date(Date.now()).toISOString()
-			});
-		console.log("updatedNotificationList after: ", updatedNotificationList);
-		setNotificationList(updatedNotificationList.sort((a:Notification,b:Notification) => Date.parse(b.timestamp) - Date.parse(a.timestamp)));
-        notifyFirebase(notification["route_to"])
-      }
-    })
-  },[isTTSOn])
-
   
   const getPatientChat = async (passedPatient:number) => {
 		try {
@@ -334,14 +308,31 @@ const App: React.FC = () => {
       // Correct event listener for processing notifications found at https://documentation.onesignal.com/docs/device-user-model-web-sdk-mapping
       OneSignal.Notifications.addEventListener("foregroundWillDisplay", e => {
         const n = e.notification
-        console.log("body: ",n.title)
-        console.log("additionalData: ",n.additionalData)
+        const patient_id = n.additionalData.patient_id
+        const body = n.additionalData.body
+        const route_to = n.additionalData.route_to
+        let notification = {route_to:""}
+        if(n != undefined) {
+          let updatedNotificationList = notificationList;
+          let newNotif = {patient_id:patient_id, body:body, route_to:route_to}
+          console.log(newNotif)
+          console.log("updatedNotificationList before: ", updatedNotificationList);
+          updatedNotificationList.push({
+            patient_id:patient_id,
+            body:body,
+            route_to:route_to,
+            urgency:1, 
+            timestamp: new Date(Date.now()).toISOString()
+          });
+          console.log("updatedNotificationList after: ", updatedNotificationList);
+          setNotificationList(updatedNotificationList.sort((a:Notification,b:Notification) => Date.parse(b.timestamp) - Date.parse(a.timestamp)));
+          notifyFirebase(notification["route_to"])
+        }
       })
       
       OneSignal.Notifications.requestPermission().then((success) => {
         console.log("Notification permission granted " + success);
       })
-
     }
 
   }, []);
