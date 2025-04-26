@@ -24,6 +24,7 @@ func main() {
 }
 
 func runDebug() {
+	dbSetup()
 	server := gin.New()
 	serverSetup(server)
 
@@ -31,6 +32,7 @@ func runDebug() {
 }
 
 func runDebugTLS() {
+	dbSetup()
 	server := gin.New()
 	serverSetup(server)
 
@@ -38,6 +40,7 @@ func runDebugTLS() {
 }
 
 func runRelease() {
+	dbSetup()
 	gin.SetMode(gin.ReleaseMode)
 	server := gin.New()
 	serverSetup(server)
