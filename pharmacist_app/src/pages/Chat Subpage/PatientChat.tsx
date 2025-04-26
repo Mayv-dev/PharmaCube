@@ -16,34 +16,39 @@ type PatientChatProps = {
 	passedPatientChatStatus:boolean
 	passedPatientId:any
 	passedPharmacistId:number
+	passedPharmacistDetails:any
 }
 
-const PatientChat: React.FC<PatientChatProps> =  ({passedPharmacistId, passedPatientChatStatus, passedPatientId}) => {
+const PatientChat: React.FC<PatientChatProps> =  ({passedPharmacistDetails, passedPharmacistId, passedPatientChatStatus, passedPatientId}) => {
 	const [patientChat, setPatientChat] = useState<any[]>([]);
 	const [pollSwitch, setPollSwitch] = useState<boolean>(false);
+	const [chatNotCreated, setChatNotCreated] = useState<boolean>(false);
+	const [chatNotCreatedLock, setChatNotCreatedLock] = useState<boolean>(false);
 
+	useEffect(() => {
+		
+		if(!chatNotCreated && !chatNotCreatedLock && passedPharmacistDetails?.chats.find(chat => chat.id == passedPatientId) == undefined) {
+			setChatNotCreatedLock(true)
+			axios.post(`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/chat/${passedPharmacistId}/${passedPatientId}`)
+		}
+	},[chatNotCreated])
 
 	// Code for setTimeout found at w3schools.com: https://www.w3schools.com/react/react_useeffect.asp
 	useEffect(()=> {
-		let res = getPatientChat().then(res => {
-				if(res == "Network Error") alert("Network error occured. Are you connected to the internet?")
-				else if(res == "Request failed with status code 500") {
-					axios.post(`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/chat/${passedPharmacistId}/${passedPatientId}`)
-				}
-				else {
-					setPatientChat(res)
-				}
-			}
-		)
-		setTimeout(()=> {
-			setPollSwitch(!pollSwitch);
-		},1000)
-	},[passedPatientId,pollSwitch,])
+			// I need to loop through the chats of the pharmacist to see if one has the patient in question
+			let matchedChat = passedPharmacistDetails.chats.find(chat => chat.patient_id == passedPatientId)
+			matchedChat != undefined ? getPatientChat(matchedChat.id).then(res => {res != "Request failed with status code 500" ? setPatientChat(res) : console.log("500 error")})
+			: setChatNotCreated(true)
+			setTimeout(()=> {
+				setPollSwitch(!pollSwitch)
+			},1000)
+		}
+	,[passedPatientId,pollSwitch,])
 
-	const getPatientChat = async () => {
+	const getPatientChat = async (chat_id:number) => {
 		try {
 			const { data, status } = await axios.get(
-			  `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/chat/${passedPharmacistId}/${passedPatientId}`,
+			  `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/chat/${passedPharmacistId}/${chat_id}`,
 			  {
 				headers: {
 				  Accept: 'application/json'
@@ -64,9 +69,12 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPharmacistId, passedPat
 	}
 
 	const messageSent = async (message:string) => {
+		let matchedChat = passedPharmacistDetails.chats.find(chat => chat.patient_id == passedPatientId)
+		console.log(matchedChat)
+		if (matchedChat == undefined) return
 		const sentMessage:Message = {
 			time_sent:new Date(Date.now()).toISOString(),
-			chat_id:passedPatientId,
+			chat_id:matchedChat.id,
 			is_sender_patient:false,
 			message_body:message
 		}
