@@ -5,7 +5,7 @@ android {
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
         // https://stackoverflow.com/questions/73151706/how-to-install-two-ionic-app-into-one-android-system
-        applicationId "io.oro.carer"
+        applicationId "io.expo.control"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
