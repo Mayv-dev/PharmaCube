@@ -7,6 +7,7 @@ import {
 import { send } from 'ionicons/icons';
 import { useState } from 'react';
 
+{/* Documentation for profanity library found at https://www.npmjs.com/package/@2toad/profanity */}
 import { profanity } from '@2toad/profanity';
 import "../../styles/Chat Subpage/PatientChat.css"
 type ChatTextboxProps = {
