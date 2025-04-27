@@ -134,9 +134,9 @@ const App: React.FC = () => {
 
     const notifyFirebase = (payloadBody:string) => {
       if (isTTSOn){
-		if(payloadBody == "chat") speak("A patient has sent you a message")
-        else speak("You have recieved a notification");
-      }
+        if(payloadBody == "chat") speak("A patient has sent you a message")
+          else speak("You have recieved a notification");
+        }
       else {
         NativeAudio.play({assetId: 'notify'});
       }
