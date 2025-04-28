@@ -88,7 +88,7 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPharmacistDetails, pass
 						Accept: 'application/json'
 					},
 				},
-			);
+			).then(res => getPatientChat(passedPatientId).then(setPatientChat));
 			return data;
 		}
 		catch (error) {
