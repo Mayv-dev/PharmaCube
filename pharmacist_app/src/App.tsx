@@ -284,6 +284,14 @@ const App: React.FC = () => {
     }
   }
 
+  const handleLogin = (e:any) => {
+    console.log(e)
+    setPharmacistDetails(e);
+    let patients:any = []
+    e.patients.map(patient => patients.push(patient))
+    setPatientList(patients)
+  }
+
 
   useEffect(() => {
     console.log("onesignal init")
@@ -346,7 +354,7 @@ const App: React.FC = () => {
           <IonRouterOutlet id="main-content">
 
             <Route exact path="/login">
-              <Login setPharmacistId={setPharmacistId} loggedInAccount={setPharmacistDetails}/>
+              <Login setPharmacistId={setPharmacistId} loggedInAccount={handleLogin}/>
             </Route>
             <Route exact path="/register">
               <Register setPharmacistId={setPharmacistId}/>
