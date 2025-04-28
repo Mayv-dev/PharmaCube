@@ -392,7 +392,7 @@ const App: React.FC = () => {
           </IonRouterOutlet >
 
           <UpperToolbar setPatientId={setPatientId} setPharmacistId={setPharmacistId} pharmacistName={pharmacistDetails?.name} passedNotificationList={notificationList} unreadNotifs={unreadNotifs} resetUnreadNotifs={resetUnreadNotifs}/>
-          {pharmacistId != 0 ? <LowerToolbar isNavBarTop={isNavBarTop}/> : null}
+          {pharmacistId != 0 ? <LowerToolbar unreadChats={unreadChatTracker}isNavBarTop={isNavBarTop}/> : null}
 
         </IonTabs >
       </IonReactRouter >
