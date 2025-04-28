@@ -399,7 +399,7 @@ const App: React.FC = () => {
             </Route>
           </IonRouterOutlet >
 
-          <UpperToolbar setPatientId={setPatientId} setPharmacistId={setPharmacistId} pharmacistName={pharmacistDetails?.name} passedNotificationList={notificationList} unreadNotifs={unreadNotifs} resetUnreadNotifs={resetUnreadNotifs}/>
+          <UpperToolbar setPatientId={setPatientId} pharmacistId={pharmacistId}setPharmacistId={setPharmacistId} pharmacistName={pharmacistDetails?.name} passedNotificationList={notificationList} unreadNotifs={unreadNotifs} resetUnreadNotifs={resetUnreadNotifs}/>
           {pharmacistId != 0 ? <LowerToolbar unreadChats={unreadChatTracker}isNavBarTop={isNavBarTop}/> : null}
 
         </IonTabs >
