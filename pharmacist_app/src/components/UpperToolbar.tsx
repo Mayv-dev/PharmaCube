@@ -67,9 +67,10 @@ type UpperToolbarProps = {
 	resetUnreadNotifs:any
 	setPharmacistId:any
 	setPatientId:any
+	pharmacistId:number
 }
 
-const UpperToolbar: React.FC<UpperToolbarProps> = ({pharmacistName, passedNotificationList, unreadNotifs, resetUnreadNotifs,setPharmacistId, setPatientId}) => {
+const UpperToolbar: React.FC<UpperToolbarProps> = ({pharmacistName, pharmacistId, passedNotificationList, unreadNotifs, resetUnreadNotifs,setPharmacistId, setPatientId}) => {
 		const history = useHistory();
 		const [notifyList, setNotifyList] = useState<Notification[]>([])
 
@@ -130,7 +131,7 @@ const UpperToolbar: React.FC<UpperToolbarProps> = ({pharmacistName, passedNotifi
 						</IonButton>
 						<div className='rowOfSelects'>
 						</div>
-					{passedNotificationList.length > 0 ? passedNotificationList?.map(notification => <NotificationItem patient_id={notification.patient_id} body={notification.body} route_to={notification.route_to} timestamp={notification.timestamp} urgencyPassed={notification.urgency} minimize={menuController.close} setPatientId={setPatientId} />): <IonItem>You have no notifications</IonItem>}
+					{passedNotificationList.length > 0 ? passedNotificationList?.map(notification => <NotificationItem pharmacistId={pharmacistId}patient_id={notification.patient_id} body={notification.body} route_to={notification.route_to} timestamp={notification.timestamp} urgencyPassed={notification.urgency} minimize={menuController.close} setPatientId={setPatientId} />): <IonItem>You have no notifications</IonItem>}
 				</div>
 				</IonContent>
 			</IonMenu>
