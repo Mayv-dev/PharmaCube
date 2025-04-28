@@ -137,30 +137,22 @@ const SettingsPage: React.FC = () => {
 
     const sizes = fontSizeMap[size];
     
-    // Set base font size
     document.documentElement.style.setProperty('--ion-font-size', sizes.base);
     
-    // Set heading sizes
     document.documentElement.style.setProperty('--ion-font-size-h1', sizes.h1);
     document.documentElement.style.setProperty('--ion-font-size-h2', sizes.h2);
     document.documentElement.style.setProperty('--ion-font-size-h3', sizes.h3);
     
-    // Set paragraph size
     document.documentElement.style.setProperty('--ion-font-size-p', sizes.p);
     
-    // Set button text size
     document.documentElement.style.setProperty('--ion-font-size-button', sizes.button);
     
-    // Set list item text size
     document.documentElement.style.setProperty('--ion-font-size-list', sizes.base);
     
-    // Set input text size
     document.documentElement.style.setProperty('--ion-font-size-input', sizes.base);
     
-    // Set toast text size
     document.documentElement.style.setProperty('--ion-font-size-toast', sizes.base);
     
-    // Set alert text size
     document.documentElement.style.setProperty('--ion-font-size-alert', sizes.base);
   };
 
@@ -227,17 +219,14 @@ const SettingsPage: React.FC = () => {
         try {
           const data = JSON.parse(e.target?.result as string);
           
-          // Restore medications
           if (data.medications) {
             localStorage.setItem('medications', JSON.stringify(data.medications));
           }
           
-          // Restore schedule
           if (data.schedule) {
             localStorage.setItem('schedule', JSON.stringify(data.schedule));
           }
           
-          // Restore settings
           if (data.settings) {
             setTheme(data.settings.theme || theme);
             setFontSize(data.settings.fontSize || fontSize);
@@ -266,7 +255,6 @@ const SettingsPage: React.FC = () => {
       localStorage.clear();
       setToastMessage('All data cleared successfully!');
       setShowClearToast(true);
-      // Reset to default settings
       setTheme('light');
       setFontSize('medium');
       setDaltonization('');

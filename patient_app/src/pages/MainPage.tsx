@@ -25,14 +25,11 @@ const MainPage: React.FC = () => {
   const history = useHistory();
   const { daltonization } = useColorblindFilter();
 
-  // This would typically come from your app's state management
   const getBadgeCount = (type: string) => {
     switch(type) {
       case 'schedule':
-        // Example: Return actual count of upcoming medications
         return 0;
       case 'notifications':
-        // Example: Return actual count of unread notifications
         return 0;
       default:
         return 0;
