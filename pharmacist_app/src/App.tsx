@@ -49,9 +49,7 @@ import * as OneSignalCordova from 'onesignal-cordova-plugin';
 
 
 setupIonicReact();
-// firebase notification code taken from https://www.youtube.com/watch?v=IK8x7qc9ZsA
-import {generateToken, messaging} from "./notifications/firebaseHidden.js"
-import { onMessage} from 'firebase/messaging';
+
 import axios from 'axios';
 
 // Code snippets to help me implement audio were taken from a usage example in the following
