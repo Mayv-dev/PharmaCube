@@ -225,7 +225,7 @@ const App: React.FC = () => {
 
   setTimeout(() => {			
       setPollState(!pollState);
-    }, 3000);
+    }, 15000);
   },[pollState])
   
   
