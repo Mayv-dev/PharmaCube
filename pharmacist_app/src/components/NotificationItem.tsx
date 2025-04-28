@@ -17,9 +17,10 @@ interface NotificationItemProps {
 	urgencyPassed:urgency,
 	minimize:any
 	setPatientId:any
+	pharmacistId:number
 }
 
-const NotificationItem: React.FC<NotificationItemProps> = ({ patient_id, body, route_to, timestamp, urgencyPassed, minimize, setPatientId }) => 
+const NotificationItem: React.FC<NotificationItemProps> = ({ pharmacistId, patient_id, body, route_to, timestamp, urgencyPassed, minimize, setPatientId }) => 
 {
 	const [nameOfClass, setNameOfClass] = useState<string>("")
 	const [patientName, setPatientName] = useState<string>("")
@@ -57,7 +58,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ patient_id, body, r
 
   const router = useIonRouter()
 	const handleRouting = () => {
-		if (route_to == "chat" && router.routeInfo.pathname != "/chat/patient") {
+		if (route_to == "chat" && router.routeInfo.pathname != "/chat/patient" && pharmacistId != 0) {
 			setPatientId(patient_id)
 			router.push("/chat/patient", "none");
 			minimize()
