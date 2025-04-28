@@ -5,4 +5,6 @@ If the motor stops spinning (as well as 3 lights on the driver), a known solutio
  - ensure the lights are either all lit up or only lit up in 2s.
  - reconnect the motor
 
-
+If the schedule is not synching:
+- Check that the correct wifi credentials are set in config.py
+- Ensure that the access point is connected to the internet
