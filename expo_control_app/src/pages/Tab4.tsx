@@ -36,7 +36,7 @@ const Tab4: React.FC = () => {
         <div className='center'>
         <p>OneSignal Notifications</p>
           <div className='button-split'>
-          {/* https://documentation.onesignal.com/reference/create-message */}
+          {/* A (failed) attempt at generating notifications from the control app. I got this far with reference to https://documentation.onesignal.com/reference/create-message */}
           <div>
           <IonButton disabled={true} color={"success"} onClick={e => {
             CapacitorHttp.post({
@@ -68,11 +68,13 @@ const Tab4: React.FC = () => {
           <p>Backup Sounds</p>
           <div className='button-split'>
             <div>
+              {/* notify.mp3: https://pixabay.com/users/rasoolasaad-47313572/ */}
           <IonButton color={"success"} onClick={e => {
             NativeAudio.play({assetId: 'notify'});
           }}>Play new chat notification</IonButton>
           </div>
           <div>
+            {/* alert.mp3: https://pixabay.com/sound-effects/alert-102266/ */}
           <IonButton color={"danger"} onClick={e => {
             NativeAudio.play({assetId: 'alert'});
           }}>Play alert notification</IonButton>
