@@ -1,12 +1,12 @@
-import smart_pill_organiser.Code.Motor.motor_controller as motor_controller
-import smart_pill_organiser.Code.Schedules.schedule_handler as schedule_handler
-import smart_pill_organiser.Code.Schedules.schedule as schedule
-import smart_pill_organiser.Code.Speaker.notification_service as notification_service
+import Motor.motor_controller as motor_controller
+import Schedules.schedule_handler as schedule_handler
+import Schedules.schedule as schedule
+import Speaker.notification_service as notification_service
 import time
 from config import TEST_MODE, USER_ID
 from machine import Pin
 
-sh = schedule_handler.Schedule_Handler()
+#sh = schedule_handler.Schedule_Handler()
 ns = notification_service.Notification_Service()
 
 def main():
@@ -27,24 +27,27 @@ def check_schedule(schedule: list):
             schedule.remove(s)
 
 def handle_due_schedule(s: schedule.schedule):
+    open_pin = Pin(14, Pin.IN)
+    while(open_pin.value() == 0):
+        pass
     mc = motor_controller.MotorController()
     mc.move_to_compartment(s.compartment)
-    for i in range(1,5):
-        ns.alert()
-        time.sleep(10)
-    mc = motor_controller.MotorController()
-    mc.start()
+    while(open_pin.value() == 1):
+        pass
+    mc.move_to_compartment(10 - s.compartment)
 
 def test():
-    turn_pin = Pin(14,Pin.IN)
-    filling_pin = Pin(15, Pin.IN)
+    turn_pin = Pin(17,Pin.IN)
+    filling_pin = Pin(16, Pin.IN)
 
     while(True):
         if turn_pin.value() == 1 :
+            print("Time to take medication")
             test_medication_due()
+            return
         elif filling_pin.value() == 1:
-            test_guided_filling
-        else:
+            print("Time to fill medication")
+            test_guided_filling()
             return
 
 def test_medication_due():

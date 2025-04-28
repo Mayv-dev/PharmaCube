@@ -4,14 +4,14 @@ from time import sleep
 import machine
 import rp2
 import sys
-import µPing
+import WebConnection.µPing
 import config
 
 ssid = config.SSID
 password = config.PASSWORD
 
 led = machine.Pin("LED", machine.Pin.OUT)
-
+ 
 def connect():
     wlan = network.WLAN(network.STA_IF)
     wlan.active(True)
@@ -19,7 +19,7 @@ def connect():
     while wlan.status != network.STAT_GOT_IP:
         if rp2.bootsel_button() == 1:
             sys.exit()
-        print("WLAN status: " + wlan.status)
+        print("WLAN status: " + str(wlan.status))
         led.on()
         sleep(0.5)
         led.off()
@@ -35,3 +35,4 @@ def test_connection():
         print("Connected to the internet")
     else:
         print("Failed to connect")
+

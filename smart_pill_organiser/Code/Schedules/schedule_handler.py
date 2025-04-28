@@ -1,7 +1,7 @@
-import web_connection as wc
+import WebConnection.web_connection as wc
 import urequests as requests
 import config
-from schedule import schedule
+import Schedules.schedule
 
 class Schedule_Handler:
     ip = None
