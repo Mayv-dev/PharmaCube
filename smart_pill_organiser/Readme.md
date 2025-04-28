@@ -9,27 +9,6 @@
     <li>AZDelivery MB102 Power Supply</li>
 </ul>
 <h4>Wiring</h4>
-<ul>
-    <li>Ensure one of the power supply terminals is 5V and the other is 3.3V</li>
-    <li>
-        <ul>
-            <b>Speaker</b>
-            <li>Connect the audio module to the pi</li>
-            <li>Connect the speaker to the audio module</li>
-        </ul>
-    </li>
-    <li>
-        <ul>
-            <b>Motor</b>
-            <li>Connect the motor to the driver board</li>
-            <li>IN1 -> Pin 28</li>
-            <li>IN2 -> Pin 27</li>
-            <li>IN3 -> Pin 26</li>
-            <li>IN4 -> Pin 22</li>
-            <li>+ -> Power Supply 5V +</li>
-            <li>- -> Power Supply Any -</li>
-        </ul>
-    </li>
-</ul>
+![Wiring Diagram](https://github.com/Mayv-dev/PharmaCube/blob/hardware-fixes/smart_pill_organiser/Wiring%20Diagram.JPG.jpg "Wiring DIagram")
 Copy all files in the Code folder to the pi<br>
 Run main.py
