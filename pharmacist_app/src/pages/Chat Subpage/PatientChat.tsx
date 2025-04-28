@@ -41,9 +41,9 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPharmacistDetails, pass
 			: setChatNotCreated(true)
 			setTimeout(()=> {
 				setPollSwitch(!pollSwitch)
-			},1000)
+			},15000)
 		}
-	,[passedPatientId,pollSwitch,])
+	,[passedPatientId,pollSwitch,]) 
 
 	const getPatientChat = async (chat_id:number) => {
 		try {
