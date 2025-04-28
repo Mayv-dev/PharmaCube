@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 )
 
 func UpdateWasTaken(context *gin.Context) {
@@ -19,36 +18,19 @@ func UpdateWasTaken(context *gin.Context) {
 	if err != nil {
 		//Invalid ID
 		log.Println(err.Error())
-		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalide Patient ID"})
-		return
-	}
-
-	scheduledRegimeId, err := strconv.Atoi(context.Param("scheduled_regime_id"))
-	if err != nil {
-		//Invalid ID
-		log.Println(err.Error())
-		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalide Scheduled Regime ID"})
+		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid Patient ID"})
 		return
 	}
 
 	var wasTakenUpdate apimodels.MedicationWasTaken
-	err = context.BindJSON(wasTakenUpdate)
+	err = context.BindJSON(&wasTakenUpdate)
 	if err != nil {
 		log.Println(err.Error())
 		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid Request Body"})
 		return
 	}
 
-	validator := validator.New()
-	err = validator.Struct(wasTakenUpdate)
-	if err != nil {
-		//Invalid
-		log.Println(err.Error())
-		context.JSON(http.StatusBadRequest, responses.ApiResponse{Data: "Invalid Request Body"})
-		return
-	}
-
-	scheduledRegime, err := databaseadapters.GetPatientScheduledRegimeItem(uint(patientId), uint(scheduledRegimeId))
+	scheduledRegime, err := databaseadapters.GetPatientScheduledRegimeItem(uint(patientId), uint(wasTakenUpdate.ScheduledRegimeID))
 	if err != nil {
 		log.Println(err.Error())
 		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Scheduled Regime Item not found"})
