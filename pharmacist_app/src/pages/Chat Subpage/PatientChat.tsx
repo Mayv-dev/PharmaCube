@@ -45,6 +45,7 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPharmacistDetails, pass
 		}
 	,[passedPatientId,pollSwitch,]) 
 
+
 	const getPatientChat = async (chat_id:number) => {
 		try {
 			const { data, status } = await axios.get(

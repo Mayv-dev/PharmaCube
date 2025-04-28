@@ -293,6 +293,7 @@ const App: React.FC = () => {
   }
 
 
+
   useEffect(() => {
     console.log("onesignal init")
     // The starting code below was found at https://documentation.onesignal.com/docs/react-js-setup
@@ -399,7 +400,9 @@ const App: React.FC = () => {
             </Route>
           </IonRouterOutlet >
 
+
           <UpperToolbar setPatientId={setPatientId} pharmacistId={pharmacistId}setPharmacistId={setPharmacistId} pharmacistName={pharmacistDetails?.name} passedNotificationList={notificationList} unreadNotifs={unreadNotifs} resetUnreadNotifs={resetUnreadNotifs}/>
+
           {pharmacistId != 0 ? <LowerToolbar unreadChats={unreadChatTracker}isNavBarTop={isNavBarTop}/> : null}
 
         </IonTabs >
