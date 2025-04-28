@@ -1,48 +1,34 @@
 # Pharmacist App
 
-## Setting Up Our Current App
-### Step 1: Dependencies
-- Inside the pharmacist app folder, you will want to run the following command to install the code dependencies required:
-	- npm install
-### Step 2: Environment Variables
-- You must add the app ID for OneSignal notifications in a new .env file, under the name VITE_ONESIGNAL_APP_ID
-### Step 3: Hidden Files for notification services
-1. Locate the following two files
-	- \PharmaCube\pharmacist_app\src\notifications\TEMPLATE_firebase.js
-	- \PharmaCube\pharmacist_app\public\TEMPLATE_firebase-messaging-sw.js
+## Requirements
+- Node.js version: v22.13.1
 
-2. In the same directory, copy the files and perform the following renames (the names should appear grey, as they are gitignored):
-	- TEMPLATE_firebase.js ---> firebaseHidden.js
-	- TEMPLATE_firebase-messaging-sw.js ---> firebase-messaging-sw.js
+### Step 1: Environment Variables
+- place a file called .env in the root of the pharmacist_app directory the .env file should contain the following:
+VITE_ONESIGNAL_APP_ID = "89c58890-35c8-487b-86b7-37a6876xxxxx"
+VITE_TESTER_NAME="Liam Murphy"
+VITE_TESTER_EMAIL="liammurphy@gmail.com"
+VITE_TESTER_PASSWORD="Oroabcd1234"
+VITE_TESTER_PHARMACY_NAME="Allcare Pharmacy"
+VITE_TESTER_PHARMACY_ADDRESS_1="Market Street"
+VITE_TESTER_PHARMACY_ADDRESS_2="Carlingford"
+VITE_TESTER_PHARMACY_ADDRESS_3="Co. Louth"
+VITE_TESTER_PHARMACY_POSTCODE="A91 KF77"
+VITE_SERVER_PROTOCOL="http"
+VITE_SERVER_ADDRESS="localhost"
+VITE_SERVER_PORT="8080"
 
-3. Follow the in-file instructions, filling in each hidden Firebase variable with the values from your Firebase project's console
+Be sure to change these values as needed. For example:
+- replace VITE_ONESIGNAL_APP_ID with your OneSignal App ID, if you want to test out notifications
+- assign VITE_SERVER_PROTOCOL either http or https
+- assign VITE_SERVER_ADDRESS another server's address/name if you have one
 
-## How We Started From Scratch
-### Step 1: Preparation of Required Software 
-1. Install node.js 
-2. On Visual Studio Code, download the Ionic extension
-3. Install Android Studio 
+### Step 2: Preparation of Required Software 
+1. [Install node.js ](https://nodejs.org/en/download)
+2. npm install -g @ionic/cli
+3. On Visual Studio Code, [download the Ionic extension](https://ionicframework.com/docs/intro/vscode-extension)
 
-### Step 2: Create Your Ionic Project 
-
-1. Navigate to the folder you want to create your project in 
-2. Next run the following commands: 
-	- npm install -g @ionic/cli 
-	- ionic start myApp tabs --type react 
-		- Note that for the name myApp, you should replace this with whatever name is used for the app you are making. e.g. Pharmacube / ORO
-		- Also, the ionic start command took 4 minutes to fully set up, so don’t be too alarmed by a long wait time 
-
-3. Now, navigate into the folder with the same name as the ionic app you just created, then run the following commands: 
-	- npm install 
-	- ionic serve 
-
-### Step 3a: Convert Web App to Mobile (Android) 
-1. Using the VSCode Ionic extension, click “Add Android Project” and be sure to accept the pop up on bottom right asking you to confirm your choice. 
-2. Run "Build" and then "Sync" under the project tab
-3. Click on the “Open in Android Studio” option, it will automatically open the app in android studio.  
-4. Run the app on either a virtual phone, or an android phone in developer mode by pressing the play button in android studio.
-
-### Step 3b: Convert Web App to Mobile (IOS) 
-1. Using the VSCode Ionic extension, click “Add iOS Project” and be sure to accept the pop up on bottom right asking you to confirm your choice. 
-2. Run "Build" and then "Sync" under the project tab
-3. Open App.xcworkspace (inside ios/APP)
+### Step 3: Setup and Run the App
+Now, inside the pharmacist_app folder you have found this README.md file in, run the following commands: 
+- npm install 
+- ionic serve 
