@@ -9,6 +9,6 @@
     <li>AZDelivery MB102 Power Supply</li>
 </ul>
 <h4>Wiring</h4>
-![Wiring Diagram](https://github.com/Mayv-dev/PharmaCube/blob/hardware-fixes/smart_pill_organiser/Wiring%20Diagram.JPG.jpg "Wiring DIagram")
+A wiring diagram can be found at: https://github.com/Mayv-dev/PharmaCube/blob/hardware-fixes/smart_pill_organiser/Wiring%20Diagram.JPG.jpg<br>
 Copy all files in the Code folder to the pi<br>
 Run main.py
