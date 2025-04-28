@@ -1,4 +1,4 @@
-import stepper
+from Motor.stepper import FullStepMotor
 
 class MotorController:
     IN1 = 0
@@ -10,10 +10,10 @@ class MotorController:
     
     def __init__(self):
         self.IN1 = 28
-        self.IN2 = 27
-        self.IN3 = 26
+        self.IN2 = 2
+        self.IN3 = 3
         self.IN4 = 22
-        self.motor = stepper.FullStepMotor.frompins(self.IN1, self.IN2, self.IN3, self.IN4)
+        self.motor = FullStepMotor.frompins(self.IN1, self.IN2, self.IN3, self.IN4)
     
     def start(self):
         self.motor.reset()    

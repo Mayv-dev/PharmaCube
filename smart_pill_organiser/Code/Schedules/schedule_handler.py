@@ -1,7 +1,7 @@
-import web_connection as wc
+import WebConnection.web_connection as wc
 import urequests as requests
 import config
-from schedule import schedule
+import Schedules.schedule
 
 class Schedule_Handler:
     ip = None
@@ -19,7 +19,7 @@ class Schedule_Handler:
             items = response.json()
             self.schedule = []
             for i in items:
-                date_time_to_take = i["date_time_to_take"]
+                date_time_to_take = i["date_time_to_take"].split(' ')[1].split('+')[0]
                 compartment_id = i["compartment_id"]
                 sc = schedule(date_time_to_take, compartment_id)
                 self.schedules.append(sc)

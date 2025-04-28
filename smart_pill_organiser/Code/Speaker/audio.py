@@ -86,4 +86,3 @@ class Audio:
         for t in range(time):
             for i in range(len(table)):
                 self.sm.put(buf[i])
-
