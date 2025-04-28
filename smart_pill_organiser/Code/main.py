@@ -55,14 +55,18 @@ def test_medication_due():
     handle_due_schedule(s)
 
 def test_guided_filling():
-    confirm_pin = Pin(16, Pin.IN)
-    for i in range (3, 6):
-        mc = motor_controller.MotorController()
-        mc.move_to_compartment(i)
+    confirm_pin = Pin(14, Pin.IN)
+    mc = motor_controller.MotorController()
+    mc.move_to_compartment(3)
+    print("In position")
+    time.sleep(2)
+    for i in range (1, 5):
         while confirm_pin.value() == 0:
               pass
-        mc = motor_controller.MotorController()
-        mc.start()
+        print("Moving to compartment " + str(i)) 
+        mc.move_to_compartment(3 + i)
+        time.sleep(2)
+    mc.move_to_compartment(1)
 
 if __name__ == "__main__":
     main()
