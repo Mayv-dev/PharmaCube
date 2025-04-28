@@ -1,5 +1,3 @@
-import { number, string } from "yup";
-
 export type RegimeItem = {
     id: number;
     compartment_id: number; 
@@ -45,13 +43,15 @@ export type PatientAdherenceRecord = {
 }
 
 export type Message = {
-	sender_id:number;
-	time_sent:string;
-	message_body:string;
+	time_sent:string,
+    chat_id:number,
+    is_sender_patient:boolean,
+    message_body:string
 }
 
-export type Chat = {
+export type ChatType = {
 	patient_id:number
 	pharmacist_id:number
 	messages:Message[]
+    unread_message_count:number
 }

@@ -84,6 +84,12 @@
 	float: left;
 }
 
+.notificationBadge {
+	background-color: red;
+	border-radius: 300px;
+	padding: 5px;
+}
+
 @media screen and (max-width: 680px) {
 	.notificationMenu {
 		--max-width:80%;
@@ -93,3 +99,5 @@
 		width: 40%;
 	}
   }
+
+  .topOroLogo {--color-selected:var(--ion-tab-bar-background);}

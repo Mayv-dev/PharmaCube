@@ -6,3 +6,9 @@
 	padding: 1%;
 	border-radius: 4px;
 }
+
+.doseViewGrid {
+	display: grid;
+	grid-template-columns: 50% 50%;
+	margin-top: 1%;
+}

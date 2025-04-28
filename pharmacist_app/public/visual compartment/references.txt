@@ -1,0 +1,2 @@
+These visual compartment images have been created by me from a starter box "No Compartment.png" from figma: https://www.figma.com/
+I used GIMP to add the yellow highlights and numbering: https://www.gimp.org/

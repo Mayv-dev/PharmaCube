@@ -56,7 +56,13 @@ http://ionicframework.com/docs/theming/ */
 	--element-hover-highlight-color: rgb(201, 201, 0);
 }
 
+/*Fix for ion range interactions making the ion content scroll disappear found at https://github.com/ionic-team/ionic-framework/issues/25595*/
+ion-content::part(scroll) {
+	overflow-y: auto !important;
+  }
+
 ion-tab-bar{ --color-selected: var(--element-hover-highlight-color) }
 ion-tab-button{ --background: var(--ion-background-color-rgb) }
-ion-item{ --background: var(--ion-background-color); --inner-border-width:0}
+ion-item{ --background: var(--ion-background-color); --inner-border-width:0;}
+
 ion-datetime{ --background: var(--ion-background-color)}

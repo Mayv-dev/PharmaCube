@@ -34,9 +34,9 @@ window.addEventListener("DOMContentLoaded", async () => {
     const container = document.getElementById("root");
     const root = createRoot(container!);
     root.render(
-      <React.StrictMode>
+        // To fix API calls occuring multiple times, particularly affecting the chat feature with duplication of patient chats,
+        // I removed strict mode. https://medium.com/@yaseen-kc/why-is-my-api-call-happening-twice-in-react-d9dc06dec962
         <App />
-      </React.StrictMode>
     );
   } catch (e) {
     console.log(e);

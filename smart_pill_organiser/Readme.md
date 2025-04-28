@@ -10,5 +10,5 @@
 </ul>
 <h4>Wiring</h4>
 A wiring diagram can be found at: https://github.com/Mayv-dev/PharmaCube/blob/hardware-fixes/smart_pill_organiser/Wiring%20Diagram.JPG.jpg<br>
+<h4>Code</h4>
 Copy all files in the Code folder to the pi<br>
-Run main.py

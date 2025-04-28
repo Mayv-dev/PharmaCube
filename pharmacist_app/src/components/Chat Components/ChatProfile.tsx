@@ -1,11 +1,3 @@
-import {
-	IonButton,
-	IonIcon,
-	IonLabel,
-	IonTabBar,
-	IonTabButton
-} from '@ionic/react';
-import { musicalNotes } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 
 type ChatProfileProps = {
@@ -26,6 +18,7 @@ const ChatProfile: React.FC<ChatProfileProps> = ({passedPatientName,passedMessag
 
 	return (
 		<div>
+			{/* I use the picture from wikipedia as a stand-in for real pictures that would be stored on the server: https://commons.wikimedia.org/wiki/File:Portrait_Placeholder.png */}
 			<img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"></img>
 			<div>
 				<p>{patientName}</p>

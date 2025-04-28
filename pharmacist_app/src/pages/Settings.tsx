@@ -1,24 +1,31 @@
-import { IonButton, IonContent, IonItem, IonLabel, IonPage, IonSelect, IonSelectOption, IonText } from '@ionic/react';
+import { IonButton, IonContent, IonItem, IonPage, IonSelect, IonSelectOption } from '@ionic/react';
 import '../styles/Settings.css';
 
-const Settings: React.FC = () => (
+type props = {
+  isNavBarTop:boolean
+  navBarChange:any
+  
+  isTTSOn:boolean
+  ttsChange:any
+}
+const Settings: React.FC<props> = ({isNavBarTop, navBarChange, isTTSOn, ttsChange}) => (
   <IonPage>
 
     <IonContent className="ion-padding">
       <div className='webBody'>
-        <IonButton>Reset to defaults</IonButton>
+        <IonButton onClick={e => {ttsChange(true); navBarChange(false)}}>Reset to defaults</IonButton>
 
         <IonItem>
-          <IonSelect label="App Theme:">
-            <IonSelectOption>Auto (Device Selected)</IonSelectOption>
+          <IonSelect label="Notification Audio Type:" value={isTTSOn} onIonChange={e => ttsChange(e.target.value)}>
+            <IonSelectOption value={true}>Text To Speech</IonSelectOption>
+            <IonSelectOption value={false}>Beep</IonSelectOption>
           </IonSelect>
         </IonItem>
 
-        <IonText>Your device's current theme automatically sets the app theme to DARK</IonText>
-
         <IonItem>
-          <IonSelect label="Navbar position:">
-            <IonSelectOption>Top</IonSelectOption>
+          <IonSelect value={isNavBarTop} onIonChange={e => navBarChange(e.target.value)} label="Navbar position:">
+            <IonSelectOption value={true}>Top</IonSelectOption>
+            <IonSelectOption value={false}>Bottom</IonSelectOption>
           </IonSelect>
         </IonItem>
       </div>

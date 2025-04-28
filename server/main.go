@@ -2,32 +2,54 @@ package main
 
 import (
 	"log"
+	"os"
 	"pharmacube/server/domain/models"
 	databaseadapters "pharmacube/server/driven_adapters/database_adapters"
 	"pharmacube/server/driving_adapters/rest_api/routes"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
-var DbAdapter *gorm.DB
-
 func main() {
-	DbAdapter = databaseadapters.GromDbAdapter()
 
-	DbAdapter.AutoMigrate(
-		&models.Patient{},
-		&models.Pharmacist{},
-		&models.PatientRegime{},
-		&models.PatientSchedule{},
-		&models.PatientScheduledRegime{},
-		&models.PatientAdherenceRecord{},
-	)
+	if len(os.Args) > 1 && os.Args[1] == "-r" {
+		runRelease()
 
-	//mockdata()
+	} else if len(os.Args) > 1 && os.Args[1] == "-d" {
+		runDebugTLS()
+	} else {
+		runDebug()
+	}
+}
 
-	server := gin.Default()
+func runDebug() {
+	dbSetup()
+	server := gin.New()
+	serverSetup(server)
+
+	server.Run()
+}
+
+func runDebugTLS() {
+	dbSetup()
+	server := gin.New()
+	serverSetup(server)
+
+	server.RunTLS(":8080", "/etc/letsencrypt/live/oro.mayv.dev-0001/fullchain.pem", "/etc/letsencrypt/live/oro.mayv.dev-0001/privkey.pem")
+}
+
+func runRelease() {
+	dbSetup()
+	gin.SetMode(gin.ReleaseMode)
+	server := gin.New()
+	serverSetup(server)
+
+	server.RunTLS(":8080", "/etc/letsencrypt/live/oro.mayv.dev-0001/fullchain.pem", "/etc/letsencrypt/live/oro.mayv.dev-0001/privkey.pem")
+}
+
+func serverSetup(server *gin.Engine) {
+	server.Use(gin.Logger(), gin.Recovery())
 
 	log.SetOutput(gin.DefaultWriter)
 
@@ -37,25 +59,21 @@ func main() {
 
 	routes.AddPharmacistRoutes(server)
 	routes.PatientRoutes(server)
-
-	server.Run()
+	routes.ChatRoutes(server)
+	routes.ResetRoute(server)
 }
 
-func mockdata() {
-	patient := models.Patient{
-		Name:             "TestPatient",
-		ScheduleTimes:    []models.PatientSchedule{},
-		ScheduledRegimes: []models.PatientScheduledRegime{},
-		AdherenceRecord:  []models.PatientAdherenceRecord{},
-	}
+func dbSetup() {
+	dbAdapter := databaseadapters.GromDbAdapter()
 
-	pharmacist := models.Pharmacist{
-		Name:     "TestPharmacy",
-		Patients: []models.Patient{patient},
-	}
-
-	result := DbAdapter.Create(&pharmacist)
-	if result.Error != nil {
-		log.Println(result.Error.Error())
-	}
+	dbAdapter.AutoMigrate(
+		&models.Patient{},
+		&models.Pharmacist{},
+		&models.PatientRegime{},
+		&models.PatientSchedule{},
+		&models.PatientScheduledRegime{},
+		&models.PatientAdherenceRecord{},
+		&models.Chat{},
+		&models.Message{},
+	)
 }

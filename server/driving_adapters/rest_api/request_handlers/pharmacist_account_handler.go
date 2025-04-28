@@ -43,6 +43,7 @@ func GetPharmacistAccount(context *gin.Context) {
 	if err != nil {
 		log.Println(err.Error())
 		context.JSON(http.StatusNotFound, responses.ApiResponse{Data: "Pharmacist account not found"})
+		return
 	}
 
 	context.JSON(http.StatusOK, pharmacist)

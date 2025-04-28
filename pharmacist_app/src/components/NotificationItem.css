@@ -11,6 +11,7 @@
 	align-items: center;
 	height: 8%;
 	min-height: 70px;
+	cursor: pointer;
 }
 
 .highNotification {

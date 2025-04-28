@@ -4,7 +4,8 @@ android {
     namespace "io.ionic.starter"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "io.ionic.starter"
+        // https://stackoverflow.com/questions/73151706/how-to-install-two-ionic-app-into-one-android-system
+        applicationId "io.oro.carer"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

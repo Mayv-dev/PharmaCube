@@ -22,7 +22,7 @@ func ReadPatientAccount(patientId uint) (models.Patient, error) {
 	var patient models.Patient
 	dbAdapter := GromDbAdapter()
 
-	result := dbAdapter.First(&patient, patientId)
+	result := dbAdapter.Preload("Chats").Preload("PatientSchedules").Preload("PatientRegimes").Preload("PatientScheduledRegimes").Preload("PatientAdherenceRecords").First(&patient, patientId)
 	if result.Error != nil {
 		log.Println(result.Error.Error())
 		return models.Patient{}, fmt.Errorf("Failed to find Patient account ID %v", patientId)

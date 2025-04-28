@@ -3,19 +3,10 @@ import axios from 'axios';
 import {
   IonPage,
   IonContent,
-  IonSelect,
-  IonSelectOption,
   IonButton,
-  IonHeader,
-  IonModal,
-  IonTitle,
-  IonToolbar,
-  IonRouterLink,
 } from '@ionic/react';
 import '../../styles/Chat Subpage/PatientChat.css';
-import LowerToolbar from '../../components/LowerToolbar';
-import { Chat, RegimeItem } from 'api types/types';
-import RegimeItemContainer from '../../components/Regime Components/RegimeItemContainer';
+import { ChatType } from 'api types/types';
 import ChatBubble from '../../components/Chat Components/ChatBubble';
 import ChatTextbox from '../../components/Chat Components/ChatTextbox';
 
@@ -23,26 +14,41 @@ import { Message } from 'api types/types';
 
 type PatientChatProps = {
 	passedPatientChatStatus:boolean
+	passedPatientId:any
+	passedPharmacistId:number
+	passedPharmacistDetails:any
 }
 
-const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus}) => {
-	const [pharmacistId, setPharmacistId] = useState<number>(1);
+const PatientChat: React.FC<PatientChatProps> =  ({passedPharmacistDetails, passedPharmacistId, passedPatientChatStatus, passedPatientId}) => {
+	const [patientChat, setPatientChat] = useState<any[]>([]);
+	const [pollSwitch, setPollSwitch] = useState<boolean>(false);
+	const [chatNotCreated, setChatNotCreated] = useState<boolean>(false);
+	const [chatNotCreatedLock, setChatNotCreatedLock] = useState<boolean>(false);
 
-	const [patientId, setPatientId] = useState<number>(2);
-	const [patientName, setPatientName] = useState('Ann Murphy');
-	const [patientChat, setPatientChat] = useState<Chat>({patient_id:2, pharmacist_id:1, messages:[{sender_id:2,time_sent:"2025-03-17T15:40:57+00:00",message_body:"Are you my new pharmacist?"}, {sender_id:1,time_sent:"2025-03-17T15:40:57+00:00",message_body:"Yes, how can I help you?"}]});
-
-	const [answered, setAnswered] = useState(false);
+	useEffect(() => {
+		
+		if(!chatNotCreated && !chatNotCreatedLock && passedPharmacistDetails?.chats.find(chat => chat.id == passedPatientId) == undefined) {
+			setChatNotCreatedLock(true)
+			axios.post(`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/chat/${passedPharmacistId}/${passedPatientId}`)
+		}
+	},[chatNotCreated])
 
 	// Code for setTimeout found at w3schools.com: https://www.w3schools.com/react/react_useeffect.asp
 	useEffect(()=> {
-		getPatientChat().then(res => res == "Network Error" || res == "Request failed with status code 404" ? console.log("Server connection has failed in PatientApp.tsx with the following error message: ", res):setPatientChat(res))	
-	},[passedPatientChatStatus])
+			// I need to loop through the chats of the pharmacist to see if one has the patient in question
+			let matchedChat = passedPharmacistDetails.chats.find(chat => chat.patient_id == passedPatientId)
+			matchedChat != undefined ? getPatientChat(matchedChat.id).then(res => {res != "Request failed with status code 500" ? setPatientChat(res) : console.log("500 error")})
+			: setChatNotCreated(true)
+			setTimeout(()=> {
+				setPollSwitch(!pollSwitch)
+			},15000)
+		}
+	,[passedPatientId,pollSwitch,]) 
 
-	const getPatientChat = async () => {
+	const getPatientChat = async (chat_id:number) => {
 		try {
 			const { data, status } = await axios.get(
-			  `http://localhost:8080/pharmacist/${pharmacistId}/patient/${patientId}/chat`,
+			  `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/chat/${passedPharmacistId}/${chat_id}`,
 			  {
 				headers: {
 				  Accept: 'application/json'
@@ -63,25 +69,26 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus}) => 
 	}
 
 	const messageSent = async (message:string) => {
+		let matchedChat = passedPharmacistDetails.chats.find(chat => chat.patient_id == passedPatientId)
+		console.log(matchedChat)
+		if (matchedChat == undefined) return
+		const sentMessage:Message = {
+			time_sent:new Date(Date.now()).toISOString(),
+			chat_id:matchedChat.id,
+			is_sender_patient:false,
+			message_body:message
+		}
 		try {
-			const sentMessage:Message = {
-				sender_id:pharmacistId,
-				time_sent:new Date(Date.now()).toISOString(),
-				message_body:message
-			}
 			console.log("post request being made...")
 			const { data, status } = await axios.post(
-				`http://demo3553220.mockable.io/pharmacist/pharmacist_id/patient/patient_id/chat`,
+				`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/chat`,
 				sentMessage,
 				{
 					headers: {
 						Accept: 'application/json'
 					},
 				},
-			);
-			let updatedPatientChat = patientChat.messages
-			updatedPatientChat.push(sentMessage)
-			setPatientChat({patient_id:patientId, pharmacist_id:pharmacistId, messages:updatedPatientChat})
+			).then(res => getPatientChat(passedPatientId).then(setPatientChat));
 			return data;
 		}
 		catch (error) {
@@ -99,13 +106,15 @@ const PatientChat: React.FC<PatientChatProps> =  ({passedPatientChatStatus}) => 
 		<IonPage>
 			<IonContent className="ion-padding">
 			<div className='webBody'>
-				<IonRouterLink routerLink='/chat'>
-					<IonButton expand="block" className='ScheduleButtons' color="light">
+				<div className='patientChatTopSection'>
+					<IonButton expand="block" routerLink='/chat' routerDirection='root' className='ScheduleButtons' color="light">
 						Back to Chat Menu
 					</IonButton>
-				</IonRouterLink>
-				<p>Selected patient: {patientName}</p>
-				{ patientChat?.messages.map(message => <ChatBubble passedPharmacistId={pharmacistId} passedPatientId={patientId} passedMessage={message}></ChatBubble>)}
+				<p>Selected patient: {passedPatientId}</p>
+				</div>
+				<div className={"chatBubbleContainer"}>
+					{ patientChat.map(message => <ChatBubble passedPharmacistId={passedPharmacistId} passedPatientId={passedPatientId} passedMessage={message}></ChatBubble>)}
+				</div>
 				<ChatTextbox messageSent={messageSent}></ChatTextbox>
 			</div>
 				</IonContent>

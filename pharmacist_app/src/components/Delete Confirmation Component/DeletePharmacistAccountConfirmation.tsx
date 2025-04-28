@@ -1,6 +1,6 @@
 //import ExploreContainer from '../components/ExploreContainer';
-import { IonModal, IonToolbar, IonTitle, IonHeader, IonContent, IonButton, IonInput, IonItem } from '@ionic/react';
-import { useState } from 'react';
+import { IonToolbar, IonTitle, IonHeader, IonContent, IonButton } from '@ionic/react';
+
 type popupInfo = {
 	deleteAccount:any;
 	setShowModal:any;

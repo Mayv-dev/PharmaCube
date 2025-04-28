@@ -2,13 +2,9 @@ import { useEffect, useState } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
-  IonIcon,
-  IonLabel,
   IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
   IonTabs,
-  setupIonicReact
+  setupIonicReact,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Regimes from './pages/Regimes'; // Medications Tab
@@ -36,12 +32,9 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import AddRegime from './pages/Regimes Subpages/AddRegime';
 import ViewRegime from './pages/Regimes Subpages/ViewRegime';
-import Notifications from './pages/Notifications';
-import Menu from './pages/Menu';
 import LowerToolbar from './components/LowerToolbar';
-import UpperToolbar, { Notification, openHamburgerMenu, openNotificationMenu } from './components/UpperToolbar';
+import UpperToolbar, { Notification } from './components/UpperToolbar';
 import Account from './pages/Account';
-import FAQs from './pages/FAQs';
 import PatientChat from './pages/Chat Subpage/PatientChat';
 import Login from './pages/Authentication Pages/Login';
 import Register from './pages/Authentication Pages/Register';
@@ -49,8 +42,11 @@ import History from './pages/History';
 
 import "./styles/GlobalStyling.css"
 
+import {ChatType}  from 'api types/types';
 
-import OneSignal from 'onesignal-cordova-plugin';
+import OneSignal from 'react-onesignal';
+import * as OneSignalCordova from 'onesignal-cordova-plugin';
+
 
 setupIonicReact();
 // firebase notification code taken from https://www.youtube.com/watch?v=IK8x7qc9ZsA
@@ -63,6 +59,8 @@ import axios from 'axios';
 import {NativeAudio} from '@capacitor-community/native-audio'
 import { Capacitor } from '@capacitor/core';
 import React from 'react';
+import { TextToSpeech } from '@capacitor-community/text-to-speech';
+import AppPatientDetails from 'app types/AppPatientDetails';
 
 // the royalty free sound used to demonstrate the notification comes from RasoolAsaad at: https://pixabay.com/users/rasoolasaad-47313572/
 NativeAudio.preload({
@@ -74,86 +72,169 @@ NativeAudio.preload({
 const platform = Capacitor.getPlatform();
 
 const App: React.FC = () => {
+
+  const [pharmacistId, setPharmacistId] = useState<number>(0);
+  const [pharmacistDetails, setPharmacistDetails] = useState<any|null>(null);
+
+  const [unreadChatTracker, setUnreadChatTracker] = useState<any[]>([]);
+
+
+
   // Retrieved from https://documentation.onesignal.com/docs/ionic-capacitor-cordova-sdk-setup
   const OneSignalInit = () => {
-  // Remove this method to stop OneSignal Debugging
-  OneSignal.Debug.setLogLevel(6)
-  
-  OneSignal.initialize(import.meta.env.VITE_ONESIGNAL_APP_ID);
-  console.log(import.meta.env.VITE_ONESIGNAL_APP_ID)
+    // Remove this method to stop OneSignal Debugging
+    OneSignalCordova.default.Debug.setLogLevel(6)
+    
+    OneSignalCordova.default.initialize(import.meta.env.VITE_ONESIGNAL_APP_ID);
+    console.log(import.meta.env.VITE_ONESIGNAL_APP_ID)
 
-  OneSignal.Notifications.addEventListener('click', async (e) => {
-    let clickData = await e.notification;
-    console.log("Notification Clicked : " + clickData);
-  })
+    OneSignalCordova.default.Notifications.addEventListener('click', async (e) => {
+      let clickData = await e.notification;
+      console.log("Notification Clicked : " + clickData);
+    })
 
-  OneSignal.Notifications.requestPermission(true).then((success: Boolean) => {
-    console.log("Notification permission granted " + success);
-  })
+    OneSignalCordova.default.Notifications.requestPermission(true).then((success: Boolean) => {
+      console.log("Notification permission granted " + success);
+    })
   }
 
   // This if statement is necessary to stop mobile notification cod TypeErrors on the incompatible web version
   // This solution is adapted from previous attempts at getting sqlite working from https://www.youtube.com/watch?v=tixvx5nsJO8&t=1130s
   if (platform != "web") {OneSignalInit();}
 
+	const [isNavBarTop, setIsNavBarTop] = useState(false)
+
+
 	const [pollState, setPollState] = useState(true)
 	const [getPatientChatStatus, setGetPatientChatStatus] = useState(true)
-  const [notificationList, setNotificationList] = useState<Notification[]>([{
-			id: 1,
-			content: "Take your Wednesday morning medication from compartment 2",
-			timestamp: "2025-01-06T09:00:19+00:00",
-			urgency: 1
-		},
-		{
-			id: 1,
-			content: "Urgent message from your patient Aaron Murphy",
-			timestamp: "2025-01-06T06:00:19+00:00",
-			urgency: 2
-		},
-		{
-			id: 1,
-			content: "Take your Wednesday Night medication from compartment 5",
-			timestamp: "2025-01-06T23:00:19+00:00",
-			urgency: 0
-		}]);
-  const [pharmacistId, setPharmacistId] = useState<number>(0); // TODO: Set to actual pharmacist when notification route is established and working
+  const [notificationList, setNotificationList] = useState<Notification[]>([]);
+  const [notifsBefore, setNotifsBefore] = useState<number>(notificationList.length)
+  const [unreadNotifs, setUnreadNotifs] = useState<number>(0)
 
+  const [patientList, setPatientList] = useState<AppPatientDetails[]>([])
+
+
+  const [patientId, setPatientId] = useState<number>(0); 
 
   const [modifyRegimeInfo, setModifyRegimeInfo] = useState(null);
   const testRootMessage = (regime: any) => setModifyRegimeInfo(regime)
 
-  useEffect(() => {
-    generateToken()
-    onMessage(messaging, (payload) => {
-      console.log("notification: ", payload);
-      console.log(payload.notification?.body)
-      if(payload.notification?.body != undefined){
-        const updatedNotificationList = notificationList;
-        updatedNotificationList.push({id:0,content:payload.notification.body, urgency:1, timestamp: new Date(Date.now()).toISOString()});
-        setNotificationList(updatedNotificationList);
-        NativeAudio.play({
-          assetId: 'notify'
-        });
+  const [isTTSOn, setIsTTSOn] = useState<boolean>(true);
+  const speak = async (message:string) => {
+    await TextToSpeech.speak({
+      text: message,
+      lang: 'en-US',
+      rate: 1.0,
+      pitch: 1.0,
+      volume: 1.0,
+      category: 'ambient',
+      queueStrategy: 1
+    });
+    };
+
+    const notifyFirebase = (payloadBody:string) => {
+      if (isTTSOn){
+        if(payloadBody == "chat") speak("A patient has sent you a message")
+          else speak("You have recieved a notification");
+        }
+      else {
+        NativeAudio.play({assetId: 'notify'});
       }
-    })
-  },[])
+    }
+  
+  const getPatientChat = async (passedPatient:number) => {
+		try {
+			const { data, status } = await axios.get(
+			  `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/chat/1/${passedPatient}`,
+			  {
+				headers: {
+				  Accept: 'application/json'
+				},
+			  },
+			);
+			return data;
+	  
+		  } catch (error) {
+			if (axios.isAxiosError(error)) {
+			  console.log('error message: ', error.message);
+			  return error.message;
+			} else {
+			  console.log('unexpected error: ', error);
+			  return 'An unexpected error occurred';
+			}
+		  }
+	}
 
   useEffect(() => {
-    if(window.location.href.endsWith("chat/patient")) setGetPatientChatStatus(!getPatientChatStatus)
-    if(pharmacistId != 0) fetchNotifications().then(res => res == "Network Error" || res == "Request failed with status code 404" ? console.log("Server connection has failed in App.tsx with the following error message: ", res):setNotificationList(res))
-    setTimeout(() => {			
+  //   if(pharmacistId != 0) fetchNotifications().then(res => res == "Network Error" || res == "Request failed with status code 404" ? console.log("Server connection has failed in App.tsx with the following error message: ", res):
+  //   setNotificationList(res)
+  // )
+  if (pharmacistId != 0) {
+  	getLoginAccountDetails().then(res => {
+    setPharmacistDetails(res)
+    setPatientList(res.patients)
+  })}
+  else {
+  	setPharmacistDetails(null)
+	  setUnreadChatTracker([])
+    setPatientId(0)
+  }
+
+  let includedPatientIds:number[] = []
+
+  let incomingChatList:any[] = []
+  pharmacistDetails?.chats.map(chat => {
+    if (includedPatientIds.find(id => id == chat.patient_id) == undefined) {
+      incomingChatList.push({ patient_id:chat.patient_id, last_message_time:chat.last_message_time, last_sender_is_patient:chat.last_sender_is_patient, unread_message_count:0 })
+      includedPatientIds.push(chat.patient_id)
+    }
+  })
+  
+  let newUnreadChatTracker:any[] = []
+  incomingChatList.map(incomingChat => {
+    if (unreadChatTracker.find(unreadChatTrackerObject => unreadChatTrackerObject.patient_id == incomingChat.patient_id) == undefined) {
+      console.log("not found in existing tracker")
+      newUnreadChatTracker.push(incomingChat)
+    }
+    else {
+      console.log("found in existing tracker")
+      let previousValues = unreadChatTracker.find(unreadChatTrackerObject => unreadChatTrackerObject.patient_id == incomingChat.patient_id)
+      console.log("previous values",previousValues)
+      console.log("current values",incomingChat)
+      let rolling_unread_message_count:number = 0;
+      if(!incomingChat.last_sender_is_patient) rolling_unread_message_count = 0
+      else {
+        if(incomingChat.last_message_time == previousValues.last_message_time) rolling_unread_message_count = previousValues.unread_message_count
+        else rolling_unread_message_count = previousValues.unread_message_count+1
+      }
+      newUnreadChatTracker.push({ 
+        patient_id:incomingChat.patient_id, 
+        last_message_time:incomingChat.last_message_time, 
+        last_sender_is_patient:incomingChat.last_sender_is_patient, 
+        unread_message_count: rolling_unread_message_count })
+    }
+  })
+  setUnreadChatTracker(newUnreadChatTracker)
+  
+  setNotificationList(notificationList.sort((a:Notification,b:Notification) => Date.parse(b.timestamp) - Date.parse(a.timestamp)))
+  setNotifsBefore(notificationList.length)
+  if (notificationList.length > notifsBefore) {
+    setUnreadNotifs(unreadNotifs+1)
+    setNotifsBefore(notificationList.length)
+  }
+
+  setTimeout(() => {			
       setPollState(!pollState);
-    }, 5000);
+    }, 15000);
   },[pollState])
+  
+  
 
-  useEffect(() => {
-    // this useEffect ensures that there is no delay in the notification list being updated from firebase
-  },[notificationList])
 
   const fetchNotifications = async () => {
     try {
 			const { data, status } = await axios.get(
-			  `http://localhost:8080/pharmacist/${pharmacistId}/notifications`,
+			  `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${pharmacistId}/notifications`,
 			  {
 				headers: {
 				  Accept: 'application/json'
@@ -174,6 +255,96 @@ const App: React.FC = () => {
 		  }
   }
 
+  const navBarChange = (value:boolean) =>  setIsNavBarTop(value)
+  const ttsChange = (value:boolean) =>  setIsTTSOn(value)
+
+  const resetUnreadNotifs = () => setUnreadNotifs(0)
+
+  const changePatientId = (id:number) => {
+    setPatientId(id)
+  }
+
+  const getLoginAccountDetails = async () => {
+    try {
+      const { data, status } = await axios.get(
+      `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${pharmacistId}`,
+      {
+        headers: {
+        Accept: 'application/json'
+        },
+      },
+      );
+    
+      return data;
+    
+    } 
+    catch (e:any) {
+      if(e.code == "ERR_NETWORK") alert("Unable to connect to the server. Are you connected to the internet?")
+      if(e.code == "ERR_BAD_REQUEST") alert("This user was not found on the system. If you believe this is incorrect, contact a system administrator to validate user ID.")
+    }
+  }
+
+  const handleLogin = (e:any) => {
+    console.log(e)
+    setPharmacistDetails(e);
+    let patients:any = []
+    e.patients.map(patient => patients.push(patient))
+    setPatientList(patients)
+  }
+
+
+  useEffect(() => {
+    console.log("onesignal init")
+    // The starting code below was found at https://documentation.onesignal.com/docs/react-js-setup
+
+    // Ensure this code runs only on the client side
+    if (typeof window !== 'undefined') {
+
+      OneSignal.init({
+        appId: `${import.meta.env.VITE_ONESIGNAL_APP_ID}`,
+        // You can add other initialization options here
+        notifyButton:{enable:true},
+        // Uncomment the below line to run on localhost. See: https://documentation.onesignal.com/docs/local-testing
+        allowLocalhostAsSecureOrigin: true
+      });
+
+      OneSignal.Notifications.addEventListener('click', async (e) => {
+        let clickData = await e.notification;
+        console.log("Notification Clicked : " + clickData);
+      })
+
+      // Correct event listener for processing notifications found at https://documentation.onesignal.com/docs/device-user-model-web-sdk-mapping
+      OneSignal.Notifications.addEventListener("foregroundWillDisplay", e => {
+        const n = e.notification
+        const patient_id = n.additionalData.patient_id
+        const body = n.additionalData.body
+        const route_to = n.additionalData.route_to
+        let notification = {route_to:""}
+        if(n != undefined) {
+          let updatedNotificationList = notificationList;
+          let newNotif = {patient_id:patient_id, body:body, route_to:route_to}
+          console.log(newNotif)
+          console.log("updatedNotificationList before: ", updatedNotificationList);
+          updatedNotificationList.push({
+            patient_id:patient_id,
+            body:body,
+            route_to:route_to,
+            urgency:1, 
+            timestamp: new Date(Date.now()).toISOString()
+          });
+          console.log("updatedNotificationList after: ", updatedNotificationList);
+          setNotificationList(updatedNotificationList.sort((a:Notification,b:Notification) => Date.parse(b.timestamp) - Date.parse(a.timestamp)));
+          notifyFirebase(notification["route_to"])
+        }
+      })
+      
+      OneSignal.Notifications.requestPermission().then((success) => {
+        console.log("Notification permission granted " + success);
+      })
+    }
+
+  }, []);
+
   return (
     <IonApp>
       <IonReactRouter>
@@ -183,56 +354,44 @@ const App: React.FC = () => {
           <IonRouterOutlet id="main-content">
 
             <Route exact path="/login">
-              <Login />
+              <Login setPharmacistId={setPharmacistId} loggedInAccount={handleLogin}/>
             </Route>
             <Route exact path="/register">
-              <Register />
+              <Register setPharmacistId={setPharmacistId}/>
             </Route>
 
             <Route exact path="/regimes">
               <Regimes />
             </Route>
             <Route exact path="/regimes/create">
-              <AddRegime passedInfo={null} />
+              <AddRegime passedPharmacistId={pharmacistId} patientId={patientId} passedPatientList={patientList} changePatientId={changePatientId} passedInfo={null} />
             </Route>
             <Route exact path="/regimes/modify">
-              <AddRegime passedInfo={modifyRegimeInfo} />
+              <AddRegime passedPharmacistId={pharmacistId} patientId={patientId} passedPatientList={patientList} changePatientId={changePatientId} passedInfo={modifyRegimeInfo} />
             </Route>
 
             <Route exact path="/regimes/view">
-              <ViewRegime passModifyDataToApp={testRootMessage} />
+              <ViewRegime passedPharmacistId={pharmacistId} patientId={patientId} passedPatientList={patientList} changePatientId={changePatientId} passModifyDataToApp={testRootMessage} />
             </Route>
 
-
-            <Route exact path="/notifications">
-              <Notifications />
-            </Route>
 
             <Route exact path="/history">
-              <History />
-            </Route>
-
-            <Route exact path="/menu">
-              <Menu />
+              <History passedPharmacistId={pharmacistId} passedPatientList={patientList} passedPatientId={patientId} changePatientId={changePatientId} />
             </Route>
 
             <Route exact path="/chat">
-              <Chat />
+              <Chat unreadChats={unreadChatTracker} passedPatientList={patientList} patientSelect={changePatientId}/>
             </Route>
             <Route exact path="/chat/patient">
-              <PatientChat passedPatientChatStatus={getPatientChatStatus}/>
+              <PatientChat passedPharmacistDetails={pharmacistDetails} passedPharmacistId={pharmacistId} passedPatientId={patientId} passedPatientChatStatus={getPatientChatStatus}/>
             </Route>
 
             <Route exact path="/account">
-              <Account />
+              <Account passedPatientList={patientList} pharmacist_id={pharmacistId}/>
             </Route>
 
             <Route exact path="/settings">
-              <Settings />
-            </Route>
-
-            <Route exact path="/faqs">
-              <FAQs />
+              <Settings isNavBarTop={isNavBarTop} navBarChange={navBarChange} isTTSOn={isTTSOn} ttsChange={ttsChange}/>
             </Route>
 
             <Route exact path="/">
@@ -240,8 +399,8 @@ const App: React.FC = () => {
             </Route>
           </IonRouterOutlet >
 
-          <UpperToolbar passedNotificationList={notificationList} />
-          <LowerToolbar />
+          <UpperToolbar setPatientId={setPatientId} pharmacistId={pharmacistId}setPharmacistId={setPharmacistId} pharmacistName={pharmacistDetails?.name} passedNotificationList={notificationList} unreadNotifs={unreadNotifs} resetUnreadNotifs={resetUnreadNotifs}/>
+          {pharmacistId != 0 ? <LowerToolbar unreadChats={unreadChatTracker}isNavBarTop={isNavBarTop}/> : null}
 
         </IonTabs >
       </IonReactRouter >

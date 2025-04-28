@@ -1,16 +1,25 @@
 import '../../styles/Settings.css';
 import '../../styles/DoseSquare.css';
-import { CalendarDate } from 'typescript-calendar-date';
-import CalendarDateSquare from './CalendarDateSquare';
 type CalendarProps = {
 	time:string
 	takenStatus:boolean;
+	medList:string;
 }
 
-const DoseTakenStatus: React.FC<CalendarProps> = ({time, takenStatus}) => (
+const DoseTakenStatus: React.FC<CalendarProps> = ({time, medList, takenStatus}) => (
 	<div className='doseTakenStatus'>
-		<p>Time due: {time}</p>
-		<p>Status: {takenStatus ? <span className={"takenDose"}>Taken</span>:<span className={"untakenDose"}>Not Taken</span>}</p>
+		<div>
+			<p>Time due</p>
+			<p>{time}</p>
+		</div>
+		<div>
+			<p>Medications</p>
+			<p>{medList}</p>
+		</div>
+		<div>
+			<p>Status</p>
+			<p>{takenStatus ? <span className={"takenDose"}>Taken</span>:<span className={"untakenDose"}>Not Taken</span>}</p>
+		</div>
 	</div>
 );
 

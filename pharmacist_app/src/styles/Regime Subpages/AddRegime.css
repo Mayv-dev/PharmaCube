@@ -22,6 +22,7 @@
 	width: 100%;
 	text-align: center;
 	font-size: 1.7rem;
+	margin-top: 0%;
 }
 
 
@@ -73,4 +74,31 @@
 .regimeReturn {
 	width: 40%;
 	margin: auto;
+}
+
+.visualBoxRepresenter {
+	width: 40%;
+	margin: 1% auto;
+}
+
+.instructionGroup {
+	display: flex;
+	flex-direction: column;
+}
+
+.instructionSeparator {
+	margin-top: 1%;
+}
+
+.invalidInput {
+	background-color: rgba(255, 58, 58, 0.164);
+}
+
+.helpIcon {
+	color: rgb(48, 155, 255);
+	cursor: pointer;
+}
+
+.helpIcon:hover {
+	color: var(--element-hover-highlight-color);
 }

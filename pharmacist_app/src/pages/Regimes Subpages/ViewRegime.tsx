@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   IonPage,
@@ -10,36 +10,35 @@ import {
   IonModal,
   IonTitle,
   IonToolbar,
-  IonRouterLink,
   IonIcon,
   IonText,
   IonItem,
 } from '@ionic/react';
 import '../../styles/Regime Subpages/ViewRegime.css';
-import LowerToolbar from '../../components/LowerToolbar';
 import { RegimeItem } from 'api types/types';
 import RegimeItemContainer from '../../components/Regime Components/RegimeItemContainer';
 import { arrowBack } from 'ionicons/icons';
 
 type ContainerProps = {
 	passModifyDataToApp:any
+	passedPatientList:any
+	patientId: number
+	changePatientId: any
+	passedPharmacistId:number
 }
 
-const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
-	const [pharmacistId, setPharmacistId] = useState<number>(1);
-
-	const [patientId, setPatientId] = useState<number>(1);
-	const [patientName, setPatientName] = useState('Unselected');
+const ViewRegime: React.FC<ContainerProps> =  ({ passedPharmacistId, passModifyDataToApp, passedPatientList, patientId, changePatientId }) => {
 	
 	const [userRegimes, setUserRegimes] = useState<RegimeItem[]>()
 	const [deleteRegimeId, setDeleteRegimeId] = useState<number>(-1);
 
 	const [showModal, setShowModal] = useState(false);
 
-  async function getMockData() {
+
+  async function getPatientRegime() {
 	try {
 	  const { data, status } = await axios.get(
-		`http://localhost:8080/pharmacist/${pharmacistId}/patient/${patientId}/regime`,
+		`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${passedPharmacistId}/patient/${patientId}/regime`,
 		{
 		  headers: {
 			Accept: 'application/json'
@@ -49,14 +48,10 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
   
 	  return data;
   
-	} catch (error) {
-	  if (axios.isAxiosError(error)) {
-		console.log('error message: ', error.message);
-		return error.message;
-	  } else {
-		console.log('unexpected error: ', error);
-		return 'An unexpected error occurred';
-	  }
+	} 
+	catch (e:any) {
+		if(e.code == "ERR_NETWORK") alert("Unable to connect to the server. Are you connected to the internet?")
+		if(e.code == "ERR_BAD_REQUEST") alert("This user was not found on the system. If you believe this is incorrect, contact a system administrator to validate user ID.")
 	}
   }
 
@@ -69,17 +64,11 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
 	setShowModal(true)
   }
 
-  const handleUserSelect = (user:string) => {
-    console.log("This should display the regimes assigned to: " + user);
-    setPatientName(user);
-    getMockData().then(setUserRegimes);
-  }
-
   const deleteRegimeItem = async () => {
 	console.log("deleting regime... ", deleteRegimeId)
 	try {
 		const { data, status } = await axios.delete(
-		  `http://localhost:8080/pharmacist/${pharmacistId}/patient/${patientId}/regime/${deleteRegimeId}`,
+		  `${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/${passedPharmacistId}/patient/${patientId}/regime/${deleteRegimeId}`,
 		  {
 			headers: {
 			  Accept: 'application/json'
@@ -87,7 +76,7 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
 		  }
 		);
 	
-		getMockData().then(setUserRegimes);
+		getPatientRegime().then(setUserRegimes);
 		return data;
 	
 	  } catch (error) {
@@ -101,31 +90,33 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
 	  }
   }
 
+  useEffect(() => {
+		patientId != 0 ? getPatientRegime().then(setUserRegimes) : null
+	},[patientId])
+
   return (
     <IonPage>
 			<IonContent className="ion-padding">
 			<div className='webBody'>
 				<div className='regimeReturn'>
-                  <IonButton routerLink='/regimes/' color="light">
+                  <IonButton routerLink='/regimes/' routerDirection='root' color="light">
                     <IonIcon icon={arrowBack}></IonIcon>
-                    <IonText>Back to Regime Home</IonText>
+                    <IonText>Back to Home Screen</IonText>
                   </IonButton>
               </div>
 				<IonItem>
 
-				<IonSelect interface="popover" label="Patient" placeholder='Choose a patient' onIonChange={e => handleUserSelect(e.target.value)}>
-					<IonSelectOption>Ann Murphy</IonSelectOption>
+				<IonSelect value={patientId} interface="popover" label="Patient" placeholder='Choose a patient' onIonChange={e => changePatientId(e.target.value)}>
+					{passedPatientList.map(patient => <IonSelectOption key={patient.id} value={patient.id}>{patient.name}</IonSelectOption>)}
 				</IonSelect>
 				</IonItem>
 			{
-				patientName == "Unselected" ? null :
-				<>
-					<ul>
+				patientId == 0 || userRegimes == undefined ? null :
+					<div className='doseViewGrid'>
 						{/*declaring an object that is passed entirely to the component with ...regime was a solution recieved from the answer of CPHPython 
 						at https://stackoverflow.com/questions/48240449/type-is-not-assignable-to-type-intrinsicattributes-intrinsicclassattribu*/}
-						{userRegimes?.map(regime => <RegimeItemContainer regime={regime} deleteItem={confirmDeletion} modifyItem={modifyFromApp} />)}
-					</ul>
-				</>
+						{userRegimes.map((regime,index) => <RegimeItemContainer key={index} regime={regime} deleteItem={confirmDeletion} modifyItem={modifyFromApp} />)}
+					</div>
 			}
 
 
@@ -137,7 +128,7 @@ const ViewRegime: React.FC<ContainerProps> =  ({passModifyDataToApp}) => {
           </IonHeader>
           <IonContent className="ion-padding">
 		  <div className='webBody'>
-            <p>Are you sure you wish to delete this regime?</p>
+            <p>Are you sure you wish to delete this dose?</p>
             <IonButton expand="full" color="primary" onClick={() => {
 				deleteRegimeItem()
 				setShowModal(false)}}>

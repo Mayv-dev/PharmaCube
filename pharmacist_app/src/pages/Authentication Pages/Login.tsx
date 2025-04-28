@@ -1,75 +1,78 @@
-import { IonButton, IonContent, IonInput, IonItem, IonPage, IonRouterLink, IonText } from '@ionic/react';
+import { IonButton, IonContent, IonInput, IonItem, IonPage, IonRouterLink } from '@ionic/react';
 import '../../styles/Regime Subpages/AddRegime.css';
 import { useState } from 'react';
 
 // Referenced yup from https://www.npmjs.com/package/yup
-import { string, ValidationError } from 'yup';
+import { string } from 'yup';
 import { useHistory } from 'react-router';
 
 import axios from 'axios';
+type loginProps = {
+	loggedInAccount:any
+	setPharmacistId:any
+}
 
-const Login: React.FC = () => {
-	const [email, setEmail] = useState("liammurphy86@gmail.com");
-	const [password, setPassword] = useState("pharmalord420");
+const Login: React.FC<loginProps> = ({loggedInAccount,setPharmacistId}) => {
+	const [email, setEmail] = useState(import.meta.env.VITE_TESTER_EMAIL);
+	const [password, setPassword] = useState(import.meta.env.VITE_TESTER_PASSWORD);
 	const history = useHistory();
+
+	
 
 	const handleLogin = async () => {
 		try {
+			if (email == "") {
+				alert("Please enter an email")
+				return
+			}
 			let emailValidation = string().email().required()
 			await emailValidation.validate(email).then(result => { return result })
-			if (
-				email == "" ||
-				password == ""
-			) {
-				console.log("incorrect login")
-			}
+			if (email == "") alert("Please enter an email")
+			else if (password == "") alert("Please enter a password")
 			else {
-				
 				try {
 					const { data, status } = await axios.get(
-						`http://localhost:8080/pharmacist/1`,
+						`${import.meta.env.VITE_SERVER_PROTOCOL}://${import.meta.env.VITE_SERVER_ADDRESS}:${import.meta.env.VITE_SERVER_PORT}/pharmacist/1`,
 						{
-						headers: {
-							Accept: 'application/json'
-						},
+							headers: {
+								Accept: 'application/json'
+							},
 						},
 					);
 					if(status == 200) {
 						// Found "history" solution to login/register prevention at https://stackoverflow.com/questions/70237476/react-link-async-await-does-not-wait-code-block
+						setPharmacistId(data.id)
+						loggedInAccount(data)
 						history.push("/regimes")
 					}
 				}
-				catch (e) {
-					console.log("User not found")
+				catch (e:any) {
+					if(e.code == "ERR_NETWORK") alert("Unable to connect to the server. Are you connected to the internet?")
+					if(e.code == "ERR_BAD_REQUEST") alert("This user was not found on the system. If you believe this is incorrect, contact a system administrator to validate user ID.")
 				}
-				
 			}
 		}
 		catch (e) {
-			console.log("Invalid email")
+			alert("The email is incorrectly formatted. Please try again.")
 		}
 	}
 	return (
 		<IonPage>
 			<IonContent className="ion-padding">
 				<div className='webBody'>
-					<div className='oroLogo'>
-						<img width="100%" src="..\ORO logo v2 bg-removed.png" />
-					</div>
-
 					<p className='authenticationPageHeading'>Log In</p>
 
 					<IonItem>
-						<IonInput onIonChange={e => setEmail(e.target.value)} value={email} type="email" label='Email'></IonInput>
+						<IonInput onIonInput={e => setEmail(e.target.value)} value={email} type="email" label='Email'></IonInput>
 					</IonItem>
 
 					<IonItem>
-						<IonInput onIonChange={e => setPassword(e.target.value)} value={password} type="password" label='Password'></IonInput>
+						<IonInput onIonInput={e => setPassword(e.target.value)} value={password} type="password" label='Password'></IonInput>
 					</IonItem>
 
 					<IonButton onClick={e => handleLogin()}>Log In</IonButton>
 
-					<IonRouterLink routerLink='/register'>
+					<IonRouterLink routerLink='/register' routerDirection={"none"}>
 						<IonButton>Sign Up Instead</IonButton>
 					</IonRouterLink>
 
